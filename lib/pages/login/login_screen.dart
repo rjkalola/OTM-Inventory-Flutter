@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -7,7 +5,6 @@ import 'package:otm_inventory/pages/login/login_controller.dart';
 import 'package:otm_inventory/pages/login/widgets/login_button_widget.dart';
 import 'package:otm_inventory/pages/login/widgets/phone_extension_field_widget.dart';
 import 'package:otm_inventory/pages/login/widgets/phone_text_field_widget.dart';
-import 'package:otm_inventory/web_services/response/status.dart';
 import 'package:otm_inventory/widgets/CustomProgressbar.dart';
 import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
@@ -22,7 +19,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final loginController = Get.put(LoginController());
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:otm_inventory/pages/splash/splash_services.dart';
-import 'package:otm_inventory/res/resources.dart';
+import 'package:otm_inventory/res/drawable.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

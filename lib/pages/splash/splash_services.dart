@@ -5,8 +5,9 @@ import 'package:otm_inventory/routes/app_routes.dart';
 
 class SplashServices {
   void isLogin() {
-    Timer(Duration(seconds: 3), () {
-      Get.offAllNamed(AppRoutes.LOGIN_SCREEN);
+    Timer(const Duration(seconds: 1), () {
+      // Get.offAllNamed(AppRoutes.VERIFY_OTP_SCREEN);
+      Get.toNamed(AppRoutes.VERIFY_OTP_SCREEN);
     });
   }
 }

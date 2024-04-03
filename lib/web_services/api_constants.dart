@@ -13,4 +13,5 @@ class ApiConstants {
 
   static String registerResourcesUrl = '$appUrl/wn-resources';
   static String verifyPhoneUrl = '$appUrl/verify-phone';
+  static String loginUrl = '$appUrl/login-new';
 }

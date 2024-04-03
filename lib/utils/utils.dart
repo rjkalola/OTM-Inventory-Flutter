@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,8 +27,21 @@ class Utils {
                     color: Colors.black87),
                 child: Text(
                   message,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ))),
         margin: const EdgeInsets.all(10));
+  }
+
+  static Future<String> getDeviceName() async {
+    String deviceName = "";
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      deviceName = androidInfo.model.isNotEmpty?androidInfo.model:"";
+    }else if(Platform.isIOS){
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      deviceName = iosInfo.utsname.machine.isNotEmpty?iosInfo.utsname.machine:"";
+    }
+    return deviceName;
   }
 }
