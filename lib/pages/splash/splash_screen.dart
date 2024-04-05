@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
           width: double.infinity,
           child: Center(
               child: Image.asset(
-            Resources.splashScreenLogo,
+                Drawable.splashScreenLogo,
             height: 350,
             width: 350,
           )),

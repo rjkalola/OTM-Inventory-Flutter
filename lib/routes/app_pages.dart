@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/dashboard/dashboard_screen.dart';
 import 'package:otm_inventory/pages/login/login_screen.dart';
 import 'package:otm_inventory/pages/otp_verification/verify_otp_screen.dart';
 import 'package:otm_inventory/pages/splash/splash_screen.dart';
@@ -18,6 +19,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.VERIFY_OTP_SCREEN,
       page: () => VerifyOtpScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.DASHBOARD_SCREEN,
+      page: () => DashboardScreen(),
     ),
   ];
 }

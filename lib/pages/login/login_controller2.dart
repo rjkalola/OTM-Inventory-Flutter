@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/login/login_repository.dart';
 import 'package:otm_inventory/pages/login/models/RegisterResourcesResponse.dart';
-import 'package:otm_inventory/utils/utils.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
 import 'package:otm_inventory/web_services/response/status.dart';
 
@@ -37,7 +37,7 @@ class LoginController extends GetxController {
                 jsonDecode(responseModel.result!)));
           }
         } else {
-          Utils.showSnackBarMessage(responseModel.statusMessage!);
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
         }
         isLoading.value = false;
         // update();
@@ -46,9 +46,9 @@ class LoginController extends GetxController {
         isLoading.value = false;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           isInternetNotAvailable.value = true;
-          Utils.showSnackBarMessage('no_internet'.tr);
+          AppUtils.showSnackBarMessage('no_internet'.tr);
         } else if (error.statusMessage!.isNotEmpty) {
-          Utils.showSnackBarMessage(error.statusMessage!);
+          AppUtils.showSnackBarMessage(error.statusMessage!);
         }
         // update();
       },

@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,8 +6,9 @@ import 'package:otm_inventory/pages/otp_verification/verify_otp_controller.dart'
 import 'package:otm_inventory/pages/otp_verification/widgets/otp_box_widget.dart';
 import 'package:otm_inventory/pages/otp_verification/widgets/otp_submit_button.dart';
 import 'package:otm_inventory/pages/otp_verification/widgets/resend_view_widget.dart';
+import 'package:otm_inventory/utils/app_constants.dart';
+
 import '../../res/colors.dart';
-import '../../utils/Utils.dart';
 import '../../widgets/appbar/base_appbar.dart';
 
 class VerifyOtpScreen extends StatefulWidget {
@@ -25,8 +25,13 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
   @override
   void initState() {
-    // print("Extension:" + extension);
-    // print("phoneNumber:" + phoneNumber);
+    var arguments = Get.arguments;
+    if (arguments != null) {
+      verifyOtpController.mExtension.value = arguments[AppConstants.intentKey.phoneExtension];
+      verifyOtpController.mPhoneNumber.value = arguments[AppConstants.intentKey.phoneNumber];
+      print("verifyOtpController.mExtension:"+verifyOtpController.mExtension.value);
+      print("verifyOtpController.mPhoneNumber:"+verifyOtpController.mPhoneNumber.value);
+    }
     super.initState();
   }
 
@@ -35,17 +40,17 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-      child: ModalProgressHUD(
-        inAsyncCall: verifyOtpController.isLoading.value,
-        child: Scaffold(
-          backgroundColor: backgroundColor,
-          appBar: BaseAppBar(
-            appBar: AppBar(),
-            title: 'verify_otp'.tr,
-            isBack: true,
-          ),
-          body: Column(children: [
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: BaseAppBar(
+        appBar: AppBar(),
+        title: 'verify_otp'.tr,
+        isBack: true,
+      ),
+      body: Obx(() {
+        return ModalProgressHUD(
+          inAsyncCall: verifyOtpController.isLoading.value,
+          child: Column(children: [
             Form(
               key: verifyOtpController.formKey,
               child: Expanded(
@@ -91,58 +96,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             ),
             OtpSubmitButton()
           ]),
-        ),
-      ),
+        );
+      }),
     );
-  }
-
-  void resendOTP() async {
-    // if (formKey.currentState!.validate()) {
-    //   showProgress();
-    //   LoginResponse? response =
-    //       await RemoteService().login(phoneNumber, extension);
-    //   hideProgress();
-    //   if (response != null) {
-    //     if (response.statusCode == 200) {
-    //     } else {
-    //       if (context.mounted) {
-    //         Utils.showSnackBarMessage(context, response.detail!);
-    //       }
-    //     }
-    //   }
-    // }
-  }
-
-  void verifyOTP(String otp) async {
-    // if (formKey.currentState!.validate()) {
-    //   showProgress();
-    //   LoginResponse? response =
-    //       await RemoteService().verifyOTP(phoneNumber, extension, otp);
-    //   hideProgress();
-    //   if (response != null) {
-    //     if (response.statusCode == 200) {
-    //       DataUtils.accessToken = response.access_token!;
-    //       DataUtils.refreshAccessToken = response.refresh_token!;
-    //       Utils.saveRefreshAccessToken(response.access_token!);
-    //       if (context.mounted) {
-    //         if(fromScreen == AppConstants.fromScreens.signUp){
-    //           Navigator.pushReplacement(context,
-    //               MaterialPageRoute(builder: (context) {
-    //                 return SearchCompanyScreen();
-    //               }));
-    //         }else if(fromScreen == AppConstants.fromScreens.login){
-    //           Navigator.pushAndRemoveUntil(
-    //               context,
-    //               MaterialPageRoute(builder: (context) => DashboardScreen()),
-    //               ModalRoute.withName("/DashboardScreen"));
-    //         }
-    //       }
-    //     } else {
-    //       if (context.mounted) {
-    //         Utils.showSnackBarMessage(context, response.detail!);
-    //       }
-    //     }
-    //   }
-    // }
   }
 }

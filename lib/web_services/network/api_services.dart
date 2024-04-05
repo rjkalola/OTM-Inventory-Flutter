@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:otm_inventory/utils/utils.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
 import 'package:otm_inventory/web_services/network/api_exception.dart';
 import 'package:otm_inventory/web_services/network/base_api_services.dart';
@@ -157,7 +157,6 @@ class ApiServices extends BaseApiServices {
     } on DioException catch (e) {
       final ApiException apiException = ApiException.fromDioError(e);
       throw apiException.message;
-      Utils.showSnackBarMessage(apiException.message);
       // apiException.message
     }
   }

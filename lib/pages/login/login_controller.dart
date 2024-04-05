@@ -6,9 +6,11 @@ import 'package:get/get.dart';
 import 'package:otm_inventory/pages/login/login_repository.dart';
 import 'package:otm_inventory/pages/login/models/RegisterResourcesResponse.dart';
 import 'package:otm_inventory/pages/login/models/VerifyPhoneResponse.dart';
-import 'package:otm_inventory/utils/utils.dart';
+import 'package:otm_inventory/utils/app_constants.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
 
+import '../../routes/app_routes.dart';
 import '../../web_services/response/response_model.dart';
 
 class LoginController extends GetxController {
@@ -41,7 +43,13 @@ class LoginController extends GetxController {
             VerifyPhoneResponse response =
                 VerifyPhoneResponse.fromJson(jsonDecode(responseModel.result!));
             if (response.isSuccess!) {
-              showSnackBar(response.message!);
+              var arguments = {
+                AppConstants.intentKey.phoneExtension: mExtension.value,
+                AppConstants.intentKey.phoneNumber:
+                    phoneController.value.text.toString(),
+              };
+              Get.toNamed(AppRoutes.VERIFY_OTP_SCREEN, arguments: arguments);
+              // showSnackBar(response.message!);
             } else {
               showSnackBar(response.message!);
             }
@@ -70,7 +78,7 @@ class LoginController extends GetxController {
           setRegisterResourcesResponse(RegisterResourcesResponse.fromJson(
               jsonDecode(responseModel.result!)));
         } else {
-          Utils.showSnackBarMessage(responseModel.statusMessage!);
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
         }
         isLoading.value = false;
       },
@@ -80,14 +88,14 @@ class LoginController extends GetxController {
           isInternetNotAvailable.value = true;
           // Utils.showSnackBarMessage('no_internet'.tr);
         } else if (error.statusMessage!.isNotEmpty) {
-          Utils.showSnackBarMessage(error.statusMessage!);
+          AppUtils.showSnackBarMessage(error.statusMessage!);
         }
       },
     );
   }
 
   void showSnackBar(String message) {
-    Utils.showSnackBarMessage(message);
+    AppUtils.showSnackBarMessage(message);
   }
 
   void setRegisterResourcesResponse(RegisterResourcesResponse value) =>

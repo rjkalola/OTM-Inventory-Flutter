@@ -17,7 +17,11 @@ class Strings extends Translations {
           'resend_': "Resend,",
           'otm_received_note': " if you do not receive after 2 minutes",
           'submit': "Submit",
-          'enter_otp': "Enter OTP"
+          'enter_otp': "Enter OTP",
+          'otp_resend_success_message': "Otp resend",
+          'home': "Home",
+          'profile': "Profile",
+          'more': "More",
         },
         'hi_IN': {'login': 'Login'}
       };

@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:otm_inventory/pages/splash/splash_screen.dart';
 import 'package:otm_inventory/res/strings.dart';
 import 'package:otm_inventory/routes/app_pages.dart';
+import 'package:otm_inventory/utils/app_storage.dart';
 
-void main() {
+void main() async{
+  await Get.put(AppStorage()).initStorage();
   runApp(const MyApp());
 }
 

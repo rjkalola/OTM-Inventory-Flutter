@@ -110,11 +110,9 @@ class ApiRequest {
     try {
       bool isInternet = await interNetCheck();
       if (isInternet) {
-        if (kDebugMode) {
-          print("URL ==> $url");
-          print("Request Data ==> ${jsonEncode(data)}");
-        }
+        if (kDebugMode) print("URL ==> $url");
         if (!isFormData!) {
+          if (kDebugMode)  print("Request Data ==> ${data.toString()}");
           response = await dio.post(
             url,
             data: data,
@@ -123,6 +121,7 @@ class ApiRequest {
             ),
           );
         } else {
+          if (kDebugMode)  print("Request Data ==> ${formData.toString()}");
           multi.Dio dio = multi.Dio();
           response = await dio.post(
             url,

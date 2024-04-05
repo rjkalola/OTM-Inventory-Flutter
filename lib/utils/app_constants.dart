@@ -20,12 +20,15 @@ class DialogIdentifier {
 
 class SharedPreferenceKey {
   const SharedPreferenceKey(); // <---
-// final String keyLoginData = "KeyLoginData";
+  final String userInfo = "USER_INFO";
+  final String accessToken = "ACCESS_TOKEN";
 }
 
 class Action {
   const Action(); //
-// final String clockIn = "ClockIn";
+final String items = "ITEMS";
+  final String store = "STORE";
+  final String vendors = "VENDORS";
 }
 
 class FromScreens {

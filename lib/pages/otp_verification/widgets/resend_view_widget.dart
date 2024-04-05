@@ -21,7 +21,9 @@ class ResendViewWidget extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
               text: 'resend_'.tr,
-              recognizer: TapGestureRecognizer()..onTap = () {},
+              recognizer: TapGestureRecognizer()..onTap = () {
+                verifyOtpController.resendOtpApi();
+              },
               style: const TextStyle(
                   fontSize: 16,
                   color: defaultAccentColor,
