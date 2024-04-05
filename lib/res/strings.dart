@@ -22,6 +22,12 @@ class Strings extends Translations {
           'home': "Home",
           'profile': "Profile",
           'more': "More",
+          'product_list': "Product List",
+          'empty_data_message': "No data found",
+          'sku': "SKU",
+          'price': "Price",
+          'manufacturer': "Manufacturer",
+          'category': "Category",
         },
         'hi_IN': {'login': 'Login'}
       };

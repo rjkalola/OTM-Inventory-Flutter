@@ -15,7 +15,7 @@ import '../../web_services/response/response_model.dart';
 
 class LoginController extends GetxController {
   final phoneController = TextEditingController().obs;
-  final mExtension = "+91".obs;
+  final mExtension = "+44".obs;
   final mFlag = "https://cdn.otmsystem.com//flags//png//in_32.png".obs;
   final formKey = GlobalKey<FormState>();
 
@@ -48,7 +48,7 @@ class LoginController extends GetxController {
                 AppConstants.intentKey.phoneNumber:
                     phoneController.value.text.toString(),
               };
-              Get.toNamed(AppRoutes.VERIFY_OTP_SCREEN, arguments: arguments);
+              Get.toNamed(AppRoutes.verifyOtpScreen, arguments: arguments);
               // showSnackBar(response.message!);
             } else {
               showSnackBar(response.message!);

@@ -62,9 +62,10 @@ class VerifyOtpController extends GetxController {
             if (response.isSuccess!) {
               Get.find<AppStorage>().setUserInfo(response.info!);
               Get.find<AppStorage>().setAccessToken(response.info!.apiToken!);
+              ApiConstants.accessToken = response.info!.apiToken!;
               print("Token:" +
-                  Get.find<AppStorage>().getAccessToken());
-              Get.offAllNamed(AppRoutes.DASHBOARD_SCREEN);
+                  ApiConstants.accessToken);
+              Get.offAllNamed(AppRoutes.dashboardScreen);
               // showSnackBar(response.message!);
             } else {
               showSnackBar(response.message!);

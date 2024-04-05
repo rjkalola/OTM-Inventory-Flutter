@@ -1,5 +1,6 @@
 class BaseResponse {
-  String? IsSuccess, Message, ErrorCode;
+  String? Message, ErrorCode;
+  bool? IsSuccess;
 
   BaseResponse({this.IsSuccess, this.Message, this.ErrorCode});
 

@@ -45,6 +45,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
       appBar: BaseAppBar(
         appBar: AppBar(),
         title: 'verify_otp'.tr,
+        isCenterTitle: true,
         isBack: true,
       ),
       body: Obx(() {

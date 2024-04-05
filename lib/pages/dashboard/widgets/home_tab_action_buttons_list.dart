@@ -37,7 +37,7 @@ class HomeTabActionButtonsList extends StatelessWidget {
                       child: Column(
                         children: [
                           Container(
-                              padding: EdgeInsets.all(14),
+                              padding: const EdgeInsets.all(14),
                               width: 80,
                               height: 54,
                               decoration: BoxDecoration(
@@ -62,7 +62,10 @@ class HomeTabActionButtonsList extends StatelessWidget {
                           ),
                         ],
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        dashboardController
+                            .onActionButtonClick(list[index][position].id!);
+                      },
                     );
                   },
                 ));

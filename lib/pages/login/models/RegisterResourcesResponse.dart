@@ -1,4 +1,4 @@
-import 'package:otm_inventory/web_services/response/ModuleInfo.dart';
+import 'package:otm_inventory/web_services/response/module_info.dart';
 
 class RegisterResourcesResponse {
   bool? isSuccess;

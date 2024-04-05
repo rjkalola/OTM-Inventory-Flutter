@@ -27,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: BaseAppBar(
         appBar: AppBar(),
         title: 'login'.tr,
+        isCenterTitle: true,
         isBack: false,
       ),
       body: Obx(() {

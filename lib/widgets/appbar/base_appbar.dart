@@ -4,10 +4,11 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AppBar appBar;
   final title;
   final isBack;
+  final isCenterTitle;
   final List<Widget>? widgets;
 
   BaseAppBar(
-      {super.key, required this.appBar, this.title, this.isBack = false, this.widgets});
+      {super.key, required this.appBar, this.title, this.isCenterTitle, this.isBack = false, this.widgets});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),
       ),
       actions: widgets,
-      centerTitle: true,
+      centerTitle: isCenterTitle,
+      titleSpacing: isBack?0:20,
       automaticallyImplyLeading: isBack,
     );
   }

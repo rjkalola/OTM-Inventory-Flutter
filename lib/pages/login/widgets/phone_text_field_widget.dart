@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-import 'package:otm_inventory/widgets/appbar/custom_text_form_field.dart';
 
+import '../../../widgets/custom_text_form_field.dart';
 import '../login_controller.dart';
 
 class PhoneTextFieldWidget extends StatelessWidget {

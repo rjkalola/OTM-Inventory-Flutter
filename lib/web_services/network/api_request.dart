@@ -110,7 +110,9 @@ class ApiRequest {
     try {
       bool isInternet = await interNetCheck();
       if (isInternet) {
+        if (kDebugMode) print("accessToken:::"+ApiConstants.accessToken);
         if (kDebugMode) print("URL ==> $url");
+        if (kDebugMode) print("isFormData ==> $isFormData");
         if (!isFormData!) {
           if (kDebugMode)  print("Request Data ==> ${data.toString()}");
           response = await dio.post(

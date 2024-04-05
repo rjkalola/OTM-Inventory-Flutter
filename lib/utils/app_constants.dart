@@ -5,6 +5,7 @@ class AppConstants {
   static const IntentKey intentKey = IntentKey();
   static const Action action = Action();
   static const String deviceType = "1";
+  static const int productListLimit = 10;
 }
 
 class IntentKey {
@@ -26,7 +27,7 @@ class SharedPreferenceKey {
 
 class Action {
   const Action(); //
-final String items = "ITEMS";
+  final String items = "ITEMS";
   final String store = "STORE";
   final String vendors = "VENDORS";
 }
