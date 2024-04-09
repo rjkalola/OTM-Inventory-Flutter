@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
+import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
 
 import '../../utils/app_constants.dart';
@@ -13,7 +14,7 @@ class DashboardController extends GetxController
   final tabs = <Widget>[
     HomeTab(),
     HomeTab(),
-    HomeTab(),
+    MoreTab(),
   ];
 
   void onPageChanged(int index) {

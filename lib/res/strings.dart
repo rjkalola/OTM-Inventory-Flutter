@@ -28,6 +28,16 @@ class Strings extends Translations {
           'price': "Price",
           'manufacturer': "Manufacturer",
           'category': "Category",
+          'select_phone_extension': "Select phone extension",
+          'search': "Search",
+          'settings': "Settings",
+          'logout': "Logout",
+          'logout_msg': "Are you sure you want to logout?",
+          'yes': "Yes",
+          'no': "No",
+          'add_product': "Add Product",
+          'product_title': "Product Title",
+          'enter_product_title': "Enter product title"
         },
         'hi_IN': {'login': 'Login'}
       };

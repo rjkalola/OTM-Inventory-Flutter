@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/widgets/footer_primary_button.dart';
 
-import '../../../res/colors.dart';
-import '../verify_otp_controller.dart';
+import '../../controller/add_product_controller.dart';
 
-class OtpSubmitButton extends StatelessWidget {
-  OtpSubmitButton({super.key});
+class AddProductButton extends StatelessWidget {
+  AddProductButton({super.key});
 
-  final verifyOtpController = Get.put(VerifyOtpController());
+  final addProductController = Get.put(AddProductController());
 
   @override
   Widget build(BuildContext context) {
     return FooterPrimaryButton(
       buttonText: 'submit'.tr,
       onPressed: () {
-        verifyOtpController.onSubmitOtpClick();
+        addProductController.onSubmitClick();
       },
     );
   }

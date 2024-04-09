@@ -8,6 +8,7 @@ import 'package:otm_inventory/pages/product_list/models/ProductInfo.dart';
 import 'package:otm_inventory/pages/product_list/models/ProductListResponse.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 
+import '../../../routes/app_routes.dart';
 import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
@@ -28,6 +29,10 @@ class ProductListController extends GetxController {
   void onInit() {
     super.onInit();
     getProductListApi();
+  }
+
+  void addProductClick(){
+    Get.toNamed(AppRoutes.addProductScreen);
   }
 
   void getProductListApi() async {

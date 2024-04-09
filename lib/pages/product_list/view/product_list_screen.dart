@@ -6,6 +6,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/product_list/controller/product_list_controller.dart';
 import 'package:otm_inventory/pages/product_list/view/widgets/product_list_empty_view.dart';
 import 'package:otm_inventory/pages/product_list/view/widgets/product_list_view.dart';
+import 'package:otm_inventory/pages/product_list/view/widgets/search_product_widget.dart';
 import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
@@ -46,33 +47,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
               height: 1,
               color: dividerColor,
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-              child: TextField(
-                onChanged: (value) {
-                  // setModalState(() {
-                  //   filterSearchResults(value, list);
-                  // });
-                },
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.fromLTRB(0, 2, 14, 0),
-                  prefixIcon: Icon(Icons.search, color: primaryTextColor),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffcccccc), width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(45)),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffcccccc), width: 1),
-                      borderRadius: BorderRadius.all(Radius.circular(45))
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffcccccc), width: 1),
-                      borderRadius: BorderRadius.all(Radius.circular(45))
-                  ),
-                  hintText: 'Search',
-                ),
-              ),
-            ),
+            Visibility(
+                visible: productListController.productList.isNotEmpty,
+                child: const SearchProductWidget()),
             productListController.productList.isNotEmpty
                 ? ProductListView()
                 : ProductListEmptyView(),
@@ -87,12 +64,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   List<Widget>? actionButtons() {
     return [
-      IconButton(
-        icon: SvgPicture.asset(
-          width: 22,
-          Drawable.searchIcon,
+      Visibility(
+        visible: productListController.productList.isNotEmpty,
+        child: IconButton(
+          icon: SvgPicture.asset(
+            width: 22,
+            Drawable.searchIcon,
+          ),
+          onPressed: () {},
         ),
-        onPressed: () {},
       ),
       IconButton(
         icon: SvgPicture.asset(
@@ -100,6 +80,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
           Drawable.filterIcon,
         ),
         onPressed: () {},
+      ),
+      IconButton(
+        icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
+        onPressed: () {
+          productListController.addProductClick();
+        },
       ),
     ];
   }

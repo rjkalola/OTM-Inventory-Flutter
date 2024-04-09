@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/add_product/view/add_product_screen.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_screen.dart';
 import 'package:otm_inventory/pages/login/login_screen.dart';
 import 'package:otm_inventory/pages/otp_verification/verify_otp_screen.dart';
@@ -28,6 +29,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.productListScreen,
       page: () => ProductListScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.addProductScreen,
+      page: () => AddProductScreen(),
     ),
   ];
 }

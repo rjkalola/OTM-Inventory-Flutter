@@ -10,4 +10,6 @@ class Drawable{
   static const String searchIcon = 'assets/images/ic_search.svg';
   static const String filterIcon = 'assets/images/ic_filter.svg';
   static const String sortIcon = 'assets/images/ic_sort.svg';
+  static const String settingsIcon = 'assets/images/ic_settings.svg';
+
 }

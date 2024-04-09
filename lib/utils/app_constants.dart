@@ -16,7 +16,7 @@ class IntentKey {
 
 class DialogIdentifier {
   const DialogIdentifier(); // <---
-// final String logout = 'logout';
+final String logout = 'logout';
 }
 
 class SharedPreferenceKey {

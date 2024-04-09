@@ -29,5 +29,14 @@ class AppStorage extends GetxController {
     return token;
   }
 
+  void clearAllData(){
+    box.erase();
+  }
+
+  void removeData(String key){
+    box.remove(key);
+  }
+
+
 
 }

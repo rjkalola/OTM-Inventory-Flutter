@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/login/login_repository.dart';
 import 'package:otm_inventory/pages/login/models/RegisterResourcesResponse.dart';
@@ -9,13 +10,17 @@ import 'package:otm_inventory/pages/login/models/VerifyPhoneResponse.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
+import 'package:otm_inventory/web_services/response/module_info.dart';
 
 import '../../routes/app_routes.dart';
 import '../../web_services/response/response_model.dart';
+import '../common/phone_extension_list_dialog.dart';
+import '../common/listener/SelectPhoneExtensionListener.dart';
 
-class LoginController extends GetxController {
+class LoginController extends GetxController
+    implements SelectPhoneExtensionListener {
   final phoneController = TextEditingController().obs;
-  final mExtension = "+44".obs;
+  final mExtension = "+91".obs;
   final mFlag = "https://cdn.otmsystem.com//flags//png//in_32.png".obs;
   final formKey = GlobalKey<FormState>();
 
@@ -92,6 +97,22 @@ class LoginController extends GetxController {
         }
       },
     );
+  }
+
+  void showPhoneExtensionDialog() {
+    Get.bottomSheet(
+        PhoneExtensionListDialog(
+            title: 'select_phone_extension'.tr,
+            list: registerResourcesResponse.value.countries!,
+            listener: this),
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true);
+  }
+
+  @override
+  void onSelectPhoneExtension(String extension, String flag) {
+    mFlag.value = flag;
+    mExtension.value = extension;
   }
 
   void showSnackBar(String message) {
