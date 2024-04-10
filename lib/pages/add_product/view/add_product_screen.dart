@@ -6,8 +6,25 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/add_product/view/widgets/add_product_button.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_category.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_description.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_length_unit.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_height.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_length.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_manufacturer.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_model.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_name.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_price.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_sku.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_supplier.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_tax.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_title.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_weight.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_weight_unit.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_width.dart';
 
 import '../../../res/colors.dart';
+import '../../../widgets/CustomProgressbar.dart';
 import '../../../widgets/appbar/base_appbar.dart';
 import '../controller/add_product_controller.dart';
 
@@ -32,55 +49,72 @@ class AddProductScreen extends StatelessWidget {
       body: Obx(() {
         return ModalProgressHUD(
           inAsyncCall: addProductController.isLoading.value,
-          child: Column(children: [
-            Form(
-              key: addProductController.formKey,
-              child: Expanded(
-                flex: 1,
-                child: SingleChildScrollView(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-                          child: TextFormField(
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
+          opacity: 0,
+          progressIndicator: const CustomProgressbar(),
+          child: Visibility(
+            visible: addProductController.isMainViewVisible.value,
+            child: Column(children: [
+              Form(
+                key: addProductController.formKey,
+                child: Expanded(
+                  flex: 1,
+                  child: SingleChildScrollView(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Divider(),
+                          TextFieldProductTitle(),
+                          TextFieldProductName(),
+                          TextFieldProductCategory(),
+                          TextFieldProductSupplier(),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(14, 8, 14, 16),
+                            child: Text('dimensions_'.tr,
+                                style: const TextStyle(
+                                    color: primaryTextColor, fontSize: 16)),
+                          ),
+                          Row(
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: TextFieldProductLength(),
                               ),
-                              controller: addProductController
-                                  .productTitleController.value,
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.next,
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(16, 16, 16, 16),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.auto,
-                                border: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xffbab8b8), width: 1),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Color(0xffbab8b8), width: 1),
-                                ),
-                                hintText: 'enter_product_title'.tr,
-                                labelText: 'product_title'.tr,
-                                labelStyle: TextStyle(color: Colors.grey),
-                                hintStyle:
-                                    TextStyle(fontSize: 15, color: Colors.grey),
+                              Flexible(
+                                flex: 1,
+                                child: TextFieldProductWidth(),
                               ),
-                              validator: MultiValidator([
-                                RequiredValidator(errorText: "Required"),
-                              ])),
-                        )
-                      ]),
+                              Flexible(
+                                flex: 1,
+                                child: TextFieldProductHeight(),
+                              ),
+                            ],
+                          ),
+                          TextFieldProductLengthUnit(),
+                          Row(
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: TextFieldProductWeight(),
+                              ),
+                              Flexible(
+                                flex: 1,
+                                child: TextFieldProductWeightUnit(),
+                              ),
+                            ],
+                          ),
+                          TextFieldProductManufacturer(),
+                          TextFieldProductModel(),
+                          TextFieldProductSku(),
+                          TextFieldProductPrice(),
+                          TextFieldProductTax(),
+                          TextFieldProductDescription(),
+                        ]),
+                  ),
                 ),
               ),
-            ),
-            AddProductButton()
-          ]),
+              AddProductButton()
+            ]),
+          ),
         );
       }),
     );

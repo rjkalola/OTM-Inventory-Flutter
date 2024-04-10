@@ -37,7 +37,20 @@ class Strings extends Translations {
           'no': "No",
           'add_product': "Add Product",
           'product_title': "Product Title",
-          'enter_product_title': "Enter product title"
+          'product_name': "Product Name",
+          'supplier': "Supplier",
+          'length': "Length",
+          'width': "Width",
+          'height': "Height",
+          'dimensions_': "Dimensions (Length * Width * Height)",
+          'length_unit': "Length Unit",
+          'weight': "Weight",
+          'weight_unit': "Weight Unit",
+          'model': "Model",
+          'tax_percentage': "Tax (%)",
+          'description': "Description",
+          'status': "Status",
+          'upload_pictures': "Upload Pictures",
         },
         'hi_IN': {'login': 'Login'}
       };

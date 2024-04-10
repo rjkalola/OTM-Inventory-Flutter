@@ -15,4 +15,5 @@ class ApiConstants {
   static String verifyPhoneUrl = '$appUrl/verify-phone';
   static String loginUrl = '$appUrl/login-new';
   static String getProductsUrl = '$appUrl/products/get';
+  static String getProductResourcesUrl = '$appUrl/products/get-resources';
 }

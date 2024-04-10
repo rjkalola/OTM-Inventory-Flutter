@@ -14,5 +14,7 @@ const snackBarColor = Color(0xff484848);
 const dividerColor = Color(0xffe6eaee);
 const bottomTabBackgroundColor = Color(0xfff4f5f7);
 const hintColor = Color(0xffbdbdbd);
+const normalTextFieldBorderColor = Color(0xffbdbdbd);
+const focusedTextFieldBorderColor = Color(0xff6e6e6e);
 
 

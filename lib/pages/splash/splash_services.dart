@@ -8,13 +8,14 @@ import '../../utils/app_storage.dart';
 
 class SplashServices {
   void isLogin() {
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 1), () {
       ApiConstants.accessToken = Get.find<AppStorage>().getAccessToken();
-      if(ApiConstants.accessToken.isNotEmpty){
+      Get.offAllNamed(AppRoutes.addProductScreen);
+   /*   if(ApiConstants.accessToken.isNotEmpty){
         Get.offAllNamed(AppRoutes.dashboardScreen);
       }else{
         Get.offAllNamed(AppRoutes.loginScreen);
-      }
+      }*/
       // Get.toNamed(AppRoutes.LOGIN_SCREEN);
     });
   }

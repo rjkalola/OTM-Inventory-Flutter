@@ -16,7 +16,11 @@ class IntentKey {
 
 class DialogIdentifier {
   const DialogIdentifier(); // <---
-final String logout = 'logout';
+  final String logout = 'logout';
+  final String categoryList = 'CATEGORY_LIST';
+  final String supplierList = 'SUPPLIER_LIST';
+  final String lengthUnitList = 'LENGTH_UNIT_LIST';
+  final String weightUnitList = 'WEIGHT_UNIT_LIST';
 }
 
 class SharedPreferenceKey {
