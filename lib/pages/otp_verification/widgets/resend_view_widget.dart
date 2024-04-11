@@ -14,23 +14,27 @@ class ResendViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-      child: RichText(
-          text: TextSpan(
-        text: 'click_on_'.tr,
-        style: const TextStyle(fontSize: 14, color: Colors.black),
-        children: <TextSpan>[
-          TextSpan(
-              text: 'resend_'.tr,
-              recognizer: TapGestureRecognizer()..onTap = () {
-                verifyOtpController.resendOtpApi();
-              },
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: defaultAccentColor,
-                  fontWeight: FontWeight.w500)),
-          TextSpan(text: 'otm_received_note'.tr),
-        ],
-      )),
+      child: SizedBox(
+        width: double.infinity,
+        child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+          text: 'click_on_'.tr,
+          style: const TextStyle(fontSize: 14, color: Colors.black),
+          children: <TextSpan>[
+            TextSpan(
+                text: 'resend_'.tr,
+                recognizer: TapGestureRecognizer()..onTap = () {
+                  verifyOtpController.resendOtpApi();
+                },
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: defaultAccentColor,
+                    fontWeight: FontWeight.w500)),
+            TextSpan(text: 'otm_received_note'.tr),
+          ],
+        )),
+      ),
     );
   }
 }

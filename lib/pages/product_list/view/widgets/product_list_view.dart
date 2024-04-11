@@ -24,15 +24,16 @@ class ProductListView extends StatelessWidget {
                 (position) => Padding(
                   padding: const EdgeInsets.fromLTRB(14, 7, 16, 7),
                   child: Row(children: [
-                    Image.network(
-                      productListController
-                              .productList[position].imageThumb!.isNotEmpty
-                          ? productListController
-                              .productList[position].imageThumb!
-                          : '',
-                      height: 60,
-                      width: 60,
-                    ),
+                    productListController.productList[position].imageThumb !=
+                            null
+                        ? Image.network(
+                            productListController
+                                    .productList[position].imageThumb ??
+                                "",
+                            height: 60,
+                            width: 60,
+                          )
+                        : const Icon(Icons.photo_outlined,size: 60),
                     Expanded(
                         child: Padding(
                       padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
@@ -74,7 +75,7 @@ class ProductListView extends StatelessWidget {
                             visible: productListController
                                 .productList[position].sku!.isNotEmpty,
                             child: Text(
-                                "${'sku'.tr}: ${productListController.productList[position].sku!}",
+                                "${'sku'.tr}: ${productListController.productList[position].sku??""}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -87,7 +88,7 @@ class ProductListView extends StatelessWidget {
                             visible: productListController
                                 .productList[position].categoryName!.isNotEmpty,
                             child: Text(
-                                "${'category'.tr}: ${productListController.productList[position].categoryName!}",
+                                "${'category'.tr}: ${productListController.productList[position].categoryName??""}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -100,7 +101,7 @@ class ProductListView extends StatelessWidget {
                             visible: productListController
                                 .productList[position].manufacturer!.isNotEmpty,
                             child: Text(
-                                "${'manufacturer'.tr}: ${productListController.productList[position].manufacturer!}",
+                                "${'manufacturer'.tr}: ${productListController.productList[position].manufacturer??""}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(

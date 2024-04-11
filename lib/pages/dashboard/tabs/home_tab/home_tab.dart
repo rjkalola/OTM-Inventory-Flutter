@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
-import 'package:otm_inventory/pages/dashboard/widgets/home_tab_action_buttons_dots_list.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/home_tab_action_buttons_list.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/home_tab_header_view.dart';
-import 'package:otm_inventory/utils/app_utils.dart';
+import 'package:otm_inventory/pages/otp_verification/model/user_info.dart';
 
 import '../../../../res/colors.dart';
-import '../../models/DashboardActionItemInfo.dart';
+import '../../../../utils/app_storage.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -21,11 +19,12 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   final dashboardController = Get.put(DashboardController());
-
+  late var userInfo = UserInfo();
   @override
   void initState() {
     // showProgress();
     // setHeaderActionButtons();
+    userInfo = Get.find<AppStorage>().getUserInfo();
     super.initState();
   }
 
@@ -40,7 +39,7 @@ class _HomeTabState extends State<HomeTab> {
         child: Scaffold(
           backgroundColor: const Color(0xfff4f5f7),
           body: Column(children: [
-            const HomeTabHeaderView(),
+            HomeTabHeaderView(userName: userInfo.firstName??"",userImage: userInfo.image??"",),
             Expanded(
               child: Container(
                 margin: const EdgeInsets.fromLTRB(16, 6, 16, 0),

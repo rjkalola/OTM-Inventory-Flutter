@@ -5,7 +5,7 @@ class AppConstants {
   static const IntentKey intentKey = IntentKey();
   static const Action action = Action();
   static const String deviceType = "1";
-  static const int productListLimit = 10;
+  static const int productListLimit = 20;
 }
 
 class IntentKey {
@@ -33,7 +33,7 @@ class Action {
   const Action(); //
   final String items = "ITEMS";
   final String store = "STORE";
-  final String vendors = "VENDORS";
+  final String suppliers = "SUPPLIERS";
 }
 
 class FromScreens {

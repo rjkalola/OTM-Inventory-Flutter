@@ -18,21 +18,21 @@ class DataUtils{
 
     info = DashboardActionItemInfo();
     info.id = AppConstants.action.items;
-    info.title = "Items";
+    info.title = 'products'.tr;
     info.image = "assets/images/ic_time_clock.svg";
     info.backgroundColor = "#ddeafb";
     arrayItems.add(info);
 
     info = DashboardActionItemInfo();
     info.id = AppConstants.action.store;
-    info.title = "Stores";
+    info.title = 'stores'.tr;
     info.image = "assets/images/ic_time_clock.svg";
     info.backgroundColor = "#f8dbd6";
     arrayItems.add(info);
 
     info = DashboardActionItemInfo();
-    info.id = AppConstants.action.vendors;
-    info.title = "Vendors";
+    info.id = AppConstants.action.suppliers;
+    info.title = 'suppliers'.tr;
     info.image = "assets/images/ic_time_clock.svg";
     info.backgroundColor = "#defff4";
     arrayItems.add(info);

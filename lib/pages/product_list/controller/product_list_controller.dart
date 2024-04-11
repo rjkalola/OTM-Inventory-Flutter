@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:dio/dio.dart' as multi;
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/product_list/controller/product_list_repository.dart';
-import 'package:otm_inventory/pages/product_list/models/ProductInfo.dart';
-import 'package:otm_inventory/pages/product_list/models/ProductListResponse.dart';
+import 'package:otm_inventory/pages/product_list/models/product_info.dart';
+import 'package:otm_inventory/pages/product_list/models/product_list_response.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 
 import '../../../routes/app_routes.dart';
@@ -15,6 +16,8 @@ import '../../../web_services/response/response_model.dart';
 
 class ProductListController extends GetxController {
   final _api = ProductListRepository();
+  final searchController = TextEditingController().obs;
+
   final productListResponse = ProductListResponse().obs;
   var productList = <ProductInfo>[].obs;
 
@@ -31,8 +34,10 @@ class ProductListController extends GetxController {
     getProductListApi();
   }
 
-  void addProductClick(){
+  void addProductClick()  {
     Get.toNamed(AppRoutes.addProductScreen);
+    // var result = await Get.toNamed(AppRoutes.addProductScreen);
+    // print("result"+result??false);
   }
 
   void getProductListApi() async {
@@ -55,13 +60,10 @@ class ProductListController extends GetxController {
           if (response.IsSuccess!) {
             productList.addAll(response.info!);
             isMainViewVisible.value = true;
-            print("Array Lenth:"+response.info!.length.toString());
           } else {
-            print("555555");
-            // AppUtils.showSnackBarMessage(response.Message!);
+            AppUtils.showSnackBarMessage(response.Message!);
           }
         } else {
-          print("3333333");
           AppUtils.showSnackBarMessage(responseModel.statusMessage!);
         }
       },

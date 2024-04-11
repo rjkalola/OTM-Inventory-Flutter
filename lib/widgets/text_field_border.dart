@@ -42,7 +42,7 @@ class TextFieldBorder extends StatelessWidget {
           onPressed!();
         },
         style: const TextStyle(
-            fontWeight: FontWeight.w400, color: primaryTextColor),
+            fontWeight: FontWeight.w400, fontSize: 15, color: primaryTextColor),
         controller: textEditingController,
         keyboardType: keyboardType,
         textInputAction: textInputAction,

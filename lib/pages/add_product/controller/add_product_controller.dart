@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/cupertino.dart';
@@ -24,7 +25,7 @@ class AddProductController extends GetxController
   final formKey = GlobalKey<FormState>();
   final _api = AddProductRepository();
   final productResourcesResponse = ProductResourcesResponse().obs;
-  final addProductRequest = AddProductRequest().obs;
+  final addProductRequest = AddProductRequest();
 
   final productTitleController = TextEditingController().obs;
   final productNameController = TextEditingController().obs;
@@ -47,10 +48,39 @@ class AddProductController extends GetxController
   void onInit() {
     super.onInit();
     getProductResourcesApi();
+    addProductRequest.categories = [];
   }
 
   void onSubmitClick() {
-    if (formKey.currentState!.validate()) {}
+    print("onSubmitClick");
+    if (formKey.currentState!.validate()) {
+      addProductRequest.shortName =
+          productTitleController.value.text.toString().trim();
+      addProductRequest.name =
+          productNameController.value.text.toString().trim();
+      addProductRequest.length =
+          productLengthController.value.text.toString().trim();
+      addProductRequest.width =
+          productWidthController.value.text.toString().trim();
+      addProductRequest.height =
+          productHeightController.value.text.toString().trim();
+      addProductRequest.weight =
+          productWeightController.value.text.toString().trim();
+      addProductRequest.manufacturer =
+          productManufacturerController.value.text.toString().trim();
+      addProductRequest.model =
+          productModelController.value.text.toString().trim();
+      addProductRequest.sku = productSKUController.value.text.toString().trim();
+      addProductRequest.price =
+          productPriceController.value.text.toString().trim();
+      addProductRequest.tax = productTaxController.value.text.toString().trim();
+      addProductRequest.description =
+          productDescriptionController.value.text.toString().trim();
+      print("shortName:"+addProductRequest.shortName!);
+      print("name:"+addProductRequest.name!);
+      print("category:"+addProductRequest.categories!.toString());
+      Get.back(result: true);
+    }
   }
 
   void showCategoryList() {
@@ -101,12 +131,16 @@ class AddProductController extends GetxController
   void onSelectItem(int position, int id, String name, String action) {
     if (action == AppConstants.dialogIdentifier.categoryList) {
       productCategoryController.value.text = name;
+      addProductRequest.categories!.add(id.toString());
     } else if (action == AppConstants.dialogIdentifier.supplierList) {
       productSupplierController.value.text = name;
-    }else if (action == AppConstants.dialogIdentifier.lengthUnitList) {
+      addProductRequest.supplier_id = id;
+    } else if (action == AppConstants.dialogIdentifier.lengthUnitList) {
       productLengthUnitController.value.text = name;
-    }else if (action == AppConstants.dialogIdentifier.weightUnitList) {
+      addProductRequest.lengthUnit_id = id;
+    } else if (action == AppConstants.dialogIdentifier.weightUnitList) {
       productWeightUnitController.value.text = name;
+      addProductRequest.weightUnit_id = id;
     }
   }
 
@@ -135,6 +169,56 @@ class AddProductController extends GetxController
       onError: (ResponseModel error) {
         isLoading.value = false;
         // isMainViewVisible.value = true;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
+  void storeProductApi() async {
+    Map<String, dynamic> map = {};
+    map["id"] = addProductRequest.id;
+    map["shortName"] = addProductRequest.shortName;
+    map["name"] = addProductRequest.name;
+    map["supplier_id"] = addProductRequest.supplier_id;
+    map["length"] = addProductRequest.length;
+    map["width"] = addProductRequest.width;
+    map["height"] = addProductRequest.height;
+    map["lengthUnit_id"] = addProductRequest.lengthUnit_id;
+    map["weight"] = addProductRequest.weight;
+    map["weightUnit_id"] = addProductRequest.weightUnit_id;
+    map["manufacturer"] = addProductRequest.manufacturer;
+    map["model"] = addProductRequest.model;
+    map["sku"] = addProductRequest.sku;
+    map["price"] = addProductRequest.price;
+    map["tax"] = addProductRequest.tax;
+    map["description"] = addProductRequest.description;
+    map["status"] = addProductRequest.status;
+    map["mode_type"] = addProductRequest.mode_type;
+    multi.FormData formData = multi.FormData.fromMap(map);
+    isLoading.value = true;
+
+    _api.getProductResources(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          ProductResourcesResponse response = ProductResourcesResponse.fromJson(
+              jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            productResourcesResponse.value = response;
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           AppUtils.showSnackBarMessage('no_internet'.tr);
         } else if (error.statusMessage!.isNotEmpty) {

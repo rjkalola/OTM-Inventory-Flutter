@@ -5,6 +5,8 @@ import 'package:otm_inventory/pages/login/login_screen.dart';
 import 'package:otm_inventory/pages/otp_verification/verify_otp_screen.dart';
 import 'package:otm_inventory/pages/product_list/view/product_list_screen.dart';
 import 'package:otm_inventory/pages/splash/splash_screen.dart';
+import 'package:otm_inventory/pages/store_list/view/store_list_screen.dart';
+import 'package:otm_inventory/pages/supplier_list/view/supplier_list_screen.dart';
 
 import 'app_routes.dart';
 
@@ -33,6 +35,14 @@ class AppPages {
     GetPage(
       name: AppRoutes.addProductScreen,
       page: () => AddProductScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.storeListScreen,
+      page: () => StoreListScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.supplierListScreen,
+      page: () => SupplierListScreen(),
     ),
   ];
 }

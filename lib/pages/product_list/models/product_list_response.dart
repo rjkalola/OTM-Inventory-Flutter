@@ -1,7 +1,7 @@
 
 
 import '../../../web_services/response/base_response.dart';
-import 'ProductInfo.dart';
+import 'product_info.dart';
 
 class ProductListResponse extends BaseResponse{
   List<ProductInfo>? info;

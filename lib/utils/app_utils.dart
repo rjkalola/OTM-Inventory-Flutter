@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../res/colors.dart';
 
@@ -49,4 +51,5 @@ class AppUtils {
     int colorInt = int.parse(colorNew);
     return colorInt;
   }
+
 }

@@ -10,13 +10,12 @@ class SplashServices {
   void isLogin() {
     Timer(const Duration(seconds: 1), () {
       ApiConstants.accessToken = Get.find<AppStorage>().getAccessToken();
-      Get.offAllNamed(AppRoutes.addProductScreen);
-   /*   if(ApiConstants.accessToken.isNotEmpty){
+      // Get.offAllNamed(AppRoutes.verifyOtpScreen);
+      if(ApiConstants.accessToken.isNotEmpty){
         Get.offAllNamed(AppRoutes.dashboardScreen);
       }else{
         Get.offAllNamed(AppRoutes.loginScreen);
-      }*/
-      // Get.toNamed(AppRoutes.LOGIN_SCREEN);
+      }
     });
   }
 }

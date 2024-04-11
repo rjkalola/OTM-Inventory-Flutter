@@ -12,14 +12,16 @@ class TextFieldProductName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 18),
       child: TextFieldBorder(
         textEditingController: addProductController.productNameController.value,
         hintText: 'product_name'.tr,
         labelText: 'product_name'.tr,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
-        validator: MultiValidator([]),
+        validator: MultiValidator([
+          RequiredValidator(errorText: 'required_field'.tr),
+        ]),
       ),
     );
   }

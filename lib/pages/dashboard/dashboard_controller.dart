@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
+import 'package:otm_inventory/pages/dashboard/tabs/profile/profile_tab.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
 
 import '../../utils/app_constants.dart';
@@ -13,7 +14,7 @@ class DashboardController extends GetxController
   final pageController = PageController();
   final tabs = <Widget>[
     HomeTab(),
-    HomeTab(),
+    ProfileTab(),
     MoreTab(),
   ];
 
@@ -42,6 +43,9 @@ class DashboardController extends GetxController
     if (action == AppConstants.action.items) {
         Get.toNamed(AppRoutes.productListScreen);
     } else if (action == AppConstants.action.store) {
-    } else if (action == AppConstants.action.vendors) {}
+      Get.toNamed(AppRoutes.storeListScreen);
+    } else if (action == AppConstants.action.suppliers) {
+      Get.toNamed(AppRoutes.supplierListScreen);
+    }
   }
 }

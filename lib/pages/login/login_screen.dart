@@ -42,6 +42,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: dividerColor,
+                      ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 24, 0, 0),
                           child: Text('phone_number'.tr,

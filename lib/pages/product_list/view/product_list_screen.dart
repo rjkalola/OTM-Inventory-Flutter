@@ -64,16 +64,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   List<Widget>? actionButtons() {
     return [
-      Visibility(
-        visible: productListController.productList.isNotEmpty,
-        child: IconButton(
-          icon: SvgPicture.asset(
-            width: 22,
-            Drawable.searchIcon,
-          ),
-          onPressed: () {},
-        ),
-      ),
+      // Visibility(
+      //   visible: productListController.productList.isNotEmpty,
+      //   child: IconButton(
+      //     icon: SvgPicture.asset(
+      //       width: 22,
+      //       Drawable.searchIcon,
+      //     ),
+      //     onPressed: () {},
+      //   ),
+      // ),
       IconButton(
         icon: SvgPicture.asset(
           width: 22,

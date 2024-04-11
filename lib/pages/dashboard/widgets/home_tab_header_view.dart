@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:otm_inventory/utils/string_helper.dart';
+import 'package:otm_inventory/widgets/user_image.dart';
 
 import '../../../res/colors.dart';
 
 class HomeTabHeaderView extends StatelessWidget {
-  const HomeTabHeaderView({super.key});
+  final String userName, userImage;
+  const HomeTabHeaderView({super.key, required this.userName, required this.userImage});
 
   @override
   Widget build(BuildContext context) {
@@ -12,20 +15,14 @@ class HomeTabHeaderView extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 9, 16, 0),
       child: Row(
         children: [
-          CachedNetworkImage(
-            imageUrl:
-            "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-Picture.png",
-            fit: BoxFit.scaleDown,
-            height: 48,
-            width: 48,
-          ),
-          const Padding(
-            padding:  EdgeInsets.only(left: 4),
-            child:  Text("Welcome, Ravi Kalola",
-                style: TextStyle(
+          UserImage(url: userImage, size: 48),
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Text("Welcome, $userName",
+                style: const TextStyle(
                   color: primaryTextColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 16,
+                  fontSize: 17,
                 )),
           )
         ],
