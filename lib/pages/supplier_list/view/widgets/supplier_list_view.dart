@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
+import 'package:otm_inventory/widgets/card_view.dart';
 
 import '../../../../res/colors.dart';
 import '../../controller/supplier_list_controller.dart';
@@ -21,22 +22,24 @@ class SupplierListView extends StatelessWidget {
               scrollDirection: Axis.vertical,
               children: List.generate(
                 supplierListController.itemList.length,
-                (position) => Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 7, 20, 7),
-                  child:  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      titleTextView(supplierListController
-                          .itemList[position].contactName),
-                      const SizedBox(
-                        height: 2,
-                      ),
-                      itemTextView('email'.tr, supplierListController.itemList[position].email),
-                      itemTextView('phone'.tr, supplierListController.itemList[position].phoneWithExtension),
-                      itemTextView('company_name'.tr, supplierListController.itemList[position].companyName),
-                      itemTextView('address'.tr, supplierListController.itemList[position].address),
-                      itemTextView('weight'.tr, supplierListController.itemList[position].supplierWeight),
-                    ],
+                (position) => CardView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
+                    child:  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        titleTextView(supplierListController
+                            .itemList[position].contactName),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        itemTextView('email'.tr, supplierListController.itemList[position].email),
+                        itemTextView('phone'.tr, supplierListController.itemList[position].phoneWithExtension),
+                        itemTextView('company_name'.tr, supplierListController.itemList[position].companyName),
+                        itemTextView('address'.tr, supplierListController.itemList[position].address),
+                        itemTextView('weight'.tr, supplierListController.itemList[position].supplierWeight),
+                      ],
+                    ),
                   ),
                 ),
               ),

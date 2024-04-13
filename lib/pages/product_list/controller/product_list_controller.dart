@@ -12,6 +12,7 @@ import 'package:otm_inventory/utils/app_constants.dart';
 import '../../../routes/app_routes.dart';
 import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
+import '../../../web_services/response/module_info.dart';
 import '../../../web_services/response/response_model.dart';
 
 class ProductListController extends GetxController {
@@ -20,6 +21,7 @@ class ProductListController extends GetxController {
 
   final productListResponse = ProductListResponse().obs;
   var productList = <ProductInfo>[].obs;
+  List<ProductInfo> tempList = [];
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
@@ -34,10 +36,38 @@ class ProductListController extends GetxController {
     getProductListApi();
   }
 
-  void addProductClick()  {
+  void addProductClick() {
     Get.toNamed(AppRoutes.addProductScreen);
     // var result = await Get.toNamed(AppRoutes.addProductScreen);
     // print("result"+result??false);
+  }
+
+  void searchItem(String value) {
+
+
+    for(int i = 0;i<productList.length;i++){
+      print("iiiiiii:"+i.toString());
+    }
+    print(value);
+    List<ProductInfo> dummySearchList = <ProductInfo>[];
+    dummySearchList.addAll(productList);
+
+    if (value.isNotEmpty) {
+      List<ProductInfo> dummyListData = <ProductInfo>[];
+      for (var item in dummySearchList) {
+        if (item.name!.toLowerCase().contains(value.toLowerCase())) {
+          dummyListData.add(item);
+        }
+      }
+      // productList.clear();     bnbn  g ````````````
+      // productList.addAll(dummyListData);
+      print("productList size 1:"+productList.length.toString());
+      return;
+    } else {
+      // productList.clear();
+      // productList.addAll(dummySearchList);
+      print("productList size 2:"+productList.length.toString());
+    }
   }
 
   void getProductListApi() async {
@@ -47,7 +77,7 @@ class ProductListController extends GetxController {
     map["limit"] = AppConstants.productListLimit.toString();
     map["search"] = search;
     multi.FormData formData = multi.FormData.fromMap(map);
-    print("Data:"+map.toString());
+    print("Data:" + map.toString());
 
     isLoading.value = true;
     _api.getProductList(
@@ -58,8 +88,13 @@ class ProductListController extends GetxController {
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
+            productListResponse.value = response;
             productList.addAll(response.info!);
+            print("productList size:::::::::::"+productList.length.toString());
             isMainViewVisible.value = true;
+            tempList.clear();
+            tempList.addAll(productList);
+            update();
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

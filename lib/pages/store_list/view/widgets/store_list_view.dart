@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
+import 'package:otm_inventory/widgets/card_view.dart';
 
 import '../../../../res/colors.dart';
 import '../../controller/store_list_controller.dart';
@@ -21,19 +22,21 @@ class StoreListView extends StatelessWidget {
               scrollDirection: Axis.vertical,
               children: List.generate(
                 storeListController.storeList.length,
-                (position) => Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 7, 20, 7),
-                  child:  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      titleTextView(storeListController
-                          .storeList[position].storeName),
-                      const SizedBox(
-                        height: 2,
-                      ),
-                      itemTextView('phone'.tr, storeListController.storeList[position].phoneWithExtension),
-                      itemTextView('address'.tr, storeListController.storeList[position].address),
-                    ],
+                (position) => CardView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
+                    child:  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        titleTextView(storeListController
+                            .storeList[position].storeName),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        itemTextView('phone'.tr, storeListController.storeList[position].phoneWithExtension),
+                        itemTextView('address'.tr, storeListController.storeList[position].address),
+                      ],
+                    ),
                   ),
                 ),
               ),

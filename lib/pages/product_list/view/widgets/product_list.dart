@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/widgets/card_view.dart';
 
 import '../../../../res/colors.dart';
 import '../../controller/product_list_controller.dart';
@@ -21,8 +22,9 @@ class ProductListView extends StatelessWidget {
               scrollDirection: Axis.vertical,
               children: List.generate(
                 productListController.productList.length,
-                (position) => Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 7, 16, 7),
+                (position) => CardView(
+                    child: Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                   child: Row(children: [
                     productListController.productList[position].imageThumb !=
                             null
@@ -33,7 +35,7 @@ class ProductListView extends StatelessWidget {
                             height: 60,
                             width: 60,
                           )
-                        : const Icon(Icons.photo_outlined,size: 60),
+                        : const Icon(Icons.photo_outlined, size: 60),
                     Expanded(
                         child: Padding(
                       padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
@@ -75,7 +77,7 @@ class ProductListView extends StatelessWidget {
                             visible: productListController
                                 .productList[position].sku!.isNotEmpty,
                             child: Text(
-                                "${'sku'.tr}: ${productListController.productList[position].sku??""}",
+                                "${'sku'.tr}: ${productListController.productList[position].sku ?? ""}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -88,7 +90,7 @@ class ProductListView extends StatelessWidget {
                             visible: productListController
                                 .productList[position].categoryName!.isNotEmpty,
                             child: Text(
-                                "${'category'.tr}: ${productListController.productList[position].categoryName??""}",
+                                "${'category'.tr}: ${productListController.productList[position].categoryName ?? ""}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -101,7 +103,7 @@ class ProductListView extends StatelessWidget {
                             visible: productListController
                                 .productList[position].manufacturer!.isNotEmpty,
                             child: Text(
-                                "${'manufacturer'.tr}: ${productListController.productList[position].manufacturer??""}",
+                                "${'manufacturer'.tr}: ${productListController.productList[position].manufacturer ?? ""}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -138,7 +140,7 @@ class ProductListView extends StatelessWidget {
                     //   ],
                     // ),
                   ]),
-                ),
+                )),
               ),
             ),
           ),

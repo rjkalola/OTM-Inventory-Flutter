@@ -4,9 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/product_list/controller/product_list_controller.dart';
-import 'package:otm_inventory/pages/product_list/view/widgets/product_list_empty_view.dart';
-import 'package:otm_inventory/pages/product_list/view/widgets/product_list_view.dart';
-import 'package:otm_inventory/pages/product_list/view/widgets/search_product_widget.dart';
+import 'package:otm_inventory/pages/product_list/view/widgets/product_empty_view.dart';
+import 'package:otm_inventory/pages/product_list/view/widgets/product_list.dart';
+import 'package:otm_inventory/pages/product_list/view/widgets/search_product.dart';
 import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
