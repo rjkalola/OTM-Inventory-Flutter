@@ -20,6 +20,11 @@ class TextFieldProductModel extends StatelessWidget {
           validator: MultiValidator([
 
           ]),
+          isReadOnly: true,
+          suffixIcon: const Icon(Icons.arrow_drop_down),
+          onPressed: () {
+            addProductController.showModelList();
+          }
       ),
     );
   }

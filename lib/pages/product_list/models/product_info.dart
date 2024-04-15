@@ -1,23 +1,12 @@
+import '../../../web_services/response/module_info.dart';
+
 class ProductInfo {
-  int? id;
-  int? supplierId;
-  String? shortName;
-  String? name;
-  String? description;
-  String? price;
-  String? image;
-  String? extension;
-  String? qrCode;
+  int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id;
+  String? shortName,name,description,price,image,extension,qrCode,categoryName,
+      currency,sku,model,manufacturer,imageThumb,qrCodeThumb,imageUrl,imageThumbUrl,weight
+  ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name;
+  List<ModuleInfo>? categories;
   bool? status;
-  String? categoryName;
-  String? currency;
-  String? sku;
-  String? model;
-  String? manufacturer;
-  String? imageThumb;
-  String? qrCodeThumb;
-  String? imageThumbUrl;
-  String? imageUrl;
 
   ProductInfo(
       {this.id,
@@ -38,7 +27,20 @@ class ProductInfo {
         this.imageThumb,
         this.qrCodeThumb,
         this.imageThumbUrl,
-        this.imageUrl,});
+        this.imageUrl,
+        this.weight,
+        this.length,
+        this.width,
+        this.height,
+        this.tax,
+        this.manufacturer_id,
+        this.weight_unit_id,
+        this.length_unit_id,
+        this.model_id,
+      this.categories,
+        this.length_unit_name,
+        this.weight_unit_name,
+        this.supplier_name});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -56,33 +58,67 @@ class ProductInfo {
     sku = json['sku'];
     model = json['model'];
     manufacturer = json['manufacturer'];
+    weight = json['weight'];
+    length = json['length'];
+    width = json['width'];
+    height = json['height'];
+    imageUrl = json['image_url'];
     imageThumb = json['image_thumb'];
     qrCodeThumb = json['qr_code_thumb'];
     imageThumbUrl = json['image_thumb_url'];
-    imageUrl = json['image_url'];
+    tax = json['tax'];
+    manufacturer_id = json['manufacturer_id'];
+    weight_unit_id = json['weight_unit_id'];
+    length_unit_id = json['length_unit_id'];
+    model_id = json['model_id'];
+    length_unit_name = json['length_unit_name'];
+    weight_unit_name = json['weight_unit_name'];
+    supplier_name = json['supplier_name'];
+    if (json['categories'] != null) {
+      categories = <ModuleInfo>[];
+      json['categories'].forEach((v) {
+        categories!.add(ModuleInfo.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['supplier_id'] = this.supplierId;
-    data['short_name'] = this.shortName;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['price'] = this.price;
-    data['image'] = this.image;
-    data['extension'] = this.extension;
-    data['qr_code'] = this.qrCode;
-    data['status'] = this.status;
-    data['category_name'] = this.categoryName;
-    data['currency'] = this.currency;
-    data['sku'] = this.sku;
-    data['model'] = this.model;
-    data['manufacturer'] = this.manufacturer;
-    data['image_thumb'] = this.imageThumb;
-    data['qr_code_thumb'] = this.qrCodeThumb;
-    data['image_thumb_url'] = this.imageThumbUrl;
-    data['image_url'] = this.imageUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['supplier_id'] = supplierId;
+    data['short_name'] = shortName;
+    data['name'] = name;
+    data['description'] = description;
+    data['price'] = price;
+    data['image'] = image;
+    data['extension'] = extension;
+    data['qr_code'] = qrCode;
+    data['status'] = status;
+    data['category_name'] = categoryName;
+    data['currency'] = currency;
+    data['sku'] = sku;
+    data['model'] = model;
+    data['manufacturer'] = manufacturer;
+    data['image_thumb'] = imageThumb;
+    data['qr_code_thumb'] = qrCodeThumb;
+    data['image_thumb_url'] = imageThumbUrl;
+    data['image_url'] = imageUrl;
+    data['weight'] = weight;
+    data['length'] = length;
+    data['width'] = width;
+    data['height'] = height;
+    data['tax'] = tax;
+    data['manufacturer_id'] = manufacturer_id;
+    data['weight_unit_id'] = weight_unit_id;
+    data['length_unit_id'] = length_unit_id;
+    data['model_id'] = model_id;
+    data['length_unit_name'] = length_unit_name;
+    data['weight_unit_name'] = weight_unit_name;
+    data['supplier_name'] = supplier_name;
+
+    if (categories != null) {
+      data['categories'] = categories!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

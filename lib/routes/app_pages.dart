@@ -4,6 +4,7 @@ import 'package:otm_inventory/pages/dashboard/dashboard_screen.dart';
 import 'package:otm_inventory/pages/login/login_screen.dart';
 import 'package:otm_inventory/pages/otp_verification/verify_otp_screen.dart';
 import 'package:otm_inventory/pages/product_list/view/product_list_screen.dart';
+import 'package:otm_inventory/pages/qr_code_scanner/view/qr_code_scanner.dart';
 import 'package:otm_inventory/pages/splash/splash_screen.dart';
 import 'package:otm_inventory/pages/store_list/view/store_list_screen.dart';
 import 'package:otm_inventory/pages/supplier_list/view/supplier_list_screen.dart';
@@ -43,6 +44,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.supplierListScreen,
       page: () => SupplierListScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.qrCodeScannerScreen,
+      page: () => QrCodeScanner(),
     ),
   ];
 }

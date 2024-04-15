@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/add_product/model/product_resources_response.dart';
+import 'package:otm_inventory/pages/product_list/models/product_info.dart';
+import 'package:otm_inventory/web_services/response/base_response.dart';
 import 'package:otm_inventory/web_services/response/module_info.dart';
 
 import '../../../utils/app_constants.dart';
@@ -21,7 +23,8 @@ class AddProductController extends GetxController
     implements SelectItemListener {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs;
+      isMainViewVisible = false.obs,isStatus = true.obs;
+  RxString title = ''.obs;
   final formKey = GlobalKey<FormState>();
   final _api = AddProductRepository();
   final productResourcesResponse = ProductResourcesResponse().obs;
@@ -47,8 +50,50 @@ class AddProductController extends GetxController
   @override
   void onInit() {
     super.onInit();
+    var arguments = Get.arguments;
+    if (arguments != null) {
+      title.value = 'edit_product'.tr;
+      ProductInfo info = arguments[AppConstants.intentKey.productInfo];
+      print("info.id:"+info.id.toString());
+      print("product name:"+info.name!);
+
+      addProductRequest.categories = [];
+      addProductRequest.id = info.id??0;
+      addProductRequest.supplier_id = info.supplierId??0;
+      addProductRequest.lengthUnit_id = info.length_unit_id??0;
+      addProductRequest.weightUnit_id = info.weight_unit_id??0;
+      addProductRequest.manufacturer_id = info.manufacturer_id??0;
+      addProductRequest.model_id = info.model_id??0;
+      if(info.categories != null
+          && info.categories!.isNotEmpty){
+        productCategoryController.value.text = info.categories![0].name??"";
+        for(int i = 0;i<info.categories!.length;i++){
+          addProductRequest.categories!.add(info.categories![i].id.toString());
+        }
+      }
+      productTitleController.value.text = info.shortName??"";
+      productNameController.value.text = info.name??"";
+      productLengthController.value.text = info.length??"";
+      productWidthController.value.text = info.width??"";
+      productHeightController.value.text = info.height??"";
+      productWeightController.value.text = info.weight??"";
+      productManufacturerController.value.text = info.manufacturer??"";
+      productModelController.value.text = info.model??"";
+      productSKUController.value.text = info.sku??"";
+      productPriceController.value.text = info.price??"";
+      productTaxController.value.text = info.tax??"";
+      productDescriptionController.value.text = info.description??"";
+      productSupplierController.value.text = info.supplier_name??"";
+      productLengthUnitController.value.text = info.length_unit_name??"";
+      productWeightUnitController.value.text = info.weight_unit_name??"";
+
+      isStatus.value = info.status??false;
+
+    }else{
+      title.value = 'add_product'.tr;
+      addProductRequest.categories = [];
+    }
     getProductResourcesApi();
-    addProductRequest.categories = [];
   }
 
   void onSubmitClick() {
@@ -66,9 +111,6 @@ class AddProductController extends GetxController
           productHeightController.value.text.toString().trim();
       addProductRequest.weight =
           productWeightController.value.text.toString().trim();
-      addProductRequest.manufacturer =
-          productManufacturerController.value.text.toString().trim();
-      addProductRequest.model =
           productModelController.value.text.toString().trim();
       addProductRequest.sku = productSKUController.value.text.toString().trim();
       addProductRequest.price =
@@ -76,10 +118,16 @@ class AddProductController extends GetxController
       addProductRequest.tax = productTaxController.value.text.toString().trim();
       addProductRequest.description =
           productDescriptionController.value.text.toString().trim();
-      print("shortName:"+addProductRequest.shortName!);
-      print("name:"+addProductRequest.name!);
-      print("category:"+addProductRequest.categories!.toString());
-      Get.back(result: true);
+
+      if(addProductRequest.id !=null
+          && addProductRequest.id != 0) {
+        addProductRequest.mode_type = 2;
+      } else {
+        addProductRequest.mode_type = 1;
+      }
+
+      addProductRequest.status = isStatus.value;
+      storeProductApi();
     }
   }
 
@@ -115,6 +163,22 @@ class AddProductController extends GetxController
     }
   }
 
+  void showManufacturerList() {
+    if (productResourcesResponse.value.manufacturer != null &&
+        productResourcesResponse.value.manufacturer!.isNotEmpty) {
+      showDropDownDialog(AppConstants.dialogIdentifier.manufacturerList,
+          'manufacturer'.tr, productResourcesResponse.value.manufacturer!, this);
+    }
+  }
+
+  void showModelList() {
+    if (productResourcesResponse.value.model != null &&
+        productResourcesResponse.value.model!.isNotEmpty) {
+      showDropDownDialog(AppConstants.dialogIdentifier.modelList,
+          'model'.tr, productResourcesResponse.value.model!, this);
+    }
+  }
+
   void showDropDownDialog(String dialogType, String title,
       List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(
@@ -141,6 +205,12 @@ class AddProductController extends GetxController
     } else if (action == AppConstants.dialogIdentifier.weightUnitList) {
       productWeightUnitController.value.text = name;
       addProductRequest.weightUnit_id = id;
+    }else if (action == AppConstants.dialogIdentifier.manufacturerList) {
+      productManufacturerController.value.text = name;
+      addProductRequest.manufacturer_id = id;
+    }else if (action == AppConstants.dialogIdentifier.modelList) {
+      productModelController.value.text = name;
+      addProductRequest.model_id = id;
     }
   }
 
@@ -187,29 +257,38 @@ class AddProductController extends GetxController
     map["length"] = addProductRequest.length;
     map["width"] = addProductRequest.width;
     map["height"] = addProductRequest.height;
-    map["lengthUnit_id"] = addProductRequest.lengthUnit_id;
+    map["length_unit_id"] = addProductRequest.lengthUnit_id;
     map["weight"] = addProductRequest.weight;
-    map["weightUnit_id"] = addProductRequest.weightUnit_id;
-    map["manufacturer"] = addProductRequest.manufacturer;
-    map["model"] = addProductRequest.model;
+    map["weight_unit_id"] = addProductRequest.weightUnit_id;
+    map["manufacturer_id"] = addProductRequest.manufacturer_id;
+    map["model_id"] = addProductRequest.model_id;
     map["sku"] = addProductRequest.sku;
     map["price"] = addProductRequest.price;
     map["tax"] = addProductRequest.tax;
     map["description"] = addProductRequest.description;
     map["status"] = addProductRequest.status;
     map["mode_type"] = addProductRequest.mode_type;
+    if(addProductRequest.categories != null
+        && addProductRequest.categories!.isNotEmpty){
+        for(int i = 0;i<addProductRequest.categories!.length;i++){
+          map['categories[${i.toString()}]'] = addProductRequest.categories![i];
+        }
+    }
     multi.FormData formData = multi.FormData.fromMap(map);
+
+    print("Request Data:"+map.toString());
+
     isLoading.value = true;
 
-    _api.getProductResources(
+    _api.storeProduct(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          ProductResourcesResponse response = ProductResourcesResponse.fromJson(
+          BaseResponse response = BaseResponse.fromJson(
               jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            productResourcesResponse.value = response;
+            Get.back(result: true);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

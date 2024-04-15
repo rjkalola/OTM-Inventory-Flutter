@@ -12,7 +12,7 @@ class TextFieldProductLength extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 0, 6, 18),
+      padding: const EdgeInsets.fromLTRB(14, 0, 7, 18),
       child: TextFieldBorder(
         textEditingController: addProductController.productLengthController.value,
         hintText: 'length'.tr,

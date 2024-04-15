@@ -68,12 +68,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
       //   visible: productListController.productList.isNotEmpty,
       //   child: IconButton(
       //     icon: SvgPicture.asset(
-      //       width: 22,
+      //       width: 22,with exception
       //       Drawable.searchIcon,
       //     ),
       //     onPressed: () {},
       //   ),
       // ),
+      InkWell(onTap:(){
+        print("tap qr code");
+        // productListController.openQrCodeScanner();
+      },child: Text('qr_code'.tr,style: const TextStyle(fontSize: 16,color: defaultAccentColor,fontWeight: FontWeight.w500), )),
       IconButton(
         icon: SvgPicture.asset(
           width: 22,
@@ -84,9 +88,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
       IconButton(
         icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
         onPressed: () {
-          productListController.addProductClick();
+          productListController.addProductClick(null);
         },
       ),
+
     ];
   }
 }

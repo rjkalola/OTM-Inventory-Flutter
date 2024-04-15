@@ -41,6 +41,7 @@ class Strings extends Translations {
           'yes': "Yes",
           'no': "No",
           'add_product': "Add Product",
+          'edit_product': "Edit Product",
           'product_short_name': "Product Short Name",
           'product_name': "Product Name",
           'supplier': "Supplier",
@@ -58,6 +59,9 @@ class Strings extends Translations {
           'upload_pictures': "Upload Pictures",
           'address': "Address",
           'company_name': "Company Name",
+          'save': "Save",
+          'qr_code': "Qr Code",
+
         },
         'hi_IN': {'login': 'Login'}
       };

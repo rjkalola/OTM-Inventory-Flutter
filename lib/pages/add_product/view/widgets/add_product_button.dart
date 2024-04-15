@@ -12,7 +12,7 @@ class AddProductButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FooterPrimaryButton(
-      buttonText: 'submit'.tr,
+      buttonText: 'save'.tr,
       onPressed: () {
         addProductController.onSubmitClick();
       },

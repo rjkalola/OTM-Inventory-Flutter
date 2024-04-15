@@ -36,15 +36,26 @@ class ProductListController extends GetxController {
     getProductListApi();
   }
 
-  void addProductClick() {
-    Get.toNamed(AppRoutes.addProductScreen);
-    // var result = await Get.toNamed(AppRoutes.addProductScreen);
-    // print("result"+result??false);
+  Future<void> addProductClick(ProductInfo? info) async {
+    // Get.toNamed(AppRoutes.addProductScreen);
+    var result;
+    if(info!= null){
+      var arguments = {
+        AppConstants.intentKey.productInfo: info,
+      };
+      result = await Get.toNamed(AppRoutes.addProductScreen, arguments: arguments);
+    }else{
+      result = await Get.toNamed(AppRoutes.addProductScreen);
+    }
+
+    if(result != null && result){
+      getProductListApi();
+    }else{
+      print("Not Updated");
+    }
   }
 
   void searchItem(String value) {
-
-
     for(int i = 0;i<productList.length;i++){
       print("iiiiiii:"+i.toString());
     }
@@ -70,6 +81,10 @@ class ProductListController extends GetxController {
     }
   }
 
+  void openQrCodeScanner(){
+    Get.toNamed(AppRoutes.qrCodeScannerScreen);
+  }
+
   void getProductListApi() async {
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
@@ -89,6 +104,7 @@ class ProductListController extends GetxController {
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             productListResponse.value = response;
+            productList.clear();
             productList.addAll(response.info!);
             print("productList size:::::::::::"+productList.length.toString());
             isMainViewVisible.value = true;

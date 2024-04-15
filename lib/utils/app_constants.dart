@@ -12,6 +12,7 @@ class IntentKey {
   const IntentKey(); // <
   final String phoneExtension = 'PHONE_EXTENSION';
   final String phoneNumber = 'PHONE_NUMBER';
+  final String productInfo = 'PRODUCT_INFO';
 }
 
 class DialogIdentifier {
@@ -21,6 +22,8 @@ class DialogIdentifier {
   final String supplierList = 'SUPPLIER_LIST';
   final String lengthUnitList = 'LENGTH_UNIT_LIST';
   final String weightUnitList = 'WEIGHT_UNIT_LIST';
+  final String manufacturerList = 'MANUFACTURER_LIST';
+  final String modelList = 'MODEL_LIST';
 }
 
 class SharedPreferenceKey {

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/add_product/view/widgets/add_product_button.dart';
+import 'package:otm_inventory/pages/add_product/view/widgets/switch_status.dart';
 import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_category.dart';
 import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_description.dart';
 import 'package:otm_inventory/pages/add_product/view/widgets/textfield_product_height.dart';
@@ -40,7 +41,7 @@ class AddProductScreen extends StatelessWidget {
         backgroundColor: backgroundColor,
         appBar: BaseAppBar(
           appBar: AppBar(),
-          title: 'add_product'.tr,
+          title: addProductController.title.value,
           isCenterTitle: false,
           isBack: true,
         ),
@@ -106,6 +107,7 @@ class AddProductScreen extends StatelessWidget {
                             TextFieldProductPrice(),
                             TextFieldProductTax(),
                             TextFieldProductDescription(),
+                            SwitchStatus()
                           ]),
                     ),
                   ),
