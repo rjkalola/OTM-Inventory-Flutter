@@ -1,6 +1,7 @@
 class ModuleInfo {
   int? id;
   String? name,symbol,value,code,phoneExtension,flagImage;
+  bool? check;
 
   ModuleInfo(
       {this.id,
@@ -9,7 +10,8 @@ class ModuleInfo {
       this.value,
       this.code,
       this.phoneExtension,
-      this.flagImage});
+      this.flagImage,
+      this.check});
 
   ModuleInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];

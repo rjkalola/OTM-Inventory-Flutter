@@ -61,8 +61,14 @@ class Strings extends Translations {
           'company_name': "Company Name",
           'save': "Save",
           'qr_code': "Qr Code",
-          'unauthorized_message': "We are signing you out as we found your account access from another device",
-
+          'unauthorized_message':
+              "We are signing you out as we found your account access from another device",
+          'add_store': "Add Store",
+          'edit_store': "Edit Store",
+          'store_name': "Store Name",
+          'store_manager': "Store Manager",
+          'select': "Select",
+          'cancel': "Cancel",
         },
         'hi_IN': {'login': 'Login'}
       };

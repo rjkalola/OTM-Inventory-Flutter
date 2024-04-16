@@ -13,6 +13,7 @@ class IntentKey {
   final String phoneExtension = 'PHONE_EXTENSION';
   final String phoneNumber = 'PHONE_NUMBER';
   final String productInfo = 'PRODUCT_INFO';
+  final String storeInfo = 'STORE_INFO';
 }
 
 class DialogIdentifier {
@@ -24,6 +25,7 @@ class DialogIdentifier {
   final String weightUnitList = 'WEIGHT_UNIT_LIST';
   final String manufacturerList = 'MANUFACTURER_LIST';
   final String modelList = 'MODEL_LIST';
+  final String usersList = 'USERS_LIST';
 }
 
 class SharedPreferenceKey {

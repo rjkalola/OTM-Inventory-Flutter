@@ -31,26 +31,26 @@ class StoreListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getStoreListApi();
+    getStoreListApi(true);
   }
 
-  void getStoreListApi() async {
+  void getStoreListApi(bool isProgress) async {
     Map<String, dynamic> map = {};
     multi.FormData formData = multi.FormData.fromMap(map);
 
-    isLoading.value = true;
+    if (isProgress) isLoading.value = true;
     _api.getStoreList(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           StoreListResponse response =
-          StoreListResponse.fromJson(jsonDecode(responseModel.result!));
+              StoreListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             storeList.clear();
             storeList.addAll(response.info!);
             isMainViewVisible.value = true;
-            print("Array Lenth:"+response.info!.length.toString());
+            print("Array Lenth:" + response.info!.length.toString());
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -68,5 +68,22 @@ class StoreListController extends GetxController {
         }
       },
     );
+  }
+
+  Future<void> addStoreClick(StoreInfo? info) async {
+    var result;
+    if (info != null) {
+      var arguments = {
+        AppConstants.intentKey.storeInfo: info,
+      };
+      result =
+          await Get.toNamed(AppRoutes.addStoreScreen, arguments: arguments);
+    } else {
+      result = await Get.toNamed(AppRoutes.addStoreScreen);
+    }
+
+    if (result != null && result) {
+      getStoreListApi(true);
+    }
   }
 }

@@ -79,12 +79,12 @@ class _StoreListScreenState extends State<StoreListScreen> {
       //   ),
       //   onPressed: () {},
       // ),
-      // IconButton(
-      //   icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
-      //   onPressed: () {
-      //     storeListController.addProductClick();
-      //   },
-      // ),
+      IconButton(
+        icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
+        onPressed: () {
+          storeListController.addStoreClick(null);
+        },
+      ),
     ];
   }
 }

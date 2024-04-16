@@ -22,20 +22,26 @@ class StoreListView extends StatelessWidget {
               scrollDirection: Axis.vertical,
               children: List.generate(
                 storeListController.storeList.length,
-                (position) => CardView(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
-                    child:  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        titleTextView(storeListController
-                            .storeList[position].storeName),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        itemTextView('phone'.tr, storeListController.storeList[position].phoneWithExtension),
-                        itemTextView('address'.tr, storeListController.storeList[position].address),
-                      ],
+                (position) => InkWell(
+                  onTap: () {
+                    storeListController.addStoreClick(
+                        storeListController.storeList[position]);
+                  },
+                  child: CardView(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
+                      child:  Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          titleTextView(storeListController
+                              .storeList[position].storeName),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          itemTextView('phone'.tr, storeListController.storeList[position].phoneWithExtension),
+                          itemTextView('address'.tr, storeListController.storeList[position].address),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -63,8 +69,6 @@ class StoreListView extends StatelessWidget {
     visible: !StringHelper.isEmptyString(text),
     child: Text(
         "$title: ${text??"-"}",
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
         style: const TextStyle(
           color: secondaryLightTextColor,
           fontWeight: FontWeight.w400,
