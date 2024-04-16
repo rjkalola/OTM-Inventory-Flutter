@@ -61,6 +61,7 @@ class Strings extends Translations {
           'company_name': "Company Name",
           'save': "Save",
           'qr_code': "Qr Code",
+          'unauthorized_message': "We are signing you out as we found your account access from another device",
 
         },
         'hi_IN': {'login': 'Login'}

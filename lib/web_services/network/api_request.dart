@@ -4,9 +4,13 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart' as multi;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
 
+import '../../routes/app_routes.dart';
+import '../../utils/AlertDialogHelper.dart';
+import '../../utils/app_storage.dart';
 import '../response/response_model.dart';
 import 'api_exception.dart';
 
@@ -110,11 +114,11 @@ class ApiRequest {
     try {
       bool isInternet = await interNetCheck();
       if (isInternet) {
-        if (kDebugMode) print("accessToken:::"+ApiConstants.accessToken);
+        if (kDebugMode) print("accessToken:::" + ApiConstants.accessToken);
         if (kDebugMode) print("URL ==> $url");
         if (kDebugMode) print("isFormData ==> $isFormData");
         if (!isFormData!) {
-          if (kDebugMode)  print("Request Data ==> ${data.toString()}");
+          if (kDebugMode) print("Request Data ==> ${data.toString()}");
           response = await dio.post(
             url,
             data: data,
@@ -123,7 +127,7 @@ class ApiRequest {
             ),
           );
         } else {
-          if (kDebugMode)  print("Request Data ==> ${formData.toString()}");
+          if (kDebugMode) print("Request Data ==> ${formData.toString()}");
           multi.Dio dio = multi.Dio();
           response = await dio.post(
             url,
@@ -136,8 +140,17 @@ class ApiRequest {
         if (kDebugMode) print("Response Data ==> ${response.data}");
 
         if (response.statusCode == 200) {
-          responseModel = returnResponse(jsonEncode(response.data),
-              response.statusCode, response.statusMessage);
+          bool isSuccess = response.data['IsSuccess'];
+          int errorCode = response.data['ErrorCode'] ?? 0;
+          print("isSuccess:" + isSuccess.toString());
+          print("errorCode:" + errorCode.toString());
+          if (isSuccess || errorCode != 401) {
+            responseModel = returnResponse(jsonEncode(response.data),
+                response.statusCode, response.statusMessage);
+          } else {
+            showUnAuthorizedDialog();
+            responseModel = returnResponse(null, 0, "");
+          }
         } else {
           responseModel =
               returnResponse(null, response.statusCode, response.statusMessage);
@@ -161,5 +174,26 @@ class ApiRequest {
     var responseModel = ResponseModel(
         result: result, statusCode: statusCode, statusMessage: statusMessage);
     return responseModel;
+  }
+
+  showUnAuthorizedDialog() {
+    Get.dialog(
+      barrierDismissible: false,
+      PopScope(
+        canPop: false,
+        child: AlertDialog(
+          content: Text('unauthorized_message'.tr),
+          actions: [
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Get.find<AppStorage>().clearAllData();
+                Get.offAllNamed(AppRoutes.loginScreen);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

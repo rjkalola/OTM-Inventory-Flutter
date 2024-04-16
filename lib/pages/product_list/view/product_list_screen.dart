@@ -41,22 +41,27 @@ class _ProductListScreenState extends State<ProductListScreen> {
           inAsyncCall: productListController.isLoading.value,
           opacity: 0,
           progressIndicator: const CustomProgressbar(),
-          child: Column(children: [
-            const Divider(
-              thickness: 1,
-              height: 1,
-              color: dividerColor,
-            ),
-            Visibility(
-                visible: productListController.productList.isNotEmpty,
-                child: const SearchProductWidget()),
-            productListController.productList.isNotEmpty
-                ? ProductListView()
-                : ProductListEmptyView(),
-            const SizedBox(
-              height: 12,
-            ),
-          ]),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await productListController.getProductListApi(false,"0");
+            },
+            child: Column(children: [
+              const Divider(
+                thickness: 1,
+                height: 1,
+                color: dividerColor,
+              ),
+              Visibility(
+                  visible: productListController.productList.isNotEmpty,
+                  child: const SearchProductWidget()),
+              productListController.productList.isNotEmpty
+                  ? ProductListView()
+                  : ProductListEmptyView(),
+              const SizedBox(
+                height: 12,
+              ),
+            ]),
+          ),
         ),
       ),
     ));
@@ -76,7 +81,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       // ),
       InkWell(onTap:(){
         print("tap qr code");
-        // productListController.openQrCodeScanner();
+        productListController.openQrCodeScanner();
       },child: Text('qr_code'.tr,style: const TextStyle(fontSize: 16,color: defaultAccentColor,fontWeight: FontWeight.w500), )),
       IconButton(
         icon: SvgPicture.asset(
