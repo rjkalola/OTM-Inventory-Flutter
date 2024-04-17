@@ -52,14 +52,8 @@ class AddSupplierController extends GetxController
       title.value = 'edit_supplier'.tr;
       SupplierInfo info = arguments[AppConstants.intentKey.supplierInfo];
       addRequest.id = info.id ?? 0;
-      addRequest.contact_name = info.contactName ?? "";
-      addRequest.email = info.email ?? "";
       addRequest.phone_extension_id = info.phoneExtensionId ?? 0;
       addRequest.phone_extension = info.phoneExtensionName?? "";
-      addRequest.phone = info.phone ?? "";
-      addRequest.address = info.address ?? "";
-      addRequest.company_name = info.companyName ?? "";
-      addRequest.weight = info.weight ?? "";
       addRequest.weight_unit_id = info.weightUnitId ?? 0;
 
       mExtension.value = info.phoneExtensionName ?? "";
@@ -72,6 +66,7 @@ class AddSupplierController extends GetxController
       emailController.value.text = info.email ?? "";
       weightController.value.text = info.weight ?? "";
       weightUnitController.value.text = info.weightUnitName ?? "";
+      companyNameController.value.text = info.companyName ?? "";
 
       isStatus.value = info.status ?? false;
     } else {

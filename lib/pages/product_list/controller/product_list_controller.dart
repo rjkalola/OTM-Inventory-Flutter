@@ -20,7 +20,7 @@ class ProductListController extends GetxController {
 
   final productListResponse = ProductListResponse().obs;
   List<ProductInfo> tempList = [];
-  var productList = <ProductInfo>[].obs;
+  final productList = <ProductInfo>[].obs;
 
 
   RxBool isLoading = false.obs,
@@ -56,13 +56,32 @@ class ProductListController extends GetxController {
   Future<void> searchItem(String value) async{
     print(value);
     List<ProductInfo> results = [];
-    if (value.isEmpty) {
-      results = tempList;
-    }else{
+    // if (value.isEmpty) {
+    //   results = tempList;
+    // }else{
+    //   results = tempList.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
+    // }
+
+    // print("productList lenth:"+productList.length.toString());
+
+   /* if (productList.isNotEmpty) {
       results = tempList.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
-    }
-    productList.value = results;
-    refresh();
+      print("Contacts list is not empty");
+      // results.clear(); // Clear previous search results
+      // for (ProductInfo info in productList) {
+      //   if (info.name!.toLowerCase().contains(value.toLowerCase())) {
+      //     results.add(info); // Add the contact to the searchResults list
+      //   }
+      // }
+      print(results.isEmpty ? "Search result is empty" : "Found ${results.length} results");
+    } else {
+      print("productList is empty");
+    }*/
+
+    // ProductInfo info = ProductInfo();
+    // info.name = "Testttt";
+    // productList.add(info);
+    // productList.refresh();
   }
 
   Future<void> openQrCodeScanner() async {
@@ -94,7 +113,7 @@ class ProductListController extends GetxController {
             // tempList.clear();
             tempList.addAll(response.info!);
             // productList.clear();
-            productList.value = tempList;
+            productList.addAll(tempList);
             isMainViewVisible.value = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
