@@ -79,11 +79,12 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
       //   ),
       //   onPressed: () {},
       // ),
-      // IconButton(
-      //   icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
-      //   onPressed: () {
-      //     storeListController.addProductClick();
-      //   },
+      IconButton(
+        icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
+        onPressed: () {
+          supplierListController.addSupplierClick(null);
+        },
+      ),
       // ),
     ];
   }

@@ -22,4 +22,6 @@ class ApiConstants {
   static String getSupplierListUrl = '$appUrl/suppliers/get';
   static String getStoreResourcesUrl = '$appUrl/stores/get-resources';
   static String storeStoreUrl = '$appUrl/stores/store';
+  static String getSuppliersResourcesUrl = '$appUrl/suppliers/get-resources';
+  static String storeSupplierUrl = '$appUrl/suppliers/store';
 }

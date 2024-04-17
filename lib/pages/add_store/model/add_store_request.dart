@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:otm_inventory/web_services/response/base_response.dart';
 import 'package:otm_inventory/web_services/response/module_info.dart';
 
-class AddStoreRequest extends BaseResponse {
+class AddStoreRequest {
   int? id, phone_extension_id, mode_type;
   String? store_name, phone, phone_extension, address, store_managers;
   bool? status;

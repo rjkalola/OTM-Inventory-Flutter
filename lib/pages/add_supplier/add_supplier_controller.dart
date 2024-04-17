@@ -1,29 +1,28 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:otm_inventory/pages/add_store/model/store_resources_response.dart';
+import 'package:otm_inventory/pages/add_supplier/add_supplier_repository.dart';
+import 'package:otm_inventory/pages/add_supplier/models/add_supplier_request.dart';
+import 'package:otm_inventory/pages/add_supplier/models/supplier_resources_response.dart';
 import 'package:otm_inventory/pages/common/listener/select_multi_item_listener.dart';
-import 'package:otm_inventory/utils/string_helper.dart';
+import 'package:otm_inventory/pages/supplier_list/model/supplier_info.dart';
 import 'package:otm_inventory/web_services/response/base_response.dart';
 import 'package:otm_inventory/web_services/response/module_info.dart';
 
-import '../../../utils/app_constants.dart';
 import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
-import '../../common/drop_down_multi_selection_list_dialog.dart';
-import '../../common/listener/SelectPhoneExtensionListener.dart';
-import '../../common/phone_extension_list_dialog.dart';
-import '../../store_list/model/store_info.dart';
-import '../model/add_store_request.dart';
-import 'add_store_repository.dart';
+import '../../utils/app_constants.dart';
+import '../common/drop_down_list_dialog.dart';
+import '../common/drop_down_multi_selection_list_dialog.dart';
+import '../common/listener/SelectPhoneExtensionListener.dart';
+import '../common/listener/select_item_listener.dart';
+import '../common/phone_extension_list_dialog.dart';
 
-class AddStoreController extends GetxController
-    implements SelectMultiItemListener, SelectPhoneExtensionListener {
+class AddSupplierController extends GetxController
+    implements SelectItemListener, SelectPhoneExtensionListener {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
@@ -32,61 +31,64 @@ class AddStoreController extends GetxController
   final mExtension = "+91".obs;
   final mFlag = "https://cdn.otmsystem.com//flags//png//in_32.png".obs;
   final formKey = GlobalKey<FormState>();
-  final _api = AddStoreRepository();
-  final resourcesResponse = StoreResourcesResponse().obs;
-  final addRequest = AddStoreRequest();
+  final _api = AddSupplierRepository();
+  final resourcesResponse = SupplierResourcesResponse().obs;
+  final addRequest = AddSupplierRequest();
 
-  final storeNameController = TextEditingController().obs;
+  final contactNameController = TextEditingController().obs;
+  final emailController = TextEditingController().obs;
   final phoneExtensionController = TextEditingController().obs;
   final phoneNumberController = TextEditingController().obs;
   final addressController = TextEditingController().obs;
-  final storeManagerController = TextEditingController().obs;
+  final companyNameController = TextEditingController().obs;
+  final weightController = TextEditingController().obs;
+  final weightUnitController = TextEditingController().obs;
 
   @override
   void onInit() {
     super.onInit();
     var arguments = Get.arguments;
     if (arguments != null) {
-      title.value = 'edit_store'.tr;
-      StoreInfo info = arguments[AppConstants.intentKey.storeInfo];
-      print("info.id:" + info.id.toString());
-      print("store name:" + info.storeName!);
-
+      title.value = 'edit_supplier'.tr;
+      SupplierInfo info = arguments[AppConstants.intentKey.supplierInfo];
       addRequest.id = info.id ?? 0;
-      addRequest.store_name = info.storeName ?? "";
+      addRequest.contact_name = info.contactName ?? "";
+      addRequest.email = info.email ?? "";
       addRequest.phone_extension_id = info.phoneExtensionId ?? 0;
       addRequest.phone_extension = info.phoneExtensionName?? "";
       addRequest.phone = info.phone ?? "";
       addRequest.address = info.address ?? "";
+      addRequest.company_name = info.companyName ?? "";
+      addRequest.weight = info.weight ?? "";
+      addRequest.weight_unit_id = info.weightUnitId ?? 0;
 
-      storeNameController.value.text = info.storeName ?? "";
       mExtension.value = info.phoneExtensionName ?? "";
       mFlag.value = info.flagName??"";
 
       phoneExtensionController.value.text = info.phoneExtensionName ?? "";
       phoneNumberController.value.text = info.phone ?? "";
       addressController.value.text = info.address ?? "";
-
-      if (info.user != null && info.user!.isNotEmpty) {
-        addRequest.store_managers =
-            StringHelper.getCommaSeparatedIds(info.user!);
-        storeManagerController.value.text =
-            StringHelper.getCommaSeparatedNames(info.user!);
-      }
+      contactNameController.value.text = info.contactName ?? "";
+      emailController.value.text = info.email ?? "";
+      weightController.value.text = info.weight ?? "";
+      weightUnitController.value.text = info.weightUnitName ?? "";
 
       isStatus.value = info.status ?? false;
     } else {
-      title.value = 'add_store'.tr;
+      title.value = 'add_supplier'.tr;
       addRequest.phone_extension = mExtension.value;
     }
-    getStoreResourcesApi();
+    getSupplierResourcesApi();
   }
 
   void onSubmitClick() {
     if (formKey.currentState!.validate()) {
-      addRequest.store_name = storeNameController.value.text.toString().trim();
+      addRequest.contact_name = contactNameController.value.text.toString().trim();
+      addRequest.email = emailController.value.text.toString().trim();
       addRequest.phone = phoneNumberController.value.text.toString().trim();
+      addRequest.company_name = companyNameController.value.text.toString().trim();
       addRequest.address = addressController.value.text.toString().trim();
+      addRequest.weight = weightController.value.text.toString().trim();
 
       if (addRequest.id != null && addRequest.id != 0) {
         addRequest.mode_type = 2;
@@ -96,31 +98,22 @@ class AddStoreController extends GetxController
 
       addRequest.status = isStatus.value;
 
-      storeStoreApi();
+      storeSupplierApi();
     }
   }
 
-  void showStoreManagerList() {
-    if (resourcesResponse.value.users != null &&
-        resourcesResponse.value.users!.isNotEmpty) {
-      List<ModuleInfo> listUsers = [];
-      for (int i = 0; i < resourcesResponse.value.users!.length; i++) {
-        ModuleInfo info = ModuleInfo();
-        info.id = resourcesResponse.value.users![i].id;
-        info.name = resourcesResponse.value.users![i].name;
-        info.check = resourcesResponse.value.users![i].check;
-        listUsers.add(info);
-      }
-
-      showDropDownDialog(AppConstants.dialogIdentifier.usersList,
-          'store_manager'.tr, listUsers, this);
+  void showWeightList() {
+    if (resourcesResponse.value.weightUnit != null &&
+        resourcesResponse.value.weightUnit!.isNotEmpty) {
+      showDropDownDialog(AppConstants.dialogIdentifier.weightUnitList,
+          'weight_unit'.tr, resourcesResponse.value.weightUnit!, this);
     }
   }
 
   void showDropDownDialog(String dialogType, String title,
-      List<ModuleInfo> list, SelectMultiItemListener listener) {
+      List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(
-        DropDownMultiSelectionListDialog(
+        DropDownListDialog(
             title: title,
             dialogType: dialogType,
             list: list,
@@ -130,22 +123,10 @@ class AddStoreController extends GetxController
   }
 
   @override
-  void onSelectMultiItem(List<ModuleInfo> tempList, String action) {
-    if (action == AppConstants.dialogIdentifier.usersList) {
-      resourcesResponse.value.users!.clear();
-      resourcesResponse.value.users!.addAll(tempList);
-
-      List<ModuleInfo> listSelectedItems = [];
-      for (int i = 0; i < tempList.length; i++) {
-        if (tempList[i].check ?? false) {
-          listSelectedItems.add(tempList[i]);
-        }
-      }
-
-      storeManagerController.value.text =
-          StringHelper.getCommaSeparatedNames(listSelectedItems);
-      addRequest.store_managers =
-          StringHelper.getCommaSeparatedIds(listSelectedItems);
+  void onSelectItem(int position, int id, String name, String action) {
+    if (action == AppConstants.dialogIdentifier.weightUnitList) {
+      weightUnitController.value.text = name;
+      addRequest.weight_unit_id = id;
     }
   }
 
@@ -168,17 +149,17 @@ class AddStoreController extends GetxController
     addRequest.phone_extension = extension;
   }
 
-  void getStoreResourcesApi() async {
+  void getSupplierResourcesApi() async {
     Map<String, dynamic> map = {};
     multi.FormData formData = multi.FormData.fromMap(map);
     isLoading.value = true;
 
-    _api.getStoreResources(
+    _api.getSupplierResources(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          StoreResourcesResponse response = StoreResourcesResponse.fromJson(
+          SupplierResourcesResponse response = SupplierResourcesResponse.fromJson(
               jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             resourcesResponse.value = response;
@@ -198,19 +179,19 @@ class AddStoreController extends GetxController
                 }
               }
             } else {
-              if (!StringHelper.isEmptyString(addRequest.store_managers)) {
-                List<String> listIds =
-                    StringHelper.getListFromCommaSeparateString(
-                        addRequest.store_managers!);
-                for (int i = 0;
-                    i < resourcesResponse.value.users!.length;
-                    i++) {
-                  if (listIds.contains(
-                      resourcesResponse.value.users![i].id.toString())) {
-                    resourcesResponse.value.users![i].check = true;
-                  }
-                }
-              }
+              // if (!StringHelper.isEmptyString(addRequest.store_managers)) {
+              //   List<String> listIds =
+              //       StringHelper.getListFromCommaSeparateString(
+              //           addRequest.store_managers!);
+              //   for (int i = 0;
+              //       i < resourcesResponse.value.users!.length;
+              //       i++) {
+              //     if (listIds.contains(
+              //         resourcesResponse.value.users![i].id.toString())) {
+              //       resourcesResponse.value.users![i].check = true;
+              //     }
+              //   }
+              // }
             }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -231,15 +212,18 @@ class AddStoreController extends GetxController
     );
   }
 
-  void storeStoreApi() async {
+  void storeSupplierApi() async {
     Map<String, dynamic> map = {};
     map["id"] = addRequest.id;
-    map["store_name"] = addRequest.store_name;
+    map["contact_name"] = addRequest.contact_name;
+    map["email"] = addRequest.email;
     map["phone"] = addRequest.phone;
     map["phone_extension_id"] = addRequest.phone_extension_id.toString();
     map["phone_extension"] = addRequest.phone_extension;
     map["address"] = addRequest.address;
-    map["store_managers"] = addRequest.store_managers;
+    map["company_name"] = addRequest.company_name;
+    map["weight"] = addRequest.weight;
+    map["weight_unit_id"] = addRequest.weight_unit_id;
     map["status"] = addRequest.status;
     map["mode_type"] = addRequest.mode_type;
     multi.FormData formData = multi.FormData.fromMap(map);
@@ -248,7 +232,7 @@ class AddStoreController extends GetxController
 
     isLoading.value = true;
 
-    _api.storeStore(
+    _api.storeSupplier(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
@@ -274,4 +258,5 @@ class AddStoreController extends GetxController
       },
     );
   }
+
 }

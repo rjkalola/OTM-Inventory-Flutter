@@ -9,4 +9,5 @@ class AppRoutes {
   static const String supplierListScreen = '/supplier_list_screen';
   static const String qrCodeScannerScreen = '/qr_code_scanner';
   static const String addStoreScreen = '/add_store_screen';
+  static const String addSupplierScreen = '/add_supplier_screen';
 }

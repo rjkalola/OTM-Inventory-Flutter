@@ -30,4 +30,11 @@ class StringHelper {
     return commaSeparateNames;
   }
 
+  static List<String> getListFromCommaSeparateString(String input) {
+    List<String> listString = [];
+    if (!StringHelper.isEmptyString(input)) {
+       listString = input.split(',');
+    }
+    return listString;
+  }
 }

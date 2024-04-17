@@ -69,6 +69,11 @@ class Strings extends Translations {
           'store_manager': "Store Manager",
           'select': "Select",
           'cancel': "Cancel",
+          'add_supplier': "Add Supplier",
+          'edit_supplier': "Edit Supplier",
+          'contact_name': "Contact Name",
+          'email_valid_error': "Enter valid email",
+
         },
         'hi_IN': {'login': 'Login'}
       };

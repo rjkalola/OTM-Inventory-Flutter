@@ -36,25 +36,27 @@ class SupplierListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getSupplierListApi();
+    getSupplierListApi(true);
   }
 
-  void getSupplierListApi() async {
+  void getSupplierListApi(bool isProgress) async {
     Map<String, dynamic> map = {};
     multi.FormData formData = multi.FormData.fromMap(map);
 
-    isLoading.value = true;
+    if (isProgress) isLoading.value = true;
+
     _api.getSupplierList(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          SupplierListResponse response = SupplierListResponse.fromJson(jsonDecode(responseModel.result!));
+          SupplierListResponse response =
+              SupplierListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             itemList.clear();
             itemList.addAll(response.info!);
             isMainViewVisible.value = true;
-            print("Array Lenth:"+response.info!.length.toString());
+            print("Array Lenth:" + response.info!.length.toString());
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -72,5 +74,22 @@ class SupplierListController extends GetxController {
         }
       },
     );
+  }
+
+  Future<void> addSupplierClick(SupplierInfo? info) async {
+    var result;
+    if (info != null) {
+      var arguments = {
+        AppConstants.intentKey.supplierInfo: info,
+      };
+      result =
+          await Get.toNamed(AppRoutes.addSupplierScreen, arguments: arguments);
+    } else {
+      result = await Get.toNamed(AppRoutes.addSupplierScreen);
+    }
+
+    if (result != null && result) {
+      getSupplierListApi(true);
+    }
   }
 }

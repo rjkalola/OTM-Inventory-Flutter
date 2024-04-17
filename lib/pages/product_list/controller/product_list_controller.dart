@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/product_list/controller/product_list_repository.dart';
 import 'package:otm_inventory/pages/product_list/models/product_info.dart';
@@ -14,7 +12,6 @@ import 'package:otm_inventory/utils/string_helper.dart';
 import '../../../routes/app_routes.dart';
 import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
-import '../../../web_services/response/module_info.dart';
 import '../../../web_services/response/response_model.dart';
 
 class ProductListController extends GetxController {
@@ -22,8 +19,9 @@ class ProductListController extends GetxController {
   final searchController = TextEditingController().obs;
 
   final productListResponse = ProductListResponse().obs;
-  var productList = <ProductInfo>[].obs;
   List<ProductInfo> tempList = [];
+  var productList = <ProductInfo>[].obs;
+
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
@@ -55,43 +53,24 @@ class ProductListController extends GetxController {
     }
   }
 
-  void searchItem(String value) {
-    for (int i = 0; i < productList.length; i++) {
-      print("iiiiiii:" + i.toString());
-    }
+  Future<void> searchItem(String value) async{
     print(value);
-    List<ProductInfo> dummySearchList = <ProductInfo>[];
-    dummySearchList.addAll(productList);
-
-    if (value.isNotEmpty) {
-      List<ProductInfo> dummyListData = <ProductInfo>[];
-      for (var item in dummySearchList) {
-        if (item.name!.toLowerCase().contains(value.toLowerCase())) {
-          dummyListData.add(item);
-        }
-      }
-      // productList.clear();     bnbn  g ````````````
-      // productList.addAll(dummyListData);
-      print("productList size 1:" + productList.length.toString());
-      return;
-    } else {
-      // productList.clear();
-      // productList.addAll(dummySearchList);
-      print("productList size 2:" + productList.length.toString());
+    List<ProductInfo> results = [];
+    if (value.isEmpty) {
+      results = tempList;
+    }else{
+      results = tempList.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
     }
+    productList.value = results;
+    refresh();
   }
 
   Future<void> openQrCodeScanner() async {
     var result = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (result != null && !StringHelper.isEmptyString(result)) {
       getProductListApi(true,result);
-      print("result:" + result);
     }
   }
-
-  // Future<void> pullToRefresh() async{
-  //   bool isRefresh = await getProductListApi("0");
-  // }
 
   Future<void> getProductListApi(bool isProgress, String productId) async {
     Map<String, dynamic> map = {};
@@ -101,7 +80,6 @@ class ProductListController extends GetxController {
     map["search"] = search;
     map["product_id"] = productId;
     multi.FormData formData = multi.FormData.fromMap(map);
-    if (kDebugMode) print("Data:" + map.toString());
 
     if (isProgress) isLoading.value = true;
     _api.getProductList(
@@ -113,12 +91,11 @@ class ProductListController extends GetxController {
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             productListResponse.value = response;
-            productList.clear();
-            productList.addAll(response.info!);
+            // tempList.clear();
+            tempList.addAll(response.info!);
+            // productList.clear();
+            productList.value = tempList;
             isMainViewVisible.value = true;
-            tempList.clear();
-            tempList.addAll(productList);
-            update();
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

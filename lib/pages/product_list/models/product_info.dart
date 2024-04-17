@@ -3,7 +3,7 @@ import '../../../web_services/response/module_info.dart';
 class ProductInfo {
   int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id;
   String? shortName,name,description,price,image,extension,qrCode,categoryName,
-      currency,sku,model,manufacturer,imageThumb,qrCodeThumb,imageUrl,imageThumbUrl,weight
+      currency,sku,model_name,manufacturer_name,imageThumb,qrCodeThumb,imageUrl,imageThumbUrl,weight
   ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name;
   List<ModuleInfo>? categories;
   bool? status;
@@ -22,8 +22,8 @@ class ProductInfo {
         this.categoryName,
         this.currency,
         this.sku,
-        this.model,
-        this.manufacturer,
+        this.model_name,
+        this.manufacturer_name,
         this.imageThumb,
         this.qrCodeThumb,
         this.imageThumbUrl,
@@ -56,8 +56,8 @@ class ProductInfo {
     categoryName = json['category_name'];
     currency = json['currency'];
     sku = json['sku'];
-    model = json['model'];
-    manufacturer = json['manufacturer'];
+    model_name = json['model_name'];
+    manufacturer_name = json['manufacturer_name'];
     weight = json['weight'];
     length = json['length'];
     width = json['width'];
@@ -97,8 +97,8 @@ class ProductInfo {
     data['category_name'] = categoryName;
     data['currency'] = currency;
     data['sku'] = sku;
-    data['model'] = model;
-    data['manufacturer'] = manufacturer;
+    data['model_name'] = model_name;
+    data['manufacturer_name'] = manufacturer_name;
     data['image_thumb'] = imageThumb;
     data['qr_code_thumb'] = qrCodeThumb;
     data['image_thumb_url'] = imageThumbUrl;

@@ -24,7 +24,7 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       child: SearchTextField(
           onValueChange: (value) {
-            productListController.searchItem(value);
+            productListController.searchItem(value.toString());
             // setModalState(() {
             //   filterSearchResults(value, list);
             // });

@@ -77,8 +77,8 @@ class AddProductController extends GetxController
       productWidthController.value.text = info.width??"";
       productHeightController.value.text = info.height??"";
       productWeightController.value.text = info.weight??"";
-      productManufacturerController.value.text = info.manufacturer??"";
-      productModelController.value.text = info.model??"";
+      productManufacturerController.value.text = info.manufacturer_name??"";
+      productModelController.value.text = info.model_name??"";
       productSKUController.value.text = info.sku??"";
       productPriceController.value.text = info.price??"";
       productTaxController.value.text = info.tax??"";
