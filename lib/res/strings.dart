@@ -77,6 +77,8 @@ class Strings extends Translations {
           'add_category': "Add Category",
           'edit_category': "Edit Category",
           'category_name': "Category Name",
+          'photos': "Photos",
+
         },
         'hi_IN': {'login': 'Login'}
       };
