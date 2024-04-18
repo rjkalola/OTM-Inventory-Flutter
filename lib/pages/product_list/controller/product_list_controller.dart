@@ -19,7 +19,7 @@ class ProductListController extends GetxController {
   final searchController = TextEditingController().obs;
 
   final productListResponse = ProductListResponse().obs;
-  List<ProductInfo> tempList = [];
+  // List<ProductInfo> tempList = [];
   final productList = <ProductInfo>[].obs;
 
 
@@ -82,6 +82,9 @@ class ProductListController extends GetxController {
     // info.name = "Testttt";
     // productList.add(info);
     // productList.refresh();
+
+    // productList[0].name = "Test Refresh";
+    // productList.refresh();
   }
 
   Future<void> openQrCodeScanner() async {
@@ -111,9 +114,9 @@ class ProductListController extends GetxController {
           if (response.IsSuccess!) {
             productListResponse.value = response;
             // tempList.clear();
-            tempList.addAll(response.info!);
-            // productList.clear();
-            productList.addAll(tempList);
+            // tempList.addAll(response.info!);
+            productList.clear();
+            productList.addAll(response.info!);
             isMainViewVisible.value = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);

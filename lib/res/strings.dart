@@ -33,6 +33,7 @@ class Strings extends Translations {
           'price': "Price",
           'manufacturer': "Manufacturer",
           'category': "Category",
+          'categories': "Categories",
           'select_phone_extension': "Select phone extension",
           'search': "Search",
           'settings': "Settings",
@@ -73,7 +74,9 @@ class Strings extends Translations {
           'edit_supplier': "Edit Supplier",
           'contact_name': "Contact Name",
           'email_valid_error': "Enter valid email",
-
+          'add_category': "Add Category",
+          'edit_category': "Edit Category",
+          'category_name': "Category Name",
         },
         'hi_IN': {'login': 'Login'}
       };

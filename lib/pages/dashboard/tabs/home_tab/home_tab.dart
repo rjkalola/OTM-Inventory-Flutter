@@ -9,6 +9,7 @@ import 'package:otm_inventory/pages/otp_verification/model/user_info.dart';
 
 import '../../../../res/colors.dart';
 import '../../../../utils/app_storage.dart';
+import '../../widgets/home_tab_action_buttons_dots_list.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -51,7 +52,7 @@ class _HomeTabState extends State<HomeTab> {
                 child: SingleChildScrollView(
                   child: Column(children: [
                     HomeTabActionButtonsList(),
-                    // HomeTabActionButtonsDotsList(),
+                    HomeTabActionButtonsDotsList(),
                   ]),
                 ),
               ),

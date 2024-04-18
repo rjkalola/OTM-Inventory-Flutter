@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/add_category/add_category_screen.dart';
 import 'package:otm_inventory/pages/add_product/view/add_product_screen.dart';
 import 'package:otm_inventory/pages/add_store/view/add_store_screen.dart';
 import 'package:otm_inventory/pages/add_supplier/add_supplier_screen.dart';
@@ -11,6 +12,7 @@ import 'package:otm_inventory/pages/splash/splash_screen.dart';
 import 'package:otm_inventory/pages/store_list/view/store_list_screen.dart';
 import 'package:otm_inventory/pages/supplier_list/view/supplier_list_screen.dart';
 
+import '../pages/category_list/category_list_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -58,6 +60,14 @@ class AppPages {
     GetPage(
       name: AppRoutes.addSupplierScreen,
       page: () => AddSupplierScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.categoryListScreen,
+      page: () => CategoryListScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.addCategoryScreen,
+      page: () => AddCategoryScreen(),
     ),
   ];
 }
