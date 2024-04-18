@@ -5,6 +5,7 @@ import 'package:dio/dio.dart' as multi;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:otm_inventory/pages/add_product/model/product_resources_response.dart';
 import 'package:otm_inventory/pages/product_list/models/product_info.dart';
 import 'package:otm_inventory/web_services/response/base_response.dart';
@@ -16,6 +17,7 @@ import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
 import '../../common/drop_down_list_dialog.dart';
 import '../../common/listener/select_item_listener.dart';
+import '../../common/model/file_info.dart';
 import '../model/add_product_request.dart';
 import 'add_product_repository.dart';
 
@@ -23,12 +25,14 @@ class AddProductController extends GetxController
     implements SelectItemListener {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs,isStatus = true.obs;
+      isMainViewVisible = false.obs,
+      isStatus = true.obs;
   RxString title = ''.obs;
   final formKey = GlobalKey<FormState>();
   final _api = AddProductRepository();
   final productResourcesResponse = ProductResourcesResponse().obs;
   final addProductRequest = AddProductRequest();
+  var filesList = <FileInfo>[].obs;
 
   final productTitleController = TextEditingController().obs;
   final productNameController = TextEditingController().obs;
@@ -47,6 +51,8 @@ class AddProductController extends GetxController
   final productTaxController = TextEditingController().obs;
   final productDescriptionController = TextEditingController().obs;
 
+  final ImagePicker _picker = ImagePicker();
+
   @override
   void onInit() {
     super.onInit();
@@ -54,45 +60,52 @@ class AddProductController extends GetxController
     if (arguments != null) {
       title.value = 'edit_product'.tr;
       ProductInfo info = arguments[AppConstants.intentKey.productInfo];
-      print("info.id:"+info.id.toString());
-      print("product name:"+info.name!);
+      print("info.id:" + info.id.toString());
+      print("product name:" + info.name!);
 
       addProductRequest.categories = [];
-      addProductRequest.id = info.id??0;
-      addProductRequest.supplier_id = info.supplierId??0;
-      addProductRequest.lengthUnit_id = info.length_unit_id??0;
-      addProductRequest.weightUnit_id = info.weight_unit_id??0;
-      addProductRequest.manufacturer_id = info.manufacturer_id??0;
-      addProductRequest.model_id = info.model_id??0;
-      if(info.categories != null
-          && info.categories!.isNotEmpty){
-        productCategoryController.value.text = info.categories![0].name??"";
-        for(int i = 0;i<info.categories!.length;i++){
+      addProductRequest.id = info.id ?? 0;
+      addProductRequest.supplier_id = info.supplierId ?? 0;
+      addProductRequest.lengthUnit_id = info.length_unit_id ?? 0;
+      addProductRequest.weightUnit_id = info.weight_unit_id ?? 0;
+      addProductRequest.manufacturer_id = info.manufacturer_id ?? 0;
+      addProductRequest.model_id = info.model_id ?? 0;
+      if (info.categories != null && info.categories!.isNotEmpty) {
+        productCategoryController.value.text = info.categories![0].name ?? "";
+        for (int i = 0; i < info.categories!.length; i++) {
           addProductRequest.categories!.add(info.categories![i].id.toString());
         }
       }
-      productTitleController.value.text = info.shortName??"";
-      productNameController.value.text = info.name??"";
-      productLengthController.value.text = info.length??"";
-      productWidthController.value.text = info.width??"";
-      productHeightController.value.text = info.height??"";
-      productWeightController.value.text = info.weight??"";
-      productManufacturerController.value.text = info.manufacturer_name??"";
-      productModelController.value.text = info.model_name??"";
-      productSKUController.value.text = info.sku??"";
-      productPriceController.value.text = info.price??"";
-      productTaxController.value.text = info.tax??"";
-      productDescriptionController.value.text = info.description??"";
-      productSupplierController.value.text = info.supplier_name??"";
-      productLengthUnitController.value.text = info.length_unit_name??"";
-      productWeightUnitController.value.text = info.weight_unit_name??"";
+      productTitleController.value.text = info.shortName ?? "";
+      productNameController.value.text = info.name ?? "";
+      productLengthController.value.text = info.length ?? "";
+      productWidthController.value.text = info.width ?? "";
+      productHeightController.value.text = info.height ?? "";
+      productWeightController.value.text = info.weight ?? "";
+      productManufacturerController.value.text = info.manufacturer_name ?? "";
+      productModelController.value.text = info.model_name ?? "";
+      productSKUController.value.text = info.sku ?? "";
+      productPriceController.value.text = info.price ?? "";
+      productTaxController.value.text = info.tax ?? "";
+      productDescriptionController.value.text = info.description ?? "";
+      productSupplierController.value.text = info.supplier_name ?? "";
+      productLengthUnitController.value.text = info.length_unit_name ?? "";
+      productWeightUnitController.value.text = info.weight_unit_name ?? "";
 
-      isStatus.value = info.status??false;
-
-    }else{
+      isStatus.value = info.status ?? false;
+    } else {
       title.value = 'add_product'.tr;
       addProductRequest.categories = [];
     }
+
+    FileInfo info = FileInfo();
+    filesList.add(info);
+
+    FileInfo info1 = FileInfo();
+    info1.file =
+        "https://fastly.picsum.photos/id/68/536/354.jpg?hmac=1HfgJb31lF-wUi81l2uZsAMfntViiCV9z5_ntQvW3Ks";
+    filesList.add(info1);
+
     getProductResourcesApi();
   }
 
@@ -111,7 +124,7 @@ class AddProductController extends GetxController
           productHeightController.value.text.toString().trim();
       addProductRequest.weight =
           productWeightController.value.text.toString().trim();
-          productModelController.value.text.toString().trim();
+      productModelController.value.text.toString().trim();
       addProductRequest.sku = productSKUController.value.text.toString().trim();
       addProductRequest.price =
           productPriceController.value.text.toString().trim();
@@ -119,8 +132,7 @@ class AddProductController extends GetxController
       addProductRequest.description =
           productDescriptionController.value.text.toString().trim();
 
-      if(addProductRequest.id !=null
-          && addProductRequest.id != 0) {
+      if (addProductRequest.id != null && addProductRequest.id != 0) {
         addProductRequest.mode_type = 2;
       } else {
         addProductRequest.mode_type = 1;
@@ -166,16 +178,19 @@ class AddProductController extends GetxController
   void showManufacturerList() {
     if (productResourcesResponse.value.manufacturer != null &&
         productResourcesResponse.value.manufacturer!.isNotEmpty) {
-      showDropDownDialog(AppConstants.dialogIdentifier.manufacturerList,
-          'manufacturer'.tr, productResourcesResponse.value.manufacturer!, this);
+      showDropDownDialog(
+          AppConstants.dialogIdentifier.manufacturerList,
+          'manufacturer'.tr,
+          productResourcesResponse.value.manufacturer!,
+          this);
     }
   }
 
   void showModelList() {
     if (productResourcesResponse.value.model != null &&
         productResourcesResponse.value.model!.isNotEmpty) {
-      showDropDownDialog(AppConstants.dialogIdentifier.modelList,
-          'model'.tr, productResourcesResponse.value.model!, this);
+      showDropDownDialog(AppConstants.dialogIdentifier.modelList, 'model'.tr,
+          productResourcesResponse.value.model!, this);
     }
   }
 
@@ -205,12 +220,29 @@ class AddProductController extends GetxController
     } else if (action == AppConstants.dialogIdentifier.weightUnitList) {
       productWeightUnitController.value.text = name;
       addProductRequest.weightUnit_id = id;
-    }else if (action == AppConstants.dialogIdentifier.manufacturerList) {
+    } else if (action == AppConstants.dialogIdentifier.manufacturerList) {
       productManufacturerController.value.text = name;
       addProductRequest.manufacturer_id = id;
-    }else if (action == AppConstants.dialogIdentifier.modelList) {
+    } else if (action == AppConstants.dialogIdentifier.modelList) {
       productModelController.value.text = name;
       addProductRequest.model_id = id;
+    }
+  }
+
+  onSelectPhoto() async {
+    print("pickImage");
+
+    try {
+      final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 900,
+        maxHeight: 900,
+        imageQuality: 90,
+      );
+
+      print("Path:" + pickedFile!.path ?? "");
+    } catch (e) {
+      print("error:" + e.toString());
     }
   }
 
@@ -268,15 +300,15 @@ class AddProductController extends GetxController
     map["description"] = addProductRequest.description;
     map["status"] = addProductRequest.status;
     map["mode_type"] = addProductRequest.mode_type;
-    if(addProductRequest.categories != null
-        && addProductRequest.categories!.isNotEmpty){
-        for(int i = 0;i<addProductRequest.categories!.length;i++){
-          map['categories[${i.toString()}]'] = addProductRequest.categories![i];
-        }
+    if (addProductRequest.categories != null &&
+        addProductRequest.categories!.isNotEmpty) {
+      for (int i = 0; i < addProductRequest.categories!.length; i++) {
+        map['categories[${i.toString()}]'] = addProductRequest.categories![i];
+      }
     }
     multi.FormData formData = multi.FormData.fromMap(map);
 
-    print("Request Data:"+map.toString());
+    print("Request Data:" + map.toString());
 
     isLoading.value = true;
 
@@ -285,8 +317,8 @@ class AddProductController extends GetxController
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          BaseResponse response = BaseResponse.fromJson(
-              jsonDecode(responseModel.result!));
+          BaseResponse response =
+              BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             Get.back(result: true);
           } else {

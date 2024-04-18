@@ -50,17 +50,19 @@ class ProductListView extends StatelessWidget {
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                    productListController
-                                        .productList[position].name!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: primaryTextColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                    )),
+                                Flexible(
+                                  child: Text(
+                                      softWrap: true,
+                                      productListController
+                                          .productList[position].name!,
+                                      style: const TextStyle(
+                                        color: primaryTextColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15,
+                                      )),
+                                ),
                                 Visibility(
                                   visible: !StringHelper.isEmptyString(
                                       productListController
@@ -70,7 +72,7 @@ class ProductListView extends StatelessWidget {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
-                                        color: primaryTextColor,
+                                        color: defaultAccentColor,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 15,
                                       )),

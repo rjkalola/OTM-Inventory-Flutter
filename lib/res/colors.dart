@@ -16,5 +16,5 @@ const bottomTabBackgroundColor = Color(0xfff4f5f7);
 const hintColor = Color(0xffbdbdbd);
 const normalTextFieldBorderColor = Color(0xffbdbdbd);
 const focusedTextFieldBorderColor = Color(0xff6e6e6e);
-
+const rectangleBorderColor = Color(0xffcdcdce);
 
