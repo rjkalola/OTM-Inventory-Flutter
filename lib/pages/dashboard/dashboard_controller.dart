@@ -44,7 +44,9 @@ class DashboardController extends GetxController
         Get.toNamed(AppRoutes.productListScreen);
     } else if (action == AppConstants.action.store) {
       Get.toNamed(AppRoutes.storeListScreen);
-    } else if (action == AppConstants.action.suppliers) {
+    } else if (action == AppConstants.action.stocks) {
+      Get.toNamed(AppRoutes.stockListScreen);
+    }else if (action == AppConstants.action.suppliers) {
       Get.toNamed(AppRoutes.supplierListScreen);
     }else if (action == AppConstants.action.categories) {
       Get.toNamed(AppRoutes.categoryListScreen);

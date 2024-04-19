@@ -1,18 +1,10 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:dio/dio.dart' as multi;
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/category_list/category_list_repository.dart';
 import 'package:otm_inventory/pages/category_list/model/category_info.dart';
 import 'package:otm_inventory/pages/category_list/model/category_list_response.dart';
-import 'package:otm_inventory/pages/product_list/controller/product_list_repository.dart';
-import 'package:otm_inventory/pages/product_list/models/product_info.dart';
-import 'package:otm_inventory/pages/product_list/models/product_list_response.dart';
-import 'package:otm_inventory/pages/store_list/controller/store_list_repository.dart';
-import 'package:otm_inventory/pages/store_list/model/store_info.dart';
-import 'package:otm_inventory/pages/store_list/model/store_list_response.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 
 import '../../../routes/app_routes.dart';

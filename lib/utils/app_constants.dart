@@ -16,6 +16,7 @@ class IntentKey {
   final String storeInfo = 'STORE_INFO';
   final String supplierInfo = 'SUPPLIER_INFO';
   final String categoryInfo = 'CATEGORY_INFO';
+  final String stockInfo = 'STOCK_INFO';
 }
 
 class DialogIdentifier {
@@ -42,6 +43,7 @@ class Action {
   final String store = "STORE";
   final String suppliers = "SUPPLIERS";
   final String categories = "CATEGORIES";
+  final String stocks = "STOCKS";
 }
 
 class FromScreens {

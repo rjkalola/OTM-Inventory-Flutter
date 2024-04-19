@@ -31,6 +31,13 @@ class DataUtils{
     arrayItems.add(info);
 
     info = DashboardActionItemInfo();
+    info.id = AppConstants.action.stocks;
+    info.title = 'stocks'.tr;
+    info.image = "assets/images/ic_time_clock.svg";
+    info.backgroundColor = "#ddeafb";
+    arrayItems.add(info);
+
+    info = DashboardActionItemInfo();
     info.id = AppConstants.action.categories;
     info.title = 'categories'.tr;
     info.image = "assets/images/ic_time_clock.svg";

@@ -26,6 +26,7 @@ class Strings extends Translations {
           'product_list': "Product List",
           'products': "Products",
           'stores': "Stores",
+          'stocks': "Stocks",
           'suppliers': "Suppliers",
           'vendors': "Vendors",
           'empty_data_message': "No data found",
