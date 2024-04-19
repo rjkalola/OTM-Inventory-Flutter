@@ -3,7 +3,7 @@
 import '../../../../web_services/response/module_info.dart';
 
 class ProductInfo {
-  int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id;
+  int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id,qty;
   String? shortName,name,description,price,image,extension,qrCode,categoryName,
       currency,sku,model_name,manufacturer_name,imageThumb,qrCodeThumb,imageUrl,imageThumbUrl,weight
   ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name;
@@ -39,10 +39,11 @@ class ProductInfo {
         this.weight_unit_id,
         this.length_unit_id,
         this.model_id,
-      this.categories,
+        this.categories,
         this.length_unit_name,
         this.weight_unit_name,
-        this.supplier_name});
+        this.supplier_name,
+        this.qty});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -76,6 +77,7 @@ class ProductInfo {
     length_unit_name = json['length_unit_name'];
     weight_unit_name = json['weight_unit_name'];
     supplier_name = json['supplier_name'];
+    qty = json['qty'];
     if (json['categories'] != null) {
       categories = <ModuleInfo>[];
       json['categories'].forEach((v) {
@@ -117,6 +119,7 @@ class ProductInfo {
     data['length_unit_name'] = length_unit_name;
     data['weight_unit_name'] = weight_unit_name;
     data['supplier_name'] = supplier_name;
+    data['qty'] = qty;
 
     if (categories != null) {
       data['categories'] = categories!.map((v) => v.toJson()).toList();

@@ -108,8 +108,8 @@ class AddProductScreen extends StatelessWidget {
                             TextFieldProductPrice(),
                             TextFieldProductTax(),
                             TextFieldProductDescription(),
-                            AddProductPhotosTitleView(),
-                            AddProductPhotosList(),
+                            // AddProductPhotosTitleView(),
+                            // AddProductPhotosList(),
                             Padding(
                               padding: const EdgeInsets.only(left: 14,bottom: 18),
                               child: Row(

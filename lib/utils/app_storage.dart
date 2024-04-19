@@ -6,6 +6,7 @@ import '../pages/otp_verification/model/user_info.dart';
 
 class AppStorage extends GetxController {
   final box = GetStorage();
+  static int stockId = 1;
 
   Future<void> initStorage() async {
     await GetStorage.init();

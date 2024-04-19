@@ -91,7 +91,7 @@ class _StockListScreenState extends State<StockListScreen> {
       IconButton(
         icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
         onPressed: () {
-          stockListController.addStockClick(null);
+          // stockListController.addStockClick(null);
         },
       ),
 
