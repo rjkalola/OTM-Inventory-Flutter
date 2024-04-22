@@ -63,7 +63,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                             height: 1,
                             color: dividerColor,
                           ),
-                          SizedBox(height: 10,),
+                          const SizedBox(height: 10,),
                           rowItemDetail(
                               'name'.tr,
                               stockEditQuantityController
@@ -117,7 +117,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                       ),
                       TextFieldQuantityUpdateNote(),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(9, 0, 9, 6),
+                        padding: const EdgeInsets.fromLTRB(18, 0, 18, 6),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,11 +127,16 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                   stockEditQuantityController
                                       .decreaseQuantity();
                                 },
-                                child: const Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Icon(
-                                    Icons.remove,
-                                    size: 22,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: const Color(0xffc6c6c6)),
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Icon(
+                                      Icons.remove,
+                                      size: 22,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -143,11 +148,16 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                   stockEditQuantityController
                                       .increaseQuantity();
                                 },
-                                child: const Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 22,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: const Color(0xffc6c6c6)),
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 22,
+                                    ),
                                   ),
                                 ),
                               )
