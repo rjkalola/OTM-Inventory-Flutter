@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_repository.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
+import 'package:otm_inventory/utils/app_storage.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../../routes/app_routes.dart';
@@ -20,7 +21,7 @@ class StockListController extends GetxController {
   final productListResponse = ProductListResponse().obs;
   List<ProductInfo> tempList = [];
   final productList = <ProductInfo>[].obs;
-  
+
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
@@ -31,7 +32,7 @@ class StockListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getStockListApi(true,"0");
+    getStockListApi(true, "0");
   }
 
   Future<void> addStockClick(ProductInfo? info) async {
@@ -47,25 +48,40 @@ class StockListController extends GetxController {
     }
 
     if (result != null && result) {
-      getStockListApi(true,"0");
+      getStockListApi(true, "0");
     }
   }
 
-  Future<void> searchItem(String value) async{
+  Future<void> searchItem(String value) async {
     print(value);
     List<ProductInfo> results = [];
     if (value.isEmpty) {
       results = tempList;
-    }else{
-      results = tempList.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
+    } else {
+      results = tempList
+          .where((element) =>
+              element.name!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
     }
     productList.value = results;
   }
 
   Future<void> openQrCodeScanner() async {
-    var result = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
-    if (result != null && !StringHelper.isEmptyString(result)) {
-      getStockListApi(true,result);
+    var productId = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
+    if (productId != null && !StringHelper.isEmptyString(productId)) {
+      var result;
+      if (productId != null) {
+        var arguments = {
+          AppConstants.intentKey.productId: productId,
+        };
+        result =
+        await Get.toNamed(AppRoutes.stockEditQuantityScreen, arguments: arguments);
+      }
+
+      if (result != null && result) {
+        getStockListApi(true,"0");
+      }
+
     }
   }
 
@@ -77,6 +93,7 @@ class StockListController extends GetxController {
     map["search"] = search;
     map["product_id"] = productId;
     map["is_stock"] = 1;
+    map["store_id"] = AppStorage.storeId.toString();
     multi.FormData formData = multi.FormData.fromMap(map);
 
     if (isProgress) isLoading.value = true;
@@ -86,7 +103,7 @@ class StockListController extends GetxController {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           ProductListResponse response =
-          ProductListResponse.fromJson(jsonDecode(responseModel.result!));
+              ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             productListResponse.value = response;
             tempList.clear();

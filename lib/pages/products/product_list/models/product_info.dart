@@ -6,7 +6,7 @@ class ProductInfo {
   int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id,qty;
   String? shortName,name,description,price,image,extension,qrCode,categoryName,
       currency,sku,model_name,manufacturer_name,imageThumb,qrCodeThumb,imageUrl,imageThumbUrl,weight
-  ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name;
+  ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name,dimension;
   List<ModuleInfo>? categories;
   bool? status;
 
@@ -43,7 +43,8 @@ class ProductInfo {
         this.length_unit_name,
         this.weight_unit_name,
         this.supplier_name,
-        this.qty});
+        this.qty,
+        this.dimension});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -78,6 +79,7 @@ class ProductInfo {
     weight_unit_name = json['weight_unit_name'];
     supplier_name = json['supplier_name'];
     qty = json['qty'];
+    dimension = json['dimension'];
     if (json['categories'] != null) {
       categories = <ModuleInfo>[];
       json['categories'].forEach((v) {
@@ -120,7 +122,7 @@ class ProductInfo {
     data['weight_unit_name'] = weight_unit_name;
     data['supplier_name'] = supplier_name;
     data['qty'] = qty;
-
+    data['dimension'] = dimension;
     if (categories != null) {
       data['categories'] = categories!.map((v) => v.toJson()).toList();
     }

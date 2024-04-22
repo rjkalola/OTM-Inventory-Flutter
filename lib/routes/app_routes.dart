@@ -13,4 +13,5 @@ class AppRoutes {
   static const String categoryListScreen = '/category_list_screen';
   static const String addCategoryScreen = '/add_category_screen';
   static const String stockListScreen = '/stock_list_screen';
+  static const String stockEditQuantityScreen = '/stock_edit_quantity_screen';
 }

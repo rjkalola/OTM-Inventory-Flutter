@@ -21,11 +21,13 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   final dashboardController = Get.put(DashboardController());
   late var userInfo = UserInfo();
+
   @override
   void initState() {
     // showProgress();
     // setHeaderActionButtons();
     userInfo = Get.find<AppStorage>().getUserInfo();
+
     super.initState();
   }
 
@@ -39,25 +41,31 @@ class _HomeTabState extends State<HomeTab> {
         inAsyncCall: dashboardController.isLoading.value,
         child: Scaffold(
           backgroundColor: const Color(0xfff4f5f7),
-          body: Column(children: [
-            HomeTabHeaderView(userName: userInfo.firstName??"",userImage: userInfo.image??"",),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(16, 6, 16, 0),
-                decoration: const BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(6),
-                        topRight: Radius.circular(6))),
-                child: SingleChildScrollView(
-                  child: Column(children: [
-                    HomeTabActionButtonsList(),
-                    HomeTabActionButtonsDotsList(),
-                  ]),
-                ),
+          body: Visibility(
+            visible: dashboardController.isMainViewVisible.value,
+            child: Column(children: [
+              HomeTabHeaderView(
+                userName: userInfo.firstName ?? "",
+                userImage: userInfo.image ?? "",
               ),
-            )
-          ]),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(16, 6, 16, 0),
+                  decoration: const BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(6),
+                          topRight: Radius.circular(6))),
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      HomeTabActionButtonsList(),
+                      HomeTabActionButtonsDotsList(),
+                    ]),
+                  ),
+                ),
+              )
+            ]),
+          ),
         ),
       );
     }));

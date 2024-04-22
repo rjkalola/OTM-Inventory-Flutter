@@ -69,7 +69,7 @@ class StockListView extends StatelessWidget {
                                       stockListController
                                           .productList[position].price),
                                   child: Text(
-                                      "Qty: ${stockListController.productList[position].price!}",
+                                      "Qty: ${stockListController.productList[position].qty!.toString()}",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(

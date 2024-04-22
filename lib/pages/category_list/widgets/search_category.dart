@@ -15,7 +15,7 @@ class SearchCategory extends StatefulWidget {
 }
 
 class _SearchCategoryState extends State<SearchCategory> {
-  CategoryListController categoryListController = CategoryListController();
+  final categoryListController = Get.put(CategoryListController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,6 @@ class _SearchCategoryState extends State<SearchCategory> {
       child: SearchTextField(
           onValueChange: (value) {
             categoryListController.searchItem(value.toString());
-            // setModalState(() {
-            //   filterSearchResults(value, list);
-            // });
           }),
     );
   }

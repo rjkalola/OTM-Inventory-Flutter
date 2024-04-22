@@ -2,39 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/web_services/response/module_info.dart';
 
-import '../../res/colors.dart';
-import 'listener/select_item_listener.dart';
+import '../../../res/colors.dart';
+import '../../common/listener/select_item_listener.dart';
 
-class DropDownListDialog extends StatefulWidget {
+class StoreListDialog extends StatefulWidget {
   final List<ModuleInfo> list;
   final String title;
   final String dialogType;
   final SelectItemListener listener;
-  final bool isCloseEnable;
 
-  const DropDownListDialog(
+  const StoreListDialog(
       {super.key,
       required this.title,
       required this.dialogType,
       required this.list,
-      required this.isCloseEnable,
       required this.listener});
 
   @override
-  State<DropDownListDialog> createState() =>
-      DropDownListDialogState(title, dialogType, list, listener,isCloseEnable);
+  State<StoreListDialog> createState() =>
+      StoreListDialogState(title, dialogType, list, listener);
 }
 
-class DropDownListDialogState extends State<DropDownListDialog> {
+class StoreListDialogState extends State<StoreListDialog> {
   List<ModuleInfo> list;
   String title;
   String dialogType;
   SelectItemListener listener;
   List<ModuleInfo> tempList = [];
-  bool isCloseEnable;
 
-  DropDownListDialogState(
-      this.title, this.dialogType, this.list, this.listener,this.isCloseEnable);
+  StoreListDialogState(
+      this.title, this.dialogType, this.list, this.listener);
 
   @override
   void initState() {
@@ -78,17 +75,14 @@ class DropDownListDialogState extends State<DropDownListDialog> {
                             ),
                           ),
                         ),
-                        Visibility(
-                          visible: isCloseEnable,
-                          child: Align(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.close, size: 20),
-                              )),
-                        )
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(Icons.close, size: 20),
+                            ))
                       ],
                     ),
                   ),
@@ -100,10 +94,9 @@ class DropDownListDialogState extends State<DropDownListDialog> {
                           filterSearchResults(value, list);
                         });
                       },
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.fromLTRB(0, 2, 14, 0),
-                        prefixIcon:
-                            const Icon(Icons.search, color: Colors.black26),
+                      decoration:  InputDecoration(
+                        contentPadding:const  EdgeInsets.fromLTRB(0, 2, 14, 0),
+                        prefixIcon:const  Icon(Icons.search, color: Colors.black26),
                         border: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Color(0xffbab8b8), width: 1.3),
@@ -133,7 +126,7 @@ class DropDownListDialogState extends State<DropDownListDialog> {
             return ListTile(
               onTap: () {
                 listener.onSelectItem(
-                    i, tempList[i].id ?? 0, tempList[i].name ?? "", dialogType);
+                    i, tempList[i].id??0, tempList[i].name??"", dialogType);
                 Navigator.pop(context);
               },
               dense: true,
@@ -144,7 +137,7 @@ class DropDownListDialogState extends State<DropDownListDialog> {
               title: Padding(
                 padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
                 child: Text(
-                  tempList[i].name ?? "",
+                  tempList[i].name??"",
                   textAlign: TextAlign.start,
                   style: const TextStyle(
                       fontSize: 17,

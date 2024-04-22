@@ -15,6 +15,7 @@ import '../../../web_services/response/response_model.dart';
 class StoreListController extends GetxController {
   final _api = StoreListRepository();
   var storeList = <StoreInfo>[].obs;
+  List<StoreInfo> tempList = [];
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
@@ -42,8 +43,9 @@ class StoreListController extends GetxController {
           StoreListResponse response =
               StoreListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            storeList.clear();
-            storeList.addAll(response.info!);
+            tempList.clear();
+            tempList.addAll(response.info!);
+            storeList.value = tempList;
             isMainViewVisible.value = true;
             print("Array Lenth:" + response.info!.length.toString());
           } else {
@@ -80,5 +82,15 @@ class StoreListController extends GetxController {
     if (result != null && result) {
       getStoreListApi(true);
     }
+  }
+
+  Future<void> searchItem(String value) async{
+    List<StoreInfo> results = [];
+    if (value.isEmpty) {
+      results = tempList;
+    }else{
+      results = tempList.where((element) => element.storeName!.toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    storeList.value = results;
   }
 }

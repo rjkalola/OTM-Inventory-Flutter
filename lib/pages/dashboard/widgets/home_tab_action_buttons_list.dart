@@ -12,8 +12,6 @@ class HomeTabActionButtonsList extends StatelessWidget {
   HomeTabActionButtonsList({super.key});
 
   final dashboardController = Get.put(DashboardController());
-  List<List<DashboardActionItemInfo>> list =
-      DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class HomeTabActionButtonsList extends StatelessWidget {
       height: 90,
       margin: const EdgeInsets.only(top: 22),
       child: PageView.builder(
-          itemCount: list.length,
+          itemCount: dashboardController.listHeaderButtons.length,
           onPageChanged: (int page) {
             dashboardController.selectedActionButtonPagerPosition.value = page;
           },
@@ -31,7 +29,7 @@ class HomeTabActionButtonsList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 3,
                 children: List.generate(
-                  list[index].length,
+                  dashboardController.listHeaderButtons[index].length,
                   (position) {
                     return InkWell(
                       child: Column(
@@ -44,14 +42,14 @@ class HomeTabActionButtonsList extends StatelessWidget {
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(6),
                                   color: Color(AppUtils.haxColor(
-                                      list[index][position].backgroundColor!))),
+                                      dashboardController.listHeaderButtons[index][position].backgroundColor!))),
                               child: SvgPicture.asset(
-                                list[index][position].image!,
+                                dashboardController.listHeaderButtons[index][position].image!,
                               )),
                           Padding(
                             padding: const EdgeInsets.only(top: 6),
                             child: Text(
-                              list[index][position].title!,
+                              dashboardController.listHeaderButtons[index][position].title!,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: primaryTextColor,
@@ -64,7 +62,7 @@ class HomeTabActionButtonsList extends StatelessWidget {
                       ),
                       onTap: () {
                         dashboardController
-                            .onActionButtonClick(list[index][position].id!);
+                            .onActionButtonClick(dashboardController.listHeaderButtons[index][position].id!);
                       },
                     );
                   },

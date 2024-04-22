@@ -17,6 +17,8 @@ class IntentKey {
   final String supplierInfo = 'SUPPLIER_INFO';
   final String categoryInfo = 'CATEGORY_INFO';
   final String stockInfo = 'STOCK_INFO';
+  final String productId = 'PRODUCT_ID';
+  final String storeId = 'STORE_ID';
 }
 
 class DialogIdentifier {
@@ -29,12 +31,14 @@ class DialogIdentifier {
   final String manufacturerList = 'MANUFACTURER_LIST';
   final String modelList = 'MODEL_LIST';
   final String usersList = 'USERS_LIST';
+  final String storeList = 'STORE_LIST';
 }
 
 class SharedPreferenceKey {
   const SharedPreferenceKey(); // <---
   final String userInfo = "USER_INFO";
   final String accessToken = "ACCESS_TOKEN";
+  final String storeId = "STORE_ID";
 }
 
 class Action {

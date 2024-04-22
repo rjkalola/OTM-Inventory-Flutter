@@ -202,7 +202,8 @@ class AddProductController extends GetxController
             title: title,
             dialogType: dialogType,
             list: list,
-            listener: listener),
+            listener: listener,
+            isCloseEnable: true),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);
   }

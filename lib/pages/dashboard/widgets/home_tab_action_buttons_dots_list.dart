@@ -9,8 +9,6 @@ class HomeTabActionButtonsDotsList extends StatelessWidget {
   HomeTabActionButtonsDotsList({super.key});
 
   final dashboardController = Get.put(DashboardController());
-  List<List<DashboardActionItemInfo>> list =
-      DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +21,7 @@ class HomeTabActionButtonsDotsList extends StatelessWidget {
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           children: List.generate(
-            list.length,
+            dashboardController.listHeaderButtons.length,
             (position) => Container(
               margin: const EdgeInsets.all(3),
               width: 6,

@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:otm_inventory/utils/app_storage.dart';
 
 import '../pages/dashboard/models/DashboardActionItemInfo.dart';
 import 'app_constants.dart';
@@ -30,12 +31,14 @@ class DataUtils{
     info.backgroundColor = "#f8dbd6";
     arrayItems.add(info);
 
-    info = DashboardActionItemInfo();
-    info.id = AppConstants.action.stocks;
-    info.title = 'stocks'.tr;
-    info.image = "assets/images/ic_time_clock.svg";
-    info.backgroundColor = "#ddeafb";
-    arrayItems.add(info);
+    if(AppStorage.storeId != 0){
+      info = DashboardActionItemInfo();
+      info.id = AppConstants.action.stocks;
+      info.title = 'stocks'.tr;
+      info.image = "assets/images/ic_time_clock.svg";
+      info.backgroundColor = "#ddeafb";
+      arrayItems.add(info);
+    }
 
     info = DashboardActionItemInfo();
     info.id = AppConstants.action.categories;

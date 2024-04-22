@@ -45,6 +45,8 @@ class Strings extends Translations {
           'add_product': "Add Product",
           'edit_product': "Edit Product",
           'product_short_name': "Product Short Name",
+          'short_name': "Short Name",
+          'name': "Name",
           'product_name': "Product Name",
           'supplier': "Supplier",
           'length': "Length",
@@ -79,7 +81,10 @@ class Strings extends Translations {
           'edit_category': "Edit Category",
           'category_name': "Category Name",
           'photos': "Photos",
-
+          'edit_quantity': "Edit Quantity",
+          'quantity': "Quantity",
+          'note': "Note",
+          'dimension_hwl': "Dimension (h*w*l)",
         },
         'hi_IN': {'login': 'Login'}
       };

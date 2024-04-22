@@ -4,6 +4,7 @@ const blueColor = Color.fromRGBO(0, 149, 246, 1);
 const primaryColor = Colors.white;
 const secondaryColor = Colors.grey;
 const primaryTextColor = Colors.black;
+const primaryTextColorLight = Color(0xff000000);
 const secondaryTextColor = Color(0xff737373);
 const secondaryLightTextColor = Color(0xff606a74);
 const secondaryExtraLightTextColor = Color(0xff9E9E9E);

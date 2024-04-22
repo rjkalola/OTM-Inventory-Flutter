@@ -15,6 +15,7 @@ import '../../../web_services/response/response_model.dart';
 class CategoryListController extends GetxController {
   final _api = CategoryListRepository();
   var categoryList = <CategoryInfo>[].obs;
+  List<CategoryInfo> tempList = [];
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
@@ -29,11 +30,6 @@ class CategoryListController extends GetxController {
     getCategoryListApi(true);
   }
 
-  Future<void> searchItem(String value) async {
-    print(value);
-    print("categoryList length:"+categoryList.length.toString());
-  }
-
   void getCategoryListApi(bool isProgress) async {
     Map<String, dynamic> map = {};
     multi.FormData formData = multi.FormData.fromMap(map);
@@ -45,8 +41,9 @@ class CategoryListController extends GetxController {
         if (responseModel.statusCode == 200) {
           CategoryListResponse response = CategoryListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            categoryList.clear();
-            categoryList.addAll(response.info!);
+            tempList.clear();
+            tempList.addAll(response.info!);
+            categoryList.value = tempList;
             isMainViewVisible.value = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -82,5 +79,16 @@ class CategoryListController extends GetxController {
     if (result != null && result) {
       getCategoryListApi(true);
     }
+  }
+
+  Future<void> searchItem(String value) async{
+    print("Search item:"+value);
+    List<CategoryInfo> results = [];
+    if (value.isEmpty) {
+      results = tempList;
+    }else{
+      results = tempList.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    categoryList.value = results;
   }
 }

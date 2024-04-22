@@ -53,11 +53,11 @@ class AddSupplierController extends GetxController
       SupplierInfo info = arguments[AppConstants.intentKey.supplierInfo];
       addRequest.id = info.id ?? 0;
       addRequest.phone_extension_id = info.phoneExtensionId ?? 0;
-      addRequest.phone_extension = info.phoneExtensionName?? "";
+      addRequest.phone_extension = info.phoneExtensionName ?? "";
       addRequest.weight_unit_id = info.weightUnitId ?? 0;
 
       mExtension.value = info.phoneExtensionName ?? "";
-      mFlag.value = info.flagName??"";
+      mFlag.value = info.flagName ?? "";
 
       phoneExtensionController.value.text = info.phoneExtensionName ?? "";
       phoneNumberController.value.text = info.phone ?? "";
@@ -78,10 +78,12 @@ class AddSupplierController extends GetxController
 
   void onSubmitClick() {
     if (formKey.currentState!.validate()) {
-      addRequest.contact_name = contactNameController.value.text.toString().trim();
+      addRequest.contact_name =
+          contactNameController.value.text.toString().trim();
       addRequest.email = emailController.value.text.toString().trim();
       addRequest.phone = phoneNumberController.value.text.toString().trim();
-      addRequest.company_name = companyNameController.value.text.toString().trim();
+      addRequest.company_name =
+          companyNameController.value.text.toString().trim();
       addRequest.address = addressController.value.text.toString().trim();
       addRequest.weight = weightController.value.text.toString().trim();
 
@@ -112,7 +114,8 @@ class AddSupplierController extends GetxController
             title: title,
             dialogType: dialogType,
             list: list,
-            listener: listener),
+            listener: listener,
+            isCloseEnable: true),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);
   }
@@ -154,8 +157,9 @@ class AddSupplierController extends GetxController
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          SupplierResourcesResponse response = SupplierResourcesResponse.fromJson(
-              jsonDecode(responseModel.result!));
+          SupplierResourcesResponse response =
+              SupplierResourcesResponse.fromJson(
+                  jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             resourcesResponse.value = response;
             isMainViewVisible.value = true;
@@ -253,5 +257,4 @@ class AddSupplierController extends GetxController
       },
     );
   }
-
 }

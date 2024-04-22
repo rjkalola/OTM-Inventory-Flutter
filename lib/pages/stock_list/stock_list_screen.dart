@@ -88,12 +88,12 @@ class _StockListScreenState extends State<StockListScreen> {
         ),
         onPressed: () {},
       ),
-      IconButton(
-        icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
-        onPressed: () {
-          // stockListController.addStockClick(null);
-        },
-      ),
+      // IconButton(
+      //   icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
+      //   onPressed: () {
+      //     // stockListController.addStockClick(null);
+      //   },
+      // ),
 
     ];
   }
