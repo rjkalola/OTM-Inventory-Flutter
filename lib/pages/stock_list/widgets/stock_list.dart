@@ -25,8 +25,8 @@ class StockListView extends StatelessWidget {
                 stockListController.productList.length,
                 (position) => InkWell(
                   onTap: () {
-                    stockListController.addStockClick(
-                        stockListController.productList[position]);
+                    stockListController.moveStockEditQuantityScreen(
+                        stockListController.productList[position].id!.toString());
                   },
                   child: CardView(
                       child: Padding(

@@ -28,7 +28,7 @@ class DashboardController extends GetxController
     implements SelectItemListener {
   final _api = DashboardRepository();
   var storeList = <ModuleInfo>[].obs;
-
+  final storeNameController = TextEditingController().obs;
   final List<List<DashboardActionItemInfo>> listHeaderButtons = DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3).obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
@@ -165,5 +165,9 @@ class DashboardController extends GetxController
   void setHealerListArray(){
     listHeaderButtons.clear();
     listHeaderButtons.addAll(DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3).obs);
+  }
+
+  void selectStore(){
+
   }
 }

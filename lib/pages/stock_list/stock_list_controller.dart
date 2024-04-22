@@ -35,23 +35,6 @@ class StockListController extends GetxController {
     getStockListApi(true, "0");
   }
 
-  Future<void> addStockClick(ProductInfo? info) async {
-    var result;
-    if (info != null) {
-      var arguments = {
-        AppConstants.intentKey.storeInfo: info,
-      };
-      result =
-          await Get.toNamed(AppRoutes.addProductScreen, arguments: arguments);
-    } else {
-      result = await Get.toNamed(AppRoutes.addProductScreen);
-    }
-
-    if (result != null && result) {
-      getStockListApi(true, "0");
-    }
-  }
-
   Future<void> searchItem(String value) async {
     print(value);
     List<ProductInfo> results = [];
@@ -69,19 +52,22 @@ class StockListController extends GetxController {
   Future<void> openQrCodeScanner() async {
     var productId = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (productId != null && !StringHelper.isEmptyString(productId)) {
-      var result;
-      if (productId != null) {
-        var arguments = {
-          AppConstants.intentKey.productId: productId,
-        };
-        result =
-        await Get.toNamed(AppRoutes.stockEditQuantityScreen, arguments: arguments);
-      }
+      moveStockEditQuantityScreen(productId);
+    }
+  }
 
-      if (result != null && result) {
-        getStockListApi(true,"0");
-      }
+  Future<void> moveStockEditQuantityScreen(String? productId) async {
+    var result;
+    if (productId != null) {
+      var arguments = {
+        AppConstants.intentKey.productId: productId,
+      };
+      result =
+      await Get.toNamed(AppRoutes.stockEditQuantityScreen, arguments: arguments);
+    }
 
+    if (result != null && result) {
+      getStockListApi(true,"0");
     }
   }
 

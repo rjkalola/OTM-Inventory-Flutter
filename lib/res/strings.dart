@@ -85,6 +85,8 @@ class Strings extends Translations {
           'quantity': "Quantity",
           'note': "Note",
           'dimension_hwl': "Dimension (h*w*l)",
+          'store': "Store",
+          'select_Store': "Select Store",
         },
         'hi_IN': {'login': 'Login'}
       };
