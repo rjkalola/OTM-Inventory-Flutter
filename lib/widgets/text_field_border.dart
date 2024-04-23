@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:get/get.dart';
 
 import '../../res/colors.dart';
 
@@ -21,7 +20,8 @@ class TextFieldBorder extends StatelessWidget {
       this.maxLines,
       this.textAlignVertical,
       this.textAlign,
-      this.onPressed});
+      this.onPressed,
+      this.onValueChange});
 
   final TextEditingController? textEditingController;
   final String? hintText, labelText;
@@ -36,6 +36,7 @@ class TextFieldBorder extends StatelessWidget {
   final TextAlignVertical? textAlignVertical;
   final TextAlign? textAlign;
   final VoidCallback? onPressed;
+  final ValueChanged<String>? onValueChange;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,7 @@ class TextFieldBorder extends StatelessWidget {
         onTap: () {
           onPressed!();
         },
+        onChanged: onValueChange,
         style: const TextStyle(
             fontWeight: FontWeight.w400, fontSize: 15, color: primaryTextColor),
         controller: textEditingController,
@@ -52,6 +54,7 @@ class TextFieldBorder extends StatelessWidget {
         textAlignVertical: textAlignVertical,
         textAlign: textAlign ?? TextAlign.start,
         readOnly: isReadOnly ?? false,
+        inputFormatters: inputFormatters,
         decoration: InputDecoration(
           suffixIcon: suffixIcon,
           counterText: "",

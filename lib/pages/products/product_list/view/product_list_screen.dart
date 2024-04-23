@@ -11,6 +11,7 @@ import '../../../../res/colors.dart';
 import '../../../../res/drawable.dart';
 import '../../../../widgets/CustomProgressbar.dart';
 import '../../../../widgets/appbar/base_appbar.dart';
+import '../../../dashboard/widgets/main_drawer.dart';
 import '../controller/product_list_controller.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -36,6 +37,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           title: 'products'.tr,
           isBack: true,
           widgets: actionButtons()),
+      drawer: MainDrawer(),
       body: Obx(
         () => ModalProgressHUD(
           inAsyncCall: productListController.isLoading.value,
@@ -43,7 +45,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           progressIndicator: const CustomProgressbar(),
           child: RefreshIndicator(
             onRefresh: () async {
-              await productListController.getProductListApi(false,"0");
+              await productListController.getProductListApi(false, "0");
             },
             child: Column(children: [
               const Divider(
@@ -77,10 +79,18 @@ class _ProductListScreenState extends State<ProductListScreen> {
       //     onPressed: () {},
       //   ),
       // ),
-      InkWell(onTap:(){
-        print("tap qr code");
-        productListController.openQrCodeScanner();
-      },child: Text('qr_code'.tr,style: const TextStyle(fontSize: 16,color: defaultAccentColor,fontWeight: FontWeight.w500), )),
+      InkWell(
+          onTap: () {
+            print("tap qr code");
+            productListController.openQrCodeScanner();
+          },
+          child: Text(
+            'qr_code'.tr,
+            style: const TextStyle(
+                fontSize: 16,
+                color: defaultAccentColor,
+                fontWeight: FontWeight.w500),
+          )),
       IconButton(
         icon: SvgPicture.asset(
           width: 22,
@@ -89,12 +99,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
         onPressed: () {},
       ),
       IconButton(
-        icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
+        icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
         onPressed: () {
           productListController.addProductClick(null);
         },
       ),
-
     ];
   }
 }

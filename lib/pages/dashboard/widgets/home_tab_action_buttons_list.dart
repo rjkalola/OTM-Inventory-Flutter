@@ -18,7 +18,6 @@ class HomeTabActionButtonsList extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 90,
-      margin: const EdgeInsets.only(top: 22),
       child: PageView.builder(
           itemCount: dashboardController.listHeaderButtons.length,
           onPageChanged: (int page) {

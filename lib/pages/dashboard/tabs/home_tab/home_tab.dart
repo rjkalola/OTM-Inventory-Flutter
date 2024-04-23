@@ -5,10 +5,12 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/home_tab_action_buttons_list.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/home_tab_header_view.dart';
+import 'package:otm_inventory/pages/dashboard/widgets/textfield_select_store.dart';
 import 'package:otm_inventory/pages/otp_verification/model/user_info.dart';
 
 import '../../../../res/colors.dart';
 import '../../../../utils/app_storage.dart';
+import '../../../../widgets/CustomProgressbar.dart';
 import '../../widgets/home_tab_action_buttons_dots_list.dart';
 
 class HomeTab extends StatefulWidget {
@@ -39,6 +41,8 @@ class _HomeTabState extends State<HomeTab> {
     return SafeArea(child: Obx(() {
       return ModalProgressHUD(
         inAsyncCall: dashboardController.isLoading.value,
+        opacity: 0,
+        progressIndicator: const CustomProgressbar(),
         child: Scaffold(
           backgroundColor: const Color(0xfff4f5f7),
           body: Visibility(
@@ -58,6 +62,8 @@ class _HomeTabState extends State<HomeTab> {
                           topRight: Radius.circular(6))),
                   child: SingleChildScrollView(
                     child: Column(children: [
+                      const SizedBox(height:20,),
+                      TextFieldSelectStoreHomeTab(),
                       HomeTabActionButtonsList(),
                       HomeTabActionButtonsDotsList(),
                     ]),

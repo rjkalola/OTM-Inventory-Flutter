@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/bottom_navigation_bar_widget.dart';
+import 'package:otm_inventory/pages/dashboard/widgets/main_drawer.dart';
 import 'package:otm_inventory/res/colors.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      drawer:  MainDrawer(),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,

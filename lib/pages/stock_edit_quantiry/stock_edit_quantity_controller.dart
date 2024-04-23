@@ -29,6 +29,7 @@ class StockEditQuantityController extends GetxController {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
+  int initialQuantity = 0,finalQuantity = 0;
 
   @override
   void onInit() {
@@ -73,7 +74,10 @@ class StockEditQuantityController extends GetxController {
           StockQuantityDetailsResponse response = StockQuantityDetailsResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             productInfo.value = response.info!;
-            quantityController.value.text = productInfo.value.qty.toString();
+            // quantityController.value.text = productInfo.value.qty.toString();
+            quantityController.value.text = "0";
+            initialQuantity = productInfo.value.qty??0;
+            finalQuantity = productInfo.value.qty??0;
             isMainViewVisible.value = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -136,7 +140,7 @@ class StockEditQuantityController extends GetxController {
   void onUpdateQuantityClick() {
     if (formKey.currentState!.validate()) {
       String note = noteController.value.text.toString().trim();
-      String qtyString = quantityController.value.text.toString().trim();
+      String qtyString = finalQuantity.toString();
       storeStockQuantityApi(true, productId.toString(),qtyString,note);
     }
   }
@@ -147,13 +151,29 @@ class StockEditQuantityController extends GetxController {
     if (!StringHelper.isEmptyString(qtyString)) quantity = int.parse(qtyString);
     quantity++;
     quantityController.value.text = quantity.toString();
+    onQuantityUpdate(quantity.toString());
   }
 
   void decreaseQuantity() {
     String qtyString = quantityController.value.text.toString().trim();
     int quantity = 0;
     if (!StringHelper.isEmptyString(qtyString)) quantity = int.parse(qtyString);
-    if (quantity > 1) quantity--;
+    // if (quantity > 1) quantity--;
+    quantity--;
     quantityController.value.text = quantity.toString();
+    onQuantityUpdate(quantity.toString());
+  }
+
+  void onQuantityUpdate(String value){
+    int qty = 0;
+    if(!StringHelper.isEmptyString(value)){
+      qty = int.parse(value);
+    }else{
+      qty = 0;
+    }
+    print("qty:$qty");
+    finalQuantity = initialQuantity+qty;
+    if(finalQuantity <0) finalQuantity = 0;
+    print("new qty:$finalQuantity");
   }
 }

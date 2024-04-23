@@ -11,6 +11,7 @@ import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quant
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_quantity_update_note.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_quantity.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
+import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../res/colors.dart';
@@ -52,60 +53,114 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
             child: Visibility(
               visible: stockEditQuantityController.isMainViewVisible.value,
               child: Column(children: [
+                const Divider(
+                  thickness: 1,
+                  height: 1,
+                  color: dividerColor,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Expanded(
                   flex: 1,
                   child: SingleChildScrollView(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Divider(
-                            thickness: 1,
-                            height: 1,
-                            color: dividerColor,
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(14, 14, 14, 18),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xffc6c6c6)),
+                                      borderRadius: BorderRadius.circular(0)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6),
+                                    child: ImageUtils.setImage(
+                                        stockEditQuantityController
+                                                .productInfo.value.imageThumbUrl ??
+                                            "",
+                                        68),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                Flexible(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      customTextView(
+                                          stockEditQuantityController
+                                                  .productInfo
+                                                  .value
+                                                  .shortName ??
+                                              "",
+                                          18,
+                                          FontWeight.w600,primaryTextColor,const EdgeInsets.all(0)),
+                                      customTextView(
+                                          stockEditQuantityController
+                                              .productInfo
+                                              .value
+                                              .supplier_code ??
+                                              "",
+                                          15,
+                                          FontWeight.w400,primaryTextColorLight,const EdgeInsets.all(0)),
+                                      customTextView(
+                                          "${'qty_in_stock'.tr}: ${stockEditQuantityController.productInfo.value.qty??0.toString()}",
+                                          15,
+                                          FontWeight.w400,primaryTextColorLight,const EdgeInsets.all(0))
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 10,),
-                          rowItemDetail(
-                              'name'.tr,
+                          dividerItem(),
+                          customTextView(
                               stockEditQuantityController
-                                      .productInfo.value.name ??
-                                  "-"),
+                                  .productInfo
+                                  .value
+                                  .name ??
+                                  "",
+                              18,
+                              FontWeight.w600,primaryTextColor,const EdgeInsets.fromLTRB(18, 14, 18, 14)),
                           dividerItem(),
-                          rowItemDetail(
-                              'short_name'.tr,
+                          customTextView(
                               stockEditQuantityController
-                                      .productInfo.value.shortName ??
-                                  "-"),
+                                  .productInfo
+                                  .value
+                                  .supplier_name ??
+                                  "",
+                              16,
+                              FontWeight.w500,primaryTextColor,const EdgeInsets.fromLTRB(18, 14, 18, 14)),
                           dividerItem(),
-                          rowItemDetail(
-                              'sku'.tr,
-                              stockEditQuantityController
-                                      .productInfo.value.sku ??
-                                  "-"),
-                          dividerItem(),
-                          rowItemDetail(
-                              'model'.tr,
-                              stockEditQuantityController
-                                      .productInfo.value.model_name ??
-                                  "-"),
-                          dividerItem(),
-                          rowItemDetail(
-                              'manufacturer'.tr,
-                              stockEditQuantityController
-                                      .productInfo.value.manufacturer_name ??
-                                  "-"),
-                          dividerItem(),
-                          rowItemDetail(
-                              'dimension_hwl'.tr,
-                              getDimension()),
-                          dividerItem(),
-                          rowItemDetail('weight'.tr, getWeight()),
-                          dividerItem(),
+                          // rowItemDetail('supplier_name'.tr, stockEditQuantityController
+                          //     .productInfo
+                          //     .value
+                          //     .supplier_name ??
+                          //     "-"),
+                          // dividerItem(),
+                          // rowItemDetail('supplier_code'.tr, stockEditQuantityController
+                          //     .productInfo
+                          //     .value
+                          //     .supplier_code ??
+                          //     "-"),
+                          // dividerItem(),
                         ]),
                   ),
                 ),
                 Form(
                   key: stockEditQuantityController.formKey,
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Divider(
                         thickness: 1,
@@ -115,9 +170,13 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                       const SizedBox(
                         height: 16,
                       ),
-                      TextFieldQuantityUpdateNote(),
+                      customTextView(
+                          'add_quantity_in_numbers'.tr,
+                          16,
+                          FontWeight.w400,primaryTextColor,const EdgeInsets.fromLTRB(18, 0, 18, 12)),
+                      // TextFieldQuantityUpdateNote(),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(18, 0, 18, 6),
+                        padding: const EdgeInsets.fromLTRB(18, 6, 18, 6),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,7 +188,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      border: Border.all(color: const Color(0xffc6c6c6)),
+                                      border: Border.all(
+                                          color: const Color(0xffc6c6c6)),
                                       borderRadius: BorderRadius.circular(4)),
                                   child: const Padding(
                                     padding: EdgeInsets.all(10.0),
@@ -150,7 +210,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      border: Border.all(color: const Color(0xffc6c6c6)),
+                                      border: Border.all(
+                                          color: const Color(0xffc6c6c6)),
                                       borderRadius: BorderRadius.circular(4)),
                                   child: const Padding(
                                     padding: EdgeInsets.all(10.0),
@@ -207,6 +268,25 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
             )),
       );
 
+  Widget customTextView(
+          String? text, double fontSize, FontWeight? fontWeight,Color color,EdgeInsetsGeometry padding) =>
+      Visibility(
+        visible: !StringHelper.isEmptyString(text),
+        child: Flexible(
+          child: Padding(
+            padding: padding,
+            child: Text(text ?? "",
+                softWrap: true,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: color,
+                  fontWeight: fontWeight,
+                  fontSize: fontSize,
+                )),
+          ),
+        ),
+      );
+
   Widget dividerItem() => const Divider(
         thickness: 0.5,
         height: 0.5,
@@ -219,7 +299,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
             stockEditQuantityController.productInfo.value.weight) &&
         !StringHelper.isEmptyString(
             stockEditQuantityController.productInfo.value.weight_unit_name)) {
-      weight = stockEditQuantityController.productInfo.value.weight! +" "+
+      weight = stockEditQuantityController.productInfo.value.weight! +
+          " " +
           stockEditQuantityController.productInfo.value.weight_unit_name!;
     }
     return weight;
@@ -228,12 +309,15 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
   String getDimension() {
     String dimension = "-";
     if (!StringHelper.isEmptyString(
-        stockEditQuantityController.productInfo.value.height) &&
+            stockEditQuantityController.productInfo.value.height) &&
         !StringHelper.isEmptyString(
-            stockEditQuantityController.productInfo.value.width) && !StringHelper.isEmptyString(
-        stockEditQuantityController.productInfo.value.length)&& !StringHelper.isEmptyString(
-        stockEditQuantityController.productInfo.value.length_unit_name)) {
-      dimension = "${stockEditQuantityController.productInfo.value.height!}*${stockEditQuantityController.productInfo.value.width!}*${stockEditQuantityController.productInfo.value.length!} ${stockEditQuantityController.productInfo.value.length_unit_name!}";
+            stockEditQuantityController.productInfo.value.width) &&
+        !StringHelper.isEmptyString(
+            stockEditQuantityController.productInfo.value.length) &&
+        !StringHelper.isEmptyString(
+            stockEditQuantityController.productInfo.value.length_unit_name)) {
+      dimension =
+          "${stockEditQuantityController.productInfo.value.height!}*${stockEditQuantityController.productInfo.value.width!}*${stockEditQuantityController.productInfo.value.length!} ${stockEditQuantityController.productInfo.value.length_unit_name!}";
     }
     return dimension;
   }

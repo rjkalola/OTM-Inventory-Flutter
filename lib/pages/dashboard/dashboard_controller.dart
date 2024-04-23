@@ -9,6 +9,7 @@ import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/profile/profile_tab.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
+import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../utils/app_constants.dart';
 import '../../utils/app_storage.dart';
@@ -29,7 +30,8 @@ class DashboardController extends GetxController
   final _api = DashboardRepository();
   var storeList = <ModuleInfo>[].obs;
   final storeNameController = TextEditingController().obs;
-  final List<List<DashboardActionItemInfo>> listHeaderButtons = DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3).obs;
+  final List<List<DashboardActionItemInfo>> listHeaderButtons =
+      DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3).obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
@@ -66,12 +68,17 @@ class DashboardController extends GetxController
   void onInit() {
     super.onInit();
     AppStorage.storeId = Get.find<AppStorage>().getStoreId();
-    if (AppStorage.storeId == 0) {
-      getStoreListApi();
-    } else {
-      isMainViewVisible.value = true;
-      setHealerListArray();
+    AppStorage.storeName = Get.find<AppStorage>().getStoreName();
+    if (!StringHelper.isEmptyString(AppStorage.storeName)) {
+      storeNameController.value.text = AppStorage.storeName;
     }
+    // else {
+    //   isMainViewVisible.value = true;
+    //   setHealerListArray();
+    // }
+    getStoreListApi();
+    // isMainViewVisible.value = true;
+    // setHealerListArray();
   }
 
   void onActionButtonClick(String action) {
@@ -88,19 +95,35 @@ class DashboardController extends GetxController
     }
   }
 
-  void showStoreListDialog(String dialogType, String title,
-      List<ModuleInfo> list, SelectItemListener listener) {
+  void selectStore() {
+    if (storeList.isNotEmpty) {
+      showStoreListDialog(AppConstants.dialogIdentifier.storeList, 'stores'.tr,
+          storeList, true, true, true,true, this);
+    } else {
+      AppUtils.showSnackBarMessage('empty_store_message'.tr);
+    }
+  }
+
+  void showStoreListDialog(
+      String dialogType,
+      String title,
+      List<ModuleInfo> list,
+      bool enableDrag,
+      bool isDismiss,
+      bool canPop,
+      bool isClose,
+      SelectItemListener listener) {
     Get.bottomSheet(
-        enableDrag: false,
-        isDismissible: false,
+        enableDrag: enableDrag,
+        isDismissible: isDismiss,
         PopScope(
-          canPop: false,
+          canPop: canPop,
           child: DropDownListDialog(
               title: title,
               dialogType: dialogType,
               list: list,
               listener: listener,
-              isCloseEnable: false),
+              isCloseEnable: isClose),
         ),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);
@@ -110,7 +133,10 @@ class DashboardController extends GetxController
   void onSelectItem(int position, int id, String name, String action) {
     if (action == AppConstants.dialogIdentifier.storeList) {
       AppStorage.storeId = id;
+      AppStorage.storeName = name;
+      storeNameController.value.text = name;
       Get.find<AppStorage>().setStoreId(id);
+      Get.find<AppStorage>().setStoreName(name);
       setHealerListArray();
     }
   }
@@ -137,10 +163,10 @@ class DashboardController extends GetxController
                 storeList.add(info);
               }
             }
-            if (storeList.isNotEmpty) {
+            if (AppStorage.storeId == 0 && storeList.isNotEmpty) {
               showStoreListDialog(AppConstants.dialogIdentifier.storeList,
-                  'stores'.tr, storeList, this);
-            }else{
+                  'stores'.tr, storeList, false, false, false,false, this);
+            } else {
               setHealerListArray();
             }
           } else {
@@ -162,12 +188,10 @@ class DashboardController extends GetxController
     );
   }
 
-  void setHealerListArray(){
+  void setHealerListArray() {
     listHeaderButtons.clear();
-    listHeaderButtons.addAll(DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3).obs);
-  }
-
-  void selectStore(){
-
+    listHeaderButtons.addAll(
+        DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3)
+            .obs);
   }
 }

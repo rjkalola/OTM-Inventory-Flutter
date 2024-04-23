@@ -39,6 +39,7 @@ class SharedPreferenceKey {
   final String userInfo = "USER_INFO";
   final String accessToken = "ACCESS_TOKEN";
   final String storeId = "STORE_ID";
+  final String storeName = "STORE_NAME";
 }
 
 class Action {

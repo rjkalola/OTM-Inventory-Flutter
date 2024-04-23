@@ -10,11 +10,11 @@ class TextFieldSelectStoreHomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Padding(
-      padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 18),
       child: TextFieldBorder(
           textEditingController: dashboardController.storeNameController.value,
-          hintText: 'store'.tr,
-          labelText: 'select_Store'.tr,
+          hintText: 'select_store'.tr,
+          labelText: 'store'.tr,
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.next,
           validator: MultiValidator([

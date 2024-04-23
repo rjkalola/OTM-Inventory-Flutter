@@ -7,6 +7,7 @@ import '../pages/otp_verification/model/user_info.dart';
 class AppStorage extends GetxController {
   final box = GetStorage();
   static int storeId = 0;
+  static String storeName = "";
 
   Future<void> initStorage() async {
     await GetStorage.init();
@@ -37,6 +38,15 @@ class AppStorage extends GetxController {
   int getStoreId() {
     final storeId = box.read(AppConstants.sharedPreferenceKey.storeId) ?? 0;
     return storeId;
+  }
+
+  void setStoreName(String storeName) {
+    box.write(AppConstants.sharedPreferenceKey.storeName, storeName);
+  }
+
+  String getStoreName() {
+    final storeName = box.read(AppConstants.sharedPreferenceKey.storeName) ?? "";
+    return storeName;
   }
 
   void clearAllData(){

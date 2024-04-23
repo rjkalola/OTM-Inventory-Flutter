@@ -6,7 +6,7 @@ class ProductInfo {
   int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id,qty;
   String? shortName,name,description,price,image,extension,qrCode,categoryName,
       currency,sku,model_name,manufacturer_name,imageThumb,qrCodeThumb,imageUrl,imageThumbUrl,weight
-  ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name,dimension;
+  ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name,supplier_code,dimension;
   List<ModuleInfo>? categories;
   bool? status;
 
@@ -43,6 +43,7 @@ class ProductInfo {
         this.length_unit_name,
         this.weight_unit_name,
         this.supplier_name,
+        this.supplier_code,
         this.qty,
         this.dimension});
 
@@ -78,6 +79,7 @@ class ProductInfo {
     length_unit_name = json['length_unit_name'];
     weight_unit_name = json['weight_unit_name'];
     supplier_name = json['supplier_name'];
+    supplier_code = json['supplier_code'];
     qty = json['qty'];
     dimension = json['dimension'];
     if (json['categories'] != null) {
@@ -121,6 +123,7 @@ class ProductInfo {
     data['length_unit_name'] = length_unit_name;
     data['weight_unit_name'] = weight_unit_name;
     data['supplier_name'] = supplier_name;
+    data['supplier_code'] = supplier_code;
     data['qty'] = qty;
     data['dimension'] = dimension;
     if (categories != null) {

@@ -86,7 +86,13 @@ class Strings extends Translations {
           'note': "Note",
           'dimension_hwl': "Dimension (h*w*l)",
           'store': "Store",
-          'select_Store': "Select Store",
+          'select_store': "Select Store",
+          'supplier_name': "Supplier Name",
+          'supplier_code': "Supplier Code",
+          'qty_in_stock': "QTY in Stock",
+          'add_quantity_in_numbers': "Add quantity in NOs",
+          'empty_store_message': "No store found",
+          'dashboard': "Dashboard",
         },
         'hi_IN': {'login': 'Login'}
       };

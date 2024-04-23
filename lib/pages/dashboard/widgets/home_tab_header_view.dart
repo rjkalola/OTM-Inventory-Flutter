@@ -22,7 +22,7 @@ class HomeTabHeaderView extends StatelessWidget {
                 style: const TextStyle(
                   color: primaryTextColor,
                   fontWeight: FontWeight.w500,
-                  fontSize: 17,
+                  fontSize: 18,
                 )),
           )
         ],

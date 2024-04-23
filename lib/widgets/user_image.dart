@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:otm_inventory/utils/image_utils.dart';
 
 import '../utils/string_helper.dart';
 
@@ -13,24 +14,9 @@ class UserImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return !StringHelper.isEmptyString(url)
-        ? CachedNetworkImage(
-            imageUrl: url,
-            fit: BoxFit.scaleDown,
-            height: size,
-            width: size,
-            errorWidget: (context, url, error) => CachedNetworkImage(
-              imageUrl: defaultUrl,
-              fit: BoxFit.scaleDown,
-              height: size,
-              width: size,
-            ),
-          )
-        : CachedNetworkImage(
-            imageUrl: defaultUrl,
-            fit: BoxFit.scaleDown,
-            height: size,
-            width: size,
-          );
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 10, 10, 10),
+      child: ImageUtils.setUserImage(url, size, 45),
+    );
   }
 }
