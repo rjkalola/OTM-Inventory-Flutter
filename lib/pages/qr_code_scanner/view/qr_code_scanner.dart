@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+
 
 class QrCodeScanner extends StatefulWidget {
   const QrCodeScanner({Key? key}) : super(key: key);
@@ -30,66 +32,80 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context)),
-          // Expanded(
-          //   flex: 1,
-          //   child: FittedBox(
-          //     fit: BoxFit.contain,
-          //     child: Column(
-          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //       children: <Widget>[
-          //         if (result != null)
-          //           Text(
-          //               'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-          //         else
-          //           const Text('Scan a code'),
-          //         Row(
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           crossAxisAlignment: CrossAxisAlignment.center,
-          //           children: <Widget>[
-          //             Container(
-          //               margin: const EdgeInsets.all(8),
-          //               child: ElevatedButton(
-          //                   onPressed: () async {
-          //                     await controller?.toggleFlash();
-          //                     setState(() {});
-          //                   },
-          //                   child: FutureBuilder(
-          //                     future: controller?.getFlashStatus(),
-          //                     builder: (context, snapshot) {
-          //                       return Text('Flash: ${snapshot.data}');
-          //                     },
-          //                   )),
-          //             ),
-          //             Container(
-          //               margin: const EdgeInsets.all(8),
-          //               child: ElevatedButton(
-          //                   onPressed: () async {
-          //                     await controller?.flipCamera();
-          //                     setState(() {});
-          //                   },
-          //                   child: FutureBuilder(
-          //                     future: controller?.getCameraInfo(),
-          //                     builder: (context, snapshot) {
-          //                       if (snapshot.data != null) {
-          //                         return Text(
-          //                             'Camera facing ${describeEnum(snapshot.data!)}');
-          //                       } else {
-          //                         return const Text('loading');
-          //                       }
-          //                     },
-          //                   )),
-          //             )
-          //           ],
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // )
-        ],
+    return SafeArea(
+      child: Scaffold(
+        // appBar: BaseAppBar(
+        //   appBar: AppBar(),
+        //   title: 'verify_otp'.tr,
+        //   isCenterTitle: true,
+        //   isBack: true,
+        // ),
+        body: Stack(
+          children: <Widget>[
+            _buildQrView(context),
+            InkWell(onTap: () {
+              Get.back();
+            },child: const Padding(
+              padding: EdgeInsets.all(14.0),
+              child: Icon(Icons.close,size: 32,),
+            ))
+            // Expanded(
+            //   flex: 1,
+            //   child: FittedBox(
+            //     fit: BoxFit.contain,
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //       children: <Widget>[
+            //         if (result != null)
+            //           Text(
+            //               'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+            //         else
+            //           const Text('Scan a code'),
+            //         Row(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           crossAxisAlignment: CrossAxisAlignment.center,
+            //           children: <Widget>[
+            //             Container(
+            //               margin: const EdgeInsets.all(8),
+            //               child: ElevatedButton(
+            //                   onPressed: () async {
+            //                     await controller?.toggleFlash();
+            //                     setState(() {});
+            //                   },
+            //                   child: FutureBuilder(
+            //                     future: controller?.getFlashStatus(),
+            //                     builder: (context, snapshot) {
+            //                       return Text('Flash: ${snapshot.data}');
+            //                     },
+            //                   )),
+            //             ),
+            //             Container(
+            //               margin: const EdgeInsets.all(8),
+            //               child: ElevatedButton(
+            //                   onPressed: () async {
+            //                     await controller?.flipCamera();
+            //                     setState(() {});
+            //                   },
+            //                   child: FutureBuilder(
+            //                     future: controller?.getCameraInfo(),
+            //                     builder: (context, snapshot) {
+            //                       if (snapshot.data != null) {
+            //                         return Text(
+            //                             'Camera facing ${describeEnum(snapshot.data!)}');
+            //                       } else {
+            //                         return const Text('loading');
+            //                       }
+            //                     },
+            //                   )),
+            //             )
+            //           ],
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // )
+          ],
+        ),
       ),
     );
   }

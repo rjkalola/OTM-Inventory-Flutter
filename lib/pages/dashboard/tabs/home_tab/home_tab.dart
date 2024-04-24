@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/home_tab_action_buttons_list.dart';
-import 'package:otm_inventory/pages/dashboard/widgets/home_tab_header_view.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/textfield_select_store.dart';
 import 'package:otm_inventory/pages/otp_verification/model/user_info.dart';
 
@@ -12,6 +11,7 @@ import '../../../../res/colors.dart';
 import '../../../../utils/app_storage.dart';
 import '../../../../widgets/CustomProgressbar.dart';
 import '../../widgets/home_tab_action_buttons_dots_list.dart';
+import '../../widgets/home_tab_header_buttons_list.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -58,22 +58,13 @@ class _HomeTabState extends State<HomeTab> {
               //   userImage: userInfo.image ?? "",
               // ),
               Expanded(
-                child: Container(
-                  // margin: const EdgeInsets.fromLTRB(16, 6, 16, 0),
-                  // decoration: const BoxDecoration(
-                  //     color: backgroundColor,
-                  //     borderRadius: BorderRadius.only(
-                  //         topLeft: Radius.circular(6),
-                  //         topRight: Radius.circular(6))),
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      const SizedBox(height:20,),
-                      TextFieldSelectStoreHomeTab(),
-                      HomeTabActionButtonsList(),
-                      HomeTabActionButtonsDotsList(),
-                    ]),
-                  ),
-                ),
+                child: Column(children: [
+                  const SizedBox(height:20,),
+                  TextFieldSelectStoreHomeTab(),
+                  // HomeTabActionButtonsList(),
+                  // HomeTabActionButtonsDotsList(),
+                  HomeTabHeaderButtonsList()
+                ]),
               )
             ]),
           ),

@@ -28,8 +28,8 @@ class AddSupplierController extends GetxController
       isMainViewVisible = false.obs,
       isStatus = true.obs;
   RxString title = ''.obs;
-  final mExtension = "+91".obs;
-  final mFlag = "https://cdn.otmsystem.com//flags//png//in_32.png".obs;
+  final mExtension = "".obs;
+  final mFlag = "".obs;
   final formKey = GlobalKey<FormState>();
   final _api = AddSupplierRepository();
   final resourcesResponse = SupplierResourcesResponse().obs;
@@ -52,14 +52,14 @@ class AddSupplierController extends GetxController
       title.value = 'edit_supplier'.tr;
       SupplierInfo info = arguments[AppConstants.intentKey.supplierInfo];
       addRequest.id = info.id ?? 0;
-      addRequest.phone_extension_id = info.phoneExtensionId ?? 0;
-      addRequest.phone_extension = info.phoneExtensionName ?? "";
+      addRequest.phone_extension_id = info.phoneExtensionId ?? AppConstants.defaultPhoneExtensionId;
+      addRequest.phone_extension = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       addRequest.weight_unit_id = info.weightUnitId ?? 0;
 
-      mExtension.value = info.phoneExtensionName ?? "";
-      mFlag.value = info.flagName ?? "";
+      mExtension.value = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
+      mFlag.value = info.flagName ?? AppConstants.defaultFlagUrl;
 
-      phoneExtensionController.value.text = info.phoneExtensionName ?? "";
+      phoneExtensionController.value.text = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       phoneNumberController.value.text = info.phone ?? "";
       addressController.value.text = info.address ?? "";
       contactNameController.value.text = info.contactName ?? "";
@@ -71,7 +71,11 @@ class AddSupplierController extends GetxController
       isStatus.value = info.status ?? false;
     } else {
       title.value = 'add_supplier'.tr;
-      addRequest.phone_extension = mExtension.value;
+      mExtension.value = AppConstants.defaultPhoneExtension;
+      mFlag.value = AppConstants.defaultFlagUrl;
+
+      addRequest.phone_extension_id =AppConstants.defaultPhoneExtensionId;
+      addRequest.phone_extension = AppConstants.defaultPhoneExtension;
     }
     getSupplierResourcesApi();
   }
@@ -142,6 +146,9 @@ class AddSupplierController extends GetxController
   void onSelectPhoneExtension(
       int id, String extension, String flag, String country) {
     mFlag.value = flag;
+    print(flag);
+    print(id.toString());
+    print(extension);
     mExtension.value = extension;
     addRequest.phone_extension_id = id;
     addRequest.phone_extension = extension;
@@ -163,35 +170,21 @@ class AddSupplierController extends GetxController
           if (response.IsSuccess!) {
             resourcesResponse.value = response;
             isMainViewVisible.value = true;
-            if (addRequest.phone_extension_id == null ||
-                addRequest.phone_extension_id! == 0) {
-              for (int i = 0;
-                  i < resourcesResponse.value.countries!.length;
-                  i++) {
-                if (resourcesResponse.value.countries![i].phoneExtension ==
-                    "+91") {
-                  addRequest.phone_extension_id =
-                      resourcesResponse.value.countries![i].id;
-                  addRequest.phone_extension =
-                      resourcesResponse.value.countries![i].phoneExtension!;
-                  break;
-                }
-              }
-            } else {
-              // if (!StringHelper.isEmptyString(addRequest.store_managers)) {
-              //   List<String> listIds =
-              //       StringHelper.getListFromCommaSeparateString(
-              //           addRequest.store_managers!);
-              //   for (int i = 0;
-              //       i < resourcesResponse.value.users!.length;
-              //       i++) {
-              //     if (listIds.contains(
-              //         resourcesResponse.value.users![i].id.toString())) {
-              //       resourcesResponse.value.users![i].check = true;
-              //     }
-              //   }
-              // }
-            }
+            // if (addRequest.phone_extension_id == null ||
+            //     addRequest.phone_extension_id! == 0) {
+            //   for (int i = 0;
+            //       i < resourcesResponse.value.countries!.length;
+            //       i++) {
+            //     if (resourcesResponse.value.countries![i].phoneExtension ==
+            //         "+91") {
+            //       addRequest.phone_extension_id =
+            //           resourcesResponse.value.countries![i].id;
+            //       addRequest.phone_extension =
+            //           resourcesResponse.value.countries![i].phoneExtension!;
+            //       break;
+            //     }
+            //   }
+            // }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

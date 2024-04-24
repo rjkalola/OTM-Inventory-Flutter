@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/data_utils.dart';
 import '../dashboard_controller.dart';
-import '../models/DashboardActionItemInfo.dart';
 
 class HomeTabActionButtonsDotsList extends StatelessWidget {
   HomeTabActionButtonsDotsList({super.key});
@@ -21,7 +19,7 @@ class HomeTabActionButtonsDotsList extends StatelessWidget {
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           children: List.generate(
-            dashboardController.listHeaderButtons.length,
+            dashboardController.listHeaderButtons_.length,
             (position) => Container(
               margin: const EdgeInsets.all(3),
               width: 6,

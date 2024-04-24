@@ -28,8 +28,9 @@ class DashboardController extends GetxController
   final _api = DashboardRepository();
   var storeList = <ModuleInfo>[].obs;
   final storeNameController = TextEditingController().obs;
-  final List<List<DashboardActionItemInfo>> listHeaderButtons =
+  final List<List<DashboardActionItemInfo>> listHeaderButtons_ =
       DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3).obs;
+  final List<DashboardActionItemInfo> listHeaderButtons = DataUtils.getHeaderActionButtonsList().obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
@@ -59,6 +60,10 @@ class DashboardController extends GetxController
     if (!StringHelper.isEmptyString(AppStorage.storeName)) {
       storeNameController.value.text = AppStorage.storeName;
     }
+
+
+    print("Buttons length:"+listHeaderButtons.length.toString());
+
     // else {
     //   isMainViewVisible.value = true;
     //   setHealerListArray();
@@ -217,9 +222,12 @@ class DashboardController extends GetxController
   }
 
   void setHealerListArray() {
-    listHeaderButtons.clear();
-    listHeaderButtons.addAll(
+    listHeaderButtons_.clear();
+    listHeaderButtons_.addAll(
         DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3)
             .obs);
+    listHeaderButtons.clear();
+    listHeaderButtons.addAll(
+        DataUtils.getHeaderActionButtonsList());
   }
 }

@@ -20,8 +20,8 @@ import '../common/listener/SelectPhoneExtensionListener.dart';
 class LoginController extends GetxController
     implements SelectPhoneExtensionListener {
   final phoneController = TextEditingController().obs;
-  final mExtension = "+91".obs;
-  final mFlag = "https://cdn.otmsystem.com//flags//png//in_32.png".obs;
+  final mExtension = AppConstants.defaultPhoneExtension.obs;
+  final mFlag = AppConstants.defaultFlagUrl.obs;
   final formKey = GlobalKey<FormState>();
 
   final _api = LoginRepository();

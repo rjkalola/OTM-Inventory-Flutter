@@ -4,9 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../res/colors.dart';
 import '../../../utils/app_utils.dart';
-import '../../../utils/data_utils.dart';
 import '../dashboard_controller.dart';
-import '../models/DashboardActionItemInfo.dart';
 
 class HomeTabActionButtonsList extends StatelessWidget {
   HomeTabActionButtonsList({super.key});
@@ -19,7 +17,7 @@ class HomeTabActionButtonsList extends StatelessWidget {
       width: double.infinity,
       height: 90,
       child: PageView.builder(
-          itemCount: dashboardController.listHeaderButtons.length,
+          itemCount: dashboardController.listHeaderButtons_.length,
           onPageChanged: (int page) {
             dashboardController.selectedActionButtonPagerPosition.value = page;
           },
@@ -28,7 +26,7 @@ class HomeTabActionButtonsList extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 3,
                 children: List.generate(
-                  dashboardController.listHeaderButtons[index].length,
+                  dashboardController.listHeaderButtons_[index].length,
                   (position) {
                     return InkWell(
                       child: Column(
@@ -41,14 +39,14 @@ class HomeTabActionButtonsList extends StatelessWidget {
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(6),
                                   color: Color(AppUtils.haxColor(
-                                      dashboardController.listHeaderButtons[index][position].backgroundColor!))),
+                                      dashboardController.listHeaderButtons_[index][position].backgroundColor!))),
                               child: SvgPicture.asset(
-                                dashboardController.listHeaderButtons[index][position].image!,
+                                dashboardController.listHeaderButtons_[index][position].image!,
                               )),
                           Padding(
                             padding: const EdgeInsets.only(top: 6),
                             child: Text(
-                              dashboardController.listHeaderButtons[index][position].title!,
+                              dashboardController.listHeaderButtons_[index][position].title!,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: primaryTextColor,
@@ -61,7 +59,7 @@ class HomeTabActionButtonsList extends StatelessWidget {
                       ),
                       onTap: () {
                         dashboardController
-                            .onActionButtonClick(dashboardController.listHeaderButtons[index][position].id!);
+                            .onActionButtonClick(dashboardController.listHeaderButtons_[index][position].id!);
                       },
                     );
                   },

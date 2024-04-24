@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:otm_inventory/pages/otp_verification/verify_otp_controller.dart';
-import 'package:otm_inventory/pages/otp_verification/widgets/otp_box_widget.dart';
-import 'package:otm_inventory/pages/otp_verification/widgets/otp_submit_button.dart';
-import 'package:otm_inventory/pages/otp_verification/widgets/resend_view_widget.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_controller.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quantity_button.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_quantity_update_note.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_quantity.dart';
-import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
@@ -82,8 +76,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(6),
                                     child: ImageUtils.setImage(
-                                        stockEditQuantityController
-                                                .productInfo.value.imageThumbUrl ??
+                                        stockEditQuantityController.productInfo
+                                                .value.imageThumbUrl ??
                                             "",
                                         68),
                                   ),
@@ -94,7 +88,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                 Flexible(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       customTextView(
                                           stockEditQuantityController
@@ -103,19 +98,25 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                                   .shortName ??
                                               "",
                                           18,
-                                          FontWeight.w600,primaryTextColor,const EdgeInsets.all(0)),
+                                          FontWeight.w600,
+                                          primaryTextColor,
+                                          const EdgeInsets.all(0)),
                                       customTextView(
                                           stockEditQuantityController
-                                              .productInfo
-                                              .value
-                                              .supplier_code ??
+                                                  .productInfo
+                                                  .value
+                                                  .supplier_code ??
                                               "",
                                           15,
-                                          FontWeight.w400,primaryTextColorLight,const EdgeInsets.all(0)),
+                                          FontWeight.w400,
+                                          primaryTextColorLight,
+                                          const EdgeInsets.all(0)),
                                       customTextView(
-                                          "${'qty_in_stock'.tr}: ${stockEditQuantityController.productInfo.value.qty??0.toString()}",
+                                          "${'qty_in_stock'.tr}: ${stockEditQuantityController.productInfo.value.qty ?? 0.toString()}",
                                           15,
-                                          FontWeight.w400,primaryTextColorLight,const EdgeInsets.all(0))
+                                          FontWeight.w400,
+                                          primaryTextColorLight,
+                                          const EdgeInsets.all(0))
                                     ],
                                   ),
                                 )
@@ -125,21 +126,21 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                           dividerItem(),
                           customTextView(
                               stockEditQuantityController
-                                  .productInfo
-                                  .value
-                                  .name ??
+                                      .productInfo.value.name ??
                                   "",
                               18,
-                              FontWeight.w600,primaryTextColor,const EdgeInsets.fromLTRB(18, 14, 18, 14)),
+                              FontWeight.w600,
+                              primaryTextColor,
+                              const EdgeInsets.fromLTRB(18, 14, 18, 14)),
                           dividerItem(),
                           customTextView(
                               stockEditQuantityController
-                                  .productInfo
-                                  .value
-                                  .supplier_name ??
+                                      .productInfo.value.supplier_name ??
                                   "",
                               16,
-                              FontWeight.w500,primaryTextColor,const EdgeInsets.fromLTRB(18, 14, 18, 14)),
+                              FontWeight.w500,
+                              primaryTextColor,
+                              const EdgeInsets.fromLTRB(18, 14, 18, 14)),
                           dividerItem(),
                           // rowItemDetail('supplier_name'.tr, stockEditQuantityController
                           //     .productInfo
@@ -173,7 +174,9 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                       customTextView(
                           'add_quantity_in_numbers'.tr,
                           16,
-                          FontWeight.w400,primaryTextColor,const EdgeInsets.fromLTRB(18, 0, 18, 12)),
+                          FontWeight.w400,
+                          primaryTextColor,
+                          const EdgeInsets.fromLTRB(18, 0, 18, 12)),
                       // TextFieldQuantityUpdateNote(),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(18, 6, 18, 6),
@@ -268,8 +271,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
             )),
       );
 
-  Widget customTextView(
-          String? text, double fontSize, FontWeight? fontWeight,Color color,EdgeInsetsGeometry padding) =>
+  Widget customTextView(String? text, double fontSize, FontWeight? fontWeight,
+          Color color, EdgeInsetsGeometry padding) =>
       Visibility(
         visible: !StringHelper.isEmptyString(text),
         child: Flexible(

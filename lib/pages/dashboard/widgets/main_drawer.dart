@@ -39,8 +39,26 @@ class MainDrawer extends StatelessWidget {
               navigate(AppRoutes.productListScreen);
             },
           ),
+          // drawerItem(
+          //   text: 'stores'.tr,
+          //   iconPath: Drawable.homeDrawerIcon,
+          //   textIconColor: getItemColor(AppRoutes.storeListScreen),
+          //   tileColor: getItemBgColor(AppRoutes.storeListScreen),
+          //   onTap: () {
+          //     navigate(AppRoutes.storeListScreen);
+          //   },
+          // ),
           drawerItem(
-            text: 'stores'.tr,
+            text: 'stocks'.tr,
+            iconPath: Drawable.homeDrawerIcon,
+            textIconColor: getItemColor(AppRoutes.stockListScreen),
+            tileColor: getItemBgColor(AppRoutes.stockListScreen),
+            onTap: () {
+              navigate(AppRoutes.stockListScreen);
+            },
+          ),
+          drawerItem(
+            text: 'vendors'.tr,
             iconPath: Drawable.homeDrawerIcon,
             textIconColor: getItemColor(AppRoutes.storeListScreen),
             tileColor: getItemBgColor(AppRoutes.storeListScreen),
@@ -49,12 +67,12 @@ class MainDrawer extends StatelessWidget {
             },
           ),
           drawerItem(
-            text: 'stocks'.tr,
+            text: 'manufacturer'.tr,
             iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.stockListScreen),
-            tileColor: getItemBgColor(AppRoutes.stockListScreen),
+            textIconColor: getItemColor(AppRoutes.storeListScreen),
+            tileColor: getItemBgColor(AppRoutes.storeListScreen),
             onTap: () {
-              navigate(AppRoutes.stockListScreen);
+              navigate(AppRoutes.storeListScreen);
             },
           ),
           drawerItem(

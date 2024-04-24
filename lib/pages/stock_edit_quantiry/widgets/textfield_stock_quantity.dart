@@ -24,6 +24,10 @@ class TextFieldQuantity extends StatelessWidget {
         validator: MultiValidator([
           RequiredValidator(errorText: 'required_field'.tr),
         ]),
+        inputFormatters: <TextInputFormatter>[
+          // for below version 2 use this
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+        ],
         onValueChange: (value) {
           if (value.contains(",") || value.contains(".")) {
             String newText = value.replaceAll(",", "").replaceAll(".", "");

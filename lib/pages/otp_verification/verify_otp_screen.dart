@@ -41,72 +41,74 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: BaseAppBar(
-        appBar: AppBar(),
-        title: 'verify_otp'.tr,
-        isCenterTitle: true,
-        isBack: true,
-      ),
-      body: Obx(() {
-        return ModalProgressHUD(
-          inAsyncCall: verifyOtpController.isLoading.value,
-          opacity: 0,
-          progressIndicator: const CustomProgressbar(),
-          child: Column(children: [
-            Form(
-              key: verifyOtpController.formKey,
-              child: Expanded(
-                flex: 1,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Divider(
-                        thickness: 1,
-                        height: 1,
-                        color: dividerColor,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 30, 20, 22),
-                        child: Text('verify_otp_hint1'.tr,
-                            style: const TextStyle(
-                                color: defaultAccentColor,
-                                fontSize: 19,
-                                fontWeight: FontWeight.w500)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            OtpBoxWidget(boxController: verifyOtpController.box1.value),
-                            const SizedBox(
-                              width: 24,
-                            ),
-                            OtpBoxWidget(boxController: verifyOtpController.box2.value),
-                            const SizedBox(
-                              width: 24,
-                            ),
-                            OtpBoxWidget(boxController: verifyOtpController.box3.value),
-                            const SizedBox(
-                              width: 24,
-                            ),
-                            OtpBoxWidget(boxController: verifyOtpController.box4.value),
-                          ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: BaseAppBar(
+          appBar: AppBar(),
+          title: 'verify_otp'.tr,
+          isCenterTitle: true,
+          isBack: true,
+        ),
+        body: Obx(() {
+          return ModalProgressHUD(
+            inAsyncCall: verifyOtpController.isLoading.value,
+            opacity: 0,
+            progressIndicator: const CustomProgressbar(),
+            child: Column(children: [
+              Form(
+                key: verifyOtpController.formKey,
+                child: Expanded(
+                  flex: 1,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Divider(
+                          thickness: 1,
+                          height: 1,
+                          color: dividerColor,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 28,
-                      ),
-                      ResendViewWidget()
-                    ]),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 30, 20, 22),
+                          child: Text('verify_otp_hint1'.tr,
+                              style: const TextStyle(
+                                  color: defaultAccentColor,
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w500)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              OtpBoxWidget(boxController: verifyOtpController.box1.value),
+                              const SizedBox(
+                                width: 24,
+                              ),
+                              OtpBoxWidget(boxController: verifyOtpController.box2.value),
+                              const SizedBox(
+                                width: 24,
+                              ),
+                              OtpBoxWidget(boxController: verifyOtpController.box3.value),
+                              const SizedBox(
+                                width: 24,
+                              ),
+                              OtpBoxWidget(boxController: verifyOtpController.box4.value),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 28,
+                        ),
+                        ResendViewWidget()
+                      ]),
+                ),
               ),
-            ),
-            OtpSubmitButton()
-          ]),
-        );
-      }),
+              OtpSubmitButton()
+            ]),
+          );
+        }),
+      ),
     );
   }
 }

@@ -6,6 +6,9 @@ class AppConstants {
   static const Action action = Action();
   static const String deviceType = "1";
   static const int productListLimit = 20;
+  static const int defaultPhoneExtensionId = 1;
+  static const String defaultPhoneExtension = "+44";
+  static const String defaultFlagUrl = "https://devcdn.otmsystem.com/flags/png/gb_32.png";
 }
 
 class IntentKey {
@@ -50,6 +53,8 @@ class Action {
   final String suppliers = "SUPPLIERS";
   final String categories = "CATEGORIES";
   final String stocks = "STOCKS";
+  final String vendors = "VENDORS";
+  final String manufacturer = "MANUFACTURER";
 }
 
 class FromScreens {

@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:otm_inventory/pages/add_store/model/store_resources_response.dart';
 import 'package:otm_inventory/pages/common/listener/select_multi_item_listener.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
@@ -29,8 +26,8 @@ class AddStoreController extends GetxController
       isMainViewVisible = false.obs,
       isStatus = true.obs;
   RxString title = ''.obs;
-  final mExtension = "+91".obs;
-  final mFlag = "https://cdn.otmsystem.com//flags//png//in_32.png".obs;
+  final mExtension = "".obs;
+  final mFlag = "".obs;
   final formKey = GlobalKey<FormState>();
   final _api = AddStoreRepository();
   final resourcesResponse = StoreResourcesResponse().obs;
@@ -54,16 +51,16 @@ class AddStoreController extends GetxController
 
       addRequest.id = info.id ?? 0;
       addRequest.store_name = info.storeName ?? "";
-      addRequest.phone_extension_id = info.phoneExtensionId ?? 0;
-      addRequest.phone_extension = info.phoneExtensionName?? "";
+      addRequest.phone_extension_id = info.phoneExtensionId ?? AppConstants.defaultPhoneExtensionId;
+      addRequest.phone_extension = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       addRequest.phone = info.phone ?? "";
       addRequest.address = info.address ?? "";
 
       storeNameController.value.text = info.storeName ?? "";
-      mExtension.value = info.phoneExtensionName ?? "";
-      mFlag.value = info.flagName??"";
+      mExtension.value = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
+      mFlag.value = info.flagName ?? AppConstants.defaultFlagUrl;
 
-      phoneExtensionController.value.text = info.phoneExtensionName ?? "";
+      phoneExtensionController.value.text = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       phoneNumberController.value.text = info.phone ?? "";
       addressController.value.text = info.address ?? "";
 
@@ -77,7 +74,12 @@ class AddStoreController extends GetxController
       isStatus.value = info.status ?? false;
     } else {
       title.value = 'add_store'.tr;
-      addRequest.phone_extension = mExtension.value;
+
+      mExtension.value = AppConstants.defaultPhoneExtension;
+      mFlag.value = AppConstants.defaultFlagUrl;
+
+      addRequest.phone_extension_id =AppConstants.defaultPhoneExtensionId;
+      addRequest.phone_extension = AppConstants.defaultPhoneExtension;
     }
     getStoreResourcesApi();
   }
@@ -183,32 +185,14 @@ class AddStoreController extends GetxController
           if (response.IsSuccess!) {
             resourcesResponse.value = response;
             isMainViewVisible.value = true;
-            if (addRequest.phone_extension_id == null ||
-                addRequest.phone_extension_id! == 0) {
-              for (int i = 0;
-                  i < resourcesResponse.value.countries!.length;
-                  i++) {
-                if (resourcesResponse.value.countries![i].phoneExtension ==
-                    "+91") {
-                  addRequest.phone_extension_id =
-                      resourcesResponse.value.countries![i].id;
-                  addRequest.phone_extension =
-                      resourcesResponse.value.countries![i].phoneExtension!;
-                  break;
-                }
-              }
-            } else {
-              if (!StringHelper.isEmptyString(addRequest.store_managers)) {
-                List<String> listIds =
-                    StringHelper.getListFromCommaSeparateString(
-                        addRequest.store_managers!);
-                for (int i = 0;
-                    i < resourcesResponse.value.users!.length;
-                    i++) {
-                  if (listIds.contains(
-                      resourcesResponse.value.users![i].id.toString())) {
-                    resourcesResponse.value.users![i].check = true;
-                  }
+            if (!StringHelper.isEmptyString(addRequest.store_managers)) {
+              List<String> listIds =
+              StringHelper.getListFromCommaSeparateString(
+                  addRequest.store_managers!);
+              for (int i = 0; i < resourcesResponse.value.users!.length;i++) {
+                if (listIds.contains(
+                    resourcesResponse.value.users![i].id.toString())) {
+                  resourcesResponse.value.users![i].check = true;
                 }
               }
             }
