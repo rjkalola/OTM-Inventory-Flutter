@@ -17,7 +17,7 @@ class TextFieldQuantity extends StatelessWidget {
         textEditingController:
             stockEditQuantityController.quantityController.value,
         hintText: 'quantity'.tr,
-        labelText: 'quantity'.tr,
+        labelText: "",
         keyboardType: TextInputType.number,
         textInputAction: TextInputAction.done,
         textAlign: TextAlign.center,

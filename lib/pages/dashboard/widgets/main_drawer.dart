@@ -40,12 +40,39 @@ class MainDrawer extends StatelessWidget {
             },
           ),
           drawerItem(
+            text: 'stores'.tr,
+            iconPath: Drawable.homeDrawerIcon,
+            textIconColor: getItemColor(AppRoutes.storeListScreen),
+            tileColor: getItemBgColor(AppRoutes.storeListScreen),
+            onTap: () {
+              navigate(AppRoutes.storeListScreen);
+            },
+          ),
+          drawerItem(
             text: 'stocks'.tr,
             iconPath: Drawable.homeDrawerIcon,
             textIconColor: getItemColor(AppRoutes.stockListScreen),
             tileColor: getItemBgColor(AppRoutes.stockListScreen),
             onTap: () {
               navigate(AppRoutes.stockListScreen);
+            },
+          ),
+          drawerItem(
+            text: 'categories'.tr,
+            iconPath: Drawable.homeDrawerIcon,
+            textIconColor: getItemColor(AppRoutes.categoryListScreen),
+            tileColor: getItemBgColor(AppRoutes.categoryListScreen),
+            onTap: () {
+              navigate(AppRoutes.categoryListScreen);
+            },
+          ),
+          drawerItem(
+            text: 'suppliers'.tr,
+            iconPath: Drawable.homeDrawerIcon,
+            textIconColor: getItemColor(AppRoutes.supplierListScreen),
+            tileColor: getItemBgColor(AppRoutes.supplierListScreen),
+            onTap: () {
+              navigate(AppRoutes.supplierListScreen);
             },
           ),
         ],

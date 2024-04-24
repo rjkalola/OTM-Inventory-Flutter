@@ -44,22 +44,27 @@ class _HomeTabState extends State<HomeTab> {
         opacity: 0,
         progressIndicator: const CustomProgressbar(),
         child: Scaffold(
-          backgroundColor: const Color(0xfff4f5f7),
+          // backgroundColor: const Color(0xfff4f5f7),
           body: Visibility(
             visible: dashboardController.isMainViewVisible.value,
             child: Column(children: [
-              HomeTabHeaderView(
-                userName: userInfo.firstName ?? "",
-                userImage: userInfo.image ?? "",
+              const Divider(
+                thickness: 1,
+                height: 1,
+                color: dividerColor,
               ),
+              // HomeTabHeaderView(
+              //   userName: userInfo.firstName ?? "",
+              //   userImage: userInfo.image ?? "",
+              // ),
               Expanded(
                 child: Container(
-                  margin: const EdgeInsets.fromLTRB(16, 6, 16, 0),
-                  decoration: const BoxDecoration(
-                      color: backgroundColor,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(6),
-                          topRight: Radius.circular(6))),
+                  // margin: const EdgeInsets.fromLTRB(16, 6, 16, 0),
+                  // decoration: const BoxDecoration(
+                  //     color: backgroundColor,
+                  //     borderRadius: BorderRadius.only(
+                  //         topLeft: Radius.circular(6),
+                  //         topRight: Radius.circular(6))),
                   child: SingleChildScrollView(
                     child: Column(children: [
                       const SizedBox(height:20,),

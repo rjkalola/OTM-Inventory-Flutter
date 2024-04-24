@@ -90,7 +90,7 @@ class Strings extends Translations {
           'supplier_name': "Supplier Name",
           'supplier_code': "Supplier Code",
           'qty_in_stock': "QTY in Stock",
-          'add_quantity_in_numbers': "Add quantity in NOs",
+          'add_quantity_in_numbers': "Add quantity",
           'empty_store_message': "No store found",
           'dashboard': "Dashboard",
         },

@@ -10,6 +10,8 @@ import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
+import '../../common/widgets/common_bottom_navigation_bar_widget.dart';
+import '../../dashboard/widgets/main_drawer.dart';
 
 class StoreListScreen extends StatefulWidget {
   const StoreListScreen({super.key});
@@ -34,6 +36,8 @@ class _StoreListScreenState extends State<StoreListScreen> {
           title: 'stores'.tr,
           isBack: true,
           widgets: actionButtons()),
+      drawer: MainDrawer(),
+      bottomNavigationBar: const CommonBottomNavigationBarWidget(),
       body: Obx(
         () => ModalProgressHUD(
           inAsyncCall: storeListController.isLoading.value,
@@ -80,7 +84,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
       //   onPressed: () {},
       // ),
       IconButton(
-        icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
+        icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
         onPressed: () {
           storeListController.addStoreClick(null);
         },

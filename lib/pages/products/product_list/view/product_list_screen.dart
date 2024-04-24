@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:otm_inventory/pages/common/widgets/common_bottom_navigation_bar_widget.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/product_empty_view.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/product_list.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/search_product.dart';
@@ -38,6 +39,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           isBack: true,
           widgets: actionButtons()),
       drawer: MainDrawer(),
+      bottomNavigationBar: const CommonBottomNavigationBarWidget(),
       body: Obx(
         () => ModalProgressHUD(
           inAsyncCall: productListController.isLoading.value,
@@ -53,7 +55,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 height: 1,
                 color: dividerColor,
               ),
-              SearchProductWidget(),
+              const SearchProductWidget(),
               productListController.productList.isNotEmpty
                   ? ProductListView()
                   : ProductListEmptyView(),

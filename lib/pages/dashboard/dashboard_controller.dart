@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
@@ -20,7 +19,6 @@ import '../../web_services/response/module_info.dart';
 import '../../web_services/response/response_model.dart';
 import '../common/drop_down_list_dialog.dart';
 import '../common/listener/select_item_listener.dart';
-import '../store_list/model/store_info.dart';
 import '../store_list/model/store_list_response.dart';
 import 'models/DashboardActionItemInfo.dart';
 
@@ -35,16 +33,61 @@ class DashboardController extends GetxController
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
+  final title = 'dashboard'.tr.obs;
   final selectedIndex = 0.obs;
-  final pageController = PageController();
+  // final pageController = PageController();
+  late final PageController pageController;
   final tabs = <Widget>[
     HomeTab(),
     ProfileTab(),
     MoreTab(),
   ];
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    var arguments = Get.arguments;
+    if (arguments != null) {
+      selectedIndex.value = arguments[AppConstants.intentKey.dashboardTabIndex];
+    }
+    pageController = PageController(initialPage: selectedIndex.value);
+    setTitle(selectedIndex.value);
+
+    AppStorage.storeId = Get.find<AppStorage>().getStoreId();
+    AppStorage.storeName = Get.find<AppStorage>().getStoreName();
+    if (!StringHelper.isEmptyString(AppStorage.storeName)) {
+      storeNameController.value.text = AppStorage.storeName;
+    }
+    // else {
+    //   isMainViewVisible.value = true;
+    //   setHealerListArray();
+    // }
+    getStoreListApi();
+    // isMainViewVisible.value = true;
+    // setHealerListArray();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
+  }
+
   void onPageChanged(int index) {
     selectedIndex.value = index;
+    print("selectedIndex.value:${selectedIndex.value}");
+    setTitle(index);
+  }
+
+  void setTitle(int index){
+    if(index == 0){
+      title.value = 'dashboard'.tr;
+    }else  if(index == 1){
+      title.value = 'profile'.tr;
+    }else  if(index == 2){
+      title.value = 'more'.tr;
+    }
   }
 
   void onItemTapped(int index) {
@@ -64,34 +107,19 @@ class DashboardController extends GetxController
     initialPage: 0,
   );
 
-  @override
-  void onInit() {
-    super.onInit();
-    AppStorage.storeId = Get.find<AppStorage>().getStoreId();
-    AppStorage.storeName = Get.find<AppStorage>().getStoreName();
-    if (!StringHelper.isEmptyString(AppStorage.storeName)) {
-      storeNameController.value.text = AppStorage.storeName;
-    }
-    // else {
-    //   isMainViewVisible.value = true;
-    //   setHealerListArray();
-    // }
-    getStoreListApi();
-    // isMainViewVisible.value = true;
-    // setHealerListArray();
-  }
+
 
   void onActionButtonClick(String action) {
     if (action == AppConstants.action.items) {
-      Get.toNamed(AppRoutes.productListScreen);
+      Get.offNamed(AppRoutes.productListScreen);
     } else if (action == AppConstants.action.store) {
-      Get.toNamed(AppRoutes.storeListScreen);
+      Get.offNamed(AppRoutes.storeListScreen);
     } else if (action == AppConstants.action.stocks) {
-      Get.toNamed(AppRoutes.stockListScreen);
+      Get.offNamed(AppRoutes.stockListScreen);
     } else if (action == AppConstants.action.suppliers) {
-      Get.toNamed(AppRoutes.supplierListScreen);
+      Get.offNamed(AppRoutes.supplierListScreen);
     } else if (action == AppConstants.action.categories) {
-      Get.toNamed(AppRoutes.categoryListScreen);
+      Get.offNamed(AppRoutes.categoryListScreen);
     }
   }
 

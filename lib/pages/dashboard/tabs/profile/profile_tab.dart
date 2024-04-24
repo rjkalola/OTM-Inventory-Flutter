@@ -27,12 +27,12 @@ class ProfileTabState extends State<ProfileTab> implements DialogButtonClickList
         statusBarIconBrightness: Brightness.dark));
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        leadingWidth: 32, // <-- Use this- and this
-        title: Text('profile'.tr,
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
-      ),
+      // appBar: AppBar(
+      //   surfaceTintColor: Colors.transparent,
+      //   leadingWidth: 32, // <-- Use this- and this
+      //   title: Text('profile'.tr,
+      //       style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
+      // ),
       body: Column(
         children: [
           const Divider(

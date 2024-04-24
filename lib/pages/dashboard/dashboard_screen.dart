@@ -5,6 +5,8 @@ import 'package:otm_inventory/pages/dashboard/widgets/bottom_navigation_bar_widg
 import 'package:otm_inventory/pages/dashboard/widgets/main_drawer.dart';
 import 'package:otm_inventory/res/colors.dart';
 
+import '../../widgets/appbar/base_appbar.dart';
+
 class DashboardScreen extends StatelessWidget {
   DashboardScreen({super.key});
 
@@ -12,8 +14,12 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(child: Obx(() => Scaffold(
       backgroundColor: backgroundColor,
+      appBar: BaseAppBar(
+        appBar: AppBar(),
+        title: dashboardController.title.value,
+        isBack: true,),
       drawer:  MainDrawer(),
       body: SizedBox(
         width: double.infinity,
@@ -26,6 +32,6 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBarWidget(),
-    );
+    )));
   }
 }

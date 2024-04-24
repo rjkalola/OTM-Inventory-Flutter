@@ -12,6 +12,8 @@ import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
+import '../common/widgets/common_bottom_navigation_bar_widget.dart';
+import '../dashboard/widgets/main_drawer.dart';
 import 'category_list_controller.dart';
 
 class CategoryListScreen extends StatefulWidget {
@@ -37,6 +39,8 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
           title: 'categories'.tr,
           isBack: true,
           widgets: actionButtons()),
+      drawer: MainDrawer(),
+      bottomNavigationBar: const CommonBottomNavigationBarWidget(),
       body: Obx(
         () => ModalProgressHUD(
           inAsyncCall: categoryListController.isLoading.value,
@@ -83,7 +87,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
       //   onPressed: () {},
       // ),
       IconButton(
-        icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
+        icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
         onPressed: () {
           categoryListController.addCategoryClick(null);
         },

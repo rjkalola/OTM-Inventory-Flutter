@@ -12,6 +12,8 @@ import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 import '../../../res/colors.dart';
 import '../../../res/drawable.dart';
 import '../../../widgets/CustomProgressbar.dart';
+import '../common/widgets/common_bottom_navigation_bar_widget.dart';
+import '../dashboard/widgets/main_drawer.dart';
 
 class StockListScreen extends StatefulWidget {
   const StockListScreen({super.key});
@@ -36,6 +38,8 @@ class _StockListScreenState extends State<StockListScreen> {
           title: 'stocks'.tr,
           isBack: true,
           widgets: actionButtons()),
+      drawer: MainDrawer(),
+      bottomNavigationBar: const CommonBottomNavigationBarWidget(),
       body: Obx(
         () => ModalProgressHUD(
           inAsyncCall: stockListController.isLoading.value,
@@ -43,7 +47,7 @@ class _StockListScreenState extends State<StockListScreen> {
           progressIndicator: const CustomProgressbar(),
           child: RefreshIndicator(
             onRefresh: () async {
-              await stockListController.getStockListApi(false,"0");
+              await stockListController.getStockListApi(false, "0");
             },
             child: Column(children: [
               const Divider(
@@ -77,10 +81,18 @@ class _StockListScreenState extends State<StockListScreen> {
       //     onPressed: () {},
       //   ),
       // ),
-      InkWell(onTap:(){
-        print("tap qr code");
-        stockListController.openQrCodeScanner();
-      },child: Text('qr_code'.tr,style: const TextStyle(fontSize: 16,color: defaultAccentColor,fontWeight: FontWeight.w500), )),
+      InkWell(
+          onTap: () {
+            print("tap qr code");
+            stockListController.openQrCodeScanner();
+          },
+          child: Text(
+            'qr_code'.tr,
+            style: const TextStyle(
+                fontSize: 16,
+                color: defaultAccentColor,
+                fontWeight: FontWeight.w500),
+          )),
       IconButton(
         icon: SvgPicture.asset(
           width: 22,
@@ -94,7 +106,6 @@ class _StockListScreenState extends State<StockListScreen> {
       //     // stockListController.addStockClick(null);
       //   },
       // ),
-
     ];
   }
 }
