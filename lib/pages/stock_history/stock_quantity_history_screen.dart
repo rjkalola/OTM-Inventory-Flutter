@@ -3,27 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_controller.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/qty_history_list_view.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quantity_button.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_quantity.dart';
 import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../res/colors.dart';
 import '../../widgets/CustomProgressbar.dart';
 import '../../widgets/appbar/base_appbar.dart';
+import '../stock_edit_quantiry/widgets/qty_history_list_view.dart';
 
-class StockEditQuantityScreen extends StatefulWidget {
-  const StockEditQuantityScreen({
+class StockQuantityHistoryScreen extends StatefulWidget {
+  const StockQuantityHistoryScreen({
     super.key,
   });
 
   @override
-  State<StockEditQuantityScreen> createState() =>
-      _StockEditQuantityScreenState();
+  State<StockQuantityHistoryScreen> createState() =>
+      _StockQuantityHistoryScreenState();
 }
 
-class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
+class _StockQuantityHistoryScreenState extends State<StockQuantityHistoryScreen> {
   final stockEditQuantityController = Get.put(StockEditQuantityController());
 
   @override
@@ -78,7 +76,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                     padding: const EdgeInsets.all(6),
                                     child: ImageUtils.setImage(
                                         stockEditQuantityController.productInfo
-                                                .value.imageThumbUrl ??
+                                            .value.imageThumbUrl ??
                                             "",
                                         68),
                                   ),
@@ -90,13 +88,13 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       customTextView(
                                           stockEditQuantityController
-                                                  .productInfo
-                                                  .value
-                                                  .shortName ??
+                                              .productInfo
+                                              .value
+                                              .shortName ??
                                               "",
                                           18,
                                           FontWeight.w600,
@@ -104,9 +102,9 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                           const EdgeInsets.all(0)),
                                       customTextView(
                                           stockEditQuantityController
-                                                  .productInfo
-                                                  .value
-                                                  .supplier_code ??
+                                              .productInfo
+                                              .value
+                                              .supplier_code ??
                                               "",
                                           15,
                                           FontWeight.w400,
@@ -124,24 +122,6 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                               ],
                             ),
                           ),
-                          dividerItem(),
-                          customTextView(
-                              stockEditQuantityController
-                                      .productInfo.value.name ??
-                                  "",
-                              18,
-                              FontWeight.w600,
-                              primaryTextColor,
-                              const EdgeInsets.fromLTRB(18, 14, 18, 14)),
-                          dividerItem(),
-                          customTextView(
-                              stockEditQuantityController
-                                      .productInfo.value.supplier_name ??
-                                  "",
-                              16,
-                              FontWeight.w500,
-                              primaryTextColor,
-                              const EdgeInsets.fromLTRB(18, 14, 18, 14)),
                           dividerItem(),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 18, 16, 12),
@@ -163,7 +143,6 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                               ],
                             ),
                           ),
-
                           QtyHistoryListView()
                           // rowItemDetail('supplier_name'.tr, stockEditQuantityController
                           //     .productInfo
@@ -178,80 +157,6 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                           //     "-"),
                           // dividerItem(),
                         ]),
-                  ),
-                ),
-                Form(
-                  key: stockEditQuantityController.formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Divider(
-                        thickness: 1,
-                        height: 1,
-                        color: dividerColor,
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      customTextView(
-                          'add_quantity_in_numbers'.tr,
-                          16,
-                          FontWeight.w400,
-                          primaryTextColor,
-                          const EdgeInsets.fromLTRB(18, 0, 18, 12)),
-                      // TextFieldQuantityUpdateNote(),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(18, 6, 18, 6),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // InkWell(
-                              //   onTap: () {
-                              //     stockEditQuantityController
-                              //         .decreaseQuantity();
-                              //   },
-                              //   child: Container(
-                              //     decoration: BoxDecoration(
-                              //         border: Border.all(
-                              //             color: const Color(0xffc6c6c6)),
-                              //         borderRadius: BorderRadius.circular(4)),
-                              //     child: const Padding(
-                              //       padding: EdgeInsets.all(10.0),
-                              //       child: Icon(
-                              //         Icons.remove,
-                              //         size: 22,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-                              // const SizedBox(width: 10),
-                              TextFieldQuantity(),
-                              // const SizedBox(width: 10),
-                              // InkWell(
-                              //   onTap: () {
-                              //     stockEditQuantityController
-                              //         .increaseQuantity();
-                              //   },
-                              //   child: Container(
-                              //     decoration: BoxDecoration(
-                              //         border: Border.all(
-                              //             color: const Color(0xffc6c6c6)),
-                              //         borderRadius: BorderRadius.circular(4)),
-                              //     child: const Padding(
-                              //       padding: EdgeInsets.all(10.0),
-                              //       child: Icon(
-                              //         Icons.add,
-                              //         size: 22,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // )
-                            ]),
-                      ),
-                      SaveStockQuantityButton()
-                    ],
                   ),
                 )
               ]),

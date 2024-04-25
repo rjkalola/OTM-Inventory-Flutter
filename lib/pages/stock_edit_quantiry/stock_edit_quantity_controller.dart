@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/model/stock_quantity_response.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_repository.dart';
-import 'package:otm_inventory/pages/stock_list/stock_list_repository.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
@@ -17,7 +16,6 @@ import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
 import '../products/product_list/models/product_info.dart';
-import '../products/product_list/models/product_list_response.dart';
 
 class StockEditQuantityController extends GetxController {
   final _api = StockEditQuantityRepository();
@@ -143,11 +141,14 @@ class StockEditQuantityController extends GetxController {
       // String qtyString = finalQuantity.toString();
       // storeStockQuantityApi(true, productId.toString(),qtyString,note);
 
-      String qtyString = quantityController.value.text.toString().trim();
+      int qty = int.parse(quantityController.value.text.toString().trim());
+      int finalQty = 0;
       if(isDeduct){
-        qtyString = "-$qtyString";
+        finalQty = initialQuantity-qty;
+      }else{
+        finalQty = initialQuantity+qty;
       }
-      storeStockQuantityApi(true, productId.toString(),qtyString,note);
+      storeStockQuantityApi(true, productId.toString(),finalQty.toString(),note);
     }
   }
 

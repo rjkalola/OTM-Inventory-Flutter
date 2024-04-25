@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
 
 import '../../routes/app_routes.dart';
-import '../../utils/AlertDialogHelper.dart';
 import '../../utils/app_storage.dart';
 import '../response/response_model.dart';
 import 'api_exception.dart';
@@ -74,9 +73,26 @@ class ApiRequest {
           ),
         );
         if (kDebugMode) print("Response Data ==> ${response.data}");
-        if (response.statusCode == 200) {
+        /* if (response.statusCode == 200) {
           responseModel = returnResponse(jsonEncode(response.data),
               response.statusCode, response.statusMessage);
+        } else {
+          responseModel =
+              returnResponse(null, response.statusCode, response.statusMessage);
+        }
+        if (onSuccess != null) onSuccess(responseModel);*/
+        if (response.statusCode == 200) {
+          bool isSuccess = response.data['IsSuccess'];
+          int errorCode = response.data['ErrorCode'] ?? 0;
+          print("isSuccess:" + isSuccess.toString());
+          print("errorCode:" + errorCode.toString());
+          if (isSuccess || errorCode != 401) {
+            responseModel = returnResponse(jsonEncode(response.data),
+                response.statusCode, response.statusMessage);
+          } else {
+            showUnAuthorizedDialog();
+            responseModel = returnResponse(null, 0, "");
+          }
         } else {
           responseModel =
               returnResponse(null, response.statusCode, response.statusMessage);
@@ -93,16 +109,6 @@ class ApiRequest {
       responseModel = returnResponse(null, 0, apiException.message);
     }
     return responseModel;
-    /* catch (e) {
-      e.printError();
-      if (kDebugMode) print("Error in api call $e");
-      var responseModel = ResponseModel(
-          result: null,
-          statusCode: 0,
-          statusMessage: e.toString());
-      if (onError != null) onError(responseModel);
-      // if (onError != null) onError(e);
-    }*/
   }
 
   Future<dynamic> postRequest({

@@ -1,5 +1,7 @@
 
 
+import 'package:otm_inventory/pages/stock_edit_quantiry/model/stock_qty_history_info.dart';
+
 import '../../../../web_services/response/module_info.dart';
 
 class ProductInfo {
@@ -9,6 +11,7 @@ class ProductInfo {
   ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name,supplier_code,dimension;
   List<ModuleInfo>? categories;
   bool? status;
+  List<StockQtyHistoryInfo>? stock_histories;
 
   ProductInfo(
       {this.id,
@@ -45,7 +48,8 @@ class ProductInfo {
         this.supplier_name,
         this.supplier_code,
         this.qty,
-        this.dimension});
+        this.dimension,
+        this.stock_histories});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -88,6 +92,12 @@ class ProductInfo {
         categories!.add(ModuleInfo.fromJson(v));
       });
     }
+    if (json['stock_histories'] != null) {
+      stock_histories = <StockQtyHistoryInfo>[];
+      json['stock_histories'].forEach((v) {
+        stock_histories!.add(StockQtyHistoryInfo.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -128,6 +138,9 @@ class ProductInfo {
     data['dimension'] = dimension;
     if (categories != null) {
       data['categories'] = categories!.map((v) => v.toJson()).toList();
+    }
+    if (stock_histories != null) {
+      data['stock_histories'] = stock_histories!.map((v) => v.toJson()).toList();
     }
     return data;
   }
