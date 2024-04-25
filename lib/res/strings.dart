@@ -93,6 +93,8 @@ class Strings extends Translations {
           'add_quantity_in_numbers': "Add quantity",
           'empty_store_message': "No store found",
           'dashboard': "Dashboard",
+          'deduct': "Deduct",
+          'add': "Add",
         },
         'hi_IN': {'login': 'Login'}
       };

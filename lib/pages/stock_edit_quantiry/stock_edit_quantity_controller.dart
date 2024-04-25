@@ -137,10 +137,16 @@ class StockEditQuantityController extends GetxController {
     );
   }
 
-  void onUpdateQuantityClick() {
+  void onUpdateQuantityClick(bool isDeduct) {
     if (formKey.currentState!.validate()) {
       String note = noteController.value.text.toString().trim();
-      String qtyString = finalQuantity.toString();
+      // String qtyString = finalQuantity.toString();
+      // storeStockQuantityApi(true, productId.toString(),qtyString,note);
+
+      String qtyString = quantityController.value.text.toString().trim();
+      if(isDeduct){
+        qtyString = "-$qtyString";
+      }
       storeStockQuantityApi(true, productId.toString(),qtyString,note);
     }
   }

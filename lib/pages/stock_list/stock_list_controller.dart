@@ -81,6 +81,7 @@ class StockListController extends GetxController {
     map["is_stock"] = 1;
     map["store_id"] = AppStorage.storeId.toString();
     multi.FormData formData = multi.FormData.fromMap(map);
+    print(map.toString());
 
     if (isProgress) isLoading.value = true;
     _api.getStockList(

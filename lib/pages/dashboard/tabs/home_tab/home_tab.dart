@@ -58,13 +58,15 @@ class _HomeTabState extends State<HomeTab> {
               //   userImage: userInfo.image ?? "",
               // ),
               Expanded(
-                child: Column(children: [
-                  const SizedBox(height:20,),
-                  TextFieldSelectStoreHomeTab(),
-                  // HomeTabActionButtonsList(),
-                  // HomeTabActionButtonsDotsList(),
-                  HomeTabHeaderButtonsList()
-                ]),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    const SizedBox(height:20,),
+                    TextFieldSelectStoreHomeTab(),
+                    // HomeTabActionButtonsList(),
+                    // HomeTabActionButtonsDotsList(),
+                    HomeTabHeaderButtonsList()
+                  ]),
+                ),
               )
             ]),
           ),

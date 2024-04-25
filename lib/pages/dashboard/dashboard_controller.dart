@@ -55,7 +55,8 @@ class DashboardController extends GetxController
     pageController = PageController(initialPage: selectedIndex.value);
     setTitle(selectedIndex.value);
 
-    AppStorage.storeId = Get.find<AppStorage>().getStoreId();
+    // AppStorage.storeId = Get.find<AppStorage>().getStoreId();
+    AppStorage.storeId = 1;
     AppStorage.storeName = Get.find<AppStorage>().getStoreName();
     if (!StringHelper.isEmptyString(AppStorage.storeName)) {
       storeNameController.value.text = AppStorage.storeName;

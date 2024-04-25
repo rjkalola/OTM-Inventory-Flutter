@@ -139,6 +139,8 @@ class DropDownMultiSelectionListDialogState
                           flex: 1,
                           child: PrimaryBorderButton(
                             buttonText: 'cancel'.tr,
+                            textColor: defaultAccentColor,
+                            borderColor: defaultAccentColor,
                             onPressed: () {
                               Navigator.pop(context);
                             },

@@ -14,7 +14,7 @@ class HomeTabHeaderButtonsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => ListView(
-      physics: const AlwaysScrollableScrollPhysics(), //
+      physics: const NeverScrollableScrollPhysics(), //
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       children: List.generate(
