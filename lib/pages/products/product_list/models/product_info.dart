@@ -8,7 +8,7 @@ class ProductInfo {
   int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id,qty;
   String? shortName,name,description,price,image,extension,qrCode,categoryName,
       currency,sku,model_name,manufacturer_name,imageThumb,qrCodeThumb,imageUrl,imageThumbUrl,weight
-  ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name,supplier_code,dimension;
+  ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name,supplier_code,dimension,barcode_text;
   List<ModuleInfo>? categories;
   bool? status;
   List<StockQtyHistoryInfo>? stock_histories;
@@ -49,6 +49,7 @@ class ProductInfo {
         this.supplier_code,
         this.qty,
         this.dimension,
+        this.barcode_text,
         this.stock_histories});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
@@ -98,6 +99,7 @@ class ProductInfo {
         stock_histories!.add(StockQtyHistoryInfo.fromJson(v));
       });
     }
+    barcode_text = json['barcode_text'];
   }
 
   Map<String, dynamic> toJson() {
@@ -136,6 +138,7 @@ class ProductInfo {
     data['supplier_code'] = supplier_code;
     data['qty'] = qty;
     data['dimension'] = dimension;
+    data['barcode_text'] = barcode_text;
     if (categories != null) {
       data['categories'] = categories!.map((v) => v.toJson()).toList();
     }

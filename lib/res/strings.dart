@@ -97,6 +97,7 @@ class Strings extends Translations {
           'add': "Add",
           'stock_movement': "Stock Movement",
           'view_more': "View More",
+          'stock_history': "Stock History",
         },
         'hi_IN': {'login': 'Login'}
       };

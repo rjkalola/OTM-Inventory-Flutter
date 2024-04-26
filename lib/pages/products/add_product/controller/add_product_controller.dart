@@ -20,6 +20,7 @@ import '../../../common/model/file_info.dart';
 import '../../product_list/models/product_info.dart';
 import '../model/add_product_request.dart';
 import '../model/product_resources_response.dart';
+import '../model/store_product_response.dart';
 import 'add_product_repository.dart';
 
 class AddProductController extends GetxController
@@ -332,6 +333,10 @@ class AddProductController extends GetxController
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
+          // StoreProductResponse response = StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
+          // if (response.IsSuccess!) {
+          //  print("Id:${response.id}") ;
+          // }
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {

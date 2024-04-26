@@ -10,6 +10,8 @@ import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../res/colors.dart';
+import '../../routes/app_routes.dart';
+import '../../utils/app_constants.dart';
 import '../../widgets/CustomProgressbar.dart';
 import '../../widgets/appbar/base_appbar.dart';
 
@@ -101,7 +103,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                           18,
                                           FontWeight.w600,
                                           primaryTextColor,
-                                          const EdgeInsets.all(0)),
+                                          const EdgeInsets.all(0),
+                                          () => {}),
                                       customTextView(
                                           stockEditQuantityController
                                                   .productInfo
@@ -111,13 +114,15 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                           15,
                                           FontWeight.w400,
                                           primaryTextColorLight,
-                                          const EdgeInsets.all(0)),
+                                          const EdgeInsets.all(0),
+                                          () => {}),
                                       customTextView(
                                           "${'qty_in_stock'.tr}: ${stockEditQuantityController.productInfo.value.qty ?? 0.toString()}",
                                           15,
                                           FontWeight.w400,
                                           primaryTextColorLight,
-                                          const EdgeInsets.all(0))
+                                          const EdgeInsets.all(0),
+                                          () => {})
                                     ],
                                   ),
                                 )
@@ -132,7 +137,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                               18,
                               FontWeight.w600,
                               primaryTextColor,
-                              const EdgeInsets.fromLTRB(18, 14, 18, 14)),
+                              const EdgeInsets.fromLTRB(18, 14, 18, 14),
+                              () => {}),
                           dividerItem(),
                           customTextView(
                               stockEditQuantityController
@@ -141,7 +147,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                               16,
                               FontWeight.w500,
                               primaryTextColor,
-                              const EdgeInsets.fromLTRB(18, 14, 18, 14)),
+                              const EdgeInsets.fromLTRB(18, 14, 18, 14),
+                              () => {}),
                           dividerItem(),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 18, 16, 12),
@@ -153,13 +160,22 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                     17,
                                     FontWeight.w500,
                                     primaryTextColorLight,
-                                    const EdgeInsets.all(0)),
+                                    const EdgeInsets.all(0),
+                                    () => {}),
                                 customTextView(
                                     'view_more'.tr,
                                     17,
                                     FontWeight.w500,
                                     primaryTextColorLight,
-                                    const EdgeInsets.all(0))
+                                    const EdgeInsets.all(0), () {
+                                  var arguments = {
+                                    AppConstants.intentKey.productId:
+                                        stockEditQuantityController.productId,
+                                  };
+                                  Get.toNamed(
+                                      AppRoutes.stockQuantityHistoryScreen,
+                                      arguments: arguments);
+                                })
                               ],
                             ),
                           ),
@@ -199,7 +215,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                           16,
                           FontWeight.w400,
                           primaryTextColor,
-                          const EdgeInsets.fromLTRB(18, 0, 18, 12)),
+                          const EdgeInsets.fromLTRB(18, 0, 18, 12),
+                          () => {}),
                       // TextFieldQuantityUpdateNote(),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(18, 6, 18, 6),
@@ -263,22 +280,27 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
   }
 
   Widget customTextView(String? text, double fontSize, FontWeight? fontWeight,
-          Color color, EdgeInsetsGeometry padding) =>
+          Color color, EdgeInsetsGeometry padding, VoidCallback onPressed) =>
       Visibility(
         visible: !StringHelper.isEmptyString(text),
-        child: Flexible(
-          child: Padding(
-            padding: padding,
-            child: Text(text ?? "",
-                softWrap: true,
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: fontWeight,
-                  fontSize: fontSize,
-                )),
+          child: Flexible(
+            child: InkWell(
+              onTap: () {
+                onPressed();
+              },
+              child: Padding(
+                padding: padding,
+                child: Text(text ?? "",
+                    softWrap: true,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: color,
+                      fontWeight: fontWeight,
+                      fontSize: fontSize,
+                    )),
+              ),
+            ),
           ),
-        ),
       );
 
   Widget dividerItem() => const Divider(

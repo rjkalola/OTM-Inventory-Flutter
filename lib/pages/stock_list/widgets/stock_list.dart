@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
@@ -5,7 +6,7 @@ import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 
 import '../../../../res/colors.dart';
-
+import '../../../widgets/PrimaryBorderButton.dart';
 
 class StockListView extends StatelessWidget {
   StockListView({super.key});
@@ -26,7 +27,8 @@ class StockListView extends StatelessWidget {
                 (position) => InkWell(
                   onTap: () {
                     stockListController.moveStockEditQuantityScreen(
-                        stockListController.productList[position].id!.toString());
+                        stockListController.productList[position].id!
+                            .toString());
                   },
                   child: CardView(
                       child: Padding(
@@ -64,20 +66,7 @@ class StockListView extends StatelessWidget {
                                       )),
                                 ),
                                 const SizedBox(width: 8),
-                                Visibility(
-                                  visible: !StringHelper.isEmptyString(
-                                      stockListController
-                                          .productList[position].price),
-                                  child: Text(
-                                      "Qty: ${stockListController.productList[position].qty!.toString()}",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        color: defaultAccentColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15,
-                                      )),
-                                )
+                                setTopRightWidget(position)
                               ],
                             ),
                             const SizedBox(
@@ -159,5 +148,51 @@ class StockListView extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  Widget setTopRightWidget(int position){
+    if(!stockListController.isLoading.value & stockListController.isScanQrCode.value){
+      if(!StringHelper.isEmptyString(stockListController
+          .productList[position].barcode_text)){
+        return quantityWidget(position);
+      }else{
+        return selectButtonWidget(position);
+      }
+    }else{
+      return quantityWidget(position);
+    }
+  }
+
+  Widget quantityWidget(int position) {
+      return Visibility(
+        visible: !StringHelper.isEmptyString(
+            stockListController
+                .productList[position].qty.toString()),
+        child: Text(
+            "Qty: ${stockListController.productList[position].qty!.toString()}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: defaultAccentColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 15,
+            )),
+      );
+  }
+
+  Widget selectButtonWidget(int position){
+      return SizedBox(
+        width: 70,
+        child: PrimaryBorderButton(
+          buttonText: 'select'.tr,
+          textColor: defaultAccentColor,
+          borderColor: defaultAccentColor,
+          height: 30,
+          fontSize: 14,
+          onPressed: () {
+          stockListController.onClickSelectButton(stockListController.productList[position]);
+          },
+        ),
+      );
   }
 }

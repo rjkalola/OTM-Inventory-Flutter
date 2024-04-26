@@ -47,7 +47,7 @@ class _StockListScreenState extends State<StockListScreen> {
           progressIndicator: const CustomProgressbar(),
           child: RefreshIndicator(
             onRefresh: () async {
-              await stockListController.getStockListApi(false, "0");
+              await stockListController.getStockListApi(false,false,"");
             },
             child: Column(children: [
               const Divider(
@@ -55,7 +55,7 @@ class _StockListScreenState extends State<StockListScreen> {
                 height: 1,
                 color: dividerColor,
               ),
-              SearchStockWidget(),
+              const SearchStockWidget(),
               stockListController.productList.isNotEmpty
                   ? StockListView()
                   : StockListEmptyView(),
