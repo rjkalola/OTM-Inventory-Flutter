@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:otm_inventory/pages/add_category/widgets/add_category_button.dart';
-import 'package:otm_inventory/pages/add_category/widgets/textfield_category_name.dart';
-import '../../../res/colors.dart';
-import '../../../widgets/CustomProgressbar.dart';
-import '../../../widgets/appbar/base_appbar.dart';
-import '../../utils/app_utils.dart';
-import 'add_category_controller.dart';
+import 'package:otm_inventory/pages/products/add_product/view/widgets/add_product_button.dart';
+import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_supplier.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_button.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_name.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_title.dart';
 
-class AddCategoryScreen extends StatelessWidget {
-  AddCategoryScreen({super.key});
+import '../../../../res/colors.dart';
+import '../../../../widgets/CustomProgressbar.dart';
+import '../../../../widgets/appbar/base_appbar.dart';
+import '../controller/add_stock_product_controller.dart';
 
-  final addCategoryController = Get.put(AddCategoryController());
+class AddStockProductScreen extends StatelessWidget {
+  AddStockProductScreen({super.key});
+
+  final addProductController = Get.put(AddStockProductController());
 
   @override
   Widget build(BuildContext context) {
@@ -25,20 +28,20 @@ class AddCategoryScreen extends StatelessWidget {
         backgroundColor: backgroundColor,
         appBar: BaseAppBar(
           appBar: AppBar(),
-          title: addCategoryController.title.value,
+          title: addProductController.title.value,
           isCenterTitle: false,
           isBack: true,
         ),
         body: Obx(() {
           return ModalProgressHUD(
-            inAsyncCall: addCategoryController.isLoading.value,
+            inAsyncCall: addProductController.isLoading.value,
             opacity: 0,
             progressIndicator: const CustomProgressbar(),
             child: Visibility(
-              visible: addCategoryController.isMainViewVisible.value,
+              visible: addProductController.isMainViewVisible.value,
               child: Column(children: [
                 Form(
-                  key: addCategoryController.formKey,
+                  key: addProductController.formKey,
                   child: Expanded(
                     flex: 1,
                     child: SingleChildScrollView(
@@ -46,7 +49,11 @@ class AddCategoryScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Divider(),
-                            TextFieldCategoryName(),
+                            TextFieldStockProductName(),
+                            TextFieldStockProductTitle(),
+                            TextFieldProductSupplier(),
+                            // AddProductPhotosTitleView(),
+                            // AddProductPhotosList(),
                             Padding(
                               padding: const EdgeInsets.only(left: 14,bottom: 18),
                               child: Row(
@@ -54,10 +61,10 @@ class AddCategoryScreen extends StatelessWidget {
                                   Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
                                   const SizedBox(width: 4,),
                                   Switch(
-                                      value: addCategoryController.isStatus.value,
+                                      value: addProductController.isStatus.value,
                                       activeColor: defaultAccentColor,
                                       onChanged: (isVisible) {
-                                        addCategoryController.isStatus.value =
+                                        addProductController.isStatus.value =
                                             isVisible;
                                       })
                                 ],
@@ -67,7 +74,7 @@ class AddCategoryScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                AddCategoryButton()
+                AddStockProductButton()
               ]),
             ),
           );

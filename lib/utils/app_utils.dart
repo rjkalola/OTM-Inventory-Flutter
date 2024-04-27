@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../res/colors.dart';
@@ -15,17 +16,8 @@ class AppUtils {
 
   static showSnackBarMessage(String message) {
     if (message.isNotEmpty) {
-      Get.snackbar('', '',
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-          backgroundColor: snackBarColor,
-          snackPosition: SnackPosition.BOTTOM,
-          titleText: Container(),
-          messageText: Center(
-              child: Text(message,
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ))),
-          margin: const EdgeInsets.all(10));
+      // Fluttertoast.showToast(msg: message,);
+      Get.rawSnackbar(message: message);
     }
   }
 

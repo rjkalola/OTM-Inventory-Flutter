@@ -21,6 +21,7 @@ class TextFieldQuantity extends StatelessWidget {
         keyboardType: TextInputType.number,
         textInputAction: TextInputAction.done,
         textAlign: TextAlign.center,
+        autofocus: true,
         validator: MultiValidator([
           RequiredValidator(errorText: 'required_field'.tr),
         ]),

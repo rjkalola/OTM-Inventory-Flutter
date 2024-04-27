@@ -1,22 +1,41 @@
-import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 import 'package:otm_inventory/web_services/response/base_response.dart';
 
 class StoreProductResponse extends BaseResponse{
-  int? id;
+  ItemInfo? info;
 
-  StoreProductResponse({this.id});
+  StoreProductResponse({this.info});
 
   StoreProductResponse.fromJson(Map<String, dynamic> json) {
     IsSuccess = json['IsSuccess'];
     Message = json['Message'];
-    id = json['info']['id'];
+    info = json['product'] != null ? ItemInfo.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data =  <String, dynamic>{};
     data['IsSuccess'] = IsSuccess;
     data['Message'] = Message;
-    data['info']['id'] = id;
+    if (info != null) {
+      data['product'] = info!.toJson();
+    }
+    return data;
+  }
+}
+
+class ItemInfo {
+  int? id;
+
+  ItemInfo(
+      {this.id,
+      });
+
+  ItemInfo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    data['id'] = id;
     return data;
   }
 }

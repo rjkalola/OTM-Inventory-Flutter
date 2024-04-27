@@ -98,6 +98,9 @@ class Strings extends Translations {
           'stock_movement': "Stock Movement",
           'view_more': "View More",
           'stock_history': "Stock History",
+          'reload': "Reload",
+          'exit_warning': "Press again to exit.",
+          'add_new_product': "Add New Product",
         },
         'hi_IN': {'login': 'Login'}
       };

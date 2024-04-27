@@ -73,7 +73,7 @@ class StockEditQuantityController extends GetxController {
           if (response.IsSuccess!) {
             productInfo.value = response.info!;
             // quantityController.value.text = productInfo.value.qty.toString();
-            quantityController.value.text = "0";
+            // quantityController.value.text = "0";
             initialQuantity = productInfo.value.qty??0;
             finalQuantity = productInfo.value.qty??0;
             isMainViewVisible.value = true;

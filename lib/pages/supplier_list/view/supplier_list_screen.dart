@@ -1,3 +1,4 @@
+import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:otm_inventory/pages/supplier_list/view/widgets/supplier_list_vie
 import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
+import '../../../utils/app_utils.dart';
 import '../../../widgets/CustomProgressbar.dart';
 import '../../common/widgets/common_bottom_navigation_bar_widget.dart';
 import '../../dashboard/widgets/main_drawer.dart';
@@ -29,39 +31,42 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
     return SafeArea(
-        child: Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: 'suppliers'.tr,
-          isBack: true,
-          widgets: actionButtons()),
-      drawer: MainDrawer(),
-      bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-      body: Obx(
-        () => ModalProgressHUD(
-          inAsyncCall: supplierListController.isLoading.value,
-          opacity: 0,
-          progressIndicator: const CustomProgressbar(),
-          child: Column(children: [
-            const Divider(
-              thickness: 1,
-              height: 1,
-              color: dividerColor,
-            ),
-            Visibility(
-                visible: supplierListController.itemList.isNotEmpty,
-                child: const SearchSupplierWidget()),
-            supplierListController.itemList.isNotEmpty
-                ? SupplierListView()
-                : SupplierListEmptyView(),
-            const SizedBox(
-              height: 12,
-            ),
-          ]),
-        ),
-      ),
-    ));
+        child: DoubleTapToExit(
+          snackBar: AppUtils.showSnackBarMessage('exit_warning'.tr),
+          child: Scaffold(
+                backgroundColor: backgroundColor,
+                appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: 'suppliers'.tr,
+            isBack: true,
+            widgets: actionButtons()),
+                drawer: MainDrawer(),
+                bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+                body: Obx(
+          () => ModalProgressHUD(
+            inAsyncCall: supplierListController.isLoading.value,
+            opacity: 0,
+            progressIndicator: const CustomProgressbar(),
+            child: Column(children: [
+              const Divider(
+                thickness: 1,
+                height: 1,
+                color: dividerColor,
+              ),
+              Visibility(
+                  visible: supplierListController.itemList.isNotEmpty,
+                  child: const SearchSupplierWidget()),
+              supplierListController.itemList.isNotEmpty
+                  ? SupplierListView()
+                  : SupplierListEmptyView(),
+              const SizedBox(
+                height: 12,
+              ),
+            ]),
+          ),
+                ),
+              ),
+        ));
   }
 
   List<Widget>? actionButtons() {

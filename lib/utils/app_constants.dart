@@ -23,6 +23,7 @@ class IntentKey {
   final String productId = 'PRODUCT_ID';
   final String storeId = 'STORE_ID';
   final String dashboardTabIndex = 'DASHBOARD_TAB_INDEX';
+  final String barCode = 'BAR_CODE';
 }
 
 class DialogIdentifier {

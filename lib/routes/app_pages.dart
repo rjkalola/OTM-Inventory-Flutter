@@ -5,6 +5,7 @@ import 'package:otm_inventory/pages/add_supplier/add_supplier_screen.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_screen.dart';
 import 'package:otm_inventory/pages/login/login_screen.dart';
 import 'package:otm_inventory/pages/otp_verification/verify_otp_screen.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/add_stock_product_screen.dart';
 import 'package:otm_inventory/pages/qr_code_scanner/view/qr_code_scanner.dart';
 import 'package:otm_inventory/pages/splash/splash_screen.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_screen.dart';
@@ -83,6 +84,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.stockQuantityHistoryScreen,
       page: () => StockQuantityHistoryScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.addStockProductScreen,
+      page: () => AddStockProductScreen(),
     ),
   ];
 }

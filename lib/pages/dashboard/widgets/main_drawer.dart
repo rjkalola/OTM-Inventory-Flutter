@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -48,14 +49,17 @@ class MainDrawer extends StatelessWidget {
           //     navigate(AppRoutes.storeListScreen);
           //   },
           // ),
-          drawerItem(
-            text: 'stocks'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.stockListScreen),
-            tileColor: getItemBgColor(AppRoutes.stockListScreen),
-            onTap: () {
-              navigate(AppRoutes.stockListScreen);
-            },
+          Visibility(
+            visible: AppStorage.storeId != 0,
+            child: drawerItem(
+              text: 'stocks'.tr,
+              iconPath: Drawable.homeDrawerIcon,
+              textIconColor: getItemColor(AppRoutes.stockListScreen),
+              tileColor: getItemBgColor(AppRoutes.stockListScreen),
+              onTap: () {
+                navigate(AppRoutes.stockListScreen);
+              },
+            ),
           ),
           drawerItem(
             text: 'vendors'.tr,

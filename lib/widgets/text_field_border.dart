@@ -19,6 +19,7 @@ class TextFieldBorder extends StatelessWidget {
       this.suffixIcon,
       this.maxLines,
       this.textAlignVertical,
+      this.autofocus,
       this.textAlign,
       this.onPressed,
       this.onValueChange});
@@ -37,6 +38,7 @@ class TextFieldBorder extends StatelessWidget {
   final TextAlign? textAlign;
   final VoidCallback? onPressed;
   final ValueChanged<String>? onValueChange;
+  final bool? autofocus;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class TextFieldBorder extends StatelessWidget {
         onTap: () {
           onPressed!();
         },
+        autofocus: autofocus ?? false,
         onChanged: onValueChange,
         style: const TextStyle(
             fontWeight: FontWeight.w400, fontSize: 15, color: primaryTextColor),

@@ -335,7 +335,7 @@ class AddProductController extends GetxController
         if (responseModel.statusCode == 200) {
           // StoreProductResponse response = StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           // if (response.IsSuccess!) {
-          //  print("Id:${response.id}") ;
+          //  print("Id:${response.info!.id!.toString()}") ;
           // }
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
