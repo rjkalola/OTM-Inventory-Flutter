@@ -20,7 +20,6 @@ import '../../../common/model/file_info.dart';
 import '../../product_list/models/product_info.dart';
 import '../model/add_product_request.dart';
 import '../model/product_resources_response.dart';
-import '../model/store_product_response.dart';
 import 'add_product_repository.dart';
 
 class AddProductController extends GetxController

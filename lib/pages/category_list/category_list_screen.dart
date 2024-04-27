@@ -5,9 +5,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/category_list/widgets/category_list_empty_view.dart';
 import 'package:otm_inventory/pages/category_list/widgets/category_list_view.dart';
 import 'package:otm_inventory/pages/category_list/widgets/search_category.dart';
-import 'package:otm_inventory/pages/store_list/view/widgets/search_store_widget.dart';
-import 'package:otm_inventory/pages/store_list/view/widgets/store_list_empty_view.dart';
-import 'package:otm_inventory/pages/store_list/view/widgets/store_list_view.dart';
 import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';

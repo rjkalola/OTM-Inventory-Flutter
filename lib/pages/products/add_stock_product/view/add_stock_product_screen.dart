@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:otm_inventory/pages/products/add_product/view/widgets/add_product_button.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_supplier.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_button.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_name.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_supplier.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_title.dart';
 
 import '../../../../res/colors.dart';
@@ -16,7 +16,7 @@ import '../controller/add_stock_product_controller.dart';
 class AddStockProductScreen extends StatelessWidget {
   AddStockProductScreen({super.key});
 
-  final addProductController = Get.put(AddStockProductController());
+  final addStockProductController = Get.put(AddStockProductController());
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +28,20 @@ class AddStockProductScreen extends StatelessWidget {
         backgroundColor: backgroundColor,
         appBar: BaseAppBar(
           appBar: AppBar(),
-          title: addProductController.title.value,
+          title: addStockProductController.title.value,
           isCenterTitle: false,
           isBack: true,
         ),
         body: Obx(() {
           return ModalProgressHUD(
-            inAsyncCall: addProductController.isLoading.value,
+            inAsyncCall: addStockProductController.isLoading.value,
             opacity: 0,
             progressIndicator: const CustomProgressbar(),
             child: Visibility(
-              visible: addProductController.isMainViewVisible.value,
+              visible: addStockProductController.isMainViewVisible.value,
               child: Column(children: [
                 Form(
-                  key: addProductController.formKey,
+                  key: addStockProductController.formKey,
                   child: Expanded(
                     flex: 1,
                     child: SingleChildScrollView(
@@ -51,7 +51,7 @@ class AddStockProductScreen extends StatelessWidget {
                             const Divider(),
                             TextFieldStockProductName(),
                             TextFieldStockProductTitle(),
-                            TextFieldProductSupplier(),
+                            TextFieldStockProductSupplier(),
                             // AddProductPhotosTitleView(),
                             // AddProductPhotosList(),
                             Padding(
@@ -61,10 +61,10 @@ class AddStockProductScreen extends StatelessWidget {
                                   Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
                                   const SizedBox(width: 4,),
                                   Switch(
-                                      value: addProductController.isStatus.value,
+                                      value: addStockProductController.isStatus.value,
                                       activeColor: defaultAccentColor,
                                       onChanged: (isVisible) {
-                                        addProductController.isStatus.value =
+                                        addStockProductController.isStatus.value =
                                             isVisible;
                                       })
                                 ],

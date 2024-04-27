@@ -47,6 +47,7 @@ class AddStockProductController extends GetxController
     var arguments = Get.arguments;
     if (arguments != null) {
       mBarCode = arguments[AppConstants.intentKey.barCode];
+      print("mBarCode:"+mBarCode);
     }
     title.value = 'add_product'.tr;
 
@@ -188,6 +189,7 @@ class AddStockProductController extends GetxController
     map["status"] = addProductRequest.status;
     map["mode_type"] = addProductRequest.mode_type;
     map["barcode_text"] = mBarCode;
+    map["categories[0]"] = "9";
     multi.FormData formData = multi.FormData.fromMap(map);
 
     print("Request Data:" + map.toString());

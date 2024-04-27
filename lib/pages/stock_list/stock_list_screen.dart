@@ -1,4 +1,3 @@
-import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +9,6 @@ import 'package:otm_inventory/pages/stock_list/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/search_stock.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_empty_view.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_list.dart';
-import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
@@ -35,50 +33,46 @@ class _StockListScreenState extends State<StockListScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return DoubleTapToExit(
-      child: SafeArea(
-          child: Scaffold(
-            backgroundColor: backgroundColor,
-            appBar: BaseAppBar(
-                appBar: AppBar(),
-                title: 'stocks'.tr,
-                isBack: true,
-                widgets: actionButtons()),
-            drawer: MainDrawer(),
-            bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-            body: Obx(
-                  () => ModalProgressHUD(
-                inAsyncCall: stockListController.isLoading.value,
-                opacity: 0,
-                progressIndicator: const CustomProgressbar(),
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    await stockListController.getStockListApi(false, false, "");
-                  },
-                  child: Column(children: [
-                    const Divider(
-                      thickness: 1,
-                      height: 1,
-                      color: dividerColor,
-                    ),
-                    Row(
-                      children: [
-                        const Expanded(child: SearchStockWidget()),
-                        QrCodeIcon()
-                      ],
-                    ),
-                    stockListController.productList.isNotEmpty
-                        ? StockListView()
-                        : StockListEmptyView(),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                  ]),
+    return SafeArea(
+        child: Obx(() => Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+              appBar: AppBar(),
+              title: 'stocks'.tr,
+              isBack: true,
+              widgets: actionButtons()),
+          drawer: MainDrawer(),
+          bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+          body: ModalProgressHUD(
+            inAsyncCall: stockListController.isLoading.value,
+            opacity: 0,
+            progressIndicator: const CustomProgressbar(),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await stockListController.getStockListApi(false, false, "");
+              },
+              child: Column(children: [
+                const Divider(
+                  thickness: 1,
+                  height: 1,
+                  color: dividerColor,
                 ),
-              ),
+                Row(
+                  children: [
+                    const Expanded(child: SearchStockWidget()),
+                    QrCodeIcon()
+                  ],
+                ),
+                stockListController.productList.isNotEmpty
+                    ? StockListView()
+                    : StockListEmptyView(),
+                const SizedBox(
+                  height: 12,
+                ),
+              ]),
             ),
-          )),
-    );
+          ),
+        )));
   }
 
   List<Widget>? actionButtons() {
@@ -97,7 +91,7 @@ class _StockListScreenState extends State<StockListScreen> {
         visible: stockListController.isScanQrCode.value,
         child: InkWell(
             onTap: () {
-              // stockListController.openQrCodeScanner();
+              stockListController.addStockProductScreen();
             },
             child: Text(
               'add_new_product'.tr,
