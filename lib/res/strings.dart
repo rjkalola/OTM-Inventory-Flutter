@@ -101,6 +101,8 @@ class Strings extends Translations {
           'reload': "Reload",
           'exit_warning': "Press again to exit.",
           'add_new_product': "Add New Product",
+          'attach_product': "Attach Product",
+          'empty_qr_code_scan_msg':"We do not find this product in our records, Click buttons below if you want to attach any product with the barcode or add new product with this barcode"
         },
         'hi_IN': {'login': 'Login'}
       };

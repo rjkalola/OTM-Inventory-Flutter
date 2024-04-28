@@ -37,6 +37,7 @@ class DialogIdentifier {
   final String modelList = 'MODEL_LIST';
   final String usersList = 'USERS_LIST';
   final String storeList = 'STORE_LIST';
+  final String stockOptionsDialog = 'stockOptionsDialog';
 }
 
 class SharedPreferenceKey {

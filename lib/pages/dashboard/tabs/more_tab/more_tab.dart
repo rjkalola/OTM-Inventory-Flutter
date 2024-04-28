@@ -71,11 +71,11 @@ class MoreTabState extends State<MoreTab> implements DialogButtonClickListener {
                     ),
                     onTap: () {
                       AlertDialogHelper.showAlertDialog(
-                          context,
                           "",
                           'logout_msg'.tr,
                           'yes'.tr,
                           'no'.tr,
+                          "",
                           true,
                           this,
                           AppConstants.dialogIdentifier.logout);
@@ -110,5 +110,10 @@ class MoreTabState extends State<MoreTab> implements DialogButtonClickListener {
       // Navigator.of(context).pop(); //
       Get.offAllNamed(AppRoutes.loginScreen);
     }
+  }
+
+  @override
+  void onOtherButtonClicked(String dialogIdentifier) {
+
   }
 }

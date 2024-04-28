@@ -87,20 +87,20 @@ class _StockListScreenState extends State<StockListScreen> {
       //     onPressed: () {},
       //   ),
       // ),
-      Visibility(
-        visible: stockListController.isScanQrCode.value,
-        child: InkWell(
-            onTap: () {
-              stockListController.addStockProductScreen();
-            },
-            child: Text(
-              'add_new_product'.tr,
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: defaultAccentColor,
-                  fontWeight: FontWeight.w500),
-            )),
-      ),
+      // Visibility(
+      //   visible: stockListController.isScanQrCode.value,
+      //   child: InkWell(
+      //       onTap: () {
+      //         stockListController.addStockProductScreen();
+      //       },
+      //       child: Text(
+      //         'add_new_product'.tr,
+      //         style: const TextStyle(
+      //             fontSize: 16,
+      //             color: defaultAccentColor,
+      //             fontWeight: FontWeight.w500),
+      //       )),
+      // ),
       IconButton(
         icon: SvgPicture.asset(
           width: 22,

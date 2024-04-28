@@ -75,9 +75,9 @@ class StockListView extends StatelessWidget {
                             Visibility(
                               visible: !StringHelper.isEmptyString(
                                   stockListController
-                                      .productList[position].sku),
+                                      .productList[position].supplier_name),
                               child: Text(
-                                  "${'sku'.tr}: ${stockListController.productList[position].sku ?? ""}",
+                                  "${'supplier_name'.tr}: ${stockListController.productList[position].supplier_name ?? ""}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
@@ -89,23 +89,9 @@ class StockListView extends StatelessWidget {
                             Visibility(
                               visible: !StringHelper.isEmptyString(
                                   stockListController
-                                      .productList[position].categoryName),
+                                      .productList[position].supplier_code),
                               child: Text(
-                                  "${'category'.tr}: ${stockListController.productList[position].categoryName ?? ""}",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: secondaryLightTextColor,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 13,
-                                  )),
-                            ),
-                            Visibility(
-                              visible: !StringHelper.isEmptyString(
-                                  stockListController
-                                      .productList[position].manufacturer_name),
-                              child: Text(
-                                  "${'manufacturer'.tr}: ${stockListController.productList[position].manufacturer_name ?? ""}",
+                                  "${'supplier_code'.tr}: ${stockListController.productList[position].supplier_code ?? ""}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(

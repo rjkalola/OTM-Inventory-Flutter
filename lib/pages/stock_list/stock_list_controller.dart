@@ -12,13 +12,15 @@ import '../../../routes/app_routes.dart';
 import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
+import '../../utils/AlertDialogHelper.dart';
 import '../../web_services/response/base_response.dart';
+import '../common/listener/DialogButtonClickListener.dart';
 import '../products/add_product/model/add_product_request.dart';
 import '../products/add_product/model/store_product_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
 
-class StockListController extends GetxController {
+class StockListController extends GetxController implements DialogButtonClickListener{
   final _api = StockListRepository();
   final searchController = TextEditingController().obs;
   final productListResponse = ProductListResponse().obs;
@@ -96,6 +98,7 @@ class StockListController extends GetxController {
 
     if (result != null && result) {
       mBarCode = "";
+      isScanQrCode.value = false;
       getStockListApi(true,false,"");
     }
 
@@ -130,6 +133,39 @@ class StockListController extends GetxController {
     storeProductApi();
   }
 
+  showAddStockProductDialog(){
+    AlertDialogHelper.showAlertDialog(
+        "",
+        'empty_qr_code_scan_msg'.tr,
+        'attach_product'.tr,
+        'cancel'.tr,
+        "add_new_product".tr,
+        true,
+        this,
+        AppConstants.dialogIdentifier.stockOptionsDialog);
+  }
+
+  @override
+  void onNegativeButtonClicked(String dialogIdentifier) {
+    Get.back();
+  }
+
+  @override
+  void onOtherButtonClicked(String dialogIdentifier) {
+    if(dialogIdentifier == AppConstants.dialogIdentifier.stockOptionsDialog){
+      Get.back();
+      addStockProductScreen();
+    }
+  }
+
+  @override
+  void onPositiveButtonClicked(String dialogIdentifier) {
+    if(dialogIdentifier == AppConstants.dialogIdentifier.stockOptionsDialog){
+      getStockListWithCodeApi(true, true, "null");
+      Get.back();
+    }
+  }
+
   Future<void> getStockListApi(bool isProgress,bool scanQrCode,String? code) async {
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
@@ -155,10 +191,11 @@ class StockListController extends GetxController {
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            isScanQrCode.value = scanQrCode;
-            if(isScanQrCode.value && response.info!.isEmpty){
-              getStockListWithCodeApi(isProgress, true, "null");
+            if(scanQrCode && response.info!.isEmpty){
+              showAddStockProductDialog();
+              // getStockListWithCodeApi(isProgress, true, "null");
             }else{
+              isScanQrCode.value = false;
               productListResponse.value = response;
               tempList.clear();
               tempList.addAll(response.info!);
@@ -209,6 +246,7 @@ class StockListController extends GetxController {
           ProductListResponse response =
           ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
+              isScanQrCode.value = scanQrCode;
               productListResponse.value = response;
               tempList.clear();
               tempList.addAll(response.info!);
@@ -291,4 +329,5 @@ class StockListController extends GetxController {
       },
     );
   }
+
 }

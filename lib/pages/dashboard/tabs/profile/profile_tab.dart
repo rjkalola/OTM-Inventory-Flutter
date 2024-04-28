@@ -75,4 +75,9 @@ class ProfileTabState extends State<ProfileTab> implements DialogButtonClickList
       Get.offAllNamed(AppRoutes.loginScreen);
     }
   }
+
+  @override
+  void onOtherButtonClicked(String dialogIdentifier) {
+
+  }
 }

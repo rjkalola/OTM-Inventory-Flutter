@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../pages/common/listener/DialogButtonClickListener.dart';
 
 
 class AlertDialogHelper {
   static showAlertDialog(
-      BuildContext context,
       String title,
       String message,
       String textPositiveButton,
       String textNegativeButton,
+      String textOtherButton,
       bool isCancelable,
       final DialogButtonClickListener? buttonClickListener,
       final String dialogIdentifier) {
@@ -20,7 +21,8 @@ class AlertDialogHelper {
         child: Text(textNegativeButton),
         onPressed: () {
           if (buttonClickListener == null) {
-            Navigator.of(context).pop(); // dismiss dialog
+            // Navigator.of(context).pop(); // dismis
+            Get.back();// s dialog
           } else {
             buttonClickListener.onNegativeButtonClicked(dialogIdentifier);
           }
@@ -30,17 +32,34 @@ class AlertDialogHelper {
     }
 
     if (textPositiveButton.isNotEmpty) {
-      Widget continueButton = TextButton(
+      Widget positiveButton = TextButton(
         child: Text(textPositiveButton),
         onPressed: () {
           if (buttonClickListener == null) {
-            Navigator.of(context).pop(); // dismiss dialog
+            // Navigator.of(context).pop(); //
+            Get.back();
+            // dismiss dialog
           } else {
             buttonClickListener.onPositiveButtonClicked(dialogIdentifier);
           }
         },
       );
-      listButtons.add(continueButton);
+      listButtons.add(positiveButton);
+    }
+
+    if (textOtherButton.isNotEmpty) {
+      Widget otherButton = TextButton(
+        child: Text(textOtherButton),
+        onPressed: () {
+          if (buttonClickListener == null) {
+            // Navigator.of(context).pop(); // dismiss dialog
+            Get.back();
+          } else {
+            buttonClickListener.onOtherButtonClicked(dialogIdentifier);
+          }
+        },
+      );
+      listButtons.add(otherButton);
     }
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
@@ -49,12 +68,7 @@ class AlertDialogHelper {
       actions: listButtons,
     );
     // show the dialog
-    showDialog(
-      context: context,
-      barrierDismissible: isCancelable,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+
+    Get.dialog(barrierDismissible: isCancelable,alert);
   }
 }
