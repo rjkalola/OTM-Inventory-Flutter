@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_repository.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
@@ -14,19 +15,26 @@ import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
 import '../../utils/AlertDialogHelper.dart';
 import '../../web_services/response/base_response.dart';
+import '../../web_services/response/module_info.dart';
+import '../common/drop_down_list_dialog.dart';
 import '../common/listener/DialogButtonClickListener.dart';
+import '../common/listener/select_item_listener.dart';
 import '../products/add_product/model/add_product_request.dart';
 import '../products/add_product/model/store_product_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
+import '../store_list/model/store_list_response.dart';
 
-class StockListController extends GetxController implements DialogButtonClickListener{
+class StockListController extends GetxController implements DialogButtonClickListener
+,SelectItemListener{
   final _api = StockListRepository();
   final searchController = TextEditingController().obs;
   final productListResponse = ProductListResponse().obs;
   var addProductRequest = AddProductRequest();
   List<ProductInfo> tempList = [];
   final productList = <ProductInfo>[].obs;
+  var storeList = <ModuleInfo>[].obs;
+  final storeNameController = TextEditingController().obs;
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
@@ -39,7 +47,12 @@ class StockListController extends GetxController implements DialogButtonClickLis
   @override
   void onInit() {
     super.onInit();
-    getStockListApi(true,false,"");
+    AppStorage.storeId = Get.find<AppStorage>().getStoreId();
+    AppStorage.storeName = Get.find<AppStorage>().getStoreName();
+    if (!StringHelper.isEmptyString(AppStorage.storeName)) {
+      storeNameController.value.text = AppStorage.storeName;
+    }
+    getStoreListApi();
   }
 
   Future<void> searchItem(String value) async {
@@ -195,6 +208,7 @@ class StockListController extends GetxController implements DialogButtonClickLis
               showAddStockProductDialog();
               // getStockListWithCodeApi(isProgress, true, "null");
             }else{
+              print("response.info! size:"+response.info!.length.toString());
               isScanQrCode.value = false;
               productListResponse.value = response;
               tempList.clear();
@@ -274,7 +288,7 @@ class StockListController extends GetxController implements DialogButtonClickLis
   void storeProductApi() async {
     Map<String, dynamic> map = {};
     map["id"] = addProductRequest.id;
-    map["shortName"] = addProductRequest.shortName;
+    /*map["shortName"] = addProductRequest.shortName;
     map["name"] = addProductRequest.name;
     map["supplier_id"] = addProductRequest.supplier_id;
     map["length"] = addProductRequest.length;
@@ -296,7 +310,7 @@ class StockListController extends GetxController implements DialogButtonClickLis
       for (int i = 0; i < addProductRequest.categories!.length; i++) {
         map['categories[${i.toString()}]'] = addProductRequest.categories![i];
       }
-    }
+    }*/
     map["barcode_text"] = mBarCode;
     multi.FormData formData = multi.FormData.fromMap(map);
 
@@ -321,6 +335,99 @@ class StockListController extends GetxController implements DialogButtonClickLis
       },
       onError: (ResponseModel error) {
         isLoading.value = false;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
+  //For Select Store Dropdown
+  void selectStore() {
+    if (storeList.isNotEmpty) {
+      showStoreListDialog(AppConstants.dialogIdentifier.storeList, 'stores'.tr,
+          storeList, true, true, true,true, this);
+    } else {
+      AppUtils.showSnackBarMessage('empty_store_message'.tr);
+    }
+  }
+
+  void showStoreListDialog(
+      String dialogType,
+      String title,
+      List<ModuleInfo> list,
+      bool enableDrag,
+      bool isDismiss,
+      bool canPop,
+      bool isClose,
+      SelectItemListener listener) {
+    Get.bottomSheet(
+        enableDrag: enableDrag,
+        isDismissible: isDismiss,
+        PopScope(
+          canPop: canPop,
+          child: DropDownListDialog(
+              title: title,
+              dialogType: dialogType,
+              list: list,
+              listener: listener,
+              isCloseEnable: isClose),
+        ),
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true);
+  }
+
+  @override
+  void onSelectItem(int position, int id, String name, String action) {
+    if (action == AppConstants.dialogIdentifier.storeList) {
+      AppStorage.storeId = id;
+      AppStorage.storeName = name;
+      storeNameController.value.text = name;
+      Get.find<AppStorage>().setStoreId(id);
+      Get.find<AppStorage>().setStoreName(name);
+      getStockListApi(true,false,"");
+    }
+  }
+
+  void getStoreListApi() async {
+    Map<String, dynamic> map = {};
+    multi.FormData formData = multi.FormData.fromMap(map);
+    isLoading.value = true;
+    _api.getStoreList(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          StoreListResponse response =
+          StoreListResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            if (response.info != null && response.info!.isNotEmpty) {
+              storeList.clear();
+              for (int i = 0; i < response.info!.length; i++) {
+                ModuleInfo info = ModuleInfo();
+                info.id = response.info![i].id;
+                info.name = response.info![i].storeName!;
+                storeList.add(info);
+              }
+            }
+            if (AppStorage.storeId == 0 && storeList.isNotEmpty) {
+              showStoreListDialog(AppConstants.dialogIdentifier.storeList,
+                  'stores'.tr, storeList, false, false, false,false, this);
+            } else {
+              getStockListApi(true,false,"");
+            }
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           AppUtils.showSnackBarMessage('no_internet'.tr);
         } else if (error.statusMessage!.isNotEmpty) {

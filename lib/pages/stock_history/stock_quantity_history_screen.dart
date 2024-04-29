@@ -33,7 +33,7 @@ class _StockQuantityHistoryScreenState extends State<StockQuantityHistoryScreen>
         backgroundColor: backgroundColor,
         appBar: BaseAppBar(
           appBar: AppBar(),
-          title: 'stock_history'.tr,
+          title: 'stock_movement'.tr,
           isCenterTitle: false,
           isBack: true,
         ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
+import '../../utils/app_utils.dart';
 import '../common/widgets/common_bottom_navigation_bar_widget.dart';
 import '../dashboard/widgets/main_drawer.dart';
 import 'category_list_controller.dart';
@@ -22,46 +25,60 @@ class CategoryListScreen extends StatefulWidget {
 
 class _CategoryListScreenState extends State<CategoryListScreen> {
   final categoryListController = Get.put(CategoryListController());
+  var mTime;
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-        child: Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: 'categories'.tr,
-          isBack: true,
-          widgets: actionButtons()),
-      drawer: MainDrawer(),
-      bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-      body: Obx(
-        () => ModalProgressHUD(
-          inAsyncCall: categoryListController.isLoading.value,
-          opacity: 0,
-          progressIndicator: const CustomProgressbar(),
-          child: Column(children: [
-            const Divider(
-              thickness: 1,
-              height: 1,
-              color: dividerColor,
-            ),
-            Visibility(
-                visible: categoryListController.categoryList.isNotEmpty,
-                child: const SearchCategory()),
-            categoryListController.categoryList.isNotEmpty
-                ? CategoryListView()
-                : CategoryListEmptyView(),
-            const SizedBox(
-              height: 12,
-            ),
-          ]),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async{
+        final backNavigationAllowed = await onBackPress();
+        if (backNavigationAllowed) {
+          if (Platform.isIOS) {
+            exit(0);
+          } else {
+            SystemNavigator.pop();
+          }
+        }
+      },
+      child: SafeArea(
+          child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: 'categories'.tr,
+            isBack: true,
+            widgets: actionButtons()),
+        drawer: MainDrawer(),
+        bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+        body: Obx(
+          () => ModalProgressHUD(
+            inAsyncCall: categoryListController.isLoading.value,
+            opacity: 0,
+            progressIndicator: const CustomProgressbar(),
+            child: Column(children: [
+              const Divider(
+                thickness: 1,
+                height: 1,
+                color: dividerColor,
+              ),
+              Visibility(
+                  visible: categoryListController.categoryList.isNotEmpty,
+                  child: const SearchCategory()),
+              categoryListController.categoryList.isNotEmpty
+                  ? CategoryListView()
+                  : CategoryListEmptyView(),
+              const SizedBox(
+                height: 12,
+              ),
+            ]),
+          ),
         ),
-      ),
-    ));
+      )),
+    );
   }
 
   List<Widget>? actionButtons() {
@@ -90,5 +107,16 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
         },
       ),
     ];
+  }
+
+  Future<bool> onBackPress() {
+    DateTime now = DateTime.now();
+    if (mTime == null || now.difference(mTime) > const Duration(seconds: 2)) {
+      mTime = now;
+      AppUtils.showSnackBarMessage('exit_warning'.tr);
+      return Future.value(false);
+    }
+
+    return Future.value(true);
   }
 }

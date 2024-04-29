@@ -6,6 +6,11 @@ class StringHelper {
     return !valid;
   }
 
+  static bool isEmptyList(List<dynamic>? list){
+    bool valid = list != null && list.isNotEmpty;
+    return !valid;
+  }
+
   static String getCommaSeparatedIds(List<ModuleInfo>? list) {
     String commaSeparateIds = "";
     if (list != null && list.isNotEmpty) {

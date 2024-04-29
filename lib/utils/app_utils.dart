@@ -1,16 +1,16 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../res/colors.dart';
-
 class AppUtils {
+  static var mTime;
+
   bool isEmailValid(String email) {
     return RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
   }
 
@@ -30,7 +30,7 @@ class AppUtils {
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       deviceName =
-          iosInfo.utsname.machine.isNotEmpty ? iosInfo.utsname.machine : "";
+      iosInfo.utsname.machine.isNotEmpty ? iosInfo.utsname.machine : "";
     }
     return deviceName;
   }

@@ -55,7 +55,7 @@ class ProductListView extends StatelessWidget {
                                   child: Text(
                                       softWrap: true,
                                       productListController
-                                          .productList[position].name!,
+                                          .productList[position].shortName!,
                                       style: const TextStyle(
                                         color: primaryTextColor,
                                         fontWeight: FontWeight.w500,
@@ -85,9 +85,9 @@ class ProductListView extends StatelessWidget {
                             Visibility(
                               visible: !StringHelper.isEmptyString(
                                   productListController
-                                      .productList[position].sku),
+                                      .productList[position].supplier_name),
                               child: Text(
-                                  "${'sku'.tr}: ${productListController.productList[position].sku ?? ""}",
+                                  "${'supplier_name'.tr}: ${productListController.productList[position].supplier_name ?? ""}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
@@ -99,23 +99,9 @@ class ProductListView extends StatelessWidget {
                             Visibility(
                               visible: !StringHelper.isEmptyString(
                                   productListController
-                                      .productList[position].categoryName),
+                                      .productList[position].supplier_code),
                               child: Text(
-                                  "${'category'.tr}: ${productListController.productList[position].categoryName ?? ""}",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: secondaryLightTextColor,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 13,
-                                  )),
-                            ),
-                            Visibility(
-                              visible: !StringHelper.isEmptyString(
-                                  productListController
-                                      .productList[position].manufacturer_name),
-                              child: Text(
-                                  "${'manufacturer'.tr}: ${productListController.productList[position].manufacturer_name ?? ""}",
+                                  "${'supplier_code'.tr}: ${productListController.productList[position].supplier_code ?? ""}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(

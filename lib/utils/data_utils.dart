@@ -31,28 +31,28 @@ class DataUtils{
     // info.backgroundColor = "#f8dbd6";
     // arrayItems.add(info);
 
-    if(AppStorage.storeId != 0){
-      info = DashboardActionItemInfo();
-      info.id = AppConstants.action.stocks;
-      info.title = 'stocks'.tr;
-      info.image = "assets/images/ic_time_clock.svg";
-      info.backgroundColor = "#ddeafb";
-      arrayItems.add(info);
-    }
+    // if(AppStorage.storeId != 0){
+    //   info = DashboardActionItemInfo();
+    //   info.id = AppConstants.action.stocks;
+    //   info.title = 'stocks'.tr;
+    //   info.image = "assets/images/ic_time_clock.svg";
+    //   info.backgroundColor = "#ddeafb";
+    //   arrayItems.add(info);
+    // }
 
-      info = DashboardActionItemInfo();
-      info.id = AppConstants.action.vendors;
-      info.title = 'vendors'.tr;
-      info.image = "assets/images/ic_time_clock.svg";
-      info.backgroundColor = "#ddeafb";
-      arrayItems.add(info);
+      // info = DashboardActionItemInfo();
+      // info.id = AppConstants.action.vendors;
+      // info.title = 'vendors'.tr;
+      // info.image = "assets/images/ic_time_clock.svg";
+      // info.backgroundColor = "#ddeafb";
+      // arrayItems.add(info);
 
-    info = DashboardActionItemInfo();
-    info.id = AppConstants.action.manufacturer;
-    info.title = 'manufacturer'.tr;
-    info.image = "assets/images/ic_time_clock.svg";
-    info.backgroundColor = "#ddeafb";
-    arrayItems.add(info);
+    // info = DashboardActionItemInfo();
+    // info.id = AppConstants.action.manufacturer;
+    // info.title = 'manufacturer'.tr;
+    // info.image = "assets/images/ic_time_clock.svg";
+    // info.backgroundColor = "#ddeafb";
+    // arrayItems.add(info);
 
     info = DashboardActionItemInfo();
     info.id = AppConstants.action.categories;

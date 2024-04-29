@@ -6,6 +6,7 @@ import 'package:otm_inventory/pages/store_list/controller/store_list_repository.
 import 'package:otm_inventory/pages/store_list/model/store_info.dart';
 import 'package:otm_inventory/pages/store_list/model/store_list_response.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
+import 'package:otm_inventory/utils/app_storage.dart';
 
 import '../../../routes/app_routes.dart';
 import '../../../utils/app_utils.dart';
@@ -22,11 +23,12 @@ class StoreListController extends GetxController {
       isMainViewVisible = false.obs;
 
   final filters = ''.obs, search = ''.obs;
-  final offset = 0.obs;
+  final offset = 0.obs,activeStoreId = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
+    activeStoreId.value = AppStorage.storeId;
     getStoreListApi(true);
   }
 

@@ -40,8 +40,29 @@ class MainDrawer extends StatelessWidget {
               navigate(AppRoutes.productListScreen);
             },
           ),
+          drawerItem(
+            text: 'stores'.tr,
+            iconPath: Drawable.homeDrawerIcon,
+            textIconColor: getItemColor(AppRoutes.storeListScreen),
+            tileColor: getItemBgColor(AppRoutes.storeListScreen),
+            onTap: () {
+              navigate(AppRoutes.storeListScreen);
+            },
+          ),
+          // Visibility(
+          //   visible: AppStorage.storeId != 0,
+          //   child: drawerItem(
+          //     text: 'stocks'.tr,
+          //     iconPath: Drawable.homeDrawerIcon,
+          //     textIconColor: getItemColor(AppRoutes.stockListScreen),
+          //     tileColor: getItemBgColor(AppRoutes.stockListScreen),
+          //     onTap: () {
+          //       navigate(AppRoutes.stockListScreen);
+          //     },
+          //   ),
+          // ),
           // drawerItem(
-          //   text: 'stores'.tr,
+          //   text: 'vendors'.tr,
           //   iconPath: Drawable.homeDrawerIcon,
           //   textIconColor: getItemColor(AppRoutes.storeListScreen),
           //   tileColor: getItemBgColor(AppRoutes.storeListScreen),
@@ -49,36 +70,15 @@ class MainDrawer extends StatelessWidget {
           //     navigate(AppRoutes.storeListScreen);
           //   },
           // ),
-          Visibility(
-            visible: AppStorage.storeId != 0,
-            child: drawerItem(
-              text: 'stocks'.tr,
-              iconPath: Drawable.homeDrawerIcon,
-              textIconColor: getItemColor(AppRoutes.stockListScreen),
-              tileColor: getItemBgColor(AppRoutes.stockListScreen),
-              onTap: () {
-                navigate(AppRoutes.stockListScreen);
-              },
-            ),
-          ),
-          drawerItem(
-            text: 'vendors'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.storeListScreen),
-            tileColor: getItemBgColor(AppRoutes.storeListScreen),
-            onTap: () {
-              navigate(AppRoutes.storeListScreen);
-            },
-          ),
-          drawerItem(
-            text: 'manufacturer'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.storeListScreen),
-            tileColor: getItemBgColor(AppRoutes.storeListScreen),
-            onTap: () {
-              navigate(AppRoutes.storeListScreen);
-            },
-          ),
+          // drawerItem(
+          //   text: 'manufacturer'.tr,
+          //   iconPath: Drawable.homeDrawerIcon,
+          //   textIconColor: getItemColor(AppRoutes.storeListScreen),
+          //   tileColor: getItemBgColor(AppRoutes.storeListScreen),
+          //   onTap: () {
+          //     navigate(AppRoutes.storeListScreen);
+          //   },
+          // ),
           drawerItem(
             text: 'categories'.tr,
             iconPath: Drawable.homeDrawerIcon,
@@ -161,7 +161,7 @@ class MainDrawer extends StatelessWidget {
 
   navigate(String routPath) {
     // Navigator.pop(context as BuildContext);
-    Get.back();
+    // Get.back();
     Get.offNamed(routPath);
   }
 }

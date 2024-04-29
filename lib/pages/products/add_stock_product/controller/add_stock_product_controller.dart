@@ -189,7 +189,7 @@ class AddStockProductController extends GetxController
     map["status"] = addProductRequest.status;
     map["mode_type"] = addProductRequest.mode_type;
     map["barcode_text"] = mBarCode;
-    map["categories[0]"] = "9";
+    // map["categories[0]"] = "9";
     multi.FormData formData = multi.FormData.fromMap(map);
 
     print("Request Data:" + map.toString());

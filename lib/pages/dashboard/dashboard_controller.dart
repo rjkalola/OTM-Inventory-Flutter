@@ -4,7 +4,6 @@ import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
-import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/profile/profile_tab.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
@@ -19,6 +18,7 @@ import '../../web_services/response/module_info.dart';
 import '../../web_services/response/response_model.dart';
 import '../common/drop_down_list_dialog.dart';
 import '../common/listener/select_item_listener.dart';
+import '../stock_list/stock_list_screen.dart';
 import '../store_list/model/store_list_response.dart';
 import 'models/DashboardActionItemInfo.dart';
 
@@ -39,7 +39,7 @@ class DashboardController extends GetxController
   // final pageController = PageController();
   late final PageController pageController;
   final tabs = <Widget>[
-    HomeTab(),
+    StockListScreen(),
     ProfileTab(),
     MoreTab(),
   ];
@@ -67,11 +67,11 @@ class DashboardController extends GetxController
 
     // else {
     //   isMainViewVisible.value = true;
-    //   setHealerListArray();
+    //   setHeaderListArray();
     // }
     getStoreListApi();
     // isMainViewVisible.value = true;
-    // setHealerListArray();
+    // setHeaderListArray();
   }
 
   @override
@@ -171,7 +171,7 @@ class DashboardController extends GetxController
       storeNameController.value.text = name;
       Get.find<AppStorage>().setStoreId(id);
       Get.find<AppStorage>().setStoreName(name);
-      setHealerListArray();
+      setHeaderListArray();
     }
   }
 
@@ -201,7 +201,7 @@ class DashboardController extends GetxController
               showStoreListDialog(AppConstants.dialogIdentifier.storeList,
                   'stores'.tr, storeList, false, false, false,false, this);
             } else {
-              setHealerListArray();
+              setHeaderListArray();
             }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -222,7 +222,7 @@ class DashboardController extends GetxController
     );
   }
 
-  void setHealerListArray() {
+  void setHeaderListArray() {
     listHeaderButtons_.clear();
     listHeaderButtons_.addAll(
         DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3)

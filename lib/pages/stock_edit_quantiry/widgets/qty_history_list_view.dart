@@ -12,13 +12,13 @@ class QtyHistoryListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Visibility(
-          visible: stockEditQuantityController.productInfo.value.stock_histories!.isNotEmpty,
+          visible: !StringHelper.isEmptyList(stockEditQuantityController.productInfo.value.stock_histories),
           child: ListView(
             physics: const NeverScrollableScrollPhysics(), //
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             children: List.generate(
-              stockEditQuantityController.productInfo.value.stock_histories!.length,
+              !StringHelper.isEmptyList(stockEditQuantityController.productInfo.value.stock_histories)?stockEditQuantityController.productInfo.value.stock_histories!.length:0,
                   (position) => InkWell(
                 onTap: () {
                   // categoryListController.addCategoryClick(

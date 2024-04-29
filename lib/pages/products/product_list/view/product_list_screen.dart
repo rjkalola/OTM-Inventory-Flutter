@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +13,7 @@ import 'package:otm_inventory/pages/products/product_list/view/widgets/search_pr
 
 import '../../../../res/colors.dart';
 import '../../../../res/drawable.dart';
+import '../../../../utils/app_utils.dart';
 import '../../../../widgets/CustomProgressbar.dart';
 import '../../../../widgets/appbar/base_appbar.dart';
 import '../../../dashboard/widgets/main_drawer.dart';
@@ -25,51 +28,65 @@ class ProductListScreen extends StatefulWidget {
 
 class _ProductListScreenState extends State<ProductListScreen> {
   final productListController = Get.put(ProductListController());
+  var mTime;
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-        child:Scaffold(
-          backgroundColor: backgroundColor,
-          appBar: BaseAppBar(
-              appBar: AppBar(),
-              title: 'products'.tr,
-              isBack: true,
-              widgets: actionButtons()),
-          drawer: MainDrawer(),
-          bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-          body: Obx(
-                () => ModalProgressHUD(
-              inAsyncCall: productListController.isLoading.value,
-              opacity: 0,
-              progressIndicator: const CustomProgressbar(),
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  await productListController.getProductListApi(false, "0");
-                },
-                child: Column(children: [
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: dividerColor,
-                  ),
-                  Row(
-                    children: [const Expanded(child: SearchProductWidget()), QrCodeIcon()],
-                  ),
-                  productListController.productList.isNotEmpty
-                      ? ProductListView()
-                      : ProductListEmptyView(),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                ]),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async{
+        final backNavigationAllowed = await onBackPress();
+        if (backNavigationAllowed) {
+          if (Platform.isIOS) {
+            exit(0);
+          } else {
+            SystemNavigator.pop();
+          }
+        }
+      },
+      child: SafeArea(
+          child:Scaffold(
+            backgroundColor: backgroundColor,
+            appBar: BaseAppBar(
+                appBar: AppBar(),
+                title: 'products'.tr,
+                isBack: true,
+                widgets: actionButtons()),
+            drawer: MainDrawer(),
+            bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+            body: Obx(
+                  () => ModalProgressHUD(
+                inAsyncCall: productListController.isLoading.value,
+                opacity: 0,
+                progressIndicator: const CustomProgressbar(),
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await productListController.getProductListApi(false, "0");
+                  },
+                  child: Column(children: [
+                    const Divider(
+                      thickness: 1,
+                      height: 1,
+                      color: dividerColor,
+                    ),
+                    Row(
+                      children: [const Expanded(child: SearchProductWidget()), QrCodeIcon()],
+                    ),
+                    productListController.productList.isNotEmpty
+                        ? ProductListView()
+                        : ProductListEmptyView(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                  ]),
+                ),
               ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   List<Widget>? actionButtons() {
@@ -110,5 +127,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
         },
       ),
     ];
+  }
+
+  Future<bool> onBackPress() {
+    DateTime now = DateTime.now();
+    if (mTime == null || now.difference(mTime) > const Duration(seconds: 2)) {
+      mTime = now;
+      AppUtils.showSnackBarMessage('exit_warning'.tr);
+      return Future.value(false);
+    }
+
+    return Future.value(true);
   }
 }
