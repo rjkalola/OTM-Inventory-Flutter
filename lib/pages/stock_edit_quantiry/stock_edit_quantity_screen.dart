@@ -6,6 +6,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_controller.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/qty_history_list_view.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quantity_button.dart';
+import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_quantity_update_note.dart';
+import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_select_user.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_quantity.dart';
 import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
@@ -199,14 +201,16 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                         color: dividerColor,
                       ),
                       const SizedBox(
-                        height: 16,
+                        height: 20,
                       ),
+                      TextFieldSelectUser(),
+                      TextFieldQuantityUpdateNote(),
                       customTextView(
-                          'add_quantity_in_numbers'.tr,
+                          'add_quantity'.tr,
                           16,
                           FontWeight.w400,
                           primaryTextColor,
-                          const EdgeInsets.fromLTRB(18, 0, 18, 12),
+                          const EdgeInsets.fromLTRB(18, 0, 18, 6),
                           () => {}),
                       // TextFieldQuantityUpdateNote(),
                       Padding(

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as multi;
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_history/stock_quantity_history_repository.dart';
@@ -34,10 +34,11 @@ class StockQuantityHistoryController extends GetxController {
     Map<String, dynamic> map = {};
     map["store_id"] = AppStorage.storeId.toString();
     map["product_id"] = productId;
+    multi.FormData formData = multi.FormData.fromMap(map);
     if(kDebugMode) print("map:" + map.toString());
     if (isProgress) isLoading.value = true;
     _api.getStockQuantityHistory(
-      queryParameters: map,
+      formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {

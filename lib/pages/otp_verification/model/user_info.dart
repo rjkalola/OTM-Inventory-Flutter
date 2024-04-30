@@ -1,10 +1,12 @@
 class UserInfo {
   int? id;
   String? userIdEnc;
+  String? name;
   String? firstName;
   String? middleName;
   String? lastName;
   String? image;
+  String? user_image;
   String? imageThumb;
   String? email;
   String? phone;
@@ -41,10 +43,12 @@ class UserInfo {
   UserInfo(
       {this.id,
         this.userIdEnc,
+        this.name,
         this.firstName,
         this.middleName,
         this.lastName,
         this.image,
+        this.user_image,
         this.imageThumb,
         this.email,
         this.phone,
@@ -81,10 +85,12 @@ class UserInfo {
   UserInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userIdEnc = json['user_id_enc'];
+    name = json['name'];
     firstName = json['first_name'];
     middleName = json['middle_name'];
     lastName = json['last_name'];
     image = json['image'];
+    user_image = json['user_image'];
     imageThumb = json['image_thumb'];
     email = json['email'];
     phone = json['phone'];
@@ -125,10 +131,12 @@ class UserInfo {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['user_id_enc'] = this.userIdEnc;
+    data['name'] = this.name;
     data['first_name'] = this.firstName;
     data['middle_name'] = this.middleName;
     data['last_name'] = this.lastName;
     data['image'] = this.image;
+    data['user_image'] = this.user_image;
     data['image_thumb'] = this.imageThumb;
     data['email'] = this.email;
     data['phone'] = this.phone;

@@ -9,13 +9,14 @@ import '../../../web_services/response/response_model.dart';
 
 class StockQuantityHistoryRepository{
   void getStockQuantityHistory({
-    Map<String, dynamic>? queryParameters,
+    multi.FormData? formData,
     Function(ResponseModel responseModel)? onSuccess,
     Function(ResponseModel error)? onError,
   }) {
     ApiRequest(
-        url: ApiConstants.stockQuantityHistoryUrl, queryParameters: queryParameters)
-        .getRequest(
+        url: ApiConstants.stockQuantityHistoryUrl,  formData: formData,
+        isFormData: true)
+        .postRequest(
       onSuccess: (data) {
         onSuccess!(data);
       },

@@ -30,6 +30,7 @@ class Strings extends Translations {
           'suppliers': "Suppliers",
           'vendors': "Vendors",
           'empty_data_message': "No data found",
+          'empty_user_message': "No user found",
           'sku': "SKU",
           'price': "Price",
           'manufacturer': "Manufacturer",
@@ -90,7 +91,7 @@ class Strings extends Translations {
           'supplier_name': "Supplier Name",
           'supplier_code': "Supplier Code",
           'qty_in_stock': "QTY in Stock",
-          'add_quantity_in_numbers': "Add quantity",
+          'add_quantity': "Add quantity",
           'empty_store_message': "No store found",
           'dashboard': "Dashboard",
           'deduct': "Deduct",
@@ -102,7 +103,9 @@ class Strings extends Translations {
           'exit_warning': "Press Back Button Again to Exit.",
           'add_new_product': "Add New Product",
           'attach_product': "Attach Product",
-          'empty_qr_code_scan_msg':"We do not find this product in our records, Click buttons below if you want to attach any product with the barcode or add new product with this barcode"
+          'empty_qr_code_scan_msg':"We do not find this product in our records, Click buttons below if you want to attach any product with the barcode or add new product with this barcode",
+          'ref': "Ref",
+          'select_user': "Select User",
         },
         'hi_IN': {'login': 'Login'}
       };

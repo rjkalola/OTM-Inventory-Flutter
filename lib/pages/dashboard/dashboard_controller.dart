@@ -55,21 +55,18 @@ class DashboardController extends GetxController
     pageController = PageController(initialPage: selectedIndex.value);
     setTitle(selectedIndex.value);
 
-    AppStorage.storeId = Get.find<AppStorage>().getStoreId();
-    // AppStorage.storeId = 1;
+   /* AppStorage.storeId = Get.find<AppStorage>().getStoreId();
     AppStorage.storeName = Get.find<AppStorage>().getStoreName();
     if (!StringHelper.isEmptyString(AppStorage.storeName)) {
       storeNameController.value.text = AppStorage.storeName;
     }
-
-
-    print("Buttons length:"+listHeaderButtons.length.toString());
+    getStoreListApi();*/
 
     // else {
     //   isMainViewVisible.value = true;
     //   setHeaderListArray();
     // }
-    getStoreListApi();
+
     // isMainViewVisible.value = true;
     // setHeaderListArray();
   }
