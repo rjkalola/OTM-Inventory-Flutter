@@ -18,6 +18,7 @@ import '../../web_services/response/module_info.dart';
 import '../../web_services/response/response_model.dart';
 import '../common/drop_down_list_dialog.dart';
 import '../common/listener/select_item_listener.dart';
+import '../stock_list/stock_list_controller.dart';
 import '../stock_list/stock_list_screen.dart';
 import '../store_list/model/store_list_response.dart';
 import 'models/DashboardActionItemInfo.dart';
@@ -30,17 +31,19 @@ class DashboardController extends GetxController
   final storeNameController = TextEditingController().obs;
   final List<List<DashboardActionItemInfo>> listHeaderButtons_ =
       DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3).obs;
-  final List<DashboardActionItemInfo> listHeaderButtons = DataUtils.getHeaderActionButtonsList().obs;
+  final List<DashboardActionItemInfo> listHeaderButtons =
+      DataUtils.getHeaderActionButtonsList().obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
   final title = 'dashboard'.tr.obs;
   final selectedIndex = 0.obs;
+
   // final pageController = PageController();
   late final PageController pageController;
   final tabs = <Widget>[
     StockListScreen(),
-    ProfileTab(),
+    // ProfileTab(),
     MoreTab(),
   ];
 
@@ -55,7 +58,7 @@ class DashboardController extends GetxController
     pageController = PageController(initialPage: selectedIndex.value);
     setTitle(selectedIndex.value);
 
-   /* AppStorage.storeId = Get.find<AppStorage>().getStoreId();
+    /* AppStorage.storeId = Get.find<AppStorage>().getStoreId();
     AppStorage.storeName = Get.find<AppStorage>().getStoreName();
     if (!StringHelper.isEmptyString(AppStorage.storeName)) {
       storeNameController.value.text = AppStorage.storeName;
@@ -83,12 +86,14 @@ class DashboardController extends GetxController
     setTitle(index);
   }
 
-  void setTitle(int index){
-    if(index == 0){
+  void setTitle(int index) {
+    if (index == 0) {
       title.value = 'dashboard'.tr;
-    }else  if(index == 1){
-      title.value = 'profile'.tr;
-    }else  if(index == 2){
+    }
+    // else if (index == 1) {
+    //   title.value = 'profile'.tr;
+    // }
+    else if (index == 1) {
       title.value = 'more'.tr;
     }
   }
@@ -110,8 +115,6 @@ class DashboardController extends GetxController
     initialPage: 0,
   );
 
-
-
   void onActionButtonClick(String action) {
     if (action == AppConstants.action.items) {
       Get.offNamed(AppRoutes.productListScreen);
@@ -129,7 +132,7 @@ class DashboardController extends GetxController
   void selectStore() {
     if (storeList.isNotEmpty) {
       showStoreListDialog(AppConstants.dialogIdentifier.storeList, 'stores'.tr,
-          storeList, true, true, true,true, this);
+          storeList, true, true, true, true, this);
     } else {
       AppUtils.showSnackBarMessage('empty_store_message'.tr);
     }
@@ -172,6 +175,14 @@ class DashboardController extends GetxController
     }
   }
 
+  Future<void> addMultipleStockQuantity() async {
+    var result;
+    result = await Get.toNamed(AppRoutes.stockMultipleQuantityUpdateScreen);
+    if (result != null && result) {
+      Get.put(StockListController()).getStockListApi(true, false, "");
+    }
+  }
+
   void getStoreListApi() async {
     Map<String, dynamic> map = {};
     multi.FormData formData = multi.FormData.fromMap(map);
@@ -196,7 +207,7 @@ class DashboardController extends GetxController
             }
             if (AppStorage.storeId == 0 && storeList.isNotEmpty) {
               showStoreListDialog(AppConstants.dialogIdentifier.storeList,
-                  'stores'.tr, storeList, false, false, false,false, this);
+                  'stores'.tr, storeList, false, false, false, false, this);
             } else {
               setHeaderListArray();
             }
@@ -225,7 +236,6 @@ class DashboardController extends GetxController
         DataUtils.generateChunks(DataUtils.getHeaderActionButtonsList(), 3)
             .obs);
     listHeaderButtons.clear();
-    listHeaderButtons.addAll(
-        DataUtils.getHeaderActionButtonsList());
+    listHeaderButtons.addAll(DataUtils.getHeaderActionButtonsList());
   }
 }

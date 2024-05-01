@@ -106,6 +106,10 @@ class Strings extends Translations {
           'empty_qr_code_scan_msg':"We do not find this product in our records, Click buttons below if you want to attach any product with the barcode or add new product with this barcode",
           'ref': "Ref",
           'select_user': "Select User",
+          'add_stock': "Add Stock",
+          'all': "All",
+          'in': "In",
+          'out': "Out",
         },
         'hi_IN': {'login': 'Login'}
       };

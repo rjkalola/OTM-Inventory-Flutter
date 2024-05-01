@@ -19,70 +19,63 @@ class QtyHistoryListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => Visibility(
           visible: stockQuantityHistoryController
-              .stockQuantityHistoryResponse.value.info!.isNotEmpty,
-          child: ListView(
-            physics: const NeverScrollableScrollPhysics(), //
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            children: List.generate(
-              stockQuantityHistoryController
-                  .stockQuantityHistoryResponse.value.info!.length,
-              (position) => Padding(
-                padding: const EdgeInsets.fromLTRB(0, 7, 0, 7),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          customTextView(
-                              stockQuantityHistoryController
-                                  .stockQuantityHistoryResponse
-                                  .value
-                                  .info![position]
-                                  .created_at_formatted,
-                              16,
-                              FontWeight.w400,
-                              primaryTextColorLight,
-                              const EdgeInsets.all(0)),
-                          customTextView(
-                              stockQuantityHistoryController
-                                  .stockQuantityHistoryResponse
-                                  .value
-                                  .info![position]
-                                  .qty,
-                              16,
-                              FontWeight.w400,
-                              (int.parse(stockQuantityHistoryController
-                                          .stockQuantityHistoryResponse
-                                          .value
-                                          .info![position]
-                                          .qty!) >
-                                      0)
-                                  ? Colors.green
-                                  : Colors.red,
-                              const EdgeInsets.all(0)),
-                        ],
+              .stockHistoryList.isNotEmpty,
+          child: Expanded(
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(), //
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              children: List.generate(
+                stockQuantityHistoryController
+                    .stockHistoryList.length,
+                (position) => Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 7, 0, 7),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            customTextView(
+                                stockQuantityHistoryController
+                                    .stockHistoryList
+                                   [position]
+                                    .created_at_formatted,
+                                16,
+                                FontWeight.w400,
+                                primaryTextColorLight,
+                                const EdgeInsets.all(0)),
+                            customTextView(
+                                stockQuantityHistoryController
+                                    .stockHistoryList[position]
+                                    .qty,
+                                16,
+                                FontWeight.w400,
+                                (int.parse(stockQuantityHistoryController
+                                    .stockHistoryList[position]
+                                            .qty!) >
+                                        0)
+                                    ? Colors.green
+                                    : Colors.red,
+                                const EdgeInsets.all(0)),
+                          ],
+                        ),
                       ),
-                    ),
-                    QtyHistoryUserInfo(user: stockQuantityHistoryController
-                        .stockQuantityHistoryResponse
-                        .value
-                        .info![position]
-                          .user,),
-                    QtyHistoryNoteInfo(note: stockQuantityHistoryController
-                        .stockQuantityHistoryResponse
-                        .value
-                        .info![position].note,),
-                    SizedBox(height: 14,),
-                    const Divider(
-                      thickness: 1,
-                      height: 1,
-                      color: dividerColor,
-                    ),
-                  ],
+                      QtyHistoryUserInfo(user: stockQuantityHistoryController
+                          .stockHistoryList[position]
+                            .user,),
+                      QtyHistoryNoteInfo(note: stockQuantityHistoryController
+                          .stockHistoryList[position].reference,),
+                      const SizedBox(height: 14,),
+                      const Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: dividerColor,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

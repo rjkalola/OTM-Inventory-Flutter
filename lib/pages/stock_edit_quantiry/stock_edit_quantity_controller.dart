@@ -144,7 +144,7 @@ class StockEditQuantityController extends GetxController
     map["product_id"] = productId;
     map["qty"] = quantity;
     map["user_id"] = userId;
-    map["note"] = note;
+    map["reference"] = note;
     multi.FormData formData = multi.FormData.fromMap(map);
     if (kDebugMode) print("map:" + map.toString());
     if (isProgress) isLoading.value = true;

@@ -4,6 +4,7 @@ class AppConstants {
   static const FromScreens fromScreens = FromScreens();
   static const IntentKey intentKey = IntentKey();
   static const Action action = Action();
+  static const StockFilterType stockFilterType = StockFilterType();
   static const String deviceType = "1";
   static const int productListLimit = 20;
   static const int defaultPhoneExtensionId = 1;
@@ -62,4 +63,11 @@ class Action {
 class FromScreens {
   const FromScreens(); //
 // final String login = "login";
+}
+
+class StockFilterType {
+  const StockFilterType(); //
+  final String filterAll = "FILTER_ALL";
+  final String filterIn = "FILTER_IN";
+  final String filterOut = "FILTER_OUT";
 }

@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/user_image.dart';
 
 import '../../../res/colors.dart';

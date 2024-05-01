@@ -11,10 +11,10 @@ class BaseResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['IsSuccess'] = this.IsSuccess;
-    data['Message'] = this.Message;
-    data['ErrorCode'] = this.ErrorCode;
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    data['IsSuccess'] = IsSuccess;
+    data['Message'] = Message;
+    data['ErrorCode'] = ErrorCode;
     return data;
   }
 }

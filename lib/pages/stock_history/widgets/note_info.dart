@@ -16,6 +16,7 @@ class QtyHistoryNoteInfo extends StatelessWidget {
         text: note ??
             "",
         fontSize: 15,
+      softWrap: true,
       ),
     )
         : Container();

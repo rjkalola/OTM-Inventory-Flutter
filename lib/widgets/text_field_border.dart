@@ -81,6 +81,7 @@ class TextFieldBorder extends StatelessWidget {
           hintStyle: const TextStyle(
               fontWeight: FontWeight.w400, fontSize: 15, color: Colors.grey),
         ),
-        validator: validator!);
+        validator: validator!,);
+
   }
 }

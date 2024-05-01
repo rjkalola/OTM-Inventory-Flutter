@@ -21,10 +21,10 @@ class BottomNavigationBarWidget extends StatelessWidget {
               activeIcon: SvgPicture.asset(Drawable.activeHomeTabIcon, width: 30),
               icon: SvgPicture.asset(Drawable.inactiveHomeTabIcon, width: 30),
               label: ''),
-          BottomNavigationBarItem(
-              activeIcon: Image.asset(Drawable.activeProfileTabIcon, width: 26),
-              icon: Image.asset(Drawable.inactiveProfileTabIcon, width: 26),
-              label: ''),
+          // BottomNavigationBarItem(
+          //     activeIcon: Image.asset(Drawable.activeProfileTabIcon, width: 26),
+          //     icon: Image.asset(Drawable.inactiveProfileTabIcon, width: 26),
+          //     label: ''),
           BottomNavigationBarItem(
               activeIcon: SvgPicture.asset(Drawable.activeMoreTabIcon, width: 30),
               icon: SvgPicture.asset(Drawable.inactiveMoreTabIcon, width: 30),

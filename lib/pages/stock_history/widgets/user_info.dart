@@ -15,7 +15,7 @@ class QtyHistoryUserInfo extends StatelessWidget {
       child: Row(
         children: [
           ImageUtils.setUserImage(
-              user!.user_image ??
+              user!.image ??
                   "",
               36,
               45),

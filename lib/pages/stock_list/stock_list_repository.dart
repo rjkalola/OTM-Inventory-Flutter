@@ -58,4 +58,20 @@ class StockListRepository{
       onError: (error) => {if (onError != null) onError(error)},
     );
   }
+
+  void addStock({
+    multi.FormData? formData,
+    Function(ResponseModel responseModel)? onSuccess,
+    Function(ResponseModel error)? onError,
+  }) {
+    if (kDebugMode)print("formData:$formData");
+    ApiRequest(
+        url: ApiConstants.addStockUrl, formData: formData, isFormData: true)
+        .postRequest(
+      onSuccess: (data) {
+        onSuccess!(data);
+      },
+      onError: (error) => {if (onError != null) onError(error)},
+    );
+  }
 }

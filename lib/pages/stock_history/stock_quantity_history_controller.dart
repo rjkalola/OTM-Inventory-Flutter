@@ -9,6 +9,7 @@ import 'package:otm_inventory/utils/app_storage.dart';
 import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
+import '../stock_edit_quantiry/model/stock_qty_history_info.dart';
 import 'model/stock_quantity_history_response.dart';
 
 class StockQuantityHistoryController extends GetxController {
@@ -18,6 +19,9 @@ class StockQuantityHistoryController extends GetxController {
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
   final stockQuantityHistoryResponse = StockQuantityHistoryResponse().obs;
+  final filterTab = AppConstants.stockFilterType.filterAll.obs;
+  List<StockQtyHistoryInfo> tempList = [];
+  final stockHistoryList = <StockQtyHistoryInfo>[].obs;
 
   @override
   void onInit() {
@@ -35,16 +39,21 @@ class StockQuantityHistoryController extends GetxController {
     map["store_id"] = AppStorage.storeId.toString();
     map["product_id"] = productId;
     multi.FormData formData = multi.FormData.fromMap(map);
-    if(kDebugMode) print("map:" + map.toString());
+    if (kDebugMode) print("map:" + map.toString());
     if (isProgress) isLoading.value = true;
     _api.getStockQuantityHistory(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          StockQuantityHistoryResponse response = StockQuantityHistoryResponse.fromJson(jsonDecode(responseModel.result!));
+          StockQuantityHistoryResponse response =
+              StockQuantityHistoryResponse.fromJson(
+                  jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             stockQuantityHistoryResponse.value = response;
+            tempList.clear();
+            tempList.addAll(response.info!);
+            stockHistoryList.value = tempList;
             isMainViewVisible.value = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -66,4 +75,17 @@ class StockQuantityHistoryController extends GetxController {
     );
   }
 
+  void filterData(String filterType) {
+    filterTab.value = filterType;
+    List<StockQtyHistoryInfo> results = [];
+    if (filterType == AppConstants.stockFilterType.filterAll) {
+      results = tempList;
+    } else if (filterType == AppConstants.stockFilterType.filterIn) {
+      results =
+          tempList.where((element) => int.parse(element.qty!) >= 0).toList();
+    } else if (filterType == AppConstants.stockFilterType.filterOut) {
+      results = tempList.where((element) => element.qty!.startsWith("-")).toList();
+    }
+    stockHistoryList.value = results;
+  }
 }

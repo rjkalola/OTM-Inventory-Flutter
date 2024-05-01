@@ -5,7 +5,7 @@ import 'package:otm_inventory/pages/stock_edit_quantiry/model/stock_qty_history_
 import '../../../../web_services/response/module_info.dart';
 
 class ProductInfo {
-  int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id,qty;
+  int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id,qty,newQty = 0;
   String? shortName,name,description,price,image,extension,qrCode,categoryName,
       currency,sku,model_name,manufacturer_name,imageThumb,qrCodeThumb,imageUrl,imageThumbUrl,weight
   ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name,supplier_code,dimension,barcode_text;
@@ -50,7 +50,8 @@ class ProductInfo {
         this.qty,
         this.dimension,
         this.barcode_text,
-        this.stock_histories});
+        this.stock_histories,
+        this.newQty});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];

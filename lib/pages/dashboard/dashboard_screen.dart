@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
@@ -13,24 +14,59 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Obx(() => Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: BaseAppBar(
-        appBar: AppBar(),
-        title: dashboardController.title.value,
-        isBack: true,),
-      drawer:  MainDrawer(),
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: PageView(
-          controller: dashboardController.pageController,
-          onPageChanged: dashboardController.onPageChanged,
-          physics: const NeverScrollableScrollPhysics(),
-          children: dashboardController.tabs,
-        ),
+    return SafeArea(
+        child: Obx(() => Scaffold(
+              backgroundColor: backgroundColor,
+              appBar: BaseAppBar(
+                appBar: AppBar(),
+                title: dashboardController.title.value,
+                isBack: true,
+                widgets: actionButtons(),
+              ),
+              drawer: MainDrawer(),
+              body: SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                child: PageView(
+                  controller: dashboardController.pageController,
+                  onPageChanged: dashboardController.onPageChanged,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: dashboardController.tabs,
+                ),
+              ),
+              bottomNavigationBar: BottomNavigationBarWidget(),
+            )));
+  }
+
+  List<Widget>? actionButtons() {
+    return [
+      // Visibility(
+      //   visible: productListController.productList.isNotEmpty,
+      //   child: IconButton(
+      //     icon: SvgPicture.asset(
+      //       width: 22,with exception
+      //       Drawable.searchIcon,
+      //     ),
+      //     onPressed: () {},
+      //   ),
+      // ),
+      Visibility(
+        visible: dashboardController.selectedIndex.value == 0,
+        child: InkWell(
+            onTap: () {
+              dashboardController.addMultipleStockQuantity();
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 14),
+              child: Text(
+                "+${'add_stock'.tr}",
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: defaultAccentColor,
+                    fontWeight: FontWeight.w500),
+              ),
+            )),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
-    )));
+    ];
   }
 }

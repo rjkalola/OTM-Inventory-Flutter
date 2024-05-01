@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_history/stock_quantity_history_controller.dart';
 import 'package:otm_inventory/pages/stock_history/widgets/qty_history_list_view.dart';
+import 'package:otm_inventory/pages/stock_history/widgets/stock_histoty_filter_widget.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../res/colors.dart';
@@ -51,6 +52,7 @@ class _StockQuantityHistoryScreenState extends State<StockQuantityHistoryScreen>
                   color: dividerColor,
                 ),
                 const SizedBox(height: 14,),
+                StockHistoryFilterWidget(),
                 QtyHistoryListView()
               ]),
             ),
