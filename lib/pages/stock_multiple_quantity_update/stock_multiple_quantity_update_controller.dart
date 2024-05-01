@@ -80,7 +80,7 @@ class StockMultipleQuantityUpdateController extends GetxController {
     map["limit"] = AppConstants.productListLimit.toString();
     map["search"] = search;
     map["product_id"] = "0";
-    map["is_stock"] = 1;
+    // map["is_stock"] = 1;
     map["store_id"] = AppStorage.storeId.toString();
 
     multi.FormData formData = multi.FormData.fromMap(map);
