@@ -103,13 +103,26 @@ class Strings extends Translations {
           'exit_warning': "Press Back Button Again to Exit.",
           'add_new_product': "Add New Product",
           'attach_product': "Attach Product",
-          'empty_qr_code_scan_msg':"We do not find this product in our records, Click buttons below if you want to attach any product with the barcode or add new product with this barcode",
+          'empty_qr_code_scan_msg':
+              "We do not find this product in our records, Click buttons below if you want to attach any product with the barcode or add new product with this barcode",
           'ref': "Ref",
           'select_user': "Select User",
           'add_stock': "Add Stock",
           'all': "All",
           'in': "In",
           'out': "Out",
+          'login_with_otp': "Login with OTP",
+          'msg_attach_barcode':
+              "Do you want to attach this product with barcode?",
+          'msg_update_barcode':
+              "Do you want to edit/update barcode?, By pressing Yes you need to scan a new barcode.",
+          'barcode': "Barcode",
+          'product_id': "Product ID",
+          'barcode_attached_success_msg':
+              "Barcode attached with this product successfully",
+          'barcode_update_success_msg': "Barcode edited successfully",
+          'update_barcode': "Update Barcode",
+          'update': "Update",
         },
         'hi_IN': {'login': 'Login'}
       };

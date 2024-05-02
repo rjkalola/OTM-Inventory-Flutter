@@ -75,9 +75,9 @@ class StockListView extends StatelessWidget {
                             Visibility(
                               visible: !StringHelper.isEmptyString(
                                   stockListController
-                                      .productList[position].supplier_name),
+                                      .productList[position].barcode_text),
                               child: Text(
-                                  "${'supplier_name'.tr}: ${stockListController.productList[position].supplier_name ?? ""}",
+                                  "${'barcode'.tr}: ${stockListController.productList[position].barcode_text ?? ""}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
@@ -91,7 +91,7 @@ class StockListView extends StatelessWidget {
                                   stockListController
                                       .productList[position].supplier_code),
                               child: Text(
-                                  "${'supplier_code'.tr}: ${stockListController.productList[position].supplier_code ?? ""}",
+                                  "${'product_id'.tr}: ${stockListController.productList[position].supplier_code ?? ""}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(

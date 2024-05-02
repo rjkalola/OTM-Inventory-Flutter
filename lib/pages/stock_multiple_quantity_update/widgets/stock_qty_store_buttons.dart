@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/PrimaryBorderButton.dart';
-import '../../../widgets/PrimaryButton.dart';
 import '../stock_multiple_quantity_update_controller.dart';
 
 class StockQtyStoreButtons extends StatelessWidget {
@@ -21,8 +20,10 @@ class StockQtyStoreButtons extends StatelessWidget {
                 Flexible(
                   fit: FlexFit.tight,
                   flex: 1,
-                  child: PrimaryButton(
+                  child: PrimaryBorderButton(
                     buttonText: 'add'.tr,
+                    textColor: defaultAccentColor,
+                    borderColor: defaultAccentColor,
                     onPressed: () {
                       stockListController.onClickAddQuantityButton();
                     },
@@ -36,8 +37,8 @@ class StockQtyStoreButtons extends StatelessWidget {
                   flex: 1,
                   child: PrimaryBorderButton(
                     buttonText: 'cancel'.tr,
-                    textColor: defaultAccentColor,
-                    borderColor: defaultAccentColor,
+                    textColor: Colors.red,
+                    borderColor: Colors.red,
                     onPressed: () {
                       Get.back();
                     },

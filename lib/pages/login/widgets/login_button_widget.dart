@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/res/colors.dart';
 
-import '../../../widgets/PrimaryButton.dart';
+import '../../../widgets/PrimaryBorderButton.dart';
 import '../login_controller.dart';
 
 class LoginButtonWidget extends StatelessWidget {
@@ -15,12 +16,14 @@ class LoginButtonWidget extends StatelessWidget {
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 28, 16, 14),
-        child: PrimaryButton(
-          buttonText: 'Login with OTP',
+        child: PrimaryBorderButton(
+          buttonText: 'login_with_otp'.tr,
+          textColor: defaultAccentColor,
+          borderColor: defaultAccentColor,
           onPressed: () {
             loginController.login();
           },
-        ),
+        )
       ),
     );
   }

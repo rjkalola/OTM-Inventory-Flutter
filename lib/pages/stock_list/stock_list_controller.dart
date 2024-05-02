@@ -29,7 +29,6 @@ class StockListController extends GetxController implements DialogButtonClickLis
 ,SelectItemListener{
   final _api = StockListRepository();
   final searchController = TextEditingController().obs;
-  final productListResponse = ProductListResponse().obs;
   var addProductRequest = AddProductRequest();
   List<ProductInfo> tempList = [];
   final productList = <ProductInfo>[].obs;
@@ -209,11 +208,13 @@ class StockListController extends GetxController implements DialogButtonClickLis
               // getStockListWithCodeApi(isProgress, true, "null");
             }else{
               print("response.info! size:"+response.info!.length.toString());
+
               isScanQrCode.value = false;
-              productListResponse.value = response;
               tempList.clear();
               tempList.addAll(response.info!);
+              // productList.addAll(tempList);
               productList.value = tempList;
+              productList.refresh();
               isMainViewVisible.value = true;
             }
           } else {
@@ -261,7 +262,6 @@ class StockListController extends GetxController implements DialogButtonClickLis
           ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
               isScanQrCode.value = scanQrCode;
-              productListResponse.value = response;
               tempList.clear();
               tempList.addAll(response.info!);
               productList.value = tempList;

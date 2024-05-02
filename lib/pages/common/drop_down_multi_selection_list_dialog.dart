@@ -122,14 +122,16 @@ class DropDownMultiSelectionListDialogState
                         Flexible(
                           fit: FlexFit.tight,
                           flex: 1,
-                          child: PrimaryButton(
+                          child:PrimaryBorderButton(
                             buttonText: 'select'.tr,
+                            textColor: defaultAccentColor,
+                            borderColor: defaultAccentColor,
                             onPressed: () {
                               listener.onSelectMultiItem(
                                   tempList, dialogType);
                               Navigator.pop(context);
                             },
-                          ),
+                          )
                         ),
                         const SizedBox(
                           width: 12,
@@ -139,8 +141,8 @@ class DropDownMultiSelectionListDialogState
                           flex: 1,
                           child: PrimaryBorderButton(
                             buttonText: 'cancel'.tr,
-                            textColor: defaultAccentColor,
-                            borderColor: defaultAccentColor,
+                            textColor: Colors.red,
+                            borderColor: Colors.red,
                             onPressed: () {
                               Navigator.pop(context);
                             },

@@ -39,6 +39,8 @@ class DialogIdentifier {
   final String usersList = 'USERS_LIST';
   final String storeList = 'STORE_LIST';
   final String stockOptionsDialog = 'stockOptionsDialog';
+  final String attachBarcodeDialog = 'attachBarcodeDialog';
+  final String updateBarcodeDialog = 'updateBarcodeDialog';
 }
 
 class SharedPreferenceKey {

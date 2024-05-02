@@ -16,25 +16,32 @@ import '../../../routes/app_routes.dart';
 import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
+import '../../utils/AlertDialogHelper.dart';
 import '../../web_services/response/module_info.dart';
 import '../add_store/model/store_resources_response.dart';
 import '../common/drop_down_list_dialog.dart';
+import '../common/listener/DialogButtonClickListener.dart';
 import '../common/listener/select_item_listener.dart';
+import '../products/add_product/model/store_product_response.dart';
 import '../products/product_list/models/product_info.dart';
+import '../products/product_list/models/product_list_response.dart';
+import '../stock_list/stock_list_repository.dart';
 
 class StockEditQuantityController extends GetxController
-    implements SelectItemListener {
+    implements SelectItemListener, DialogButtonClickListener {
   final _api = StockEditQuantityRepository();
   final formKey = GlobalKey<FormState>();
   final quantityController = TextEditingController().obs;
   final noteController = TextEditingController().obs;
   final userController = TextEditingController().obs;
+  final barcodeController = TextEditingController();
   final productInfo = ProductInfo().obs;
-  String productId = "";
+  String productId = "", mBarCode = "";
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
   int initialQuantity = 0, finalQuantity = 0, userId = 0;
+  bool isUpdated = false;
   List<ModuleInfo> listUsers = [];
 
   @override
@@ -66,7 +73,7 @@ class StockEditQuantityController extends GetxController
   }
 
   void showUsersList() {
-    print("listUsers size:"+listUsers.length.toString());
+    print("listUsers size:" + listUsers.length.toString());
     if (listUsers.isNotEmpty) {
       showDropDownDialog(AppConstants.dialogIdentifier.usersList,
           'select_user'.tr, listUsers, this);
@@ -91,6 +98,67 @@ class StockEditQuantityController extends GetxController
     if (action == AppConstants.dialogIdentifier.usersList) {
       userController.value.text = name;
       userId = id;
+    }
+  }
+
+  void onClickQrCode() {
+    if (!StringHelper.isEmptyString(productInfo.value.barcode_text)) {
+      showUpdateBarcodeDialog();
+    } else {
+      showAttachBarcodeDialog();
+    }
+  }
+
+  Future<void> openQrCodeScanner(String message) async {
+    var code = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
+    if (!StringHelper.isEmptyString(code)) {
+      mBarCode = code;
+      // getStockListApi(true, true, code);
+      attachBarCodeApi(message);
+    }
+  }
+
+  showAttachBarcodeDialog() {
+    AlertDialogHelper.showAlertDialog(
+        "",
+        'msg_attach_barcode'.tr,
+        'yes'.tr,
+        'no'.tr,
+        "",
+        true,
+        this,
+        AppConstants.dialogIdentifier.attachBarcodeDialog);
+  }
+
+  showUpdateBarcodeDialog() {
+    AlertDialogHelper.showAlertDialog(
+        "",
+        'msg_update_barcode'.tr,
+        'yes'.tr,
+        'no'.tr,
+        "",
+        true,
+        this,
+        AppConstants.dialogIdentifier.updateBarcodeDialog);
+  }
+
+  @override
+  void onNegativeButtonClicked(String dialogIdentifier) {
+    Get.back();
+  }
+
+  @override
+  void onOtherButtonClicked(String dialogIdentifier) {}
+
+  @override
+  void onPositiveButtonClicked(String dialogIdentifier) {
+    if (dialogIdentifier == AppConstants.dialogIdentifier.attachBarcodeDialog) {
+      Get.back();
+      openQrCodeScanner('barcode_attached_success_msg'.tr);
+    } else if (dialogIdentifier ==
+        AppConstants.dialogIdentifier.updateBarcodeDialog) {
+      Get.back();
+      openQrCodeScanner('barcode_update_success_msg'.tr);
     }
   }
 
@@ -210,12 +278,97 @@ class StockEditQuantityController extends GetxController
     );
   }
 
+  Future<void> getStockListApi(
+      bool isProgress, bool scanQrCode, String? code) async {
+    Map<String, dynamic> map = {};
+    map["filters"] = "";
+    map["offset"] = 0;
+    map["limit"] = AppConstants.productListLimit.toString();
+    map["search"] = "";
+    map["product_id"] = "0";
+    map["is_stock"] = 1;
+    map["store_id"] = AppStorage.storeId.toString();
+    if (scanQrCode) {
+      map["barcode_text"] = code;
+    }
+
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print(map.toString());
+
+    if (isProgress) isLoading.value = true;
+    StockListRepository().getStockList(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          ProductListResponse response =
+              ProductListResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            if (scanQrCode && response.info!.isEmpty) {
+              showAttachBarcodeDialog();
+            } else {
+              showUpdateBarcodeDialog();
+            }
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
+  void attachBarCodeApi(String message) async {
+    Map<String, dynamic> map = {};
+    map["id"] = productId;
+    map["barcode_text"] = mBarCode;
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print("Request Data:" + map.toString());
+
+    isLoading.value = true;
+
+    StockListRepository().storeProduct(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          StoreProductResponse response =
+              StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            AppUtils.showSnackBarMessage(message);
+            isUpdated = true;
+            getStockQuantityDetailsApi(true, productId.toString());
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
   void onUpdateQuantityClick(bool isDeduct) {
     if (formKey.currentState!.validate()) {
       String note = noteController.value.text.toString().trim();
-      // String qtyString = finalQuantity.toString();
-      // storeStockQuantityApi(true, productId.toString(),qtyString,note);
-
       int qty = int.parse(quantityController.value.text.toString().trim());
       int finalQty = 0;
       if (isDeduct) {
@@ -226,25 +379,6 @@ class StockEditQuantityController extends GetxController
       storeStockQuantityApi(
           true, productId.toString(), finalQty.toString(), note);
     }
-  }
-
-  void increaseQuantity() {
-    String qtyString = quantityController.value.text.toString().trim();
-    int quantity = 0;
-    if (!StringHelper.isEmptyString(qtyString)) quantity = int.parse(qtyString);
-    quantity++;
-    quantityController.value.text = quantity.toString();
-    onQuantityUpdate(quantity.toString());
-  }
-
-  void decreaseQuantity() {
-    String qtyString = quantityController.value.text.toString().trim();
-    int quantity = 0;
-    if (!StringHelper.isEmptyString(qtyString)) quantity = int.parse(qtyString);
-    // if (quantity > 1) quantity--;
-    quantity--;
-    quantityController.value.text = quantity.toString();
-    onQuantityUpdate(quantity.toString());
   }
 
   void onQuantityUpdate(String value) {
@@ -258,5 +392,50 @@ class StockEditQuantityController extends GetxController
     finalQuantity = initialQuantity + qty;
     if (finalQuantity < 0) finalQuantity = 0;
     print("new qty:$finalQuantity");
+  }
+
+  showUpdateBarcodeManually(String barcode) {
+    barcodeController.text = barcode;
+    // set up the buttons
+    List<Widget> listButtons = [];
+    Widget cancelButton = TextButton(
+      child: Text('update'.tr),
+      onPressed: () {
+        if (!StringHelper.isEmptyString(
+            barcodeController.text.toString().trim())) {
+          Get.back();
+          mBarCode = barcodeController.text.toString().trim();
+          attachBarCodeApi('barcode_update_success_msg'.tr);
+        }
+      },
+    );
+    listButtons.add(cancelButton);
+
+    Widget positiveButton = TextButton(
+      child: Text('cancel'.tr),
+      onPressed: () {
+        Get.back();
+      },
+    );
+    listButtons.add(positiveButton);
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        'update_barcode'.tr,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+      ),
+      content: TextField(
+          onChanged: (value) {},
+          controller: barcodeController,
+          decoration: InputDecoration(
+              hintText: 'barcode'.tr,
+              labelText: 'barcode'.tr,
+              labelStyle: const TextStyle(fontWeight: FontWeight.normal),
+              hintStyle: const TextStyle(fontWeight: FontWeight.normal))),
+      actions: listButtons,
+    );
+    // show the dialog
+
+    Get.dialog(barrierDismissible: true, alert);
   }
 }
