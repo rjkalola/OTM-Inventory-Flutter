@@ -66,7 +66,7 @@ class VerifyOtpController extends GetxController {
               ApiConstants.accessToken = response.info!.apiToken!;
               print("Token:" + ApiConstants.accessToken);
               Get.offAllNamed(AppRoutes.dashboardScreen);
-              // saveLoginUser(response.info!);
+              saveLoginUser(response.info!);
             } else {
               showSnackBar(response.message!);
             }

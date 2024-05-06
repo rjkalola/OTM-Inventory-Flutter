@@ -23,7 +23,6 @@ import '../products/product_list/models/product_list_response.dart';
 class StockMultipleQuantityUpdateController extends GetxController {
   final _api = StockListRepository();
   final searchController = TextEditingController().obs;
-  final productListResponse = ProductListResponse().obs;
   List<ProductInfo> tempList = [];
   final productList = <ProductInfo>[].obs;
   final controllers = <TextEditingController>[].obs;
@@ -34,13 +33,39 @@ class StockMultipleQuantityUpdateController extends GetxController {
       isMainViewVisible = false.obs;
 
   final filters = ''.obs, search = ''.obs;
-  final offset = 0.obs;
   var mBarCode = "";
+  var mIsLastPage = false;
+  late ScrollController controller;
+  var offset = 0;
 
   @override
   void onInit() {
     super.onInit();
-    getStockListApi(true);
+    controller = ScrollController();
+    controller.addListener(_scrollListener);
+    getStockListApi(true,true);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    for(int i = 0;i<controllers.length;i++){
+      controllers[i].dispose();
+    }
+  }
+
+  _scrollListener() {
+    if (controller.offset >= controller.position.maxScrollExtent &&
+        !controller.position.outOfRange &&
+        !mIsLastPage) {
+      getStockListApi(false, false);
+    }
+    if (controller.offset <= controller.position.minScrollExtent &&
+        !controller.position.outOfRange) {
+      // setState(() {
+      //   message = "reach the top";
+      // });
+    }
   }
 
   Future<void> searchItem(String value) async {
@@ -73,10 +98,14 @@ class StockMultipleQuantityUpdateController extends GetxController {
     addStockApi(true, jsonEncode(listQty));
   }
 
-  Future<void> getStockListApi(bool isProgress) async {
+  Future<void> getStockListApi(bool isProgress, bool clearOffset) async {
+    if (clearOffset) {
+      offset = 0;
+      mIsLastPage = false;
+    }
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
-    map["offset"] = offset.value.toString();
+    map["offset"] = offset.toString();
     map["limit"] = AppConstants.productListLimit.toString();
     map["search"] = search;
     map["product_id"] = "0";
@@ -95,15 +124,41 @@ class StockMultipleQuantityUpdateController extends GetxController {
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            productListResponse.value = response;
-            tempList.clear();
+           /* tempList.clear();
             tempList.addAll(response.info!);
             controllers.clear();
             for (int i = 0; i < response.info!.length; i++) {
               controllers.add(TextEditingController());
             }
             productList.value = tempList;
+            isMainViewVisible.value = true;*/
+
             isMainViewVisible.value = true;
+            if (offset == 0) {
+              tempList.clear();
+              tempList.addAll(response.info!);
+              controllers.clear();
+              for (int i = 0; i < response.info!.length; i++) {
+                controllers.add(TextEditingController());
+              }
+              productList.value = tempList;
+              productList.refresh();
+            } else if (response.info != null && response.info!.isNotEmpty) {
+              tempList.addAll(response.info!);
+              for (int i = 0; i < response.info!.length; i++) {
+                controllers.add(TextEditingController());
+              }
+              productList.value = tempList;
+              productList.refresh();
+            }
+
+            offset = response.offset!;
+            if (offset == 0) {
+              mIsLastPage = true;
+            } else {
+              mIsLastPage = false;
+            }
+
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

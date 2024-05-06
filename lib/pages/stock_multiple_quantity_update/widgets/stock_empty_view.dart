@@ -30,7 +30,7 @@ class StockMultipleQuantityUpdateEmptyView extends StatelessWidget {
                   height: 30,
                   fontSize: 14,
                   onPressed: () {
-                    stockListController.getStockListApi(true);
+                    stockListController.getStockListApi(true,true);
                   },
                 )
               ],

@@ -1,10 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/add_product_button.dart';
-import 'package:otm_inventory/pages/products/add_product/view/widgets/add_product_photos_list.dart';
-import 'package:otm_inventory/pages/products/add_product/view/widgets/add_product_photos_title_view.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_category.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_description.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_height.dart';
@@ -23,6 +23,7 @@ import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_
 import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_width.dart';
 
 import '../../../../res/colors.dart';
+import '../../../../res/drawable.dart';
 import '../../../../widgets/CustomProgressbar.dart';
 import '../../../../widgets/appbar/base_appbar.dart';
 import '../controller/add_product_controller.dart';
@@ -45,6 +46,7 @@ class AddProductScreen extends StatelessWidget {
           title: addProductController.title.value,
           isCenterTitle: false,
           isBack: true,
+          widgets: actionButtons(),
         ),
         body: Obx(() {
           return ModalProgressHUD(
@@ -111,13 +113,21 @@ class AddProductScreen extends StatelessWidget {
                             // AddProductPhotosTitleView(),
                             // AddProductPhotosList(),
                             Padding(
-                              padding: const EdgeInsets.only(left: 14,bottom: 18),
+                              padding:
+                                  const EdgeInsets.only(left: 14, bottom: 18),
                               child: Row(
                                 children: [
-                                  Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
-                                  const SizedBox(width: 4,),
+                                  Text(
+                                    'status'.tr,
+                                    style: const TextStyle(
+                                        fontSize: 16, color: primaryTextColor),
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
                                   Switch(
-                                      value: addProductController.isStatus.value,
+                                      value:
+                                          addProductController.isStatus.value,
                                       activeColor: defaultAccentColor,
                                       onChanged: (isVisible) {
                                         addProductController.isStatus.value =
@@ -137,5 +147,41 @@ class AddProductScreen extends StatelessWidget {
         }),
       ),
     );
+  }
+
+  List<Widget>? actionButtons() {
+    return [
+      Visibility(
+        visible: addProductController.addProductRequest.id != null &&
+            addProductController.addProductRequest.id! != 0,
+        child: IconButton(
+          icon: SvgPicture.asset(
+            width: 28,
+            Drawable.deleteIcon,
+            colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
+          ),
+          onPressed: () {
+            addProductController.onClickRemove();
+          },
+        ),
+      ),
+      // Visibility(
+      //   visible: dashboardController.selectedIndex.value == 0,
+      //   child: InkWell(
+      //       onTap: () {
+      //         dashboardController.addMultipleStockQuantity();
+      //       },
+      //       child: Padding(
+      //         padding: const EdgeInsets.only(right: 14),
+      //         child: Text(
+      //           "+${'add_stock'.tr}",
+      //           style: const TextStyle(
+      //               fontSize: 16,
+      //               color: defaultAccentColor,
+      //               fontWeight: FontWeight.w500),
+      //         ),
+      //       )),
+      // ),
+    ];
   }
 }

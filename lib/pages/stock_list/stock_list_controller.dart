@@ -229,7 +229,7 @@ class StockListController extends GetxController
               showAddStockProductDialog();
               // getStockListWithCodeApi(isProgress, true, "null");
             } else {
-              isScanQrCode.value = false;
+              isScanQrCode.value = scanQrCode;
               isMainViewVisible.value = true;
 
               if (offset == 0) {

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/login/login_controller.dart';
 import 'package:otm_inventory/pages/login/widgets/login_button_widget.dart';
+import 'package:otm_inventory/pages/login/widgets/login_users_list.dart';
 import 'package:otm_inventory/pages/login/widgets/phone_extension_field_widget.dart';
 import 'package:otm_inventory/pages/login/widgets/phone_text_field_widget.dart';
 import 'package:otm_inventory/widgets/CustomProgressbar.dart';
@@ -47,11 +48,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Divider(
-                          thickness: 1,
-                          height: 1,
-                          color: dividerColor,
-                        ),
+                          const Divider(
+                            thickness: 1,
+                            height: 1,
+                            color: dividerColor,
+                          ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 24, 0, 0),
                             child: Text('phone_number'.tr,
@@ -72,7 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                           ),
-                          LoginButtonWidget()
+                          LoginButtonWidget(),
+                          const SizedBox(height: 20,),
+                          LoginUsersList()
                         ]));
         }),
       ),

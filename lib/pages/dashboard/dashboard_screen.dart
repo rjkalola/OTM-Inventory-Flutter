@@ -6,6 +6,7 @@ import 'package:otm_inventory/pages/dashboard/widgets/bottom_navigation_bar_widg
 import 'package:otm_inventory/pages/dashboard/widgets/main_drawer.dart';
 import 'package:otm_inventory/res/colors.dart';
 import '../../widgets/appbar/base_appbar.dart';
+import '../stock_list/stock_list_controller.dart';
 
 class DashboardScreen extends StatelessWidget {
   DashboardScreen({super.key});
@@ -51,7 +52,7 @@ class DashboardScreen extends StatelessWidget {
       //   ),
       // ),
       Visibility(
-        visible: dashboardController.selectedIndex.value == 0,
+        visible: (dashboardController.selectedIndex.value == 0 && !Get.put(StockListController()).isScanQrCode.value),
         child: InkWell(
             onTap: () {
               dashboardController.addMultipleStockQuantity();
@@ -63,6 +64,23 @@ class DashboardScreen extends StatelessWidget {
                 style: const TextStyle(
                     fontSize: 16,
                     color: defaultAccentColor,
+                    fontWeight: FontWeight.w500),
+              ),
+            )),
+      ),
+      Visibility(
+        visible: (dashboardController.selectedIndex.value == 0 && Get.put(StockListController()).isScanQrCode.value),
+        child: InkWell(
+            onTap: () {
+              Get.put(StockListController()).getStockListApi(true, false, "", true);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 14),
+              child: Text(
+                'clear'.tr,
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.red,
                     fontWeight: FontWeight.w500),
               ),
             )),

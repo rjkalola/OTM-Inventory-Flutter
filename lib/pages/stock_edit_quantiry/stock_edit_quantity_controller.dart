@@ -109,6 +109,11 @@ class StockEditQuantityController extends GetxController
     }
   }
 
+  void onClickRemove() {
+    AlertDialogHelper.showAlertDialog("", 'delete_stock_msg'.tr, 'yes'.tr,
+        'no'.tr, "", true, this, AppConstants.dialogIdentifier.deleteStock);
+  }
+
   Future<void> openQrCodeScanner(String message) async {
     var code = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (!StringHelper.isEmptyString(code)) {
@@ -159,6 +164,10 @@ class StockEditQuantityController extends GetxController
         AppConstants.dialogIdentifier.updateBarcodeDialog) {
       Get.back();
       openQrCodeScanner('barcode_update_success_msg'.tr);
+    } else if (dialogIdentifier ==
+        AppConstants.dialogIdentifier.deleteStock) {
+      Get.back();
+      archiveStock(productInfo.value.id!);
     }
   }
 
@@ -348,6 +357,44 @@ class StockEditQuantityController extends GetxController
             AppUtils.showSnackBarMessage(message);
             isUpdated = true;
             getStockQuantityDetailsApi(true, productId.toString());
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
+  void archiveStock(int id) async {
+    Map<String, dynamic> map = {};
+    map["id"] = id;
+    map["store_id"] = AppStorage.storeId;
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print("Request Data:" + map.toString());
+
+    isLoading.value = true;
+
+    _api.archiveStock(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          BaseResponse response = BaseResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            if (!StringHelper.isEmptyString(response.Message ?? "")) {
+              AppUtils.showToastMessage(response.Message ?? "");
+            }
+            Get.back(result: true);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

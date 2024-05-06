@@ -24,6 +24,14 @@ class AppUtils {
     }
   }
 
+  static showToastMessage(String message) {
+    if (message.isNotEmpty) {
+      Fluttertoast.showToast(
+        msg: message,
+      );
+    }
+  }
+
   static Future<String> getDeviceName() async {
     String deviceName = "";
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();

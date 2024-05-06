@@ -9,11 +9,13 @@ import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/web_services/response/base_response.dart';
 import 'package:otm_inventory/web_services/response/module_info.dart';
 
+import '../../../../utils/AlertDialogHelper.dart';
 import '../../../../utils/app_constants.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../web_services/api_constants.dart';
 import '../../../../web_services/response/response_model.dart';
 import '../../../common/drop_down_list_dialog.dart';
+import '../../../common/listener/DialogButtonClickListener.dart';
 import '../../../common/listener/select_item_listener.dart';
 import '../../../common/model/file_info.dart';
 import '../../product_list/models/product_info.dart';
@@ -22,7 +24,7 @@ import '../model/product_resources_response.dart';
 import 'add_product_repository.dart';
 
 class AddProductController extends GetxController
-    implements SelectItemListener {
+    implements SelectItemListener,DialogButtonClickListener {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
@@ -356,4 +358,64 @@ class AddProductController extends GetxController
       },
     );
   }
+
+  void deleteProduct(String ids) async {
+    Map<String, dynamic> map = {};
+    map["ids"] = ids;
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print("Request Data:" + map.toString());
+
+    isLoading.value = true;
+
+    _api.deleteProduct(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          BaseResponse response = BaseResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            if (!StringHelper.isEmptyString(response.Message ?? "")) {
+              AppUtils.showToastMessage(response.Message ?? "");
+            }
+            Get.back(result: true);
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
+  void onClickRemove() {
+    AlertDialogHelper.showAlertDialog("", 'delete_product_msg'.tr, 'yes'.tr,
+        'no'.tr, "", true, this, AppConstants.dialogIdentifier.deleteProduct);
+  }
+
+  @override
+  void onNegativeButtonClicked(String dialogIdentifier) {
+    Get.back();
+  }
+
+  @override
+  void onOtherButtonClicked(String dialogIdentifier) {
+
+  }
+
+  @override
+  void onPositiveButtonClicked(String dialogIdentifier) {
+    Get.back();
+    deleteProduct(addProductRequest.id!.toString());
+  }
+
+
 }

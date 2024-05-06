@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_controller.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/qty_history_list_view.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quantity_button.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_quantity_update_note.dart';
@@ -151,14 +149,25 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                                       const EdgeInsets.all(0),
                                                       () {
                                                     stockEditQuantityController
-                                                        .showUpdateBarcodeManually(stockEditQuantityController.productInfo.value.barcode_text ?? "");
+                                                        .showUpdateBarcodeManually(
+                                                            stockEditQuantityController
+                                                                    .productInfo
+                                                                    .value
+                                                                    .barcode_text ??
+                                                                "");
                                                   }),
                                                   const SizedBox(
                                                     width: 4,
                                                   ),
                                                   InkWell(
                                                       onTap: () {
-                                                        stockEditQuantityController.showUpdateBarcodeManually(stockEditQuantityController.productInfo.value.barcode_text ?? "");
+                                                        stockEditQuantityController
+                                                            .showUpdateBarcodeManually(
+                                                                stockEditQuantityController
+                                                                        .productInfo
+                                                                        .value
+                                                                        .barcode_text ??
+                                                                    "");
                                                       },
                                                       child: const Icon(
                                                         Icons.edit,
@@ -319,6 +328,17 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
 
   List<Widget>? actionButtons() {
     return [
+      IconButton(
+        icon: SvgPicture.asset(
+          width: 28,
+          Drawable.deleteIcon,
+          colorFilter:
+          const ColorFilter.mode(Colors.red, BlendMode.srcIn),
+        ),
+        onPressed: () {
+          stockEditQuantityController.onClickRemove();
+        },
+      ),
       IconButton(
         icon: SvgPicture.asset(
           width: 28,

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -36,7 +37,6 @@ class _StockListScreenState extends State<StockListScreen> {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) async{
-        print("Back Call");
         final backNavigationAllowed = await onBackPress();
         if (backNavigationAllowed) {
           if (Platform.isIOS) {
@@ -79,6 +79,7 @@ class _StockListScreenState extends State<StockListScreen> {
                       QrCodeIcon()
                     ],
                   ),
+                   const SizedBox(height: 10,),
                   stockListController.productList.isNotEmpty
                       ? StockListView()
                       : StockListEmptyView(),

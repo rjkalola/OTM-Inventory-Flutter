@@ -123,6 +123,10 @@ class Strings extends Translations {
           'barcode_update_success_msg': "Barcode edited successfully",
           'update_barcode': "Update Barcode",
           'update': "Update",
+          'delete_product_msg': "Are you sure you want to delete this product?",
+          'delete_stock_msg': "Are you sure you want to delete this stock?",
+          'clear': "Clear",
+          'remove': "Remove",
         },
         'hi_IN': {'login': 'Login'}
       };
