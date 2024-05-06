@@ -179,7 +179,7 @@ class DashboardController extends GetxController
     var result;
     result = await Get.toNamed(AppRoutes.stockMultipleQuantityUpdateScreen);
     if (result != null && result) {
-      Get.put(StockListController()).getStockListApi(true, false, "");
+      Get.put(StockListController()).getStockListApi(true, false, "",true);
     }
   }
 

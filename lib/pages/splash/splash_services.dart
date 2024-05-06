@@ -11,6 +11,10 @@ class SplashServices {
     Timer(const Duration(seconds: 1), () {
       ApiConstants.accessToken = Get.find<AppStorage>().getAccessToken();
       // Get.offAllNamed(AppRoutes.stockEditQuantityScreen);
+
+      // List<UserInfo> list = Get.find<AppStorage>().getLoginUsers();
+      // print("array length:"+list.length.toString());
+
       if(ApiConstants.accessToken.isNotEmpty){
         Get.offAllNamed(AppRoutes.dashboardScreen);
       }else{

@@ -20,6 +20,7 @@ class ProductListView extends StatelessWidget {
               physics: const AlwaysScrollableScrollPhysics(), //
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
+              controller: productListController.controller,
               children: List.generate(
                 productListController.productList.length,
                 (position) => InkWell(

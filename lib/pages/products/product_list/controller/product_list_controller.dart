@@ -27,12 +27,29 @@ class ProductListController extends GetxController {
       isMainViewVisible = false.obs;
 
   final filters = ''.obs, search = ''.obs;
-  final offset = 0.obs;
+
+  var offset = 0;
+  var mIsLastPage = false;
+  late ScrollController controller;
 
   @override
   void onInit() {
     super.onInit();
-    getProductListApi(true,"0");
+    controller = ScrollController();
+    controller.addListener(_scrollListener);
+    getProductListApi(true,"0",true);
+  }
+
+  _scrollListener() {
+    if (controller.offset >= controller.position.maxScrollExtent &&
+        !controller.position.outOfRange && !mIsLastPage) {
+      print("reach the bottom");
+      getProductListApi(false, "0",false);
+    }
+    // if (controller.offset <= controller.position.minScrollExtent &&
+    //     !controller.position.outOfRange) {
+    //   print("reach the top");
+    // }
   }
 
   Future<void> addProductClick(ProductInfo? info) async {
@@ -48,7 +65,7 @@ class ProductListController extends GetxController {
     }
 
     if (result != null && result) {
-      getProductListApi(true,"0");
+      getProductListApi(true,"0",true);
     }
   }
 
@@ -66,18 +83,24 @@ class ProductListController extends GetxController {
   Future<void> openQrCodeScanner() async {
     var result = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (result != null && !StringHelper.isEmptyString(result)) {
-      getProductListApi(true,result);
+      getProductListApi(true,result,true);
     }
   }
 
-  Future<void> getProductListApi(bool isProgress, String productId) async {
+  Future<void> getProductListApi(bool isProgress, String productId, bool clearOffset) async {
+    if (clearOffset) {
+      offset = 0;
+      mIsLastPage = false;
+    }
+
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
-    map["offset"] = offset.value.toString();
+    map["offset"] = offset.toString();
     map["limit"] = AppConstants.productListLimit.toString();
     map["search"] = search;
     map["product_id"] = productId;
     multi.FormData formData = multi.FormData.fromMap(map);
+
 
     if (isProgress) isLoading.value = true;
     _api.getProductList(
@@ -88,12 +111,27 @@ class ProductListController extends GetxController {
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            productListResponse.value = response;
-            tempList.clear();
-            tempList.addAll(response.info!);
-            // productList.clear();
-            productList.value = tempList;
             isMainViewVisible.value = true;
+            if (offset == 0) {
+              tempList.clear();
+              tempList.addAll(response.info!);
+              productList.value = tempList;
+              productList.refresh();
+            } else if (response.info != null && response.info!.isNotEmpty) {
+              tempList.addAll(response.info!);
+              productList.value = tempList;
+              productList.refresh();
+            }
+
+            offset = response.offset!;
+            if (offset == 0) {
+              mIsLastPage = true;
+            } else {
+              mIsLastPage = false;
+            }
+
+            print("tempList size:" + tempList.length.toString());
+            print("productList size:" + productList.length.toString());
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

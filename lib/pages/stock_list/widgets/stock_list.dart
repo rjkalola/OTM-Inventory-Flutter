@@ -21,6 +21,7 @@ class StockListView extends StatelessWidget {
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(), //
               shrinkWrap: true,
+              controller: stockListController.controller,
               scrollDirection: Axis.vertical,
               children: List.generate(
                 stockListController.productList.length,

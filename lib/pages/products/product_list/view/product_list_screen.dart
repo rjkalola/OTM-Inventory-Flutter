@@ -64,7 +64,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 progressIndicator: const CustomProgressbar(),
                 child: RefreshIndicator(
                   onRefresh: () async {
-                    await productListController.getProductListApi(false, "0");
+                    await productListController.getProductListApi(false, "0",true);
                   },
                   child: Column(children: [
                     const Divider(

@@ -136,14 +136,11 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
           onTap: () {
             if (!StringHelper.isEmptyString(stockListController
                     .productList[position].newQty
-                    .toString()) &&
-                stockListController.productList[position].newQty! > 0) {
-
+                    .toString())) {
               stockListController.productList[position].newQty =
                   stockListController.productList[position].newQty! - 1;
-              stockListController.controllers[position].text = stockListController.productList[position].newQty.toString();
-
-              print("Qty:"+stockListController.productList[position].newQty.toString());
+              stockListController.controllers[position].text =
+                  stockListController.productList[position].newQty.toString();
             }
           },
           child: Container(
@@ -165,27 +162,32 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
             width: 50,
             child: TextFormField(
               controller: stockListController.controllers[position],
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.phone,
               textInputAction: TextInputAction.done,
               textAlign: TextAlign.center,
               validator: MultiValidator([]),
               inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                FilteringTextInputFormatter.allow(RegExp(r'^[\d\-+]+$')),
               ],
               decoration: InputDecoration(
                   isDense: true,
-                  // important line
                   contentPadding: const EdgeInsets.all(4),
                   hintText: "0",
-                  // control your hints text size
                   border: border(),
                   focusedBorder: border(),
                   enabledBorder: border()),
               onChanged: (value) {
-                print("position:"+position.toString());
-                print("value:"+value);
-                if(!StringHelper.isEmptyString(value)){
-                  stockListController.productList[position].newQty = int.parse(value);
+                String text =
+                    stockListController.controllers[position].value.text;
+                if (text.length > 1 &&
+                    (value.endsWith("-") || value.endsWith("+"))) {
+                  String newText = text.substring(0, text.length - 1);
+                  stockListController.controllers[position].text = newText;
+                }
+                String updatedText =
+                    stockListController.controllers[position].value.text;
+                if(!StringHelper.isEmptyString(updatedText)){
+                  stockListController.productList[position].newQty = int.parse(updatedText);
                 }else{
                   stockListController.productList[position].newQty =0;
                 }
@@ -195,19 +197,10 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            // stockListController.productList[position].newQty = 1;
-            // if(stockListController.productList[position].newQty == null){
-            //   stockListController.productList[position].newQty = 1;
-            // }else{
-            //   stockListController.productList[position].newQty =
-            //       stockListController.productList[position].newQty! + 1;
-            // }
-
             stockListController.productList[position].newQty =
                 stockListController.productList[position].newQty! + 1;
-            stockListController.controllers[position].text = stockListController.productList[position].newQty.toString();
-
-            print("Qty:"+stockListController.productList[position].newQty.toString());
+            stockListController.controllers[position].text =
+                stockListController.productList[position].newQty.toString();
           },
           child: Container(
             decoration: const BoxDecoration(

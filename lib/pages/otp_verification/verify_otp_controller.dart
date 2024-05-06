@@ -13,6 +13,7 @@ import 'package:dio/dio.dart' as multi;
 
 import '../../web_services/api_constants.dart';
 import '../../web_services/response/response_model.dart';
+import 'model/user_info.dart';
 
 class VerifyOtpController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -63,10 +64,9 @@ class VerifyOtpController extends GetxController {
               Get.find<AppStorage>().setUserInfo(response.info!);
               Get.find<AppStorage>().setAccessToken(response.info!.apiToken!);
               ApiConstants.accessToken = response.info!.apiToken!;
-              print("Token:" +
-                  ApiConstants.accessToken);
+              print("Token:" + ApiConstants.accessToken);
               Get.offAllNamed(AppRoutes.dashboardScreen);
-              // showSnackBar(response.message!);
+              // saveLoginUser(response.info!);
             } else {
               showSnackBar(response.message!);
             }
@@ -115,5 +115,24 @@ class VerifyOtpController extends GetxController {
 
   void showSnackBar(String message) {
     AppUtils.showSnackBarMessage(message);
+  }
+
+  saveLoginUser(UserInfo user) {
+    List<UserInfo> list = Get.find<AppStorage>().getLoginUsers();
+    print("before length:"+list.length.toString());
+    bool isUserFound = false;
+    if (list.isNotEmpty) {
+      for (int i = 0;i<list.length;i++) {
+        if (list[i].id == user.id) {
+          isUserFound = true;
+          break;
+        }
+      }
+    }
+    if (!isUserFound) {
+      list.add(user);
+      Get.find<AppStorage>().setLoginUsers(list);
+      print("after length:"+Get.find<AppStorage>().getLoginUsers().length.toString());
+    }
   }
 }

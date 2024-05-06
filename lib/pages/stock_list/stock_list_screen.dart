@@ -63,7 +63,7 @@ class _StockListScreenState extends State<StockListScreen> {
               child: RefreshIndicator(
                 onRefresh: () async {
                   await stockListController.getStockListApi(
-                      false, false, "");
+                      false, false, "",true);
                 },
                 child: Column(children: [
                   const Divider(

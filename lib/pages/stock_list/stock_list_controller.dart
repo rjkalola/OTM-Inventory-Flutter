@@ -25,8 +25,8 @@ import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../store_list/model/store_list_response.dart';
 
-class StockListController extends GetxController implements DialogButtonClickListener
-,SelectItemListener{
+class StockListController extends GetxController
+    implements DialogButtonClickListener, SelectItemListener {
   final _api = StockListRepository();
   final searchController = TextEditingController().obs;
   var addProductRequest = AddProductRequest();
@@ -37,11 +37,14 @@ class StockListController extends GetxController implements DialogButtonClickLis
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs,isScanQrCode = false.obs;
+      isMainViewVisible = false.obs,
+      isScanQrCode = false.obs;
 
   final filters = ''.obs, search = ''.obs;
-  final offset = 0.obs;
+  var offset = 0;
+  var mIsLastPage = false;
   var mBarCode = "";
+  late ScrollController controller;
 
   @override
   void onInit() {
@@ -51,7 +54,23 @@ class StockListController extends GetxController implements DialogButtonClickLis
     if (!StringHelper.isEmptyString(AppStorage.storeName)) {
       storeNameController.value.text = AppStorage.storeName;
     }
+    controller = ScrollController();
+    controller.addListener(_scrollListener);
     getStoreListApi();
+  }
+
+  _scrollListener() {
+    if (controller.offset >= controller.position.maxScrollExtent &&
+        !controller.position.outOfRange &&
+        !mIsLastPage) {
+      getStockListApi(false, false, "", false);
+    }
+    if (controller.offset <= controller.position.minScrollExtent &&
+        !controller.position.outOfRange) {
+      // setState(() {
+      //   message = "reach the top";
+      // });
+    }
   }
 
   Future<void> searchItem(String value) async {
@@ -73,7 +92,7 @@ class StockListController extends GetxController implements DialogButtonClickLis
     if (!StringHelper.isEmptyString(code)) {
       mBarCode = code;
       // moveStockEditQuantityScreen(productId);
-      getStockListApi(true, true, code);
+      getStockListApi(true, true, code, true);
     }
   }
 
@@ -83,19 +102,18 @@ class StockListController extends GetxController implements DialogButtonClickLis
       var arguments = {
         AppConstants.intentKey.productId: productId,
       };
-      result =
-      await Get.toNamed(AppRoutes.stockEditQuantityScreen, arguments: arguments);
+      result = await Get.toNamed(AppRoutes.stockEditQuantityScreen,
+          arguments: arguments);
     }
 
-    if(isScanQrCode.value){
+    if (isScanQrCode.value) {
       mBarCode = "";
-      getStockListApi(true,false,"");
-    }else{
+      getStockListApi(true, false, "", true);
+    } else {
       if (result != null && result) {
-        getStockListApi(true,false,"");
+        getStockListApi(true, false, "", true);
       }
     }
-
   }
 
   Future<void> addStockProductScreen() async {
@@ -104,19 +122,18 @@ class StockListController extends GetxController implements DialogButtonClickLis
       var arguments = {
         AppConstants.intentKey.barCode: mBarCode,
       };
-      result =
-      await Get.toNamed(AppRoutes.addStockProductScreen, arguments: arguments);
+      result = await Get.toNamed(AppRoutes.addStockProductScreen,
+          arguments: arguments);
     }
 
     if (result != null && result) {
       mBarCode = "";
       isScanQrCode.value = false;
-      getStockListApi(true,false,"");
+      getStockListApi(true, false, "", true);
     }
-
   }
 
-  void onClickSelectButton(ProductInfo info ){
+  void onClickSelectButton(ProductInfo info) {
     addProductRequest = AddProductRequest();
     addProductRequest.categories = [];
     addProductRequest.id = info.id ?? 0;
@@ -138,14 +155,14 @@ class StockListController extends GetxController implements DialogButtonClickLis
     addProductRequest.weight = info.weight ?? "";
     addProductRequest.sku = info.sku ?? "";
     addProductRequest.price = info.price ?? "";
-    addProductRequest.tax= info.tax ?? "";
+    addProductRequest.tax = info.tax ?? "";
     addProductRequest.description = info.description ?? "";
     addProductRequest.status = info.status ?? false;
 
     storeProductApi();
   }
 
-  showAddStockProductDialog(){
+  showAddStockProductDialog() {
     AlertDialogHelper.showAlertDialog(
         "",
         'empty_qr_code_scan_msg'.tr,
@@ -164,7 +181,7 @@ class StockListController extends GetxController implements DialogButtonClickLis
 
   @override
   void onOtherButtonClicked(String dialogIdentifier) {
-    if(dialogIdentifier == AppConstants.dialogIdentifier.stockOptionsDialog){
+    if (dialogIdentifier == AppConstants.dialogIdentifier.stockOptionsDialog) {
       Get.back();
       addStockProductScreen();
     }
@@ -172,22 +189,27 @@ class StockListController extends GetxController implements DialogButtonClickLis
 
   @override
   void onPositiveButtonClicked(String dialogIdentifier) {
-    if(dialogIdentifier == AppConstants.dialogIdentifier.stockOptionsDialog){
+    if (dialogIdentifier == AppConstants.dialogIdentifier.stockOptionsDialog) {
       getStockListWithCodeApi(true, true, "null");
       Get.back();
     }
   }
 
-  Future<void> getStockListApi(bool isProgress,bool scanQrCode,String? code) async {
+  Future<void> getStockListApi(
+      bool isProgress, bool scanQrCode, String? code, bool clearOffset) async {
+    if (clearOffset) {
+      offset = 0;
+      mIsLastPage = false;
+    }
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
-    map["offset"] = offset.value.toString();
+    map["offset"] = offset.toString();
     map["limit"] = AppConstants.productListLimit.toString();
     map["search"] = search;
     map["product_id"] = "0";
     map["is_stock"] = 1;
     map["store_id"] = AppStorage.storeId.toString();
-    if(scanQrCode){
+    if (scanQrCode) {
       map["barcode_text"] = code;
     }
 
@@ -203,19 +225,33 @@ class StockListController extends GetxController implements DialogButtonClickLis
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            if(scanQrCode && response.info!.isEmpty){
+            if (scanQrCode && response.info!.isEmpty) {
               showAddStockProductDialog();
               // getStockListWithCodeApi(isProgress, true, "null");
-            }else{
-              print("response.info! size:"+response.info!.length.toString());
-
+            } else {
               isScanQrCode.value = false;
-              tempList.clear();
-              tempList.addAll(response.info!);
-              // productList.addAll(tempList);
-              productList.value = tempList;
-              productList.refresh();
               isMainViewVisible.value = true;
+
+              if (offset == 0) {
+                tempList.clear();
+                tempList.addAll(response.info!);
+                productList.value = tempList;
+                productList.refresh();
+              } else if (response.info != null && response.info!.isNotEmpty) {
+                tempList.addAll(response.info!);
+                productList.value = tempList;
+                productList.refresh();
+              }
+
+              offset = response.offset!;
+              if (offset == 0) {
+                mIsLastPage = true;
+              } else {
+                mIsLastPage = false;
+              }
+
+              print("tempList size:" + tempList.length.toString());
+              print("productList size:" + productList.length.toString());
             }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -236,16 +272,17 @@ class StockListController extends GetxController implements DialogButtonClickLis
     );
   }
 
-  Future<void> getStockListWithCodeApi(bool isProgress,bool scanQrCode,String? code) async {
+  Future<void> getStockListWithCodeApi(
+      bool isProgress, bool scanQrCode, String? code) async {
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
-    map["offset"] = offset.value.toString();
+    map["offset"] = offset.toString();
     map["limit"] = AppConstants.productListLimit.toString();
     map["search"] = search;
     map["product_id"] = "0";
     map["is_stock"] = 1;
     map["store_id"] = AppStorage.storeId.toString();
-    if(scanQrCode){
+    if (scanQrCode) {
       map["barcode_text"] = code;
     }
 
@@ -259,13 +296,13 @@ class StockListController extends GetxController implements DialogButtonClickLis
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           ProductListResponse response =
-          ProductListResponse.fromJson(jsonDecode(responseModel.result!));
+              ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-              isScanQrCode.value = scanQrCode;
-              tempList.clear();
-              tempList.addAll(response.info!);
-              productList.value = tempList;
-              isMainViewVisible.value = true;
+            isScanQrCode.value = scanQrCode;
+            tempList.clear();
+            tempList.addAll(response.info!);
+            productList.value = tempList;
+            isMainViewVisible.value = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -323,7 +360,8 @@ class StockListController extends GetxController implements DialogButtonClickLis
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          StoreProductResponse response = StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
+          StoreProductResponse response =
+              StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             moveStockEditQuantityScreen(response.info!.id.toString());
           } else {
@@ -348,7 +386,7 @@ class StockListController extends GetxController implements DialogButtonClickLis
   void selectStore() {
     if (storeList.isNotEmpty) {
       showStoreListDialog(AppConstants.dialogIdentifier.storeList, 'stores'.tr,
-          storeList, true, true, true,true, this);
+          storeList, true, true, true, true, this);
     } else {
       AppUtils.showSnackBarMessage('empty_store_message'.tr);
     }
@@ -387,7 +425,7 @@ class StockListController extends GetxController implements DialogButtonClickLis
       storeNameController.value.text = name;
       Get.find<AppStorage>().setStoreId(id);
       Get.find<AppStorage>().setStoreName(name);
-      getStockListApi(true,false,"");
+      getStockListApi(true, false, "", true);
     }
   }
 
@@ -401,7 +439,7 @@ class StockListController extends GetxController implements DialogButtonClickLis
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           StoreListResponse response =
-          StoreListResponse.fromJson(jsonDecode(responseModel.result!));
+              StoreListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             if (response.info != null && response.info!.isNotEmpty) {
               storeList.clear();
@@ -414,9 +452,9 @@ class StockListController extends GetxController implements DialogButtonClickLis
             }
             if (AppStorage.storeId == 0 && storeList.isNotEmpty) {
               showStoreListDialog(AppConstants.dialogIdentifier.storeList,
-                  'stores'.tr, storeList, false, false, false,false, this);
+                  'stores'.tr, storeList, false, false, false, false, this);
             } else {
-              getStockListApi(true,false,"");
+              getStockListApi(true, false, "", true);
             }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -436,5 +474,4 @@ class StockListController extends GetxController implements DialogButtonClickLis
       },
     );
   }
-
 }
