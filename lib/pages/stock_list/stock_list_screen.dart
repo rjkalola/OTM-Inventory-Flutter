@@ -84,8 +84,29 @@ class _StockListScreenState extends State<StockListScreen> {
                       ? StockListView()
                       : StockListEmptyView(),
                   const SizedBox(
-                    height: 12,
+                    height: 6,
                   ),
+                  Visibility(
+                    visible: stockListController.isLoadMore.value,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator()),
+                          const SizedBox(
+                            width: 14,
+                          ),
+                          Text(
+                            'loading_more_'.tr,
+                            style: const TextStyle(fontSize: 17),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
                 ]),
               ),
             ),

@@ -28,19 +28,19 @@ class LoginController extends GetxController
 
   final registerResourcesResponse = RegisterResourcesResponse().obs;
   RxBool isLoading = false.obs, isInternetNotAvailable = false.obs;
-  List<UserInfo> loginUsers = [];
+  var loginUsers = <UserInfo>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    loginUsers = Get.find<AppStorage>().getLoginUsers();
+    loginUsers.value = Get.find<AppStorage>().getLoginUsers();
     getRegisterResources();
   }
 
-  void login() async {
-    if (formKey.currentState!.validate()) {
+  void login(String extension, String phoneNumber, bool isAutoLogin) async {
+    if (valid(isAutoLogin)) {
       Map<String, dynamic> map = {};
-      map["phone"] = mExtension + phoneController.value.text.toString();
+      map["phone"] = extension + phoneNumber;
       multi.FormData formData = multi.FormData.fromMap(map);
       isLoading.value = true;
       _api.login(
@@ -51,9 +51,8 @@ class LoginController extends GetxController
                 VerifyPhoneResponse.fromJson(jsonDecode(responseModel.result!));
             if (response.isSuccess!) {
               var arguments = {
-                AppConstants.intentKey.phoneExtension: mExtension.value,
-                AppConstants.intentKey.phoneNumber:
-                    phoneController.value.text.toString(),
+                AppConstants.intentKey.phoneExtension: extension,
+                AppConstants.intentKey.phoneNumber: phoneNumber,
               };
               Get.toNamed(AppRoutes.verifyOtpScreen, arguments: arguments);
               // showSnackBar(response.message!);
@@ -74,6 +73,14 @@ class LoginController extends GetxController
           }
         },
       );
+    }
+  }
+
+  bool valid(bool isAutoLogin) {
+    if (!isAutoLogin) {
+      return formKey.currentState!.validate();
+    } else {
+      return true;
     }
   }
 
@@ -112,7 +119,8 @@ class LoginController extends GetxController
   }
 
   @override
-  void onSelectPhoneExtension(int id,String extension, String flag,String country) {
+  void onSelectPhoneExtension(
+      int id, String extension, String flag, String country) {
     mFlag.value = flag;
     mExtension.value = extension;
   }

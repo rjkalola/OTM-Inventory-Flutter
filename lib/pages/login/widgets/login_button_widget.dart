@@ -15,16 +15,16 @@ class LoginButtonWidget extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 28, 16, 14),
-        child: PrimaryBorderButton(
-          buttonText: 'login_with_otp'.tr,
-          textColor: defaultAccentColor,
-          borderColor: defaultAccentColor,
-          onPressed: () {
-            loginController.login();
-          },
-        )
-      ),
+          padding: const EdgeInsets.fromLTRB(16, 28, 16, 14),
+          child: PrimaryBorderButton(
+            buttonText: 'login_with_otp'.tr,
+            textColor: defaultAccentColor,
+            borderColor: defaultAccentColor,
+            onPressed: () {
+              loginController.login(loginController.mExtension.value,
+                  loginController.phoneController.value.text.toString().trim(),false);
+            },
+          )),
     );
   }
 }

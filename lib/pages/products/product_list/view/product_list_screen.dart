@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -37,7 +38,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         statusBarIconBrightness: Brightness.dark));
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async{
+      onPopInvoked: (didPop) async {
         final backNavigationAllowed = await onBackPress();
         if (backNavigationAllowed) {
           if (Platform.isIOS) {
@@ -48,44 +49,68 @@ class _ProductListScreenState extends State<ProductListScreen> {
         }
       },
       child: SafeArea(
-          child:Scaffold(
-            backgroundColor: backgroundColor,
-            appBar: BaseAppBar(
-                appBar: AppBar(),
-                title: 'products'.tr,
-                isBack: true,
-                widgets: actionButtons()),
-            drawer: MainDrawer(),
-            bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-            body: Obx(
-                  () => ModalProgressHUD(
-                inAsyncCall: productListController.isLoading.value,
-                opacity: 0,
-                progressIndicator: const CustomProgressbar(),
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    await productListController.getProductListApi(false, "0",true);
-                  },
-                  child: Column(children: [
-                    const Divider(
-                      thickness: 1,
-                      height: 1,
-                      color: dividerColor,
-                    ),
-                    Row(
-                      children: [const Expanded(child: SearchProductWidget()), QrCodeIcon()],
-                    ),
-                    productListController.productList.isNotEmpty
-                        ? ProductListView()
-                        : ProductListEmptyView(),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                  ]),
+          child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: 'products'.tr,
+            isBack: true,
+            widgets: actionButtons()),
+        drawer: MainDrawer(),
+        bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+        body: Obx(
+          () => ModalProgressHUD(
+            inAsyncCall: productListController.isLoading.value,
+            opacity: 0,
+            progressIndicator: const CustomProgressbar(),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await productListController.getProductListApi(false, "0", true);
+              },
+              child: Column(children: [
+                const Divider(
+                  thickness: 1,
+                  height: 1,
+                  color: dividerColor,
                 ),
-              ),
+                Row(
+                  children: [
+                    const Expanded(child: SearchProductWidget()),
+                    QrCodeIcon()
+                  ],
+                ),
+                productListController.productList.isNotEmpty
+                    ? ProductListView()
+                    : ProductListEmptyView(),
+                const SizedBox(
+                  height: 6,
+                ),
+                Visibility(
+                  visible: productListController.isLoadMore.value,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator()),
+                        const SizedBox(
+                          width: 14,
+                        ),
+                        Text(
+                          'loading_more_'.tr,
+                          style: const TextStyle(fontSize: 17),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ]),
             ),
-          )),
+          ),
+        ),
+      )),
     );
   }
 

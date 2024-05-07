@@ -53,6 +53,27 @@ class _StockListScreenState extends State<StockMultipleQuantityUpdateScreen> {
                   stockListController.productList.isNotEmpty
                       ? StockMultipleQuantityUpdateListView()
                       : StockMultipleQuantityUpdateEmptyView(),
+                  Visibility(
+                    visible: stockListController.isLoadMore.value,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator()),
+                          const SizedBox(
+                            width: 14,
+                          ),
+                          Text(
+                            'loading_more_'.tr,
+                            style: const TextStyle(fontSize: 17),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                   StockQtyStoreButtons()
                 ]),
               ),

@@ -21,10 +21,11 @@ class ProductListController extends GetxController {
   final productListResponse = ProductListResponse().obs;
   List<ProductInfo> tempList = [];
   final productList = <ProductInfo>[].obs;
-  
+
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs;
+      isMainViewVisible = false.obs,
+      isLoadMore = false.obs;
 
   final filters = ''.obs, search = ''.obs;
 
@@ -37,14 +38,15 @@ class ProductListController extends GetxController {
     super.onInit();
     controller = ScrollController();
     controller.addListener(_scrollListener);
-    getProductListApi(true,"0",true);
+    getProductListApi(true, "0", true);
   }
 
   _scrollListener() {
     if (controller.offset >= controller.position.maxScrollExtent &&
-        !controller.position.outOfRange && !mIsLastPage) {
+        !controller.position.outOfRange &&
+        !mIsLastPage) {
       print("reach the bottom");
-      getProductListApi(false, "0",false);
+      getProductListApi(false, "0", false);
     }
     // if (controller.offset <= controller.position.minScrollExtent &&
     //     !controller.position.outOfRange) {
@@ -65,17 +67,20 @@ class ProductListController extends GetxController {
     }
 
     if (result != null && result) {
-      getProductListApi(true,"0",true);
+      getProductListApi(true, "0", true);
     }
   }
 
-  Future<void> searchItem(String value) async{
+  Future<void> searchItem(String value) async {
     print(value);
     List<ProductInfo> results = [];
     if (value.isEmpty) {
       results = tempList;
-    }else{
-      results = tempList.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
+    } else {
+      results = tempList
+          .where((element) =>
+              element.name!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
     }
     productList.value = results;
   }
@@ -83,15 +88,18 @@ class ProductListController extends GetxController {
   Future<void> openQrCodeScanner() async {
     var result = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (result != null && !StringHelper.isEmptyString(result)) {
-      getProductListApi(true,result,true);
+      getProductListApi(true, result, true);
     }
   }
 
-  Future<void> getProductListApi(bool isProgress, String productId, bool clearOffset) async {
+  Future<void> getProductListApi(
+      bool isProgress, String productId, bool clearOffset) async {
     if (clearOffset) {
       offset = 0;
       mIsLastPage = false;
     }
+
+    isLoadMore.value = offset > 0;
 
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
@@ -101,12 +109,12 @@ class ProductListController extends GetxController {
     map["product_id"] = productId;
     multi.FormData formData = multi.FormData.fromMap(map);
 
-
     if (isProgress) isLoading.value = true;
     _api.getProductList(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
+        isLoadMore.value = false;
         if (responseModel.statusCode == 200) {
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));

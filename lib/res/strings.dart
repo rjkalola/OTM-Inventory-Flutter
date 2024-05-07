@@ -127,6 +127,7 @@ class Strings extends Translations {
           'delete_stock_msg': "Are you sure you want to delete this stock?",
           'clear': "Clear",
           'remove': "Remove",
+          'loading_more_': "Loading More...",
         },
         'hi_IN': {'login': 'Login'}
       };

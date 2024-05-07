@@ -30,7 +30,8 @@ class StockMultipleQuantityUpdateController extends GetxController {
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs;
+      isMainViewVisible = false.obs,
+      isLoadMore = false.obs;
 
   final filters = ''.obs, search = ''.obs;
   var mBarCode = "";
@@ -43,13 +44,13 @@ class StockMultipleQuantityUpdateController extends GetxController {
     super.onInit();
     controller = ScrollController();
     controller.addListener(_scrollListener);
-    getStockListApi(true,true);
+    getStockListApi(true, true);
   }
 
   @override
   void dispose() {
     super.dispose();
-    for(int i = 0;i<controllers.length;i++){
+    for (int i = 0; i < controllers.length; i++) {
       controllers[i].dispose();
     }
   }
@@ -103,6 +104,7 @@ class StockMultipleQuantityUpdateController extends GetxController {
       offset = 0;
       mIsLastPage = false;
     }
+    isLoadMore.value = offset > 0;
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
     map["offset"] = offset.toString();
@@ -120,11 +122,12 @@ class StockMultipleQuantityUpdateController extends GetxController {
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
+        isLoadMore.value = false;
         if (responseModel.statusCode == 200) {
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-           /* tempList.clear();
+            /* tempList.clear();
             tempList.addAll(response.info!);
             controllers.clear();
             for (int i = 0; i < response.info!.length; i++) {
@@ -158,7 +161,6 @@ class StockMultipleQuantityUpdateController extends GetxController {
             } else {
               mIsLastPage = false;
             }
-
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -194,7 +196,8 @@ class StockMultipleQuantityUpdateController extends GetxController {
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             Get.back(result: true);
-            if(!StringHelper.isEmptyString(response.Message))AppUtils.showSnackBarMessage(response.Message??"");
+            if (!StringHelper.isEmptyString(response.Message))
+              AppUtils.showSnackBarMessage(response.Message ?? "");
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

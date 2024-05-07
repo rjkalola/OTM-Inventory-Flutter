@@ -38,7 +38,8 @@ class StockListController extends GetxController
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isScanQrCode = false.obs;
+      isScanQrCode = false.obs,
+      isLoadMore = false.obs;
 
   final filters = ''.obs, search = ''.obs;
   var offset = 0;
@@ -201,6 +202,7 @@ class StockListController extends GetxController
       offset = 0;
       mIsLastPage = false;
     }
+    isLoadMore.value = offset > 0;
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
     map["offset"] = offset.toString();
@@ -221,6 +223,7 @@ class StockListController extends GetxController
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
+        isLoadMore.value = false;
         if (responseModel.statusCode == 200) {
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
@@ -298,6 +301,7 @@ class StockListController extends GetxController
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
+            isLoadMore.value = false;
             isScanQrCode.value = scanQrCode;
             tempList.clear();
             tempList.addAll(response.info!);
