@@ -43,7 +43,7 @@ class DialogIdentifier {
   final String updateBarcodeDialog = 'updateBarcodeDialog';
   final String deleteProduct = 'DELETE_PRODUCT';
   final String deleteStock = 'DELETE_STOCK';
-
+  final String selectDate = 'SELECT_DATE';
 }
 
 class SharedPreferenceKey {

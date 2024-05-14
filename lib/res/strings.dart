@@ -128,6 +128,7 @@ class Strings extends Translations {
           'clear': "Clear",
           'remove': "Remove",
           'loading_more_': "Loading More...",
+          'date': "Date",
         },
         'hi_IN': {'login': 'Login'}
       };

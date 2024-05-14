@@ -6,9 +6,12 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_controller.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/qty_history_list_view.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quantity_button.dart';
+import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_edit_stock_date.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_quantity_update_note.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_select_user.dart';
+import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_price.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_quantity.dart';
+import 'package:otm_inventory/utils/date_utils.dart';
 import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
@@ -209,6 +212,11 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                 const EdgeInsets.fromLTRB(18, 14, 18, 14),
                                 () => {}),
                             dividerItem(),
+                            TextFieldStockPrice(),
+                            TextFieldSelectUser(),
+                            TextFieldEditStockDate(),
+                            TextFieldQuantityUpdateNote(),
+                            dividerItem(),
                             Visibility(
                               visible: !StringHelper.isEmptyList(
                                   stockEditQuantityController
@@ -264,8 +272,6 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        TextFieldSelectUser(),
-                        TextFieldQuantityUpdateNote(),
                         customTextView(
                             'add_quantity'.tr,
                             16,

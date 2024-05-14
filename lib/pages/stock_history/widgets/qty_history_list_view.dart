@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_history/widgets/note_info.dart';
+import 'package:otm_inventory/pages/stock_history/widgets/price_info.dart';
 import 'package:otm_inventory/pages/stock_history/widgets/user_info.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
@@ -66,6 +67,8 @@ class QtyHistoryListView extends StatelessWidget {
                       QtyHistoryUserInfo(user: stockQuantityHistoryController
                           .stockHistoryList[position]
                             .user,),
+                      QtyHistoryPriceInfo(price: stockQuantityHistoryController
+                          .stockHistoryList[position].currencyPrice,),
                       QtyHistoryNoteInfo(note: stockQuantityHistoryController
                           .stockHistoryList[position].reference,),
                       const SizedBox(height: 14,),

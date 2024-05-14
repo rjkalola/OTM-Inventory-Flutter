@@ -5,8 +5,8 @@ import 'package:otm_inventory/widgets/text_field_border.dart';
 
 import '../stock_edit_quantity_controller.dart';
 
-class TextFieldSelectUser extends StatelessWidget {
-  TextFieldSelectUser({super.key});
+class TextFieldEditStockDate extends StatelessWidget {
+  TextFieldEditStockDate({super.key});
   final stockEditQuantityController = Get.put(StockEditQuantityController());
 
   @override
@@ -14,18 +14,18 @@ class TextFieldSelectUser extends StatelessWidget {
     return  Padding(
       padding: const EdgeInsets.fromLTRB(18, 6, 18, 18),
       child: TextFieldBorder(
-          textEditingController: stockEditQuantityController.userController.value,
-          hintText: 'select_user'.tr,
-          labelText: 'select_user'.tr,
+          textEditingController: stockEditQuantityController.dateController.value,
+          hintText: 'date'.tr,
+          labelText: 'date'.tr,
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.next,
           validator: MultiValidator([
 
           ]),
           isReadOnly: true,
-          suffixIcon: const Icon(Icons.arrow_drop_down),
+          suffixIcon: const Icon(Icons.calendar_today_outlined),
           onPressed: () {
-            stockEditQuantityController.showUsersList();
+            stockEditQuantityController.showDatePickerDialog();
           }
       ),
     );
