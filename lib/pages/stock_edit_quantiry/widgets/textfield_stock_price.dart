@@ -16,8 +16,8 @@ class TextFieldStockPrice extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
       child: TextFieldBorder(
           textEditingController: stockEditQuantityController.priceController.value,
-          hintText: 'price'.tr,
-          labelText: 'price'.tr,
+          hintText: "${'price'.tr} (£)",
+          labelText: "${'price'.tr} (£)",
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           textInputAction: TextInputAction.next,
           validator: MultiValidator([
