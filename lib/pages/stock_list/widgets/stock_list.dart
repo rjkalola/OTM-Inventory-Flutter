@@ -59,7 +59,7 @@ class StockListView extends StatelessWidget {
                                   child: Text(
                                       softWrap: true,
                                       stockListController
-                                          .productList[position].name!,
+                                          .productList[position].shortName!,
                                       style: const TextStyle(
                                         color: primaryTextColor,
                                         fontWeight: FontWeight.w500,
@@ -141,8 +141,10 @@ class StockListView extends StatelessWidget {
     if(!stockListController.isLoading.value & stockListController.isScanQrCode.value){
       if(!StringHelper.isEmptyString(stockListController
           .productList[position].barcode_text)){
+        print("Barcode");
         return quantityWidget(position);
       }else{
+        print("select button");
         return selectButtonWidget(position);
       }
     }else{
