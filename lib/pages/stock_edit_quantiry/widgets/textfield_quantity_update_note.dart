@@ -11,16 +11,13 @@ class TextFieldQuantityUpdateNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 6, 18, 20),
-      child: TextFieldBorder(
-        textEditingController: stockEditQuantityController.noteController.value,
-        hintText: 'ref'.tr,
-        labelText: 'ref'.tr,
-        textInputAction: TextInputAction.newline,
-        validator: MultiValidator([]),
-        textAlignVertical: TextAlignVertical.top,
-      ),
+    return TextFieldBorder(
+      textEditingController: stockEditQuantityController.noteController.value,
+      hintText: 'reference'.tr,
+      labelText: 'reference'.tr,
+      textInputAction: TextInputAction.newline,
+      validator: MultiValidator([]),
+      textAlignVertical: TextAlignVertical.top,
     );
   }
 }

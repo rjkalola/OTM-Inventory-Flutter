@@ -109,6 +109,7 @@ class StockListController extends GetxController
 
     if (isScanQrCode.value) {
       mBarCode = "";
+      openQrCodeScanner();
       getStockListApi(true, false, "", true);
     } else {
       if (result != null && result) {
@@ -234,27 +235,34 @@ class StockListController extends GetxController
             } else {
               isScanQrCode.value = scanQrCode;
               isMainViewVisible.value = true;
+              if(scanQrCode){
+                if(response.info!.isNotEmpty){
+                  moveStockEditQuantityScreen(
+                      response.info![0].id!
+                          .toString());
+                }
+              }else{
+                if (offset == 0) {
+                  tempList.clear();
+                  tempList.addAll(response.info!);
+                  productList.value = tempList;
+                  productList.refresh();
+                } else if (response.info != null && response.info!.isNotEmpty) {
+                  tempList.addAll(response.info!);
+                  productList.value = tempList;
+                  productList.refresh();
+                }
 
-              if (offset == 0) {
-                tempList.clear();
-                tempList.addAll(response.info!);
-                productList.value = tempList;
-                productList.refresh();
-              } else if (response.info != null && response.info!.isNotEmpty) {
-                tempList.addAll(response.info!);
-                productList.value = tempList;
-                productList.refresh();
+                offset = response.offset!;
+                if (offset == 0) {
+                  mIsLastPage = true;
+                } else {
+                  mIsLastPage = false;
+                }
+
+                print("tempList size:" + tempList.length.toString());
+                print("productList size:" + productList.length.toString());
               }
-
-              offset = response.offset!;
-              if (offset == 0) {
-                mIsLastPage = true;
-              } else {
-                mIsLastPage = false;
-              }
-
-              print("tempList size:" + tempList.length.toString());
-              print("productList size:" + productList.length.toString());
             }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);

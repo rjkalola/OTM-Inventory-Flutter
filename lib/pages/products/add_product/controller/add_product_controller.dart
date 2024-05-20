@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:otm_inventory/pages/products/add_product/model/product_details_response.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/web_services/response/base_response.dart';
 import 'package:otm_inventory/web_services/response/module_info.dart';
@@ -24,11 +25,12 @@ import '../model/product_resources_response.dart';
 import 'add_product_repository.dart';
 
 class AddProductController extends GetxController
-    implements SelectItemListener,DialogButtonClickListener {
+    implements SelectItemListener, DialogButtonClickListener {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isStatus = true.obs;
+      isStatus = true.obs,
+      isDeleteVisible = false.obs;
   RxString title = ''.obs;
   final formKey = GlobalKey<FormState>();
   final _api = AddProductRepository();
@@ -61,40 +63,15 @@ class AddProductController extends GetxController
     var arguments = Get.arguments;
     if (arguments != null) {
       title.value = 'edit_product'.tr;
-      ProductInfo info = arguments[AppConstants.intentKey.productInfo];
-      print("info.id:" + info.id.toString());
-      print("product name:" + info.name!);
-
-      addProductRequest.categories = [];
-      addProductRequest.id = info.id ?? 0;
-      addProductRequest.supplier_id = info.supplierId ?? 0;
-      addProductRequest.lengthUnit_id = info.length_unit_id ?? 0;
-      addProductRequest.weightUnit_id = info.weight_unit_id ?? 0;
-      addProductRequest.manufacturer_id = info.manufacturer_id ?? 0;
-      addProductRequest.model_id = info.model_id ?? 0;
-      if (info.categories != null && info.categories!.isNotEmpty) {
-        productCategoryController.value.text = info.categories![0].name ?? "";
-        for (int i = 0; i < info.categories!.length; i++) {
-          addProductRequest.categories!.add(info.categories![i].id.toString());
-        }
+      ProductInfo? info = arguments[AppConstants.intentKey.productInfo];
+      if (info != null) {
+        print("info.id:" + info.id.toString());
+        print("product name:" + info.name!);
+        setProductDetails(info);
+      } else {
+        String productId = arguments[AppConstants.intentKey.productId];
+        getProductDetails(productId);
       }
-      productTitleController.value.text = info.shortName ?? "";
-      productNameController.value.text = info.name ?? "";
-      productLengthController.value.text = info.length ?? "";
-      productWidthController.value.text = info.width ?? "";
-      productHeightController.value.text = info.height ?? "";
-      productWeightController.value.text = info.weight ?? "";
-      productManufacturerController.value.text = info.manufacturer_name ?? "";
-      productModelController.value.text = info.model_name ?? "";
-      productSKUController.value.text = info.sku ?? "";
-      productPriceController.value.text = info.price ?? "";
-      productTaxController.value.text = info.tax ?? "";
-      productDescriptionController.value.text = info.description ?? "";
-      productSupplierController.value.text = info.supplier_name ?? "";
-      productLengthUnitController.value.text = info.length_unit_name ?? "";
-      productWeightUnitController.value.text = info.weight_unit_name ?? "";
-
-      isStatus.value = info.status ?? false;
     } else {
       title.value = 'add_product'.tr;
       addProductRequest.categories = [];
@@ -109,6 +86,40 @@ class AddProductController extends GetxController
     filesList.add(info1);
 
     getProductResourcesApi();
+  }
+
+  void setProductDetails(ProductInfo info) {
+    isDeleteVisible.value = true;
+    addProductRequest.categories = [];
+    addProductRequest.id = info.id ?? 0;
+    addProductRequest.supplier_id = info.supplierId ?? 0;
+    addProductRequest.lengthUnit_id = info.length_unit_id ?? 0;
+    addProductRequest.weightUnit_id = info.weight_unit_id ?? 0;
+    addProductRequest.manufacturer_id = info.manufacturer_id ?? 0;
+    addProductRequest.model_id = info.model_id ?? 0;
+    if (info.categories != null && info.categories!.isNotEmpty) {
+      productCategoryController.value.text = info.categories![0].name ?? "";
+      for (int i = 0; i < info.categories!.length; i++) {
+        addProductRequest.categories!.add(info.categories![i].id.toString());
+      }
+    }
+    productTitleController.value.text = info.shortName ?? "";
+    productNameController.value.text = info.name ?? "";
+    productLengthController.value.text = info.length ?? "";
+    productWidthController.value.text = info.width ?? "";
+    productHeightController.value.text = info.height ?? "";
+    productWeightController.value.text = info.weight ?? "";
+    productManufacturerController.value.text = info.manufacturer_name ?? "";
+    productModelController.value.text = info.model_name ?? "";
+    productSKUController.value.text = info.sku ?? "";
+    productPriceController.value.text = info.price ?? "";
+    productTaxController.value.text = info.tax ?? "";
+    productDescriptionController.value.text = info.description ?? "";
+    productSupplierController.value.text = info.supplier_name ?? "";
+    productLengthUnitController.value.text = info.length_unit_name ?? "";
+    productWeightUnitController.value.text = info.weight_unit_name ?? "";
+
+    isStatus.value = info.status ?? false;
   }
 
   void onSubmitClick() {
@@ -372,12 +383,48 @@ class AddProductController extends GetxController
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          BaseResponse response = BaseResponse.fromJson(jsonDecode(responseModel.result!));
+          BaseResponse response =
+              BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             if (!StringHelper.isEmptyString(response.Message ?? "")) {
               AppUtils.showToastMessage(response.Message ?? "");
             }
             Get.back(result: true);
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
+  void getProductDetails(String id) async {
+    Map<String, dynamic> map = {};
+    map["id"] = id;
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print("Request Data:" + map.toString());
+
+    isLoading.value = true;
+
+    _api.getProductDetails(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          ProductDetailsResponse response = ProductDetailsResponse.fromJson(
+              jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            setProductDetails(response.info!);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -407,15 +454,11 @@ class AddProductController extends GetxController
   }
 
   @override
-  void onOtherButtonClicked(String dialogIdentifier) {
-
-  }
+  void onOtherButtonClicked(String dialogIdentifier) {}
 
   @override
   void onPositiveButtonClicked(String dialogIdentifier) {
     Get.back();
     deleteProduct(addProductRequest.id!.toString());
   }
-
-
 }

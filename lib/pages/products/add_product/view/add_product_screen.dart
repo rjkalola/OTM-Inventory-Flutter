@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,122 +40,121 @@ class AddProductScreen extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: addProductController.title.value,
-          isCenterTitle: false,
-          isBack: true,
-          widgets: actionButtons(),
-        ),
-        body: Obx(() {
-          return ModalProgressHUD(
-            inAsyncCall: addProductController.isLoading.value,
-            opacity: 0,
-            progressIndicator: const CustomProgressbar(),
-            child: Visibility(
-              visible: addProductController.isMainViewVisible.value,
-              child: Column(children: [
-                Form(
-                  key: addProductController.formKey,
-                  child: Expanded(
-                    flex: 1,
-                    child: SingleChildScrollView(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Divider(),
-                            TextFieldProductName(),
-                            TextFieldProductTitle(),
-                            TextFieldProductCategory(),
-                            TextFieldProductSupplier(),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(14, 8, 14, 16),
-                              child: Text('dimensions_'.tr,
-                                  style: const TextStyle(
-                                      color: primaryTextColor, fontSize: 16)),
-                            ),
-                            Row(
-                              children: [
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFieldProductLength(),
-                                ),
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFieldProductWidth(),
-                                ),
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFieldProductHeight(),
-                                ),
-                              ],
-                            ),
-                            TextFieldProductLengthUnit(),
-                            Row(
-                              children: [
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFieldProductWeight(),
-                                ),
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFieldProductWeightUnit(),
-                                ),
-                              ],
-                            ),
-                            TextFieldProductManufacturer(),
-                            TextFieldProductModel(),
-                            TextFieldProductSku(),
-                            TextFieldProductPrice(),
-                            TextFieldProductTax(),
-                            TextFieldProductDescription(),
-                            // AddProductPhotosTitleView(),
-                            // AddProductPhotosList(),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 14, bottom: 18),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'status'.tr,
+    return Obx(() => SafeArea(
+          child: Scaffold(
+            backgroundColor: backgroundColor,
+            appBar: BaseAppBar(
+              appBar: AppBar(),
+              title: addProductController.title.value,
+              isCenterTitle: false,
+              isBack: true,
+              widgets: actionButtons(),
+            ),
+            body: ModalProgressHUD(
+              inAsyncCall: addProductController.isLoading.value,
+              opacity: 0,
+              progressIndicator: const CustomProgressbar(),
+              child: Visibility(
+                visible: addProductController.isMainViewVisible.value,
+                child: Column(children: [
+                  Form(
+                    key: addProductController.formKey,
+                    child: Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Divider(),
+                              TextFieldProductName(),
+                              TextFieldProductTitle(),
+                              TextFieldProductCategory(),
+                              TextFieldProductSupplier(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(14, 8, 14, 16),
+                                child: Text('dimensions_'.tr,
                                     style: const TextStyle(
-                                        fontSize: 16, color: primaryTextColor),
+                                        color: primaryTextColor, fontSize: 16)),
+                              ),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: TextFieldProductLength(),
                                   ),
-                                  const SizedBox(
-                                    width: 4,
+                                  Flexible(
+                                    flex: 1,
+                                    child: TextFieldProductWidth(),
                                   ),
-                                  Switch(
-                                      value:
-                                          addProductController.isStatus.value,
-                                      activeColor: defaultAccentColor,
-                                      onChanged: (isVisible) {
-                                        addProductController.isStatus.value =
-                                            isVisible;
-                                      })
+                                  Flexible(
+                                    flex: 1,
+                                    child: TextFieldProductHeight(),
+                                  ),
                                 ],
                               ),
-                            )
-                          ]),
+                              TextFieldProductLengthUnit(),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: TextFieldProductWeight(),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: TextFieldProductWeightUnit(),
+                                  ),
+                                ],
+                              ),
+                              TextFieldProductManufacturer(),
+                              TextFieldProductModel(),
+                              TextFieldProductSku(),
+                              TextFieldProductPrice(),
+                              TextFieldProductTax(),
+                              TextFieldProductDescription(),
+                              // AddProductPhotosTitleView(),
+                              // AddProductPhotosList(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 14, bottom: 18),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'status'.tr,
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          color: primaryTextColor),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Switch(
+                                        value:
+                                            addProductController.isStatus.value,
+                                        activeColor: defaultAccentColor,
+                                        onChanged: (isVisible) {
+                                          addProductController.isStatus.value =
+                                              isVisible;
+                                        })
+                                  ],
+                                ),
+                              )
+                            ]),
+                      ),
                     ),
                   ),
-                ),
-                AddProductButton()
-              ]),
+                  AddProductButton()
+                ]),
+              ),
             ),
-          );
-        }),
-      ),
-    );
+          ),
+        ));
   }
 
   List<Widget>? actionButtons() {
     return [
       Visibility(
-        visible: addProductController.addProductRequest.id != null &&
-            addProductController.addProductRequest.id! != 0,
+        visible: addProductController.isDeleteVisible.value,
         child: IconButton(
           icon: SvgPicture.asset(
             width: 28,

@@ -4,14 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_controller.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/qty_history_list_view.dart';
+import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/row_reference_users.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quantity_button.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_edit_stock_date.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_quantity_update_note.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_select_user.dart';
-import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_price.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_quantity.dart';
-import 'package:otm_inventory/utils/date_utils.dart';
 import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
@@ -21,6 +16,7 @@ import '../../routes/app_routes.dart';
 import '../../utils/app_constants.dart';
 import '../../widgets/CustomProgressbar.dart';
 import '../../widgets/appbar/base_appbar.dart';
+import '../products/product_list/models/product_info.dart';
 
 class StockEditQuantityScreen extends StatefulWidget {
   const StockEditQuantityScreen({
@@ -124,63 +120,75 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                             const EdgeInsets.all(0),
                                             () => {}),
                                         customTextView(
-                                            "${'product_id'.tr}: ${stockEditQuantityController.productInfo.value.supplier_code ?? ""}",
+                                            "${'code'.tr}: ${stockEditQuantityController.productInfo.value.supplier_code ?? ""}",
                                             14,
                                             FontWeight.w400,
                                             primaryTextColorLight,
                                             const EdgeInsets.all(0),
                                             () => {}),
-                                        customTextView(
-                                            "${'qty_in_stock'.tr}: ${stockEditQuantityController.productInfo.value.qty ?? 0.toString()}",
-                                            14,
-                                            FontWeight.w400,
-                                            primaryTextColorLight,
-                                            const EdgeInsets.all(0),
-                                            () => {}),
-                                        !StringHelper.isEmptyString(
-                                                stockEditQuantityController
-                                                    .productInfo
-                                                    .value
-                                                    .barcode_text)
-                                            ? Row(
-                                                children: [
-                                                  customTextView(
-                                                      "${'barcode'.tr}: ${stockEditQuantityController.productInfo.value.barcode_text ?? ""}",
-                                                      14,
-                                                      FontWeight.w400,
-                                                      primaryTextColorLight,
-                                                      const EdgeInsets.all(0),
-                                                      () {
-                                                    stockEditQuantityController
-                                                        .showUpdateBarcodeManually(
-                                                            stockEditQuantityController
-                                                                    .productInfo
-                                                                    .value
-                                                                    .barcode_text ??
-                                                                "");
-                                                  }),
-                                                  const SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  InkWell(
-                                                      onTap: () {
-                                                        stockEditQuantityController
-                                                            .showUpdateBarcodeManually(
-                                                                stockEditQuantityController
-                                                                        .productInfo
-                                                                        .value
-                                                                        .barcode_text ??
-                                                                    "");
-                                                      },
-                                                      child: const Icon(
-                                                        Icons.edit,
-                                                        color:
-                                                            defaultAccentColor,
-                                                        size: 16,
-                                                      ))
-                                                ],
-                                              )
-                                            : Container()
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            customTextView(
+                                                "${'qty_in_stock'.tr}:",
+                                                14,
+                                                FontWeight.w400,
+                                                primaryTextColorLight,
+                                                const EdgeInsets.all(0),
+                                                () => {}),
+                                            customTextView(
+                                                "${stockEditQuantityController.productInfo.value.qty ?? 0.toString()}",
+                                                18,
+                                                FontWeight.w500,
+                                                primaryTextColorLight,
+                                                const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                                                () => {})
+                                          ],
+                                        )
+                                        // !StringHelper.isEmptyString(
+                                        //         stockEditQuantityController
+                                        //             .productInfo
+                                        //             .value
+                                        //             .barcode_text)
+                                        //     ? Row(
+                                        //         children: [
+                                        //           customTextView(
+                                        //               "${'barcode'.tr}: ${stockEditQuantityController.productInfo.value.barcode_text ?? ""}",
+                                        //               14,
+                                        //               FontWeight.w400,
+                                        //               primaryTextColorLight,
+                                        //               const EdgeInsets.all(0),
+                                        //               () {
+                                        //             stockEditQuantityController
+                                        //                 .showUpdateBarcodeManually(
+                                        //                     stockEditQuantityController
+                                        //                             .productInfo
+                                        //                             .value
+                                        //                             .barcode_text ??
+                                        //                         "");
+                                        //           }),
+                                        //           const SizedBox(
+                                        //             width: 4,
+                                        //           ),
+                                        //           InkWell(
+                                        //               onTap: () {
+                                        //                 stockEditQuantityController
+                                        //                     .showUpdateBarcodeManually(
+                                        //                         stockEditQuantityController
+                                        //                                 .productInfo
+                                        //                                 .value
+                                        //                                 .barcode_text ??
+                                        //                             "");
+                                        //               },
+                                        //               child: const Icon(
+                                        //                 Icons.edit,
+                                        //                 color:
+                                        //                     defaultAccentColor,
+                                        //                 size: 16,
+                                        //               ))
+                                        //         ],
+                                        //       )
+                                        //     : Container()
                                       ],
                                     ),
                                   ),
@@ -196,8 +204,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                 stockEditQuantityController
                                         .productInfo.value.name ??
                                     "",
-                                18,
-                                FontWeight.w600,
+                                15,
+                                FontWeight.w500,
                                 primaryTextColor,
                                 const EdgeInsets.fromLTRB(18, 14, 18, 14),
                                 () => {}),
@@ -206,55 +214,53 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                 stockEditQuantityController
                                         .productInfo.value.supplier_name ??
                                     "",
-                                16,
+                                15,
                                 FontWeight.w500,
                                 primaryTextColor,
                                 const EdgeInsets.fromLTRB(18, 14, 18, 14),
                                 () => {}),
                             dividerItem(),
-                            TextFieldStockPrice(),
-                            TextFieldSelectUser(),
-                            TextFieldEditStockDate(),
-                            TextFieldQuantityUpdateNote(),
-                            dividerItem(),
-                            Visibility(
-                              visible: !StringHelper.isEmptyList(
-                                  stockEditQuantityController
-                                      .productInfo.value.stock_histories),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(16, 18, 16, 12),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    customTextView(
-                                        'stock_movement'.tr,
-                                        17,
-                                        FontWeight.w500,
-                                        primaryTextColorLight,
-                                        const EdgeInsets.all(0),
-                                        () => {}),
-                                    customTextView(
-                                        'view_more_'.tr,
-                                        15,
-                                        FontWeight.w500,
-                                        defaultAccentColor,
-                                        const EdgeInsets.all(0), () {
-                                      var arguments = {
-                                        AppConstants.intentKey.productId:
-                                            stockEditQuantityController
-                                                .productId,
-                                      };
-                                      Get.toNamed(
-                                          AppRoutes.stockQuantityHistoryScreen,
-                                          arguments: arguments);
-                                    })
-                                  ],
-                                ),
-                              ),
-                            ),
-                            QtyHistoryListView()
+                            // TextFieldStockPrice(),
+                            // TextFieldEditStockDate(),
+                            // dividerItem(),
+                            // Visibility(
+                            //   visible: !StringHelper.isEmptyList(
+                            //       stockEditQuantityController
+                            //           .productInfo.value.stock_histories),
+                            //   child: Padding(
+                            //     padding:
+                            //         const EdgeInsets.fromLTRB(16, 16, 16, 12),
+                            //     child: Row(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         customTextView(
+                            //             'stock_movement'.tr,
+                            //             17,
+                            //             FontWeight.w500,
+                            //             primaryTextColorLight,
+                            //             const EdgeInsets.all(0),
+                            //             () => {}),
+                            //         customTextView(
+                            //             'view_more_'.tr,
+                            //             15,
+                            //             FontWeight.w500,
+                            //             defaultAccentColor,
+                            //             const EdgeInsets.all(0), () {
+                            //           var arguments = {
+                            //             AppConstants.intentKey.productId:
+                            //                 stockEditQuantityController
+                            //                     .productId,
+                            //           };
+                            //           Get.toNamed(
+                            //               AppRoutes.stockQuantityHistoryScreen,
+                            //               arguments: arguments);
+                            //         })
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            // QtyHistoryListView()
                           ]),
                     ),
                   ),
@@ -270,26 +276,62 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                           color: dividerColor,
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 14,
                         ),
-                        customTextView(
-                            'add_quantity'.tr,
-                            16,
-                            FontWeight.w400,
-                            primaryTextColor,
-                            const EdgeInsets.fromLTRB(18, 0, 18, 6),
-                            () => {}),
-                        // TextFieldQuantityUpdateNote(),
+                        // customTextView(
+                        //     'add_quantity'.tr,
+                        //     16,
+                        //     FontWeight.w400,
+                        //     primaryTextColor,
+                        //     const EdgeInsets.fromLTRB(18, 0, 18, 6),
+                        //     () => {}),
+                        RowReferenceUsers(),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(18, 6, 18, 6),
+                          padding: const EdgeInsets.fromLTRB(18, 6, 18, 18),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                InkWell(
+                                  onTap: () {
+                                    if (stockEditQuantityController
+                                        .isAddQtyVisible.value) {
+                                      stockEditQuantityController
+                                          .isAddQtyVisible.value = false;
+                                      stockEditQuantityController
+                                          .isDeductQtyVisible.value = true;
+                                    } else {
+                                      stockEditQuantityController
+                                          .isAddQtyVisible.value = true;
+                                      stockEditQuantityController
+                                          .isDeductQtyVisible.value = false;
+                                    }
+                                  },
+                                  child: Container(
+                                    // color of
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: rectangleBorderColor,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                            4)), // grid items
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(9.0),
+                                      child: Text(
+                                        "+/-",
+                                        style: TextStyle(fontSize: 22),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 12,
+                                ),
                                 TextFieldQuantity(),
+                                SaveStockQuantityButton()
                               ]),
                         ),
-                        SaveStockQuantityButton()
+                        // SaveStockQuantityButton()
                       ],
                     ),
                   )
@@ -334,20 +376,44 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
 
   List<Widget>? actionButtons() {
     return [
+      // IconButton(
+      //   icon: SvgPicture.asset(
+      //     width: 28,
+      //     Drawable.deleteIcon,
+      //     colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
+      //   ),
+      //   onPressed: () {
+      //     stockEditQuantityController.onClickRemove();
+      //   },
+      // ),
       IconButton(
         icon: SvgPicture.asset(
-          width: 28,
-          Drawable.deleteIcon,
-          colorFilter:
-          const ColorFilter.mode(Colors.red, BlendMode.srcIn),
+          width: 26,
+          Drawable.editIcon,
         ),
         onPressed: () {
-          stockEditQuantityController.onClickRemove();
+            stockEditQuantityController.editProductClick();
         },
       ),
       IconButton(
         icon: SvgPicture.asset(
-          width: 28,
+          width: 26,
+          Drawable.historyIcon,
+        ),
+        onPressed: () {
+          var arguments = {
+            AppConstants.intentKey.productId:
+            stockEditQuantityController
+                .productId,
+          };
+          Get.toNamed(
+              AppRoutes.stockQuantityHistoryScreen,
+              arguments: arguments);
+        },
+      ),
+      IconButton(
+        icon: SvgPicture.asset(
+          width: 26,
           Drawable.qrCodeIcon,
         ),
         onPressed: () {

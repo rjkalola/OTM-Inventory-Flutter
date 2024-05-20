@@ -11,7 +11,7 @@ class QtyHistoryUserInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return !StringHelper.isEmptyObject(user)
         ? Padding(
-      padding: const EdgeInsets.fromLTRB(16, 6, 16, 0),
+      padding: const EdgeInsets.fromLTRB(12, 0, 9, 0),
       child: Row(
         children: [
           ImageUtils.setUserImage(

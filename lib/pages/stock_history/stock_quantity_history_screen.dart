@@ -21,8 +21,10 @@ class StockQuantityHistoryScreen extends StatefulWidget {
       _StockQuantityHistoryScreenState();
 }
 
-class _StockQuantityHistoryScreenState extends State<StockQuantityHistoryScreen> {
-  final stockQuantityHistoryController = Get.put(StockQuantityHistoryController());
+class _StockQuantityHistoryScreenState
+    extends State<StockQuantityHistoryScreen> {
+  final stockQuantityHistoryController =
+      Get.put(StockQuantityHistoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class _StockQuantityHistoryScreenState extends State<StockQuantityHistoryScreen>
           title: 'stock_movement'.tr,
           isCenterTitle: false,
           isBack: true,
+          widgets: actionButtons(),
         ),
         body: Obx(() {
           return ModalProgressHUD(
@@ -51,7 +54,9 @@ class _StockQuantityHistoryScreenState extends State<StockQuantityHistoryScreen>
                   height: 1,
                   color: dividerColor,
                 ),
-                const SizedBox(height: 14,),
+                const SizedBox(
+                  height: 14,
+                ),
                 StockHistoryFilterWidget(),
                 QtyHistoryListView()
               ]),
@@ -86,4 +91,19 @@ class _StockQuantityHistoryScreenState extends State<StockQuantityHistoryScreen>
         height: 0.5,
         color: dividerColor,
       );
+
+  List<Widget>? actionButtons() {
+    return [
+      Padding(
+        padding: const EdgeInsets.only(right: 14),
+        child: Text(
+          0.toString(),
+          style: const TextStyle(
+              fontSize: 16,
+              color: primaryTextColor,
+              fontWeight: FontWeight.w500),
+        ),
+      ),
+    ];
+  }
 }

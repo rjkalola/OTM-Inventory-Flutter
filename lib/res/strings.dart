@@ -105,7 +105,7 @@ class Strings extends Translations {
           'attach_product': "Attach Product",
           'empty_qr_code_scan_msg':
               "We do not find this product in our records, Click buttons below if you want to attach any product with the barcode or add new product with this barcode",
-          'ref': "Ref",
+          'reference': "Reference",
           'select_user': "Select User",
           'add_stock': "Add Stock",
           'all': "All",
@@ -129,6 +129,7 @@ class Strings extends Translations {
           'remove': "Remove",
           'loading_more_': "Loading More...",
           'date': "Date",
+          'code': "Code",
         },
         'hi_IN': {'login': 'Login'}
       };

@@ -11,23 +11,20 @@ class TextFieldSelectUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-      padding: const EdgeInsets.fromLTRB(18, 6, 18, 18),
-      child: TextFieldBorder(
-          textEditingController: stockEditQuantityController.userController.value,
-          hintText: 'select_user'.tr,
-          labelText: 'select_user'.tr,
-          keyboardType: TextInputType.name,
-          textInputAction: TextInputAction.next,
-          validator: MultiValidator([
+    return  TextFieldBorder(
+        textEditingController: stockEditQuantityController.userController.value,
+        hintText: 'select_user'.tr,
+        labelText: 'select_user'.tr,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.next,
+        validator: MultiValidator([
 
-          ]),
-          isReadOnly: true,
-          suffixIcon: const Icon(Icons.arrow_drop_down),
-          onPressed: () {
-            stockEditQuantityController.showUsersList();
-          }
-      ),
+        ]),
+        isReadOnly: true,
+        suffixIcon: const Icon(Icons.arrow_drop_down),
+        onPressed: () {
+          stockEditQuantityController.showUsersList();
+        }
     );
   }
 }

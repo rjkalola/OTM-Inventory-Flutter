@@ -43,14 +43,15 @@ class StockEditQuantityController extends GetxController
   final dateController = TextEditingController().obs;
   final priceController = TextEditingController().obs;
   final productInfo = ProductInfo().obs;
-  String productId = "",
-      mBarCode = "";
+  String productId = "", mBarCode = "";
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs;
-  int initialQuantity = 0,
-      finalQuantity = 0,
-      userId = 0;
+      isMainViewVisible = false.obs,
+      isDeductQtyVisible = false.obs,
+      isAddQtyVisible = true.obs,
+      isUserDropdownVisible = false.obs,
+      isReferenceVisible = true.obs;
+  int initialQuantity = 0, finalQuantity = 0, userId = 0;
   bool isUpdated = false;
   List<ModuleInfo> listUsers = [];
   DateTime selectedDate = DateTime.now();
@@ -59,6 +60,7 @@ class StockEditQuantityController extends GetxController
   void onInit() {
     super.onInit();
     var arguments = Get.arguments;
+    quantityController.value.text = "1";
     if (arguments != null) {
       productId = arguments[AppConstants.intentKey.productId]!;
       getStockQuantityDetailsApi(true, productId.toString());
@@ -73,7 +75,7 @@ class StockEditQuantityController extends GetxController
         AppConstants.intentKey.storeInfo: info,
       };
       result =
-      await Get.toNamed(AppRoutes.addProductScreen, arguments: arguments);
+          await Get.toNamed(AppRoutes.addProductScreen, arguments: arguments);
     } else {
       result = await Get.toNamed(AppRoutes.addProductScreen);
     }
@@ -121,15 +123,8 @@ class StockEditQuantityController extends GetxController
   }
 
   void onClickRemove() {
-    AlertDialogHelper.showAlertDialog(
-        "",
-        'delete_stock_msg'.tr,
-        'yes'.tr,
-        'no'.tr,
-        "",
-        true,
-        this,
-        AppConstants.dialogIdentifier.deleteStock);
+    AlertDialogHelper.showAlertDialog("", 'delete_stock_msg'.tr, 'yes'.tr,
+        'no'.tr, "", true, this, AppConstants.dialogIdentifier.deleteStock);
   }
 
   Future<void> openQrCodeScanner(String message) async {
@@ -182,15 +177,14 @@ class StockEditQuantityController extends GetxController
         AppConstants.dialogIdentifier.updateBarcodeDialog) {
       Get.back();
       openQrCodeScanner('barcode_update_success_msg'.tr);
-    } else if (dialogIdentifier ==
-        AppConstants.dialogIdentifier.deleteStock) {
+    } else if (dialogIdentifier == AppConstants.dialogIdentifier.deleteStock) {
       Get.back();
       archiveStock(productInfo.value.id!);
     }
   }
 
-  Future<void> getStockQuantityDetailsApi(bool isProgress,
-      String productId) async {
+  Future<void> getStockQuantityDetailsApi(
+      bool isProgress, String productId) async {
     Map<String, dynamic> map = {};
     map["store_id"] = AppStorage.storeId.toString();
     map["product_id"] = productId;
@@ -203,8 +197,8 @@ class StockEditQuantityController extends GetxController
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           StockQuantityDetailsResponse response =
-          StockQuantityDetailsResponse.fromJson(
-              jsonDecode(responseModel.result!));
+              StockQuantityDetailsResponse.fromJson(
+                  jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             productInfo.value = response.info!;
             // quantityController.value.text = productInfo.value.qty.toString();
@@ -251,7 +245,7 @@ class StockEditQuantityController extends GetxController
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           BaseResponse response =
-          BaseResponse.fromJson(jsonDecode(responseModel.result!));
+              BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             Get.back(result: true);
           } else {
@@ -307,8 +301,8 @@ class StockEditQuantityController extends GetxController
     );
   }
 
-  Future<void> getStockListApi(bool isProgress, bool scanQrCode,
-      String? code) async {
+  Future<void> getStockListApi(
+      bool isProgress, bool scanQrCode, String? code) async {
     Map<String, dynamic> map = {};
     map["filters"] = "";
     map["offset"] = 0;
@@ -331,7 +325,7 @@ class StockEditQuantityController extends GetxController
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           ProductListResponse response =
-          ProductListResponse.fromJson(jsonDecode(responseModel.result!));
+              ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             if (scanQrCode && response.info!.isEmpty) {
               showAttachBarcodeDialog();
@@ -372,7 +366,7 @@ class StockEditQuantityController extends GetxController
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           StoreProductResponse response =
-          StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
+              StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             AppUtils.showSnackBarMessage(message);
             isUpdated = true;
@@ -409,8 +403,8 @@ class StockEditQuantityController extends GetxController
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          BaseResponse response = BaseResponse.fromJson(
-              jsonDecode(responseModel.result!));
+          BaseResponse response =
+              BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             if (!StringHelper.isEmptyString(response.Message ?? "")) {
               AppUtils.showToastMessage(response.Message ?? "");
@@ -447,7 +441,7 @@ class StockEditQuantityController extends GetxController
       String price = priceController.value.text.toString().trim();
       String date = dateController.value.text.toString().trim();
       storeStockQuantityApi(
-          true, productId.toString(), finalQty.toString(), note,price,date);
+          true, productId.toString(), finalQty.toString(), note, price, date);
     }
   }
 
@@ -526,9 +520,22 @@ class StockEditQuantityController extends GetxController
   //   }
   // }
 
+  Future<void> editProductClick() async {
+    var arguments = {
+      AppConstants.intentKey.productId: productId,
+    };
+    var result =
+        await Get.toNamed(AppRoutes.addProductScreen, arguments: arguments);
+    if (result != null && result) {
+      Get.back(result: true);
+    }
+  }
+
   @override
   void onSelectDate(DateTime date, String dialogIdentifier) {
-    dateController.value.text = DateUtil.dateToString(date, DateUtil.YYYY_MM_DD_DASH);
-    print("Output Date::"+DateUtil.dateToString(date, DateUtil.YYYY_MM_DD_DASH));
+    dateController.value.text =
+        DateUtil.dateToString(date, DateUtil.YYYY_MM_DD_DASH);
+    print("Output Date::" +
+        DateUtil.dateToString(date, DateUtil.YYYY_MM_DD_DASH));
   }
 }
