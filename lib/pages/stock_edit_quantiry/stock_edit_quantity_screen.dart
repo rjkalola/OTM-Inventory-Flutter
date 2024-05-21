@@ -127,7 +127,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                             const EdgeInsets.all(0),
                                             () => {}),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             customTextView(
                                                 "${'qty_in_stock'.tr}:",
@@ -141,7 +142,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                                 18,
                                                 FontWeight.w500,
                                                 primaryTextColorLight,
-                                                const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                                                const EdgeInsets.fromLTRB(
+                                                    0, 0, 16, 0),
                                                 () => {})
                                           ],
                                         )
@@ -392,7 +394,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
           Drawable.editIcon,
         ),
         onPressed: () {
-            stockEditQuantityController.editProductClick();
+          stockEditQuantityController.editProductClick();
         },
       ),
       IconButton(
@@ -403,11 +405,9 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
         onPressed: () {
           var arguments = {
             AppConstants.intentKey.productId:
-            stockEditQuantityController
-                .productId,
+                stockEditQuantityController.productId,
           };
-          Get.toNamed(
-              AppRoutes.stockQuantityHistoryScreen,
+          Get.toNamed(AppRoutes.stockQuantityHistoryScreen,
               arguments: arguments);
         },
       ),

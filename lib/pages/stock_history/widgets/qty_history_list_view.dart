@@ -41,7 +41,10 @@ class QtyHistoryListView extends StatelessWidget {
                             Row(
                               children: [
                                 customTextView(
-                                    "17/05 09:56",
+                                    stockQuantityHistoryController
+                                            .stockHistoryList[position]
+                                            .created_at_formatted ??
+                                        "",
                                     13,
                                     FontWeight.w400,
                                     primaryTextColorLight,
@@ -52,17 +55,31 @@ class QtyHistoryListView extends StatelessWidget {
                                 )
                               ],
                             ),
-                            customTextView(
-                                stockQuantityHistoryController
-                                    .stockHistoryList[position].qty,
-                                16,
-                                FontWeight.w400,
-                                (int.parse(stockQuantityHistoryController
-                                            .stockHistoryList[position].qty!) >
-                                        0)
-                                    ? Colors.green
-                                    : Colors.red,
-                                const EdgeInsets.all(0)),
+                            Row(
+                              children: [
+                                customTextView(
+                                    stockQuantityHistoryController
+                                        .stockHistoryList[position].qty,
+                                    16,
+                                    FontWeight.w400,
+                                    (int.parse(stockQuantityHistoryController
+                                                .stockHistoryList[position]
+                                                .qty!) >
+                                            0)
+                                        ? Colors.green
+                                        : Colors.red,
+                                    const EdgeInsets.all(0)),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                customTextView(
+                                    getUpdatedQuantity(position),
+                                    16,
+                                    FontWeight.w400,
+                                    primaryTextColor,
+                                    const EdgeInsets.all(0))
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -113,4 +130,20 @@ class QtyHistoryListView extends StatelessWidget {
               )),
         ),
       );
+
+  String getUpdatedQuantity(int position) {
+    String result = "";
+    if (!StringHelper.isEmptyString(
+            stockQuantityHistoryController.stockHistoryList[position].qty) &&
+        !StringHelper.isEmptyString(stockQuantityHistoryController
+            .stockHistoryList[position].old_qty)) {
+      int oldQty = int.parse(
+          stockQuantityHistoryController.stockHistoryList[position].old_qty ??
+              "0");
+      int qty = int.parse(
+          stockQuantityHistoryController.stockHistoryList[position].qty ?? "0");
+      result += "(${oldQty + qty})";
+    }
+    return result;
+  }
 }

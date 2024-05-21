@@ -15,6 +15,7 @@ import 'model/stock_quantity_history_response.dart';
 class StockQuantityHistoryController extends GetxController {
   final _api = StockQuantityHistoryRepository();
   String productId = "";
+  final totalQuantity = "".obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
@@ -54,6 +55,7 @@ class StockQuantityHistoryController extends GetxController {
             tempList.clear();
             tempList.addAll(response.info!);
             stockHistoryList.value = tempList;
+            totalQuantity.value = response.stock_qty??"";
             isMainViewVisible.value = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);

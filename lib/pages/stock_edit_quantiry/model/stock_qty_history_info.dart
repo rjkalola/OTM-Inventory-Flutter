@@ -2,13 +2,20 @@ import '../../otp_verification/model/user_info.dart';
 
 class StockQtyHistoryInfo {
   int? id, stock_id;
-  String? qty, created_at_formatted, reference, currencyPrice, date, price;
+  String? qty,
+      old_qty,
+      created_at_formatted,
+      reference,
+      currencyPrice,
+      date,
+      price;
   UserInfo? user;
 
   StockQtyHistoryInfo(
       {this.id,
       this.stock_id,
       this.qty,
+      this.old_qty,
       this.reference,
       this.created_at_formatted,
       this.currencyPrice,
@@ -20,6 +27,7 @@ class StockQtyHistoryInfo {
     id = json['id'];
     stock_id = json['stock_id'];
     qty = json['qty'];
+    old_qty = json['old_qty'];
     reference = json['reference'];
     created_at_formatted = json['created_at_formatted'];
     currencyPrice = json['currencyPrice'];
@@ -33,6 +41,7 @@ class StockQtyHistoryInfo {
     data['id'] = id;
     data['stock_id'] = stock_id;
     data['qty'] = qty;
+    data['old_qty'] = old_qty;
     data['reference'] = reference;
     data['created_at_formatted'] = created_at_formatted;
     data['currencyPrice'] = currencyPrice;
