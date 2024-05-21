@@ -97,8 +97,8 @@ class _StockQuantityHistoryScreenState
         child: Text(
           stockQuantityHistoryController.totalQuantity.value,
           style: const TextStyle(
-              fontSize: 16,
-              color: primaryTextColor,
+              fontSize: 18,
+              color: defaultAccentColor,
               fontWeight: FontWeight.w500),
         ),
       ),

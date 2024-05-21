@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/cupertino.dart';
@@ -80,10 +81,10 @@ class AddProductController extends GetxController
     FileInfo info = FileInfo();
     filesList.add(info);
 
-    FileInfo info1 = FileInfo();
-    info1.file =
-        "https://fastly.picsum.photos/id/68/536/354.jpg?hmac=1HfgJb31lF-wUi81l2uZsAMfntViiCV9z5_ntQvW3Ks";
-    filesList.add(info1);
+    // FileInfo info1 = FileInfo();
+    // info1.file =
+    //     "https://fastly.picsum.photos/id/68/536/354.jpg?hmac=1HfgJb31lF-wUi81l2uZsAMfntViiCV9z5_ntQvW3Ks";
+    // filesList.add(info1);
 
     getProductResourcesApi();
   }
@@ -243,21 +244,22 @@ class AddProductController extends GetxController
     }
   }
 
-  onSelectPhoto() async {
+  onSelectPhoto(index) async {
     print("pickImage");
-
-    try {
-      final XFile? pickedFile = await _picker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 900,
-        maxHeight: 900,
-        imageQuality: 90,
-      );
-      addPhotoToList(pickedFile!.path ?? "");
-      print("Path:" + pickedFile.path ?? "");
-    } catch (e) {
-      print("error:" + e.toString());
-    }
+    if (index == 0) {
+      try {
+        final XFile? pickedFile = await _picker.pickImage(
+          source: ImageSource.gallery,
+          maxWidth: 900,
+          maxHeight: 900,
+          imageQuality: 90,
+        );
+        addPhotoToList(pickedFile!.path ?? "");
+        print("Path:" + pickedFile.path ?? "");
+      } catch (e) {
+        print("error:" + e.toString());
+      }
+    } else {}
   }
 
   addPhotoToList(String? path) {
@@ -333,7 +335,36 @@ class AddProductController extends GetxController
         map['categories[${i.toString()}]'] = addProductRequest.categories![i];
       }
     }
+
+    var list = <FileInfo>[];
+    for (int i = 0; i < filesList.length; i++) {
+      if (!StringHelper.isEmptyString(filesList[i].file ?? "") &&
+          !filesList[i].file!.startsWith("http")) {
+        list.add(filesList[i]);
+      }
+    }
+
+    // if (list.isNotEmpty) {
+    //   for (int i = 0; i < list.length; i++) {
+    //     String fileName = list[i].file ?? "".split('/').last;
+    //     map["files"] = await multi.MultipartFile.fromFile(list[i].file ?? "",
+    //         filename: fileName);
+    //   }
+    // }
+
+    // var formData = multi.FormData();
+
+    map["mode_type"] = addProductRequest.mode_type;
+
     multi.FormData formData = multi.FormData.fromMap(map);
+    if (list.isNotEmpty) {
+      for (var info in list) {
+        formData.files.addAll([
+          MapEntry(
+              "files[]", await multi.MultipartFile.fromFile(info.file ?? "")),
+        ]);
+      }
+    }
 
     print("Request Data:" + map.toString());
 

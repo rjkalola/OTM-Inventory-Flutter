@@ -12,7 +12,7 @@ class ImageGridview extends StatelessWidget {
       required this.onRemoveClick});
 
   final List<FileInfo> filesList;
-  final VoidCallback onViewClick;
+  final ValueChanged<int> onViewClick;
   final ValueChanged<int> onRemoveClick;
 
   @override
@@ -33,7 +33,7 @@ class ImageGridview extends StatelessWidget {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            onViewClick();
+            onViewClick(index);
           },
           child: GridImage(
             file: filesList[index].file ?? "", onRemoveClick: (){

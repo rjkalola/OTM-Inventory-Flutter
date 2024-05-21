@@ -51,14 +51,14 @@ class GridImage extends StatelessWidget {
   Widget setCloseIcon() {
     return Visibility(
       visible: !StringHelper.isEmptyString(file),
-      child: InkWell(
-        onTap: () {
-          onRemoveClick();
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: Align(
-            alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: InkWell(
+            onTap: () {
+              onRemoveClick();
+            },
             child: Container(
               margin: const EdgeInsets.all(1),
               width: 18,

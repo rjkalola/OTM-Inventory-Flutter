@@ -15,7 +15,7 @@ class AddStockProductPhotosList extends StatelessWidget {
         padding: const EdgeInsets.all(7.0),
         child: ImageGridview(
             filesList: addProductController.filesList,
-            onViewClick: () {
+            onViewClick: (int index) {
               addProductController.onSelectPhoto();
             },
             onRemoveClick: (int index) {

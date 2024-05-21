@@ -226,8 +226,14 @@ class StockEditQuantityController extends GetxController
     );
   }
 
-  Future<void> storeStockQuantityApi(bool isProgress, String productId,
-      String quantity, String note, String price, String date) async {
+  Future<void> storeStockQuantityApi(
+      bool isProgress,
+      String productId,
+      String quantity,
+      String note,
+      String price,
+      String date,
+      String mode) async {
     Map<String, dynamic> map = {};
     map["store_id"] = AppStorage.storeId.toString();
     map["product_id"] = productId;
@@ -236,6 +242,8 @@ class StockEditQuantityController extends GetxController
     map["reference"] = note;
     map["price"] = price;
     map["date"] = date;
+    map["mode"] = mode;
+
     multi.FormData formData = multi.FormData.fromMap(map);
     if (kDebugMode) print("map:" + map.toString());
     if (isProgress) isLoading.value = true;
@@ -433,15 +441,22 @@ class StockEditQuantityController extends GetxController
       String note = noteController.value.text.toString().trim();
       int qty = int.parse(quantityController.value.text.toString().trim());
       int finalQty = 0;
+      // if (isDeduct) {
+      //   finalQty = initialQuantity - qty;
+      // } else {
+      //   finalQty = initialQuantity + qty;
+      // }
+
       if (isDeduct) {
-        finalQty = initialQuantity - qty;
+        finalQty = -qty;
       } else {
-        finalQty = initialQuantity + qty;
+        finalQty = qty;
       }
+
       String price = priceController.value.text.toString().trim();
       String date = dateController.value.text.toString().trim();
-      storeStockQuantityApi(
-          true, productId.toString(), finalQty.toString(), note, price, date);
+      storeStockQuantityApi(true, productId.toString(), finalQty.toString(),
+          note, price, date, isDeduct ? "remove" : "add");
     }
   }
 

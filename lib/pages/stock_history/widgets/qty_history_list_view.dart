@@ -60,8 +60,8 @@ class QtyHistoryListView extends StatelessWidget {
                                 customTextView(
                                     stockQuantityHistoryController
                                         .stockHistoryList[position].qty,
-                                    16,
-                                    FontWeight.w400,
+                                    18,
+                                    FontWeight.w500,
                                     (int.parse(stockQuantityHistoryController
                                                 .stockHistoryList[position]
                                                 .qty!) >
@@ -74,8 +74,8 @@ class QtyHistoryListView extends StatelessWidget {
                                 ),
                                 customTextView(
                                     getUpdatedQuantity(position),
-                                    16,
-                                    FontWeight.w400,
+                                    18,
+                                    FontWeight.w500,
                                     primaryTextColor,
                                     const EdgeInsets.all(0))
                               ],
