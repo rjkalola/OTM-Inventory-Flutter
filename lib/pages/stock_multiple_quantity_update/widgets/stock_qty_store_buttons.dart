@@ -21,7 +21,7 @@ class StockQtyStoreButtons extends StatelessWidget {
                   fit: FlexFit.tight,
                   flex: 1,
                   child: PrimaryBorderButton(
-                    buttonText: 'add'.tr,
+                    buttonText: 'save'.tr,
                     textColor: defaultAccentColor,
                     borderColor: defaultAccentColor,
                     onPressed: () {

@@ -70,26 +70,26 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
                             const SizedBox(
                               height: 2,
                             ),
-                            Visibility(
-                              visible: !StringHelper.isEmptyString(
-                                  stockListController
-                                      .productList[position].barcode_text),
-                              child: Text(
-                                  "${'barcode'.tr}: ${stockListController.productList[position].barcode_text ?? ""}",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: secondaryLightTextColor,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 13,
-                                  )),
-                            ),
+                            // Visibility(
+                            //   visible: !StringHelper.isEmptyString(
+                            //       stockListController
+                            //           .productList[position].barcode_text),
+                            //   child: Text(
+                            //       "${'barcode'.tr}: ${stockListController.productList[position].barcode_text ?? ""}",
+                            //       maxLines: 1,
+                            //       overflow: TextOverflow.ellipsis,
+                            //       style: const TextStyle(
+                            //         color: secondaryLightTextColor,
+                            //         fontWeight: FontWeight.w400,
+                            //         fontSize: 13,
+                            //       )),
+                            // ),
                             Visibility(
                               visible: !StringHelper.isEmptyString(
                                   stockListController
                                       .productList[position].supplier_code),
                               child: Text(
-                                  "${'product_id'.tr}: ${stockListController.productList[position].supplier_code ?? ""}",
+                                  "${'code'.tr}: ${stockListController.productList[position].supplier_code ?? ""}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
