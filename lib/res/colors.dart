@@ -10,7 +10,7 @@ const secondaryLightTextColor = Color(0xff606a74);
 const secondaryExtraLightTextColor = Color(0xff9E9E9E);
 const defaultAccentColor = Color(0xff0065ff);
 const backgroundColor = Color(0xffffffff);
-const titleBgColor = Color(0xffeeefef);
+const titleBgColor = Color(0xffF4F5F7);
 const snackBarColor = Color(0xff484848);
 const dividerColor = Color(0xffe6eaee);
 const bottomTabBackgroundColor = Color(0xfff4f5f7);
@@ -18,4 +18,4 @@ const hintColor = Color(0xffbdbdbd);
 const normalTextFieldBorderColor = Color(0xffbdbdbd);
 const focusedTextFieldBorderColor = Color(0xff6e6e6e);
 const rectangleBorderColor = Color(0xffcdcdce);
-
+const disableComponentColor = Color(0xffc6c6c6);

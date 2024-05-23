@@ -179,7 +179,7 @@ class DashboardController extends GetxController
     var result;
     result = await Get.toNamed(AppRoutes.stockMultipleQuantityUpdateScreen);
     if (result != null && result) {
-      Get.put(StockListController()).getStockListApi(true, false, "",true);
+      Get.put(StockListController()).getStockListApi(true, false, "", true,true);
     }
   }
 
@@ -237,5 +237,24 @@ class DashboardController extends GetxController
             .obs);
     listHeaderButtons.clear();
     listHeaderButtons.addAll(DataUtils.getHeaderActionButtonsList());
+  }
+
+  Future<void> stockFilter() async {
+    // if (info != null) {
+    //   var arguments = {
+    //     AppConstants.intentKey.storeInfo: info,
+    //   };
+    //   result =
+    //   await Get.toNamed(AppRoutes.addStoreScreen, arguments: arguments);
+    // } else {
+    //   result = await Get.toNamed(AppRoutes.stockFilterScreen);
+    // }
+
+    var result = await Get.toNamed(AppRoutes.stockFilterScreen);
+    if (!StringHelper.isEmptyString(result)) {
+      print("result" + result);
+      Get.put(StockListController()).mSupplierCategoryFilter.value = result;
+      Get.put(StockListController()).getStockListApi(true, false, "", true,false);
+    }
   }
 }

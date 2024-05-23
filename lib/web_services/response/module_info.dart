@@ -1,6 +1,6 @@
 class ModuleInfo {
   int? id;
-  String? name,symbol,value,code,phoneExtension,flagImage;
+  String? name, symbol, value, code, phoneExtension, flagImage, action;
   bool? check;
 
   ModuleInfo(
@@ -11,7 +11,8 @@ class ModuleInfo {
       this.code,
       this.phoneExtension,
       this.flagImage,
-      this.check});
+      this.check,
+      this.action});
 
   ModuleInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -24,7 +25,7 @@ class ModuleInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
     data['symbol'] = this.symbol;

@@ -34,4 +34,7 @@ class ApiConstants {
   static String addStockUrl = '$appUrl/stocks/add-stock';
   static String deleteProduct = '$appUrl/products/delete';
   static String archiveStock = '$appUrl/stocks/archive';
+  static String deleteProductImage = '$appUrl/products/delete-attachment';
+  static String stockFilterUrl = '$appUrl/products/category-filter';
+
 }

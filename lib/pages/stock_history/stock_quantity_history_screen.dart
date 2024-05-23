@@ -99,7 +99,7 @@ class _StockQuantityHistoryScreenState
           style: const TextStyle(
               fontSize: 18,
               color: defaultAccentColor,
-              fontWeight: FontWeight.w500),
+              fontWeight: FontWeight.w600),
         ),
       ),
     ];

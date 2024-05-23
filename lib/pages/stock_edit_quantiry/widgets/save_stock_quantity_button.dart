@@ -11,65 +11,77 @@ class SaveStockQuantityButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Padding(
-      padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-      // child: Row(
-      //   children: [
-      //     Flexible(
-      //       fit: FlexFit.tight,
-      //       flex: 1,
-      //       child: PrimaryBorderButton(
-      //         buttonText: 'deduct'.tr,
-      //         textColor: Colors.red,
-      //         borderColor: Colors.red,
-      //         onPressed: () {
-      //           stockEditQuantityController.onUpdateQuantityClick(true);
-      //         },
-      //       ),
-      //     ),
-      //     const SizedBox(
-      //       width: 12,
-      //     ),
-      //     Flexible(
-      //       fit: FlexFit.tight,
-      //       flex: 1,
-      //       child: PrimaryBorderButton(
-      //         buttonText: 'add'.tr,
-      //         textColor: Colors.green,
-      //         borderColor: Colors.green,
-      //         onPressed: () {
-      //           stockEditQuantityController.onUpdateQuantityClick(false);
-      //         },
-      //       ),
-      //     )
-      //   ],
-      // ),
-      child: Stack(
-        children: [
-          Visibility(
-            visible: stockEditQuantityController.isDeductQtyVisible.value,
-            child: PrimaryBorderButton(
-              buttonText: 'deduct'.tr,
-              textColor: Colors.red,
-              borderColor: Colors.red,
-              onPressed: () {
-                stockEditQuantityController.onUpdateQuantityClick(true);
-              },
+    return Obx(() => Expanded(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+            // child: Row(
+            //   children: [
+            //     Flexible(
+            //       fit: FlexFit.tight,
+            //       flex: 1,
+            //       child: PrimaryBorderButton(
+            //         buttonText: 'deduct'.tr,
+            //         textColor: Colors.red,
+            //         borderColor: Colors.red,
+            //         onPressed: () {
+            //           stockEditQuantityController.onUpdateQuantityClick(true);
+            //         },
+            //       ),
+            //     ),
+            //     const SizedBox(
+            //       width: 12,
+            //     ),
+            //     Flexible(
+            //       fit: FlexFit.tight,
+            //       flex: 1,
+            //       child: PrimaryBorderButton(
+            //         buttonText: 'add'.tr,
+            //         textColor: Colors.green,
+            //         borderColor: Colors.green,
+            //         onPressed: () {
+            //           stockEditQuantityController.onUpdateQuantityClick(false);
+            //         },
+            //       ),
+            //     )
+            //   ],
+            // ),
+            child: Row(
+              children: [
+                Visibility(
+                  visible: stockEditQuantityController.isDeductQtyVisible.value,
+                  child: Flexible(
+                    flex: 1,
+                    fit: FlexFit.tight,
+                    child: PrimaryBorderButton(
+                      buttonText: 'deduct'.tr,
+                      textColor: Colors.red,
+                      borderColor: Colors.red,
+                      onPressed: () {
+                        stockEditQuantityController.onUpdateQuantityClick(true);
+                      },
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: stockEditQuantityController.isAddQtyVisible.value,
+                  child: Flexible(
+                    flex: 1,
+                    fit: FlexFit.tight,
+                    child: PrimaryBorderButton(
+                      buttonText: 'add'.tr,
+                      textColor: Colors.green,
+                      borderColor: Colors.green,
+                      onPressed: () {
+                        stockEditQuantityController
+                            .onUpdateQuantityClick(false);
+                      },
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
-          Visibility(
-            visible: stockEditQuantityController.isAddQtyVisible.value,
-            child: PrimaryBorderButton(
-              buttonText: 'add'.tr,
-              textColor: Colors.green,
-              borderColor: Colors.green,
-              onPressed: () {
-                stockEditQuantityController.onUpdateQuantityClick(false);
-              },
-            ),
-          )
-        ],
-      ),
-    ));
+        ));
   }
 }

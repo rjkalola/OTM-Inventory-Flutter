@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,7 +17,6 @@ import '../../routes/app_routes.dart';
 import '../../utils/app_constants.dart';
 import '../../widgets/CustomProgressbar.dart';
 import '../../widgets/appbar/base_appbar.dart';
-import '../products/product_list/models/product_info.dart';
 
 class StockEditQuantityScreen extends StatefulWidget {
   const StockEditQuantityScreen({
@@ -139,8 +139,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                                 () => {}),
                                             customTextView(
                                                 "${stockEditQuantityController.productInfo.value.qty ?? 0.toString()}",
-                                                18,
-                                                FontWeight.w500,
+                                                20,
+                                                FontWeight.w600,
                                                 primaryTextColorLight,
                                                 const EdgeInsets.fromLTRB(
                                                     0, 0, 16, 0),
@@ -329,7 +329,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                 const SizedBox(
                                   width: 12,
                                 ),
-                                TextFieldQuantity(),
+                                Expanded(flex:1,child: TextFieldQuantity()),
                                 SaveStockQuantityButton()
                               ]),
                         ),

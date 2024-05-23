@@ -4,8 +4,6 @@ import 'package:otm_inventory/web_services/response/module_info.dart';
 import 'package:otm_inventory/widgets/PrimaryBorderButton.dart';
 
 import '../../res/colors.dart';
-import '../../widgets/PrimaryButton.dart';
-import 'listener/select_item_listener.dart';
 import 'listener/select_multi_item_listener.dart';
 
 class DropDownMultiSelectionListDialog extends StatefulWidget {

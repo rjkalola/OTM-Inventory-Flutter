@@ -9,7 +9,8 @@ class AppConstants {
   static const int productListLimit = 20;
   static const int defaultPhoneExtensionId = 1;
   static const String defaultPhoneExtension = "+44";
-  static const String defaultFlagUrl = "https://devcdn.otmsystem.com/flags/png/gb_32.png";
+  static const String defaultFlagUrl =
+      "https://devcdn.otmsystem.com/flags/png/gb_32.png";
 }
 
 class IntentKey {
@@ -35,6 +36,7 @@ class DialogIdentifier {
   final String lengthUnitList = 'LENGTH_UNIT_LIST';
   final String weightUnitList = 'WEIGHT_UNIT_LIST';
   final String manufacturerList = 'MANUFACTURER_LIST';
+  final String attachmentOptionsList = 'ATTACHMENT_OPTIONS_LIST';
   final String modelList = 'MODEL_LIST';
   final String usersList = 'USERS_LIST';
   final String storeList = 'STORE_LIST';
@@ -44,6 +46,7 @@ class DialogIdentifier {
   final String deleteProduct = 'DELETE_PRODUCT';
   final String deleteStock = 'DELETE_STOCK';
   final String selectDate = 'SELECT_DATE';
+  final String deleteProductImage = 'DELETE_PRODUCT_IMAGE';
 }
 
 class SharedPreferenceKey {
@@ -64,6 +67,8 @@ class Action {
   final String stocks = "STOCKS";
   final String vendors = "VENDORS";
   final String manufacturer = "MANUFACTURER";
+  final String selectImageFromCamera = 'SELECT_IMAGE_FROM_CAMERA';
+  final String selectImageFromGallery = 'SELECT_IMAGE_FROM_GALLERY';
 }
 
 class FromScreens {

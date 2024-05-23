@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/bottom_navigation_bar_widget.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/main_drawer.dart';
 import 'package:otm_inventory/res/colors.dart';
+import 'package:otm_inventory/utils/string_helper.dart';
+import '../../res/drawable.dart';
 import '../../widgets/appbar/base_appbar.dart';
 import '../stock_list/stock_list_controller.dart';
 
@@ -51,8 +54,18 @@ class DashboardScreen extends StatelessWidget {
       //     onPressed: () {},
       //   ),
       // ),
+      IconButton(
+        icon: SvgPicture.asset(
+          width: 22,
+          Drawable.filterIcon,
+        ),
+        onPressed: () {
+          dashboardController.stockFilter();
+        },
+      ),
       Visibility(
-        visible: (dashboardController.selectedIndex.value == 0 && !Get.put(StockListController()).isScanQrCode.value),
+        visible: (dashboardController.selectedIndex.value == 0 &&
+            !Get.put(StockListController()).isScanQrCode.value),
         child: InkWell(
             onTap: () {
               dashboardController.addMultipleStockQuantity();
@@ -69,10 +82,15 @@ class DashboardScreen extends StatelessWidget {
             )),
       ),
       Visibility(
-        visible: (dashboardController.selectedIndex.value == 0 && Get.put(StockListController()).isScanQrCode.value),
+        visible: (dashboardController.selectedIndex.value == 0 &&
+            (Get.put(StockListController()).isScanQrCode.value ||
+                !StringHelper.isEmptyString(Get.put(StockListController())
+                    .mSupplierCategoryFilter
+                    .value))),
         child: InkWell(
             onTap: () {
-              Get.put(StockListController()).getStockListApi(true, false, "", true);
+              Get.put(StockListController())
+                  .getStockListApi(true, false, "", true, true);
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 14),

@@ -19,7 +19,8 @@ class StockListView extends StatelessWidget {
           visible: stockListController.isMainViewVisible.value,
           child: Expanded(
             child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(), //
+              physics: const AlwaysScrollableScrollPhysics(),
+              //
               shrinkWrap: true,
               controller: stockListController.controller,
               scrollDirection: Axis.vertical,
@@ -137,51 +138,51 @@ class StockListView extends StatelessWidget {
         ));
   }
 
-  Widget setTopRightWidget(int position){
-    if(!stockListController.isLoading.value & stockListController.isScanQrCode.value){
-      if(!StringHelper.isEmptyString(stockListController
-          .productList[position].barcode_text)){
+  Widget setTopRightWidget(int position) {
+    if (!stockListController.isLoading.value &
+        stockListController.isScanQrCode.value) {
+      if (!StringHelper.isEmptyString(
+          stockListController.productList[position].barcode_text)) {
         print("Barcode");
         return quantityWidget(position);
-      }else{
+      } else {
         print("select button");
         return selectButtonWidget(position);
       }
-    }else{
+    } else {
       return quantityWidget(position);
     }
   }
 
   Widget quantityWidget(int position) {
-      return Visibility(
-        visible: !StringHelper.isEmptyString(
-            stockListController
-                .productList[position].qty.toString()),
-        child: Text(
-            stockListController.productList[position].qty!.toString(),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: defaultAccentColor,
-              fontWeight: FontWeight.w500,
-              fontSize: 15,
-            )),
-      );
+    return Visibility(
+      visible: !StringHelper.isEmptyString(
+          stockListController.productList[position].qty.toString()),
+      child: Text(stockListController.productList[position].qty!.toString(),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            color: defaultAccentColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+          )),
+    );
   }
 
-  Widget selectButtonWidget(int position){
-      return SizedBox(
-        width: 70,
-        child: PrimaryBorderButton(
-          buttonText: 'select'.tr,
-          textColor: defaultAccentColor,
-          borderColor: defaultAccentColor,
-          height: 30,
-          fontSize: 14,
-          onPressed: () {
-          stockListController.onClickSelectButton(stockListController.productList[position]);
-          },
-        ),
-      );
+  Widget selectButtonWidget(int position) {
+    return SizedBox(
+      width: 70,
+      child: PrimaryBorderButton(
+        buttonText: 'select'.tr,
+        textColor: defaultAccentColor,
+        borderColor: defaultAccentColor,
+        height: 30,
+        fontSize: 14,
+        onPressed: () {
+          stockListController
+              .onClickSelectButton(stockListController.productList[position]);
+        },
+      ),
+    );
   }
 }

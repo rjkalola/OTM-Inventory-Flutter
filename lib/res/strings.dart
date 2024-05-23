@@ -125,11 +125,17 @@ class Strings extends Translations {
           'update': "Update",
           'delete_product_msg': "Are you sure you want to delete this product?",
           'delete_stock_msg': "Are you sure you want to delete this stock?",
+          'delete_item_msg': "Are you sure you want to delete?",
           'clear': "Clear",
           'remove': "Remove",
           'loading_more_': "Loading More...",
           'date': "Date",
           'code': "Code",
+          'select_photo_from_': "Select Photo From:",
+          'camera': "Camera",
+          'gallery': "Gallery",
+          'stock_filter': "Stock Filter",
+          'apply': "Apply",
         },
         'hi_IN': {'login': 'Login'}
       };

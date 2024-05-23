@@ -30,7 +30,7 @@ class StockListEmptyView extends StatelessWidget {
                   height: 30,
                   fontSize: 14,
                   onPressed: () {
-                    stockListController.getStockListApi(true, false, "",true);
+                    stockListController.getStockListApi(true, false, "",true,true);
                   },
                 )
               ],

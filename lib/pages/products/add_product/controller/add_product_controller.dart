@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:otm_inventory/pages/common/select_Item_list_dialog.dart';
 import 'package:otm_inventory/pages/products/add_product/model/product_details_response.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/web_services/response/base_response.dart';
@@ -20,6 +21,7 @@ import '../../../common/drop_down_list_dialog.dart';
 import '../../../common/listener/DialogButtonClickListener.dart';
 import '../../../common/listener/select_item_listener.dart';
 import '../../../common/model/file_info.dart';
+import '../../product_list/models/product_image_info.dart';
 import '../../product_list/models/product_info.dart';
 import '../model/add_product_request.dart';
 import '../model/product_resources_response.dart';
@@ -38,6 +40,7 @@ class AddProductController extends GetxController
   final productResourcesResponse = ProductResourcesResponse().obs;
   final addProductRequest = AddProductRequest();
   var filesList = <FileInfo>[].obs;
+  var selectedImageIndex = 0;
 
   final productTitleController = TextEditingController().obs;
   final productNameController = TextEditingController().obs;
@@ -64,22 +67,22 @@ class AddProductController extends GetxController
     var arguments = Get.arguments;
     if (arguments != null) {
       title.value = 'edit_product'.tr;
-      ProductInfo? info = arguments[AppConstants.intentKey.productInfo];
-      if (info != null) {
-        print("info.id:" + info.id.toString());
-        print("product name:" + info.name!);
-        setProductDetails(info);
-      } else {
-        String productId = arguments[AppConstants.intentKey.productId];
-        getProductDetails(productId);
-      }
+      // ProductInfo? info = arguments[AppConstants.intentKey.productInfo];
+      // if (info != null) {
+      //   print("info.id:" + info.id.toString());
+      //   print("product name:" + info.name!);
+      //   setProductDetails(info);
+      // } else {
+      String productId = arguments[AppConstants.intentKey.productId];
+      getProductDetails(productId);
+      // }
     } else {
+      FileInfo info = FileInfo();
+      filesList.add(info);
+
       title.value = 'add_product'.tr;
       addProductRequest.categories = [];
     }
-
-    FileInfo info = FileInfo();
-    filesList.add(info);
 
     // FileInfo info1 = FileInfo();
     // info1.file =
@@ -241,24 +244,92 @@ class AddProductController extends GetxController
     } else if (action == AppConstants.dialogIdentifier.modelList) {
       productModelController.value.text = name;
       addProductRequest.model_id = id;
+    } else if (action == AppConstants.action.selectImageFromCamera ||
+        action == AppConstants.action.selectImageFromGallery) {
+      selectImage(action);
     }
   }
 
-  onSelectPhoto(index) async {
-    print("pickImage");
-    if (index == 0) {
-      try {
-        final XFile? pickedFile = await _picker.pickImage(
+  void selectImage(String action) async {
+    try {
+      XFile? pickedFile;
+      if (action == AppConstants.action.selectImageFromCamera) {
+        pickedFile = await _picker.pickImage(
+          source: ImageSource.camera,
+          maxWidth: 900,
+          maxHeight: 900,
+          imageQuality: 90,
+        );
+      } else if (action == AppConstants.action.selectImageFromGallery) {
+        pickedFile = await _picker.pickImage(
           source: ImageSource.gallery,
           maxWidth: 900,
           maxHeight: 900,
           imageQuality: 90,
         );
+      }
+
+      if (pickedFile != null) {
         addPhotoToList(pickedFile!.path ?? "");
         print("Path:" + pickedFile.path ?? "");
-      } catch (e) {
-        print("error:" + e.toString());
       }
+    } catch (e) {
+      print("error:" + e.toString());
+    }
+  }
+
+  // Future showOptions(String dialogType, String title,
+  //     List<ModuleInfo> list, SelectItemListener listener) async {
+  //   showCupertinoModalPopup(
+  //     context: Get.context!,
+  //     builder: (context) => SelectItemListDialog(
+  //         title: title,
+  //         dialogType: dialogType,
+  //         list: list,
+  //         listener: listener),
+  //   );
+  // }
+
+  void showAttachmentOptionsDialog(String dialogType, String title,
+      List<ModuleInfo> list, SelectItemListener listener) {
+    Get.bottomSheet(
+        SelectItemListDialog(
+            title: title,
+            dialogType: dialogType,
+            list: list,
+            listener: listener),
+        backgroundColor: Colors.transparent,
+        enableDrag: false,
+        isScrollControlled: false);
+  }
+
+  onSelectPhoto(index) async {
+    print("pickImage");
+    if (index == 0) {
+      var listOptions = <ModuleInfo>[].obs;
+      ModuleInfo? info;
+
+      info = ModuleInfo();
+      info.name = 'camera'.tr;
+      info.action = AppConstants.action.selectImageFromCamera;
+      listOptions.add(info);
+
+      info = ModuleInfo();
+      info.name = 'gallery'.tr;
+      info.action = AppConstants.action.selectImageFromGallery;
+      listOptions.add(info);
+
+      // showAttachmentOptionsDialog(
+      //     AppConstants.dialogIdentifier.attachmentOptionsList,
+      //     'select_photo'.tr,
+      //     listOptions,
+      //     this);
+
+      showAttachmentOptionsDialog( AppConstants.dialogIdentifier.attachmentOptionsList,
+          'select_photo_from_'.tr,
+          listOptions,
+          this);
+
     } else {}
   }
 
@@ -272,7 +343,20 @@ class AddProductController extends GetxController
   }
 
   removePhotoFromList(int index) {
-    filesList.removeAt(index);
+    if (filesList[index].id != null && filesList[index].id! > 0) {
+      selectedImageIndex = index;
+      AlertDialogHelper.showAlertDialog(
+          "",
+          'delete_item_msg'.tr,
+          'yes'.tr,
+          'no'.tr,
+          "",
+          true,
+          this,
+          AppConstants.dialogIdentifier.deleteProductImage);
+    } else {
+      filesList.removeAt(index);
+    }
   }
 
   void getProductResourcesApi() async {
@@ -439,6 +523,44 @@ class AddProductController extends GetxController
     );
   }
 
+  void deleteProductImage(String id) async {
+    Map<String, dynamic> map = {};
+    map["attachment_id"] = id;
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print("Request Data:" + map.toString());
+
+    isLoading.value = true;
+
+    _api.deleteProductImage(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          BaseResponse response =
+              BaseResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            if (!StringHelper.isEmptyString(response.Message ?? "")) {
+              AppUtils.showToastMessage(response.Message ?? "");
+              filesList.removeAt(selectedImageIndex);
+            }
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
   void getProductDetails(String id) async {
     Map<String, dynamic> map = {};
     map["id"] = id;
@@ -456,6 +578,18 @@ class AddProductController extends GetxController
               jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             setProductDetails(response.info!);
+            FileInfo info = FileInfo();
+            filesList.add(info);
+
+            for (int i = 0; i < response.info!.product_images!.length; i++) {
+              ProductImageInfo productImageInfo =
+                  response.info!.product_images![i];
+              FileInfo info = FileInfo();
+              info.id = productImageInfo.id;
+              info.file = productImageInfo.imageUrl;
+              info.fileThumb = productImageInfo.imageThumbUrl;
+              filesList.add(info);
+            }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -489,7 +623,12 @@ class AddProductController extends GetxController
 
   @override
   void onPositiveButtonClicked(String dialogIdentifier) {
-    Get.back();
-    deleteProduct(addProductRequest.id!.toString());
+    if (dialogIdentifier == AppConstants.dialogIdentifier.deleteProductImage) {
+      Get.back();
+      deleteProductImage(filesList[selectedImageIndex].id!.toString());
+    } else {
+      Get.back();
+      deleteProduct(addProductRequest.id!.toString());
+    }
   }
 }

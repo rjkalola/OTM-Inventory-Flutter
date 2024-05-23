@@ -1,57 +1,89 @@
-
-
+import 'package:otm_inventory/pages/products/product_list/models/product_image_info.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/model/stock_qty_history_info.dart';
 
 import '../../../../web_services/response/module_info.dart';
 
 class ProductInfo {
-  int? id,supplierId,manufacturer_id,weight_unit_id,length_unit_id,model_id,qty,newQty = 0;
-  String? shortName,name,description,price,image,extension,qrCode,categoryName,
-      currency,sku,model_name,manufacturer_name,imageThumb,qrCodeThumb,imageUrl,imageThumbUrl,weight
-  ,length,width,height,tax,length_unit_name,weight_unit_name,supplier_name,supplier_code,dimension,barcode_text;
+  int? id,
+      supplierId,
+      manufacturer_id,
+      weight_unit_id,
+      length_unit_id,
+      model_id,
+      qty,
+      newQty = 0;
+  String? shortName,
+      name,
+      description,
+      price,
+      image,
+      extension,
+      qrCode,
+      categoryName,
+      currency,
+      sku,
+      model_name,
+      manufacturer_name,
+      imageThumb,
+      qrCodeThumb,
+      imageUrl,
+      imageThumbUrl,
+      weight,
+      length,
+      width,
+      height,
+      tax,
+      length_unit_name,
+      weight_unit_name,
+      supplier_name,
+      supplier_code,
+      dimension,
+      barcode_text;
   List<ModuleInfo>? categories;
   bool? status;
   List<StockQtyHistoryInfo>? stock_histories;
+  List<ProductImageInfo>? product_images;
 
   ProductInfo(
       {this.id,
-        this.supplierId,
-        this.shortName,
-        this.name,
-        this.description,
-        this.price,
-        this.image,
-        this.extension,
-        this.qrCode,
-        this.status,
-        this.categoryName,
-        this.currency,
-        this.sku,
-        this.model_name,
-        this.manufacturer_name,
-        this.imageThumb,
-        this.qrCodeThumb,
-        this.imageThumbUrl,
-        this.imageUrl,
-        this.weight,
-        this.length,
-        this.width,
-        this.height,
-        this.tax,
-        this.manufacturer_id,
-        this.weight_unit_id,
-        this.length_unit_id,
-        this.model_id,
-        this.categories,
-        this.length_unit_name,
-        this.weight_unit_name,
-        this.supplier_name,
-        this.supplier_code,
-        this.qty,
-        this.dimension,
-        this.barcode_text,
-        this.stock_histories,
-        this.newQty});
+      this.supplierId,
+      this.shortName,
+      this.name,
+      this.description,
+      this.price,
+      this.image,
+      this.extension,
+      this.qrCode,
+      this.status,
+      this.categoryName,
+      this.currency,
+      this.sku,
+      this.model_name,
+      this.manufacturer_name,
+      this.imageThumb,
+      this.qrCodeThumb,
+      this.imageThumbUrl,
+      this.imageUrl,
+      this.weight,
+      this.length,
+      this.width,
+      this.height,
+      this.tax,
+      this.manufacturer_id,
+      this.weight_unit_id,
+      this.length_unit_id,
+      this.model_id,
+      this.categories,
+      this.length_unit_name,
+      this.weight_unit_name,
+      this.supplier_name,
+      this.supplier_code,
+      this.qty,
+      this.dimension,
+      this.barcode_text,
+      this.stock_histories,
+      this.newQty,
+      this.product_images});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -100,6 +132,12 @@ class ProductInfo {
         stock_histories!.add(StockQtyHistoryInfo.fromJson(v));
       });
     }
+    if (json['product_images'] != null) {
+      product_images = <ProductImageInfo>[];
+      json['product_images'].forEach((v) {
+        product_images!.add(ProductImageInfo.fromJson(v));
+      });
+    }
     barcode_text = json['barcode_text'];
   }
 
@@ -144,7 +182,11 @@ class ProductInfo {
       data['categories'] = categories!.map((v) => v.toJson()).toList();
     }
     if (stock_histories != null) {
-      data['stock_histories'] = stock_histories!.map((v) => v.toJson()).toList();
+      data['stock_histories'] =
+          stock_histories!.map((v) => v.toJson()).toList();
+    }
+    if (product_images != null) {
+      data['product_images'] = product_images!.map((v) => v.toJson()).toList();
     }
     return data;
   }

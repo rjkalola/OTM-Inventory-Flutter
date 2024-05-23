@@ -17,6 +17,7 @@ import 'package:otm_inventory/pages/supplier_list/view/supplier_list_screen.dart
 import '../pages/category_list/category_list_screen.dart';
 import '../pages/products/add_product/view/add_product_screen.dart';
 import '../pages/products/product_list/view/product_list_screen.dart';
+import '../pages/stock_filter/view/stock_filter_screen.dart';
 import '../pages/stock_history/stock_quantity_history_screen.dart';
 import 'app_routes.dart';
 
@@ -93,6 +94,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.stockMultipleQuantityUpdateScreen,
       page: () => StockMultipleQuantityUpdateScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.stockFilterScreen,
+      page: () => StockFilterScreen(),
     ),
   ];
 }

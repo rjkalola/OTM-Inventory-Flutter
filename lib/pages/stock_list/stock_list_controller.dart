@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_repository.dart';
@@ -14,7 +13,6 @@ import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
 import '../../utils/AlertDialogHelper.dart';
-import '../../web_services/response/base_response.dart';
 import '../../web_services/response/module_info.dart';
 import '../common/drop_down_list_dialog.dart';
 import '../common/listener/DialogButtonClickListener.dart';
@@ -41,7 +39,7 @@ class StockListController extends GetxController
       isScanQrCode = false.obs,
       isLoadMore = false.obs;
 
-  final filters = ''.obs, search = ''.obs;
+  final filters = ''.obs, search = ''.obs, mSupplierCategoryFilter = ''.obs;
   var offset = 0;
   var mIsLastPage = false;
   var mBarCode = "";
@@ -64,7 +62,7 @@ class StockListController extends GetxController
     if (controller.offset >= controller.position.maxScrollExtent &&
         !controller.position.outOfRange &&
         !mIsLastPage) {
-      getStockListApi(false, false, "", false);
+      getStockListApi(false, false, "", false, false);
     }
     if (controller.offset <= controller.position.minScrollExtent &&
         !controller.position.outOfRange) {
@@ -93,7 +91,7 @@ class StockListController extends GetxController
     if (!StringHelper.isEmptyString(code)) {
       mBarCode = code;
       // moveStockEditQuantityScreen(productId);
-      getStockListApi(true, true, code, true);
+      getStockListApi(true, true, code, true, true);
     }
   }
 
@@ -110,10 +108,10 @@ class StockListController extends GetxController
     if (isScanQrCode.value) {
       mBarCode = "";
       openQrCodeScanner();
-      getStockListApi(true, false, "", true);
+      getStockListApi(true, false, "", true, true);
     } else {
       if (result != null && result) {
-        getStockListApi(true, false, "", true);
+        getStockListApi(true, false, "", true, true);
       }
     }
   }
@@ -131,7 +129,7 @@ class StockListController extends GetxController
     if (result != null && result) {
       mBarCode = "";
       isScanQrCode.value = false;
-      getStockListApi(true, false, "", true);
+      getStockListApi(true, false, "", true, true);
     }
   }
 
@@ -197,11 +195,14 @@ class StockListController extends GetxController
     }
   }
 
-  Future<void> getStockListApi(
-      bool isProgress, bool scanQrCode, String? code, bool clearOffset) async {
+  Future<void> getStockListApi(bool isProgress, bool scanQrCode, String? code,
+      bool clearOffset, bool clearFilter) async {
     if (clearOffset) {
       offset = 0;
       mIsLastPage = false;
+    }
+    if (clearFilter) {
+      mSupplierCategoryFilter.value = "";
     }
     isLoadMore.value = offset > 0;
     Map<String, dynamic> map = {};
@@ -212,6 +213,9 @@ class StockListController extends GetxController
     map["product_id"] = "0";
     map["is_stock"] = 1;
     map["store_id"] = AppStorage.storeId.toString();
+    if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value)) {
+      map["supplier_category"] = mSupplierCategoryFilter.value;
+    }
     if (scanQrCode) {
       map["barcode_text"] = code;
     }
@@ -235,13 +239,11 @@ class StockListController extends GetxController
             } else {
               isScanQrCode.value = scanQrCode;
               isMainViewVisible.value = true;
-              if(scanQrCode){
-                if(response.info!.isNotEmpty){
-                  moveStockEditQuantityScreen(
-                      response.info![0].id!
-                          .toString());
+              if (scanQrCode) {
+                if (response.info!.isNotEmpty) {
+                  moveStockEditQuantityScreen(response.info![0].id!.toString());
                 }
-              }else{
+              } else {
                 if (offset == 0) {
                   tempList.clear();
                   tempList.addAll(response.info!);
@@ -437,7 +439,7 @@ class StockListController extends GetxController
       storeNameController.value.text = name;
       Get.find<AppStorage>().setStoreId(id);
       Get.find<AppStorage>().setStoreName(name);
-      getStockListApi(true, false, "", true);
+      getStockListApi(true, false, "", true, true);
     }
   }
 
@@ -466,7 +468,7 @@ class StockListController extends GetxController
               showStoreListDialog(AppConstants.dialogIdentifier.storeList,
                   'stores'.tr, storeList, false, false, false, false, this);
             } else {
-              getStockListApi(true, false, "", true);
+              getStockListApi(true, false, "", true, true);
             }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);

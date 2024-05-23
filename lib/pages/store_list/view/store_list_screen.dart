@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/store_list/controller/store_list_controller.dart';
@@ -11,6 +12,7 @@ import 'package:otm_inventory/pages/store_list/view/widgets/store_list_view.dart
 import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
+import '../../../res/drawable.dart';
 import '../../../utils/app_utils.dart';
 import '../../../widgets/CustomProgressbar.dart';
 import '../../common/widgets/common_bottom_navigation_bar_widget.dart';
@@ -34,7 +36,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
         statusBarIconBrightness: Brightness.dark));
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async{
+      onPopInvoked: (didPop) async {
         final backNavigationAllowed = await onBackPress();
         if (backNavigationAllowed) {
           if (Platform.isIOS) {
@@ -98,7 +100,9 @@ class _StoreListScreenState extends State<StoreListScreen> {
       //     width: 22,
       //     Drawable.filterIcon,
       //   ),
-      //   onPressed: () {},
+      //   onPressed: () {
+      //     storeListController.stockFilter();
+      //   },
       // ),
       IconButton(
         icon: const Icon(Icons.add, size: 24, color: primaryTextColor),

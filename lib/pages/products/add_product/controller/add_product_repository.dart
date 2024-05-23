@@ -75,4 +75,21 @@ class AddProductRepository {
       },
     );
   }
+
+  void deleteProductImage({
+    multi.FormData? formData,
+    Function(ResponseModel responseModel)? onSuccess,
+    Function(ResponseModel error)? onError,
+  }) {
+    ApiRequest(
+        url: ApiConstants.deleteProductImage, formData: formData, isFormData: true)
+        .postRequest(
+      onSuccess: (data) {
+        onSuccess!(data);
+      },
+      onError: (error) => {
+        if (onError != null) onError(error)
+      },
+    );
+  }
 }

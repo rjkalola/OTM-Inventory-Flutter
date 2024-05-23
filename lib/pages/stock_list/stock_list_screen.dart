@@ -63,7 +63,7 @@ class _StockListScreenState extends State<StockListScreen> {
               child: RefreshIndicator(
                 onRefresh: () async {
                   await stockListController.getStockListApi(
-                      false, false, "",true);
+                      false, false, "",true,true);
                 },
                 child: Column(children: [
                   const Divider(
@@ -140,13 +140,6 @@ class _StockListScreenState extends State<StockListScreen> {
       //             fontWeight: FontWeight.w500),
       //       )),
       // ),
-      IconButton(
-        icon: SvgPicture.asset(
-          width: 22,
-          Drawable.filterIcon,
-        ),
-        onPressed: () {},
-      ),
       // IconButton(
       //   icon: const Icon(Icons.add, size: 24,color: primaryTextColor),
       //   onPressed: () {

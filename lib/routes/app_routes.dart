@@ -14,7 +14,10 @@ class AppRoutes {
   static const String addCategoryScreen = '/add_category_screen';
   static const String stockListScreen = '/stock_list_screen';
   static const String stockEditQuantityScreen = '/stock_edit_quantity_screen';
-  static const String stockQuantityHistoryScreen = '/stock_quantity_history_screen';
+  static const String stockQuantityHistoryScreen =
+      '/stock_quantity_history_screen';
   static const String addStockProductScreen = '/add_stock_product_screen';
-  static const String stockMultipleQuantityUpdateScreen = '/stock_multiple_quantity_update_screen';
+  static const String stockMultipleQuantityUpdateScreen =
+      '/stock_multiple_quantity_update_screen';
+  static const String stockFilterScreen = '/stock_filter_screen';
 }

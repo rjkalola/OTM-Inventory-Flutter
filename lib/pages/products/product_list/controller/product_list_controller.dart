@@ -57,8 +57,11 @@ class ProductListController extends GetxController {
   Future<void> addProductClick(ProductInfo? info) async {
     var result;
     if (info != null) {
+      // var arguments = {
+      //   AppConstants.intentKey.productInfo: info,
+      // };
       var arguments = {
-        AppConstants.intentKey.productInfo: info,
+        AppConstants.intentKey.productId: info.id.toString(),
       };
       result =
           await Get.toNamed(AppRoutes.addProductScreen, arguments: arguments);

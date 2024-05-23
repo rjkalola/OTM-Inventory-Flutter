@@ -23,7 +23,7 @@ class StoreListController extends GetxController {
       isMainViewVisible = false.obs;
 
   final filters = ''.obs, search = ''.obs;
-  final offset = 0.obs,activeStoreId = 0.obs;
+  final offset = 0.obs, activeStoreId = 0.obs;
 
   @override
   void onInit() {
@@ -86,12 +86,15 @@ class StoreListController extends GetxController {
     }
   }
 
-  Future<void> searchItem(String value) async{
+  Future<void> searchItem(String value) async {
     List<StoreInfo> results = [];
     if (value.isEmpty) {
       results = tempList;
-    }else{
-      results = tempList.where((element) => element.storeName!.toLowerCase().contains(value.toLowerCase())).toList();
+    } else {
+      results = tempList
+          .where((element) =>
+              element.storeName!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
     }
     storeList.value = results;
   }
