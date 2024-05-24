@@ -54,15 +54,15 @@ class DashboardScreen extends StatelessWidget {
       //     onPressed: () {},
       //   ),
       // ),
-      IconButton(
-        icon: SvgPicture.asset(
-          width: 22,
-          Drawable.filterIcon,
-        ),
-        onPressed: () {
-          dashboardController.stockFilter();
-        },
-      ),
+      // IconButton(
+      //   icon: SvgPicture.asset(
+      //     width: 22,
+      //     Drawable.filterIcon,
+      //   ),
+      //   onPressed: () {
+      //     dashboardController.stockFilter();
+      //   },
+      // ),
       Visibility(
         visible: (dashboardController.selectedIndex.value == 0 &&
             !Get.put(StockListController()).isScanQrCode.value),

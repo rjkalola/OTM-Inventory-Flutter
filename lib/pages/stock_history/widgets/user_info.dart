@@ -22,13 +22,13 @@ class QtyHistoryUserInfo extends StatelessWidget {
           const SizedBox(
             width: 9,
           ),
-          PrimaryTextView(
-            text: user!
-                .name ??
-                "",
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          )
+          // PrimaryTextView(
+          //   text: user!
+          //       .name ??
+          //       "",
+          //   fontSize: 16,
+          //   fontWeight: FontWeight.w500,
+          // )
         ],
       ),
     )

@@ -20,13 +20,13 @@ class StockFilterIcon extends StatelessWidget {
           stockListController.stockFilter();
         },
         child: Container(
-          width: 44,
-          height: 44,
+          width: 39,
+          height: 39,
           decoration: const BoxDecoration(
               color: defaultAccentColor,
               borderRadius: BorderRadius.all(Radius.circular(6))),
           child: Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(6.0),
             child: SvgPicture.asset(
               width: 24,
               height: 24,

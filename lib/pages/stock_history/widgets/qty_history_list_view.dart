@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:otm_inventory/pages/stock_history/widgets/note_info.dart';
-import 'package:otm_inventory/pages/stock_history/widgets/price_info.dart';
 import 'package:otm_inventory/pages/stock_history/widgets/user_info.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
-import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
+
 import '../../../../res/colors.dart';
-import '../../../utils/image_utils.dart';
+import '../../../res/drawable.dart';
 import '../stock_quantity_history_controller.dart';
 
 class QtyHistoryListView extends StatelessWidget {
@@ -29,7 +26,7 @@ class QtyHistoryListView extends StatelessWidget {
               children: List.generate(
                 stockQuantityHistoryController.stockHistoryList.length,
                 (position) => Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 7, 0, 7),
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -57,6 +54,31 @@ class QtyHistoryListView extends StatelessWidget {
                             ),
                             Row(
                               children: [
+                                !StringHelper.isEmptyString(
+                                        stockQuantityHistoryController
+                                                .stockHistoryList[position]
+                                                .reference ??
+                                            "")
+                                    ? InkWell(
+                                        onTap: () {
+                                          stockQuantityHistoryController
+                                              .showNote(
+                                                  stockQuantityHistoryController
+                                                          .stockHistoryList[
+                                                              position]
+                                                          .reference ??
+                                                      "");
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              6, 3, 6, 3),
+                                          child: SvgPicture.asset(
+                                            width: 24,
+                                            Drawable.descriptionIcon,
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
                                 customTextView(
                                     stockQuantityHistoryController
                                         .stockHistoryList[position].qty,
@@ -92,22 +114,25 @@ class QtyHistoryListView extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: QtyHistoryNoteInfo(
-                              note: stockQuantityHistoryController
-                                  .stockHistoryList[position].reference,
-                            ),
-                          ),
-                          QtyHistoryPriceInfo(
-                            price: stockQuantityHistoryController
-                                .stockHistoryList[position].currencyPrice,
-                          )
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: QtyHistoryNoteInfo(
+                      //         note: stockQuantityHistoryController
+                      //             .stockHistoryList[position].reference,
+                      //       ),
+                      //     ),
+                      //     QtyHistoryPriceInfo(
+                      //       price: stockQuantityHistoryController
+                      //           .stockHistoryList[position].currencyPrice,
+                      //     )
+                      //   ],
+                      // ),
+                      // const SizedBox(
+                      //   height: 14,
+                      // ),
                       const SizedBox(
-                        height: 14,
+                        height: 8,
                       ),
                       const Divider(
                         thickness: 1,

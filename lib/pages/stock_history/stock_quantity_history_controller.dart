@@ -9,10 +9,13 @@ import 'package:otm_inventory/utils/app_storage.dart';
 import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
+import '../../utils/AlertDialogHelper.dart';
+import '../common/listener/DialogButtonClickListener.dart';
 import '../stock_edit_quantiry/model/stock_qty_history_info.dart';
 import 'model/stock_quantity_history_response.dart';
 
-class StockQuantityHistoryController extends GetxController {
+class StockQuantityHistoryController extends GetxController
+    implements DialogButtonClickListener {
   final _api = StockQuantityHistoryRepository();
   String productId = "";
   final totalQuantity = "".obs;
@@ -55,7 +58,7 @@ class StockQuantityHistoryController extends GetxController {
             tempList.clear();
             tempList.addAll(response.info!);
             stockHistoryList.value = tempList;
-            totalQuantity.value = response.stock_qty??"";
+            totalQuantity.value = response.stock_qty ?? "";
             isMainViewVisible.value = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -86,8 +89,27 @@ class StockQuantityHistoryController extends GetxController {
       results =
           tempList.where((element) => int.parse(element.qty!) >= 0).toList();
     } else if (filterType == AppConstants.stockFilterType.filterOut) {
-      results = tempList.where((element) => element.qty!.startsWith("-")).toList();
+      results =
+          tempList.where((element) => element.qty!.startsWith("-")).toList();
     }
     stockHistoryList.value = results;
+  }
+
+  void showNote(String note) {
+    AlertDialogHelper.showAlertDialog("", note, 'ok'.tr, ''.tr, "", true, this,
+        AppConstants.dialogIdentifier.quantityNote);
+  }
+
+  @override
+  void onNegativeButtonClicked(String dialogIdentifier) {}
+
+  @override
+  void onOtherButtonClicked(String dialogIdentifier) {}
+
+  @override
+  void onPositiveButtonClicked(String dialogIdentifier) {
+    if(dialogIdentifier == AppConstants.dialogIdentifier.quantityNote){
+      Get.back();
+    }
   }
 }

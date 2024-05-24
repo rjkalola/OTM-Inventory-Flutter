@@ -68,6 +68,8 @@ class AddProductScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Divider(),
+                              AddProductPhotosTitleView(),
+                              AddProductPhotosList(),
                               TextFieldProductName(),
                               TextFieldProductTitle(),
                               TextFieldProductCategory(),
@@ -114,8 +116,6 @@ class AddProductScreen extends StatelessWidget {
                               TextFieldProductPrice(),
                               TextFieldProductTax(),
                               TextFieldProductDescription(),
-                              AddProductPhotosTitleView(),
-                              AddProductPhotosList(),
                               Padding(
                                 padding:
                                     const EdgeInsets.only(left: 14, bottom: 18),

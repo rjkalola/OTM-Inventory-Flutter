@@ -47,6 +47,7 @@ class DialogIdentifier {
   final String deleteStock = 'DELETE_STOCK';
   final String selectDate = 'SELECT_DATE';
   final String deleteProductImage = 'DELETE_PRODUCT_IMAGE';
+  final String quantityNote = 'QUANTITY_NOTE';
 }
 
 class SharedPreferenceKey {

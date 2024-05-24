@@ -8,7 +8,7 @@ class AddProductPhotosTitleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 3, 14, 0),
+      padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
       child: Text(
         'photos'.tr,
         style: const TextStyle(color: primaryTextColor, fontSize: 16),
