@@ -26,19 +26,21 @@ class AppStorage extends GetxController {
   }
 
   void setLoginUsers(List<UserInfo> list) {
-    box.write(AppConstants.sharedPreferenceKey.savedLoginUserList, jsonEncode(list));
+    box.write(
+        AppConstants.sharedPreferenceKey.savedLoginUserList, jsonEncode(list));
   }
 
   List<UserInfo> getLoginUsers() {
-    final jsonString = box.read(AppConstants.sharedPreferenceKey.savedLoginUserList) ?? "";
-    if(!StringHelper.isEmptyString(jsonString)){
+    final jsonString =
+        box.read(AppConstants.sharedPreferenceKey.savedLoginUserList) ?? "";
+    if (!StringHelper.isEmptyString(jsonString)) {
       final jsonMap = json.decode(jsonString);
       List<UserInfo> list = (jsonMap as List)
           .map((itemWord) => UserInfo.fromJson(itemWord))
           .toList();
       // List<UserInfo> list = (jsonDecode(jsonString) as List<dynamic>).cast<UserInfo>();
       return list;
-    }else {
+    } else {
       return [];
     }
   }
@@ -66,25 +68,32 @@ class AppStorage extends GetxController {
   }
 
   String getStoreName() {
-    final storeName = box.read(AppConstants.sharedPreferenceKey.storeName) ?? "";
+    final storeName =
+        box.read(AppConstants.sharedPreferenceKey.storeName) ?? "";
     return storeName;
+  }
+
+  void setQuantityNote(String note) {
+    box.write(AppConstants.sharedPreferenceKey.quantityNote, note);
+  }
+
+  String getQuantityNote() {
+    final note = box.read(AppConstants.sharedPreferenceKey.quantityNote) ?? "";
+    return note;
   }
 
   // void clearAllData(){
   //   box.erase();
   // }
 
-  void clearAllData(){
+  void clearAllData() {
     removeData(AppConstants.sharedPreferenceKey.storeId);
     removeData(AppConstants.sharedPreferenceKey.storeName);
     removeData(AppConstants.sharedPreferenceKey.userInfo);
     removeData(AppConstants.sharedPreferenceKey.accessToken);
   }
 
-  void removeData(String key){
+  void removeData(String key) {
     box.remove(key);
   }
-
-
-
 }

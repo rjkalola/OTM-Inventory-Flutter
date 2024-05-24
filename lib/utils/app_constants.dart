@@ -56,6 +56,7 @@ class SharedPreferenceKey {
   final String storeId = "STORE_ID";
   final String storeName = "STORE_NAME";
   final String savedLoginUserList = "SAVED_LOGIN_USER_LIST";
+  final String quantityNote = "QUANTITY_NOTE";
 }
 
 class Action {

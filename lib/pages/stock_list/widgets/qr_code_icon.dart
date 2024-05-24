@@ -14,22 +14,25 @@ class QrCodeIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 9, 12, 9),
+      padding: const EdgeInsets.fromLTRB(7, 9, 12, 9),
       child: InkWell(
         onTap: () {
           stockListController.openQrCodeScanner();
         },
         child: Container(
-          width: 40,
-          height: 40,
+          width: 44,
+          height: 44,
           decoration: const BoxDecoration(
               color: defaultAccentColor,
               borderRadius: BorderRadius.all(Radius.circular(6))),
-          child: SvgPicture.asset(
-            width: 20,
-            height: 20,
-            Drawable.qrCodeIcon,
-            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: SvgPicture.asset(
+              width: 24,
+              height: 24,
+              Drawable.qrCodeIcon,
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            ),
           ),
         ),
       ),

@@ -116,6 +116,14 @@ class StockListController extends GetxController
     }
   }
 
+  Future<void> stockFilter() async {
+    var result = await Get.toNamed(AppRoutes.stockFilterScreen);
+    if (!StringHelper.isEmptyString(result)) {
+      mSupplierCategoryFilter.value = result;
+      getStockListApi(true, false, "", true,false);
+    }
+  }
+
   Future<void> addStockProductScreen() async {
     var result;
     if (!StringHelper.isEmptyString(mBarCode)) {

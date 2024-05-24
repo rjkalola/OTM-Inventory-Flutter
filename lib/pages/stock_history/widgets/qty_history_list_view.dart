@@ -62,10 +62,19 @@ class QtyHistoryListView extends StatelessWidget {
                                         .stockHistoryList[position].qty,
                                     18,
                                     FontWeight.w500,
-                                    (int.parse(stockQuantityHistoryController
-                                                .stockHistoryList[position]
-                                                .qty!) >
-                                            0)
+                                    (!StringHelper.isEmptyString(
+                                                stockQuantityHistoryController
+                                                        .stockHistoryList[
+                                                            position]
+                                                        .qty ??
+                                                    "") &&
+                                            int.parse(
+                                                    stockQuantityHistoryController
+                                                            .stockHistoryList[
+                                                                position]
+                                                            .qty ??
+                                                        "0") >
+                                                0)
                                         ? Colors.green
                                         : Colors.red,
                                     const EdgeInsets.all(0)),

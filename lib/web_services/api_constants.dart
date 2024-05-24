@@ -1,7 +1,6 @@
-
 class ApiConstants {
-  static String appUrl = "https://dev.otmsystem.com/api/v1";
-  // static String appUrl = "https://otmsystem.com/api/v1";
+  // static String appUrl = "https://dev.otmsystem.com/api/v1";
+  static String appUrl = "https://otmsystem.com/api/v1";
   static String accessToken = "";
   static const CODE_NO_INTERNET_CONNECTION = 10000;
 
@@ -36,5 +35,4 @@ class ApiConstants {
   static String archiveStock = '$appUrl/stocks/archive';
   static String deleteProductImage = '$appUrl/products/delete-attachment';
   static String stockFilterUrl = '$appUrl/products/category-filter';
-
 }

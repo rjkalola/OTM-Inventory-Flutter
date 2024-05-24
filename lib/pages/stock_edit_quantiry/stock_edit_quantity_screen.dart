@@ -78,7 +78,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(14, 14, 4, 18),
+                              padding: const EdgeInsets.fromLTRB(14, 0, 4, 18),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,

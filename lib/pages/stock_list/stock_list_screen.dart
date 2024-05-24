@@ -10,6 +10,7 @@ import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/search_stock.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_empty_view.dart';
+import 'package:otm_inventory/pages/stock_list/widgets/stock_filter_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_list.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 
@@ -36,7 +37,7 @@ class _StockListScreenState extends State<StockListScreen> {
         statusBarIconBrightness: Brightness.dark));
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async{
+      onPopInvoked: (didPop) async {
         final backNavigationAllowed = await onBackPress();
         if (backNavigationAllowed) {
           if (Platform.isIOS) {
@@ -48,69 +49,77 @@ class _StockListScreenState extends State<StockListScreen> {
       },
       child: SafeArea(
           child: Obx(() => Scaffold(
-            backgroundColor: backgroundColor,
-            // appBar: BaseAppBar(
-            //     appBar: AppBar(),
-            //     title: 'stocks'.tr,
-            //     isBack: true,
-            //     widgets: actionButtons()),
-            // drawer: MainDrawer(),
-            // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-            body: ModalProgressHUD(
-              inAsyncCall: stockListController.isLoading.value,
-              opacity: 0,
-              progressIndicator: const CustomProgressbar(),
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  await stockListController.getStockListApi(
-                      false, false, "",true,true);
-                },
-                child: Column(children: [
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: dividerColor,
-                  ),
-                  // const SizedBox(height:20,),
-                  // TextFieldSelectStore(),
-                  Row(
-                    children: [
-                      const Expanded(child: SearchStockWidget()),
-                      QrCodeIcon()
-                    ],
-                  ),
-                   const SizedBox(height: 10,),
-                  stockListController.productList.isNotEmpty
-                      ? StockListView()
-                      : StockListEmptyView(),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  Visibility(
-                    visible: stockListController.isLoadMore.value,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
+                backgroundColor: backgroundColor,
+                // appBar: BaseAppBar(
+                //     appBar: AppBar(),
+                //     title: 'stocks'.tr,
+                //     isBack: true,
+                //     widgets: actionButtons()),
+                // drawer: MainDrawer(),
+                // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+                body: ModalProgressHUD(
+                  inAsyncCall: stockListController.isLoading.value,
+                  opacity: 0,
+                  progressIndicator: const CustomProgressbar(),
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      await stockListController.getStockListApi(
+                          false, false, "", true, true);
+                    },
+                    child: Column(children: [
+                      const Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: dividerColor,
+                      ),
+                      // const SizedBox(height:20,),
+                      // TextFieldSelectStore(),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator()),
-                          const SizedBox(
-                            width: 14,
-                          ),
-                          Text(
-                            'loading_more_'.tr,
-                            style: const TextStyle(fontSize: 17),
-                          )
+                          const Expanded(child: SearchStockWidget()),
+                          StockFilterIcon(),
+                          QrCodeIcon()
                         ],
                       ),
-                    ),
-                  )
-                ]),
-              ),
-            ),
-          ))),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      stockListController.productList.isNotEmpty
+                          ? StockListView()
+                          : StockListEmptyView(),
+                      const SizedBox(
+                        height: 6,
+                      ),
+                      Visibility(
+                        visible: stockListController.isLoadMore.value,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator()),
+                              const SizedBox(
+                                width: 14,
+                              ),
+                              Text(
+                                'loading_more_'.tr,
+                                style: const TextStyle(fontSize: 17),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ]),
+                  ),
+                ),
+              ))),
     );
   }
 

@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/res/colors.dart';
 
-import '../../../../../res/colors.dart';
-import '../../../../../res/drawable.dart';
-import '../../controller/product_list_controller.dart';
+import '../../../res/drawable.dart';
+import '../stock_list_controller.dart';
 
-class QrCodeIcon extends StatelessWidget {
-  QrCodeIcon({super.key});
-  final productListController = Get.put(ProductListController());
+class StockFilterIcon extends StatelessWidget {
+  StockFilterIcon({super.key});
+
+  final stockListController = Get.put(StockListController());
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 9, 12, 9),
+      padding: const EdgeInsets.fromLTRB(12, 9, 7, 9),
       child: InkWell(
         onTap: () {
-          productListController.openQrCodeScanner();
+          stockListController.stockFilter();
         },
         child: Container(
           width: 44,
@@ -29,12 +30,12 @@ class QrCodeIcon extends StatelessWidget {
             child: SvgPicture.asset(
               width: 24,
               height: 24,
-              Drawable.qrCodeIcon,
+              Drawable.filterIcon,
               colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
           ),
         ),
       ),
-    );;
+    );
   }
 }

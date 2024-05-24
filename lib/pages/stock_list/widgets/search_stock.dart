@@ -16,7 +16,7 @@ class _SearchStockWidgetWidgetState extends State<SearchStockWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 0),
+      padding: const EdgeInsets.fromLTRB(14, 0, 6, 0),
       child: SearchTextField(
           onValueChange: (value) {
             stockListController.searchItem(value.toString());

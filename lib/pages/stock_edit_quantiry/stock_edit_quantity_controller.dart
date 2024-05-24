@@ -61,6 +61,10 @@ class StockEditQuantityController extends GetxController
     super.onInit();
     var arguments = Get.arguments;
     quantityController.value.text = "1";
+    if (!StringHelper.isEmptyString(
+        Get.find<AppStorage>().getQuantityNote())) {
+      noteController.value.text = Get.find<AppStorage>().getQuantityNote();
+    }
     if (arguments != null) {
       productId = arguments[AppConstants.intentKey.productId]!;
       getStockQuantityDetailsApi(true, productId.toString());
@@ -255,6 +259,7 @@ class StockEditQuantityController extends GetxController
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
+            Get.find<AppStorage>().setQuantityNote(note);
             Get.back(result: true);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);

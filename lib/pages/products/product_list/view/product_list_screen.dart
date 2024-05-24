@@ -73,11 +73,19 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   height: 1,
                   color: dividerColor,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Expanded(child: SearchProductWidget()),
                     QrCodeIcon()
                   ],
+                ),
+                const SizedBox(
+                  height: 6,
                 ),
                 productListController.productList.isNotEmpty
                     ? ProductListView()
