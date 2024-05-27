@@ -6,9 +6,10 @@ import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../pages/otp_verification/model/user_info.dart';
+import '../pages/products/product_list/models/product_list_response.dart';
 
 class AppStorage extends GetxController {
-  final box = GetStorage();
+  final storage = GetStorage();
   static int storeId = 0;
   static String storeName = "";
 
@@ -17,22 +18,22 @@ class AppStorage extends GetxController {
   }
 
   void setUserInfo(UserInfo info) {
-    box.write(AppConstants.sharedPreferenceKey.userInfo, info.toJson());
+    storage.write(AppConstants.sharedPreferenceKey.userInfo, info.toJson());
   }
 
   UserInfo getUserInfo() {
-    final map = box.read(AppConstants.sharedPreferenceKey.userInfo) ?? {};
+    final map = storage.read(AppConstants.sharedPreferenceKey.userInfo) ?? {};
     return UserInfo.fromJson(map);
   }
 
   void setLoginUsers(List<UserInfo> list) {
-    box.write(
+    storage.write(
         AppConstants.sharedPreferenceKey.savedLoginUserList, jsonEncode(list));
   }
 
   List<UserInfo> getLoginUsers() {
     final jsonString =
-        box.read(AppConstants.sharedPreferenceKey.savedLoginUserList) ?? "";
+        storage.read(AppConstants.sharedPreferenceKey.savedLoginUserList) ?? "";
     if (!StringHelper.isEmptyString(jsonString)) {
       final jsonMap = json.decode(jsonString);
       List<UserInfo> list = (jsonMap as List)
@@ -46,40 +47,54 @@ class AppStorage extends GetxController {
   }
 
   void setAccessToken(String token) {
-    box.write(AppConstants.sharedPreferenceKey.accessToken, token);
+    storage.write(AppConstants.sharedPreferenceKey.accessToken, token);
   }
 
   String getAccessToken() {
-    final token = box.read(AppConstants.sharedPreferenceKey.accessToken) ?? "";
+    final token =
+        storage.read(AppConstants.sharedPreferenceKey.accessToken) ?? "";
     return token;
   }
 
   void setStoreId(int storeId) {
-    box.write(AppConstants.sharedPreferenceKey.storeId, storeId);
+    storage.write(AppConstants.sharedPreferenceKey.storeId, storeId);
   }
 
   int getStoreId() {
-    final storeId = box.read(AppConstants.sharedPreferenceKey.storeId) ?? 0;
+    final storeId = storage.read(AppConstants.sharedPreferenceKey.storeId) ?? 0;
     return storeId;
   }
 
   void setStoreName(String storeName) {
-    box.write(AppConstants.sharedPreferenceKey.storeName, storeName);
+    storage.write(AppConstants.sharedPreferenceKey.storeName, storeName);
   }
 
   String getStoreName() {
     final storeName =
-        box.read(AppConstants.sharedPreferenceKey.storeName) ?? "";
+        storage.read(AppConstants.sharedPreferenceKey.storeName) ?? "";
     return storeName;
   }
 
   void setQuantityNote(String note) {
-    box.write(AppConstants.sharedPreferenceKey.quantityNote, note);
+    storage.write(AppConstants.sharedPreferenceKey.quantityNote, note);
   }
 
   String getQuantityNote() {
-    final note = box.read(AppConstants.sharedPreferenceKey.quantityNote) ?? "";
+    final note =
+        storage.read(AppConstants.sharedPreferenceKey.quantityNote) ?? "";
     return note;
+  }
+
+  void setStockData(ProductListResponse stockData) {
+    storage.write(
+        AppConstants.sharedPreferenceKey.stockList, jsonEncode(stockData));
+  }
+
+  ProductListResponse? getStockData() {
+    final stockData =
+        storage.read(AppConstants.sharedPreferenceKey.stockList) ?? "";
+    final jsonMap = json.decode(stockData);
+    return ProductListResponse.fromJson(jsonMap);
   }
 
   // void clearAllData(){
@@ -91,9 +106,11 @@ class AppStorage extends GetxController {
     removeData(AppConstants.sharedPreferenceKey.storeName);
     removeData(AppConstants.sharedPreferenceKey.userInfo);
     removeData(AppConstants.sharedPreferenceKey.accessToken);
+    removeData(AppConstants.sharedPreferenceKey.quantityNote);
+    removeData(AppConstants.sharedPreferenceKey.stockList);
   }
 
   void removeData(String key) {
-    box.remove(key);
+    storage.remove(key);
   }
 }

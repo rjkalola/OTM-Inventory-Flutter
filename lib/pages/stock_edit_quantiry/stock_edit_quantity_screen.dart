@@ -411,15 +411,15 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
               arguments: arguments);
         },
       ),
-      IconButton(
-        icon: SvgPicture.asset(
-          width: 26,
-          Drawable.qrCodeIcon,
-        ),
-        onPressed: () {
-          stockEditQuantityController.onClickQrCode();
-        },
-      ),
+      // IconButton(
+      //   icon: SvgPicture.asset(
+      //     width: 26,
+      //     Drawable.qrCodeIcon,
+      //   ),
+      //   onPressed: () {
+      //     stockEditQuantityController.onClickQrCode();
+      //   },
+      // ),
       // Visibility(
       //   visible: dashboardController.selectedIndex.value == 0,
       //   child: InkWell(

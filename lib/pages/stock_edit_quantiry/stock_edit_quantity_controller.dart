@@ -60,9 +60,8 @@ class StockEditQuantityController extends GetxController
   void onInit() {
     super.onInit();
     var arguments = Get.arguments;
-    quantityController.value.text = "1";
-    if (!StringHelper.isEmptyString(
-        Get.find<AppStorage>().getQuantityNote())) {
+    // quantityController.value.text = "1";
+    if (!StringHelper.isEmptyString(Get.find<AppStorage>().getQuantityNote())) {
       noteController.value.text = Get.find<AppStorage>().getQuantityNote();
     }
     if (arguments != null) {

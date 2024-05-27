@@ -83,10 +83,7 @@ class DashboardScreen extends StatelessWidget {
       ),
       Visibility(
         visible: (dashboardController.selectedIndex.value == 0 &&
-            (Get.put(StockListController()).isScanQrCode.value ||
-                !StringHelper.isEmptyString(Get.put(StockListController())
-                    .mSupplierCategoryFilter
-                    .value))),
+            Get.put(StockListController()).isScanQrCode.value),
         child: InkWell(
             onTap: () {
               Get.put(StockListController())

@@ -14,21 +14,21 @@ class QtyHistoryUserInfo extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 0, 9, 0),
       child: Row(
         children: [
-          ImageUtils.setUserImage(
-              user!.image ??
-                  "",
-              36,
-              45),
-          const SizedBox(
-            width: 9,
-          ),
-          // PrimaryTextView(
-          //   text: user!
-          //       .name ??
-          //       "",
-          //   fontSize: 16,
-          //   fontWeight: FontWeight.w500,
-          // )
+          // ImageUtils.setUserImage(
+          //     user!.image ??
+          //         "",
+          //     36,
+          //     45),
+          // const SizedBox(
+          //   width: 9,
+          // ),
+          PrimaryTextView(
+            text: user!
+                .name ??
+                "",
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          )
         ],
       ),
     )

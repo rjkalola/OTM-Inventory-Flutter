@@ -1,5 +1,3 @@
-
-
 import 'package:otm_inventory/web_services/response/base_response.dart';
 
 class AddProductRequest extends BaseResponse {
@@ -19,7 +17,8 @@ class AddProductRequest extends BaseResponse {
       width,
       height,
       weight,
-      description;
+      description,
+      barcode_text;
   List<String>? categories = [];
   bool? status;
 
@@ -41,6 +40,7 @@ class AddProductRequest extends BaseResponse {
       this.price,
       this.tax,
       this.description,
+      this.barcode_text,
       this.status,
       this.mode_type});
 }

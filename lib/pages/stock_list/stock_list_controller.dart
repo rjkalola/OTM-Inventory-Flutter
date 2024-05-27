@@ -120,7 +120,7 @@ class StockListController extends GetxController
     var result = await Get.toNamed(AppRoutes.stockFilterScreen);
     if (!StringHelper.isEmptyString(result)) {
       mSupplierCategoryFilter.value = result;
-      getStockListApi(true, false, "", true,false);
+      getStockListApi(true, false, "", true, false);
     }
   }
 
@@ -257,6 +257,7 @@ class StockListController extends GetxController
                   tempList.addAll(response.info!);
                   productList.value = tempList;
                   productList.refresh();
+                  getAllStockListApi();
                 } else if (response.info != null && response.info!.isNotEmpty) {
                   tempList.addAll(response.info!);
                   productList.value = tempList;
@@ -286,6 +287,14 @@ class StockListController extends GetxController
         isMainViewVisible.value = true;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           AppUtils.showSnackBarMessage('no_internet'.tr);
+          if (AppStorage().getStockData() != null) {
+            ProductListResponse response = AppStorage().getStockData()!;
+            tempList.clear();
+            tempList.addAll(response.info!);
+            productList.value = tempList;
+            productList.refresh();
+            // print("Name:${item.name!}");
+          }
         } else if (error.statusMessage!.isNotEmpty) {
           AppUtils.showSnackBarMessage(error.statusMessage!);
         }
@@ -325,6 +334,56 @@ class StockListController extends GetxController
             tempList.addAll(response.info!);
             productList.value = tempList;
             isMainViewVisible.value = true;
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
+  Future<void> getAllStockListApi() async {
+    isLoadMore.value = offset > 0;
+    Map<String, dynamic> map = {};
+    map["filters"] = "";
+    map["offset"] = offset.toString();
+    map["limit"] = AppConstants.productListLimit.toString();
+    map["search"] = search;
+    map["product_id"] = "0";
+    map["is_stock"] = 1;
+    map["store_id"] = AppStorage.storeId.toString();
+    map["allData"] = "true";
+
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print(map.toString());
+
+    _api.getStockList(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        isLoadMore.value = false;
+        if (responseModel.statusCode == 200) {
+          ProductListResponse response =
+              ProductListResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            AppStorage().setStockData(response);
+            if (AppStorage().getStockData() != null) {
+              ProductListResponse response = AppStorage().getStockData()!;
+              for (var item in response.info!) {
+                print("Name:${item.name!}");
+              }
+            }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

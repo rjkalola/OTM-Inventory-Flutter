@@ -7,57 +7,43 @@ import '../../../res/drawable.dart';
 import '../../../utils/string_helper.dart';
 import '../stock_list_controller.dart';
 
-class StockFilterIcon extends StatelessWidget {
-  StockFilterIcon({super.key});
+class StockFilterClearIcon extends StatelessWidget {
+  StockFilterClearIcon({super.key});
 
   final stockListController = Get.put(StockListController());
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 9, 0, 9),
+      padding: const EdgeInsets.fromLTRB(5, 9, 0, 9),
       child: InkWell(
         onTap: () {
-          if (!StringHelper.isEmptyString(
-              Get.put(StockListController()).mSupplierCategoryFilter.value)) {
-            stockListController.getStockListApi(true, false, "", true, true);
-          } else {
-            stockListController.stockFilter();
-          }
+          stockListController.getStockListApi(true, false, "", true, true);
         },
         child: Container(
           width: 39,
           height: 39,
           decoration: BoxDecoration(
               color: !StringHelper.isEmptyString(Get.put(StockListController())
-                      .mSupplierCategoryFilter
-                      .value)
-                  ? backgroundColor
-                  : defaultAccentColor,
-              border: Border.all(color: !StringHelper.isEmptyString(Get.put(StockListController())
                   .mSupplierCategoryFilter
                   .value)
-                  ? rectangleBorderColor
-                  : defaultAccentColor),
+                  ? backgroundColor
+                  : disableComponentColor,
+              border: Border.all(color: rectangleBorderColor),
               borderRadius: const BorderRadius.all(Radius.circular(6))),
           child: Padding(
             padding: const EdgeInsets.all(6.0),
             child: SvgPicture.asset(
               width: 24,
               height: 24,
-              !StringHelper.isEmptyString(Get.put(StockListController())
-                      .mSupplierCategoryFilter
-                      .value)
-                  ? Drawable.closeIcon
-                  : Drawable.filterIcon,
+              Drawable.closeIcon,
               colorFilter: ColorFilter.mode(
                   !StringHelper.isEmptyString(Get.put(StockListController())
-                          .mSupplierCategoryFilter
-                          .value)
+                      .mSupplierCategoryFilter
+                      .value)
                       ? Colors.black
-                      : Colors.white,
-                  BlendMode.srcIn),
-            ),
+                      : Colors.black54,
+                  BlendMode.srcIn),            ),
           ),
         ),
       ),

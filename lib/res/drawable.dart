@@ -24,4 +24,5 @@ class Drawable {
   static const String historyIcon = 'assets/images/ic_history.svg';
   static const String editIcon = 'assets/images/ic_edit.svg';
   static const String checkIcon = 'assets/images/ic_check.svg';
+  static const String closeIcon = 'assets/images/ic_close.svg';
 }

@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_filter/controller/stock_filter_controller.dart';
 
 import '../../../../res/colors.dart';
-import '../../../../res/drawable.dart';
 
 class StockFilterCategoriesList extends StatelessWidget {
   StockFilterCategoriesList({super.key});
@@ -40,15 +37,15 @@ class StockFilterCategoriesList extends StatelessWidget {
                                 fontSize: 15,
                               )),
                         ),
-                        SvgPicture.asset(
-                          width: 22,
-                          Drawable.checkIcon,
-                          colorFilter: ColorFilter.mode(
-                              controller.categoriesList[position].check ?? false
-                                  ? defaultAccentColor
-                                  : disableComponentColor,
-                              BlendMode.srcIn),
-                        )
+                        // SvgPicture.asset(
+                        //   width: 22,
+                        //   Drawable.checkIcon,
+                        //   colorFilter: ColorFilter.mode(
+                        //       controller.categoriesList[position].check ?? false
+                        //           ? defaultAccentColor
+                        //           : disableComponentColor,
+                        //       BlendMode.srcIn),
+                        // )
                       ],
                     ),
                   ),

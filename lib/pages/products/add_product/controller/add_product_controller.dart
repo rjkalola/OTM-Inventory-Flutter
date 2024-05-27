@@ -12,6 +12,7 @@ import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/web_services/response/base_response.dart';
 import 'package:otm_inventory/web_services/response/module_info.dart';
 
+import '../../../../routes/app_routes.dart';
 import '../../../../utils/AlertDialogHelper.dart';
 import '../../../../utils/app_constants.dart';
 import '../../../../utils/app_utils.dart';
@@ -21,10 +22,12 @@ import '../../../common/drop_down_list_dialog.dart';
 import '../../../common/listener/DialogButtonClickListener.dart';
 import '../../../common/listener/select_item_listener.dart';
 import '../../../common/model/file_info.dart';
+import '../../../stock_list/stock_list_repository.dart';
 import '../../product_list/models/product_image_info.dart';
 import '../../product_list/models/product_info.dart';
 import '../model/add_product_request.dart';
 import '../model/product_resources_response.dart';
+import '../model/store_product_response.dart';
 import 'add_product_repository.dart';
 
 class AddProductController extends GetxController
@@ -34,7 +37,8 @@ class AddProductController extends GetxController
       isMainViewVisible = false.obs,
       isStatus = true.obs,
       isDeleteVisible = false.obs;
-  RxString title = ''.obs;
+  RxString title = ''.obs, mInitialBarcode = "".obs;
+  var mBarCode = "", productId = "";
   final formKey = GlobalKey<FormState>();
   final _api = AddProductRepository();
   final productResourcesResponse = ProductResourcesResponse().obs;
@@ -58,6 +62,7 @@ class AddProductController extends GetxController
   final productPriceController = TextEditingController().obs;
   final productTaxController = TextEditingController().obs;
   final productDescriptionController = TextEditingController().obs;
+  final productBarcodeController = TextEditingController().obs;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -73,7 +78,7 @@ class AddProductController extends GetxController
       //   print("product name:" + info.name!);
       //   setProductDetails(info);
       // } else {
-      String productId = arguments[AppConstants.intentKey.productId];
+      productId = arguments[AppConstants.intentKey.productId];
       getProductDetails(productId);
       // }
     } else {
@@ -122,12 +127,13 @@ class AddProductController extends GetxController
     productSupplierController.value.text = info.supplier_name ?? "";
     productLengthUnitController.value.text = info.length_unit_name ?? "";
     productWeightUnitController.value.text = info.weight_unit_name ?? "";
+    productBarcodeController.value.text = info.barcode_text ?? "";
+    mInitialBarcode.value = info.barcode_text ?? "";
 
     isStatus.value = info.status ?? false;
   }
 
   void onSubmitClick() {
-    print("onSubmitClick");
     if (formKey.currentState!.validate()) {
       addProductRequest.shortName =
           productTitleController.value.text.toString().trim();
@@ -148,6 +154,8 @@ class AddProductController extends GetxController
       addProductRequest.tax = productTaxController.value.text.toString().trim();
       addProductRequest.description =
           productDescriptionController.value.text.toString().trim();
+      addProductRequest.barcode_text =
+          productBarcodeController.value.text.toString().trim();
 
       if (addProductRequest.id != null && addProductRequest.id != 0) {
         addProductRequest.mode_type = 2;
@@ -325,11 +333,11 @@ class AddProductController extends GetxController
       //     listOptions,
       //     this);
 
-      showAttachmentOptionsDialog( AppConstants.dialogIdentifier.attachmentOptionsList,
+      showAttachmentOptionsDialog(
+          AppConstants.dialogIdentifier.attachmentOptionsList,
           'select_photo_from_'.tr,
           listOptions,
           this);
-
     } else {}
   }
 
@@ -413,6 +421,8 @@ class AddProductController extends GetxController
     map["description"] = addProductRequest.description;
     map["status"] = addProductRequest.status;
     map["mode_type"] = addProductRequest.mode_type;
+    map["barcode_text"] = addProductRequest.barcode_text ?? "";
+
     if (addProductRequest.categories != null &&
         addProductRequest.categories!.isNotEmpty) {
       for (int i = 0; i < addProductRequest.categories!.length; i++) {
@@ -608,6 +618,44 @@ class AddProductController extends GetxController
     );
   }
 
+  void attachBarCodeApi(String message) async {
+    Map<String, dynamic> map = {};
+    map["id"] = productId;
+    map["barcode_text"] = mBarCode;
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print("Request Data:" + map.toString());
+
+    isLoading.value = true;
+
+    StockListRepository().storeProduct(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          StoreProductResponse response =
+              StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            AppUtils.showSnackBarMessage(message);
+            mInitialBarcode.value = mBarCode;
+            productBarcodeController.value.text = mBarCode;
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
   void onClickRemove() {
     AlertDialogHelper.showAlertDialog("", 'delete_product_msg'.tr, 'yes'.tr,
         'no'.tr, "", true, this, AppConstants.dialogIdentifier.deleteProduct);
@@ -626,9 +674,59 @@ class AddProductController extends GetxController
     if (dialogIdentifier == AppConstants.dialogIdentifier.deleteProductImage) {
       Get.back();
       deleteProductImage(filesList[selectedImageIndex].id!.toString());
-    } else {
+    } else if (dialogIdentifier ==
+        AppConstants.dialogIdentifier.attachBarcodeDialog) {
+      Get.back();
+      openQrCodeScanner('barcode_attached_success_msg'.tr);
+    } else if (dialogIdentifier ==
+        AppConstants.dialogIdentifier.updateBarcodeDialog) {
+      Get.back();
+      openQrCodeScanner('barcode_update_success_msg'.tr);
+    } else if (dialogIdentifier ==
+        AppConstants.dialogIdentifier.deleteProduct) {
       Get.back();
       deleteProduct(addProductRequest.id!.toString());
     }
+  }
+
+  Future<void> openQrCodeScanner(String message) async {
+    var code = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
+    if (!StringHelper.isEmptyString(code)) {
+      mBarCode = code;
+      // getStockListApi(true, true, code);
+      attachBarCodeApi(message);
+    }
+  }
+
+  void onClickQrCode() {
+    if (!StringHelper.isEmptyString(mInitialBarcode.value)) {
+      showUpdateBarcodeDialog();
+    } else {
+      showAttachBarcodeDialog();
+    }
+  }
+
+  showAttachBarcodeDialog() {
+    AlertDialogHelper.showAlertDialog(
+        "",
+        'msg_attach_barcode'.tr,
+        'yes'.tr,
+        'no'.tr,
+        "",
+        true,
+        this,
+        AppConstants.dialogIdentifier.attachBarcodeDialog);
+  }
+
+  showUpdateBarcodeDialog() {
+    AlertDialogHelper.showAlertDialog(
+        "",
+        'msg_update_barcode'.tr,
+        'yes'.tr,
+        'no'.tr,
+        "",
+        true,
+        this,
+        AppConstants.dialogIdentifier.updateBarcodeDialog);
   }
 }

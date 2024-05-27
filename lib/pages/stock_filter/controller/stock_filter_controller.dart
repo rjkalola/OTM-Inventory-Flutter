@@ -54,6 +54,7 @@ class StockFilterController extends GetxController {
         categoriesList[index].check;
     categoriesList.refresh();
     print("Check:" + categoriesList[index].check!.toString());
+    applyFilter();
   }
 
   void applyFilter() {
@@ -67,7 +68,7 @@ class StockFilterController extends GetxController {
         if (categoryInfo.check ?? false) {
           listCategoryIds.add(categoryInfo.id!.toString());
         }
-        print(categoryInfo.name);
+        // print(categoryInfo.name);
       }
       if (listCategoryIds.isNotEmpty) {
         request.supplier = supplierInfo.id!.toString();

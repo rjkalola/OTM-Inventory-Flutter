@@ -20,13 +20,13 @@ class QrCodeIcon extends StatelessWidget {
           stockListController.openQrCodeScanner();
         },
         child: Container(
-          width: 39,
+          width: 90,
           height: 39,
           decoration: const BoxDecoration(
               color: defaultAccentColor,
               borderRadius: BorderRadius.all(Radius.circular(6))),
           child: Padding(
-            padding: const EdgeInsets.all(6.0),
+            padding: const EdgeInsets.all(7.0),
             child: SvgPicture.asset(
               width: 24,
               height: 24,

@@ -15,8 +15,8 @@ class SearchTextField extends StatelessWidget {
       style: const TextStyle(
           fontWeight: FontWeight.w400, fontSize: 15, color: primaryTextColor),
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(0, 0, 14, 0),
-        prefixIcon: const Icon(Icons.search, color: primaryTextColor),
+        contentPadding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        // prefixIcon: const Icon(Icons.search, color: primaryTextColor),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Color(0xffcccccc), width: 1),
           borderRadius: BorderRadius.all(Radius.circular(45)),

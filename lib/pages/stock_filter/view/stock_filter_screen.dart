@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_filter/view/widgets/stock_filter_categories_list.dart';
@@ -9,7 +7,6 @@ import 'package:otm_inventory/pages/stock_filter/view/widgets/stock_filter_suppl
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
-import '../../../widgets/PrimaryBorderButton.dart';
 import '../../../widgets/appbar/base_appbar.dart';
 import '../controller/stock_filter_controller.dart';
 
@@ -64,41 +61,41 @@ class _StockFilterScreenState extends State<StockFilterScreen> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: [
-                          Flexible(
-                              fit: FlexFit.tight,
-                              flex: 1,
-                              child:PrimaryBorderButton(
-                                buttonText: 'apply'.tr,
-                                textColor: defaultAccentColor,
-                                borderColor: defaultAccentColor,
-                                onPressed: () {
-                                  stockFilterController.applyFilter();
-                                  // Get.back();
-                                },
-                              )
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Flexible(
-                            fit: FlexFit.tight,
-                            flex: 1,
-                            child: PrimaryBorderButton(
-                              buttonText: 'cancel'.tr,
-                              textColor: Colors.red,
-                              borderColor: Colors.red,
-                              onPressed: () {
-                                Get.back();
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    )
+                    // Padding(
+                    //   padding: const EdgeInsets.all(12.0),
+                    //   child: Row(
+                    //     children: [
+                    //       Flexible(
+                    //           fit: FlexFit.tight,
+                    //           flex: 1,
+                    //           child:PrimaryBorderButton(
+                    //             buttonText: 'apply'.tr,
+                    //             textColor: defaultAccentColor,
+                    //             borderColor: defaultAccentColor,
+                    //             onPressed: () {
+                    //               stockFilterController.applyFilter();
+                    //               // Get.back();
+                    //             },
+                    //           )
+                    //       ),
+                    //       const SizedBox(
+                    //         width: 12,
+                    //       ),
+                    //       Flexible(
+                    //         fit: FlexFit.tight,
+                    //         flex: 1,
+                    //         child: PrimaryBorderButton(
+                    //           buttonText: 'cancel'.tr,
+                    //           textColor: Colors.red,
+                    //           borderColor: Colors.red,
+                    //           onPressed: () {
+                    //             Get.back();
+                    //           },
+                    //         ),
+                    //       )
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ),

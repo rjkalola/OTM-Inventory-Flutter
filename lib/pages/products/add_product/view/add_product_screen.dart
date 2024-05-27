@@ -3,12 +3,14 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/add_product_button.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/add_product_photos_list.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/add_product_photos_title_view.dart';
+import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_barcode.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_category.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_description.dart';
 import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_height.dart';
@@ -72,6 +74,7 @@ class AddProductScreen extends StatelessWidget {
                               AddProductPhotosList(),
                               TextFieldProductName(),
                               TextFieldProductTitle(),
+                              TextFieldProductBarCode(),
                               TextFieldProductCategory(),
                               TextFieldProductSupplier(),
                               Padding(
@@ -165,6 +168,18 @@ class AddProductScreen extends StatelessWidget {
           ),
           onPressed: () {
             addProductController.onClickRemove();
+          },
+        ),
+      ),
+      Visibility(
+        visible: addProductController.isDeleteVisible.value,
+        child: IconButton(
+          icon: SvgPicture.asset(
+            width: 26,
+            Drawable.qrCodeIcon,
+          ),
+          onPressed: () {
+            addProductController.onClickQrCode();
           },
         ),
       ),

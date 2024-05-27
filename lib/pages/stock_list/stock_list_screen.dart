@@ -10,6 +10,7 @@ import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/search_stock.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_empty_view.dart';
+import 'package:otm_inventory/pages/stock_list/widgets/stock_filter_clear_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_filter_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_list.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
@@ -81,8 +82,9 @@ class _StockListScreenState extends State<StockListScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Expanded(child: SearchStockWidget()),
                           StockFilterIcon(),
+                          // StockFilterClearIcon(),
+                          const Expanded(child: SearchStockWidget()),
                           QrCodeIcon()
                         ],
                       ),

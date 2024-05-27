@@ -90,7 +90,8 @@ class StockMultipleQuantityUpdateController extends GetxController {
       int qty = 0;
       if (productList[i].qty != null) qty = productList[i].qty!;
       if (productList[i].newQty != null) qty = qty + productList[i].newQty!;
-      info.qty = qty;
+      // info.qty = qty;
+      info.qty = productList[i].newQty??0;
       info.store_id = AppStorage.storeId.toString();
       info.product_id = productList[i].id;
       listQty.add(info);
