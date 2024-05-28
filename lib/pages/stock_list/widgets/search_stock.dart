@@ -17,13 +17,16 @@ class _SearchStockWidgetWidgetState extends State<SearchStockWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 6, 0),
-      child: SearchTextField(
-          onValueChange: (value) {
-            stockListController.searchItem(value.toString());
-            // setModalState(() {
-            //   filterSearchResults(value, list);
-            // });
-          }),
+      child: Container(
+        height: 37,
+        child: SearchTextField(
+            onValueChange: (value) {
+              stockListController.searchItem(value.toString());
+              // setModalState(() {
+              //   filterSearchResults(value, list);
+              // });
+            }),
+      ),
     );
   }
 }

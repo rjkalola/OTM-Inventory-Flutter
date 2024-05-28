@@ -241,8 +241,12 @@ class StockEditQuantityController extends GetxController
     map["store_id"] = AppStorage.storeId.toString();
     map["product_id"] = productId;
     map["qty"] = quantity;
-    map["user_id"] = userId;
-    map["reference"] = note;
+    if (isUserDropdownVisible.value) {
+      map["user_id"] = userId;
+    }
+    if (isReferenceVisible.value) {
+      map["reference"] = note;
+    }
     map["price"] = price;
     map["date"] = date;
     map["mode"] = mode;
@@ -259,7 +263,10 @@ class StockEditQuantityController extends GetxController
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             Get.find<AppStorage>().setQuantityNote(note);
-            Get.back(result: true);
+            AppUtils.showSnackBarMessage(response.Message!);
+            // Get.back(result: true);
+            isUpdated = true;
+            getStockQuantityDetailsApi(true, productId);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -443,7 +450,11 @@ class StockEditQuantityController extends GetxController
   void onUpdateQuantityClick(bool isDeduct) {
     if (formKey.currentState!.validate()) {
       String note = noteController.value.text.toString().trim();
-      int qty = int.parse(quantityController.value.text.toString().trim());
+      String qtyString = quantityController.value.text.toString().trim();
+      if (qtyString.startsWith("+") || qtyString.startsWith("-")) {
+        qtyString = qtyString.substring(1, qtyString.length);
+      }
+      int qty = int.parse(qtyString);
       int finalQty = 0;
       // if (isDeduct) {
       //   finalQty = initialQuantity - qty;

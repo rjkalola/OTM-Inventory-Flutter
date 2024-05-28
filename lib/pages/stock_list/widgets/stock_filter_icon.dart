@@ -26,8 +26,8 @@ class StockFilterIcon extends StatelessWidget {
           }
         },
         child: Container(
-          width: 39,
-          height: 39,
+          width: 35,
+          height: 35,
           decoration: BoxDecoration(
               color: !StringHelper.isEmptyString(Get.put(StockListController())
                       .mSupplierCategoryFilter

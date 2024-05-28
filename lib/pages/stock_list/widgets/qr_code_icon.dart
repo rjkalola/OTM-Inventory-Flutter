@@ -21,7 +21,7 @@ class QrCodeIcon extends StatelessWidget {
         },
         child: Container(
           width: 90,
-          height: 39,
+          height: 35,
           decoration: const BoxDecoration(
               color: defaultAccentColor,
               borderRadius: BorderRadius.all(Radius.circular(6))),

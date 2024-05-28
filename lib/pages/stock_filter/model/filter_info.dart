@@ -1,5 +1,3 @@
-
-
 class FilterInfo {
   int? id;
   String? name;

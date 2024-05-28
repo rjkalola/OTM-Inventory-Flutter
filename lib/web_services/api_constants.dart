@@ -1,6 +1,6 @@
 class ApiConstants {
-  static String appUrl = "https://dev.otmsystem.com/api/v1";
-  // static String appUrl = "https://otmsystem.com/api/v1";
+  // static String appUrl = "https://dev.otmsystem.com/api/v1";
+  static String appUrl = "https://otmsystem.com/api/v1";
 
   static String accessToken = "";
   static const CODE_NO_INTERNET_CONNECTION = 10000;

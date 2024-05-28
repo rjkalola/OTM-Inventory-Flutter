@@ -76,7 +76,7 @@ class _StockListScreenState extends State<StockListScreen> {
                       // const SizedBox(height:20,),
                       // TextFieldSelectStore(),
                       const SizedBox(
-                        height: 12,
+                        height: 9,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -89,7 +89,7 @@ class _StockListScreenState extends State<StockListScreen> {
                         ],
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 4,
                       ),
                       stockListController.productList.isNotEmpty
                           ? StockListView()

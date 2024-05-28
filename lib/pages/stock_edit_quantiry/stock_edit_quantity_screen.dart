@@ -296,13 +296,45 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                               children: [
                                 InkWell(
                                   onTap: () {
+                                    String text = stockEditQuantityController
+                                        .quantityController.value.text;
                                     if (stockEditQuantityController
                                         .isAddQtyVisible.value) {
+                                      if (text.startsWith("+")) {
+                                        String newText =
+                                            text.substring(1, text.length);
+                                        text = newText;
+                                      }
+                                      if (!text.startsWith("-")) {
+                                        String newText = "-$text";
+                                        print("new text:" + newText);
+                                        stockEditQuantityController
+                                            .quantityController
+                                            .value
+                                            .text = newText;
+                                      }
                                       stockEditQuantityController
                                           .isAddQtyVisible.value = false;
                                       stockEditQuantityController
                                           .isDeductQtyVisible.value = true;
                                     } else {
+                                      if (text.startsWith("-")) {
+                                        String newText =
+                                            text.substring(1, text.length);
+                                        text = newText;
+                                        // stockEditQuantityController
+                                        //     .quantityController
+                                        //     .value
+                                        //     .text = newText;
+                                      }
+                                      if (!text.startsWith("+")) {
+                                        String newText = "+$text";
+                                        print("new text:" + newText);
+                                        stockEditQuantityController
+                                            .quantityController
+                                            .value
+                                            .text = newText;
+                                      }
                                       stockEditQuantityController
                                           .isAddQtyVisible.value = true;
                                       stockEditQuantityController
@@ -329,7 +361,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                 const SizedBox(
                                   width: 12,
                                 ),
-                                Expanded(flex:1,child: TextFieldQuantity()),
+                                Expanded(flex: 1, child: TextFieldQuantity()),
                                 SaveStockQuantityButton()
                               ]),
                         ),

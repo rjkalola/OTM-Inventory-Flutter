@@ -71,7 +71,8 @@ class StockFilterController extends GetxController {
         // print(categoryInfo.name);
       }
       if (listCategoryIds.isNotEmpty) {
-        request.supplier = supplierInfo.id!.toString();
+        request.supplier =
+            supplierInfo.id != null ? supplierInfo.id!.toString() : "0";
         request.category =
             StringHelper.getCommaSeparatedStringIds(listCategoryIds);
         list.add(request);

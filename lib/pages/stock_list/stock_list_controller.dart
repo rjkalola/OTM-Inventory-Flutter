@@ -257,7 +257,7 @@ class StockListController extends GetxController
                   tempList.addAll(response.info!);
                   productList.value = tempList;
                   productList.refresh();
-                  getAllStockListApi();
+                  // getAllStockListApi();
                 } else if (response.info != null && response.info!.isNotEmpty) {
                   tempList.addAll(response.info!);
                   productList.value = tempList;
@@ -287,14 +287,14 @@ class StockListController extends GetxController
         isMainViewVisible.value = true;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           AppUtils.showSnackBarMessage('no_internet'.tr);
-          if (AppStorage().getStockData() != null) {
+         /* if (AppStorage().getStockData() != null) {
             ProductListResponse response = AppStorage().getStockData()!;
             tempList.clear();
             tempList.addAll(response.info!);
             productList.value = tempList;
             productList.refresh();
             // print("Name:${item.name!}");
-          }
+          }*/
         } else if (error.statusMessage!.isNotEmpty) {
           AppUtils.showSnackBarMessage(error.statusMessage!);
         }
