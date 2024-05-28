@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
 
 import '../../routes/app_routes.dart';
@@ -119,12 +120,13 @@ class ApiRequest {
     ResponseModel responseModel;
     try {
       bool isInternet = await interNetCheck();
+      // AppUtils.showToastMessage("Internet Connection:"+isInternet.toString());
       if (isInternet) {
         if (kDebugMode) print("accessToken:::" + ApiConstants.accessToken);
         if (kDebugMode) print("URL ==> $url");
         if (kDebugMode) print("isFormData ==> $isFormData");
         if (!isFormData!) {
-          if (kDebugMode) print("Request Data ==> ${data.toString()}");
+          if (kDebugMode) print("Request Data1 ==> ${data.toString()}");
           response = await dio.post(
             url,
             data: data,
@@ -133,13 +135,15 @@ class ApiRequest {
             ),
           );
         } else {
-          if (kDebugMode) print("Request Data ==> ${formData.toString()}");
+          if (kDebugMode) print("Request Data2 ==> ${formData.toString()}");
           multi.Dio dio = multi.Dio();
           response = await dio.post(
             url,
             data: formData,
             options: Options(
               headers: ApiConstants.getHeader(),
+              // receiveTimeout: Duration(minutes: 3),
+              // sendTimeout: Duration(minutes: 3),
             ),
           );
         }

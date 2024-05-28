@@ -257,7 +257,7 @@ class StockListController extends GetxController
                   tempList.addAll(response.info!);
                   productList.value = tempList;
                   productList.refresh();
-                  // getAllStockListApi();
+                  getAllStockListApi();
                 } else if (response.info != null && response.info!.isNotEmpty) {
                   tempList.addAll(response.info!);
                   productList.value = tempList;
@@ -286,15 +286,15 @@ class StockListController extends GetxController
         isLoading.value = false;
         isMainViewVisible.value = true;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-         /* if (AppStorage().getStockData() != null) {
+          // AppUtils.showSnackBarMessage('no_internet'.tr);
+          if (AppStorage().getStockData() != null) {
             ProductListResponse response = AppStorage().getStockData()!;
             tempList.clear();
             tempList.addAll(response.info!);
             productList.value = tempList;
             productList.refresh();
             // print("Name:${item.name!}");
-          }*/
+          }
         } else if (error.statusMessage!.isNotEmpty) {
           AppUtils.showSnackBarMessage(error.statusMessage!);
         }
@@ -535,6 +535,7 @@ class StockListController extends GetxController
               showStoreListDialog(AppConstants.dialogIdentifier.storeList,
                   'stores'.tr, storeList, false, false, false, false, this);
             } else {
+              print("Call Stock API");
               getStockListApi(true, false, "", true, true);
             }
           } else {
@@ -547,8 +548,19 @@ class StockListController extends GetxController
       onError: (ResponseModel error) {
         isLoading.value = false;
         isMainViewVisible.value = true;
+        print("111");
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          print("222");
           AppUtils.showSnackBarMessage('no_internet'.tr);
+          if (AppStorage().getStockData() != null) {
+            print("222");
+            ProductListResponse response = AppStorage().getStockData()!;
+            tempList.clear();
+            tempList.addAll(response.info!);
+            productList.value = tempList;
+            productList.refresh();
+            // print("Name:${item.name!}");
+          }
         } else if (error.statusMessage!.isNotEmpty) {
           AppUtils.showSnackBarMessage(error.statusMessage!);
         }
