@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
+import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +19,7 @@ class AppUtils {
       // Fluttertoast.showToast(
       //   msg: message,
       // );
-       Get.rawSnackbar(message: message);
+      Get.rawSnackbar(message: message);
     }
   }
 
@@ -51,5 +50,21 @@ class AppUtils {
     colorNew = colorNew.replaceAll("#", '');
     int colorInt = int.parse(colorNew);
     return colorInt;
+  }
+
+  static Future<bool> interNetCheck() async {
+    try {
+      Dio dio = Dio();
+      dio.options.connectTimeout = const Duration(minutes: 3); //3 minutes
+      dio.options.receiveTimeout = const Duration(minutes: 3); //3 minutes
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception {
+      return false;
+    }
   }
 }

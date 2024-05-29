@@ -46,7 +46,7 @@ class StockListController extends GetxController
   late ScrollController controller;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     AppStorage.storeId = Get.find<AppStorage>().getStoreId();
     AppStorage.storeName = Get.find<AppStorage>().getStoreName();
@@ -55,13 +55,23 @@ class StockListController extends GetxController
     }
     controller = ScrollController();
     controller.addListener(_scrollListener);
-    getStoreListApi();
+
+    print("010101");
+    bool isInternet = await AppUtils.interNetCheck();
+    print("232323");
+    print("isInternet:"+isInternet.toString());
+    if (isInternet) {
+      getStoreListApi();
+    } else {
+      setOfflineData();
+    }
   }
 
   _scrollListener() {
     if (controller.offset >= controller.position.maxScrollExtent &&
         !controller.position.outOfRange &&
         !mIsLastPage) {
+      print("_scrollListener");
       getStockListApi(false, false, "", false, false);
     }
     if (controller.offset <= controller.position.minScrollExtent &&
@@ -287,14 +297,7 @@ class StockListController extends GetxController
         isMainViewVisible.value = true;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           // AppUtils.showSnackBarMessage('no_internet'.tr);
-          if (AppStorage().getStockData() != null) {
-            ProductListResponse response = AppStorage().getStockData()!;
-            tempList.clear();
-            tempList.addAll(response.info!);
-            productList.value = tempList;
-            productList.refresh();
-            // print("Name:${item.name!}");
-          }
+          setOfflineData();
         } else if (error.statusMessage!.isNotEmpty) {
           AppUtils.showSnackBarMessage(error.statusMessage!);
         }
@@ -378,12 +381,6 @@ class StockListController extends GetxController
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             AppStorage().setStockData(response);
-            if (AppStorage().getStockData() != null) {
-              ProductListResponse response = AppStorage().getStockData()!;
-              for (var item in response.info!) {
-                print("Name:${item.name!}");
-              }
-            }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -513,6 +510,7 @@ class StockListController extends GetxController
   void getStoreListApi() async {
     Map<String, dynamic> map = {};
     multi.FormData formData = multi.FormData.fromMap(map);
+    print("getStoreList");
     isLoading.value = true;
     _api.getStoreList(
       formData: formData,
@@ -551,20 +549,29 @@ class StockListController extends GetxController
         print("111");
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           print("222");
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-          if (AppStorage().getStockData() != null) {
-            print("222");
-            ProductListResponse response = AppStorage().getStockData()!;
-            tempList.clear();
-            tempList.addAll(response.info!);
-            productList.value = tempList;
-            productList.refresh();
-            // print("Name:${item.name!}");
-          }
+          // AppUtils.showSnackBarMessage('no_internet'.tr);
+          setOfflineData();
         } else if (error.statusMessage!.isNotEmpty) {
+          print("444");
           AppUtils.showSnackBarMessage(error.statusMessage!);
+        } else {
+          print("555");
         }
       },
     );
+  }
+
+  void setOfflineData() {
+    // AppUtils.showSnackBarMessage('no_internet'.tr);
+    isMainViewVisible.value = true;
+    if (AppStorage().getStockData() != null) {
+      print("333");
+      ProductListResponse response = AppStorage().getStockData()!;
+      tempList.clear();
+      tempList.addAll(response.info!);
+      productList.value = tempList;
+      productList.refresh();
+      // print("Name:${item.name!}");
+    }
   }
 }

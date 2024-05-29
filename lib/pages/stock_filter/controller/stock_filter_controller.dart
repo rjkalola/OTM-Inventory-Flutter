@@ -72,7 +72,7 @@ class StockFilterController extends GetxController {
       }
       if (listCategoryIds.isNotEmpty) {
         request.supplier =
-            supplierInfo.id != null ? supplierInfo.id!.toString() : "0";
+            supplierInfo.id != null ? supplierInfo.id!.toString() : "";
         request.category =
             StringHelper.getCommaSeparatedStringIds(listCategoryIds);
         list.add(request);
@@ -82,7 +82,7 @@ class StockFilterController extends GetxController {
     Get.back(result: jsonEncode(list));
   }
 
-  List<FilterInfo> filterList() {
+ /* List<FilterInfo> filterList() {
     var suppliers = <FilterInfo>[];
 
     FilterInfo? supplierInfo, categoryInfo;
@@ -137,7 +137,7 @@ class StockFilterController extends GetxController {
     suppliers.add(supplierInfo);
 
     return suppliers;
-  }
+  }*/
 
   void getFiltersListApi() async {
     Map<String, dynamic> map = {};

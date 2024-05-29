@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
+import 'package:otm_inventory/widgets/image/cached_image.dart';
 
 import '../../../../res/colors.dart';
 import '../../../widgets/PrimaryBorderButton.dart';
@@ -36,16 +38,11 @@ class StockListView extends StatelessWidget {
                       child: Padding(
                     padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                     child: Row(children: [
-                      stockListController.productList[position].imageThumb !=
-                              null
-                          ? Image.network(
-                              stockListController
-                                      .productList[position].imageThumb ??
-                                  "",
-                              height: 60,
-                              width: 60,
-                            )
-                          : const Icon(Icons.photo_outlined, size: 60),
+                      CachedImage(
+                        size: 60,
+                        url: stockListController
+                            .productList[position].imageThumb,
+                      ),
                       Expanded(
                           child: Padding(
                         padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),

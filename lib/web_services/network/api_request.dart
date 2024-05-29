@@ -120,6 +120,7 @@ class ApiRequest {
     ResponseModel responseModel;
     try {
       bool isInternet = await interNetCheck();
+      print("0000000000");
       // AppUtils.showToastMessage("Internet Connection:"+isInternet.toString());
       if (isInternet) {
         if (kDebugMode) print("accessToken:::" + ApiConstants.accessToken);
@@ -167,14 +168,20 @@ class ApiRequest {
         }
         if (onSuccess != null) onSuccess(responseModel);
       } else {
+        print("11111111111");
         responseModel = returnResponse(
             null, ApiConstants.CODE_NO_INTERNET_CONNECTION, 'try_again'.tr);
         if (onError != null) onError(responseModel);
       }
     } on DioException catch (e) {
+      print("222222222222222");
       final ApiException apiException = ApiException.fromDioError(e);
+      print("......");
       if (kDebugMode) print("Error in api call $apiException.message");
+      print("///////");
       responseModel = returnResponse(null, 0, apiException.message);
+      print("*****");
+      if (onError != null) onError(responseModel);
     }
     return responseModel;
   }
