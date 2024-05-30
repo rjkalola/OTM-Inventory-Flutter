@@ -17,6 +17,7 @@ import '../../routes/app_routes.dart';
 import '../../utils/app_constants.dart';
 import '../../widgets/CustomProgressbar.dart';
 import '../../widgets/appbar/base_appbar.dart';
+import '../../widgets/image/cached_image.dart';
 
 class StockEditQuantityScreen extends StatefulWidget {
   const StockEditQuantityScreen({
@@ -90,13 +91,14 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                         borderRadius: BorderRadius.circular(0)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(6),
-                                      child: ImageUtils.setImage(
-                                          stockEditQuantityController
-                                                  .productInfo
-                                                  .value
-                                                  .imageThumbUrl ??
-                                              "",
-                                          68),
+                                      child: CachedImage(
+                                        size: 68,
+                                        url: stockEditQuantityController
+                                                .productInfo
+                                                .value
+                                                .imageThumbUrl ??
+                                            "",
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(
@@ -138,7 +140,15 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                                 const EdgeInsets.all(0),
                                                 () => {}),
                                             customTextView(
-                                                "${stockEditQuantityController.productInfo.value.qty ?? 0.toString()}",
+                                                stockEditQuantityController
+                                                            .productInfo
+                                                            .value
+                                                            .qty !=
+                                                        null
+                                                    ? stockEditQuantityController
+                                                        .productInfo.value.qty
+                                                        .toString()
+                                                    : "0",
                                                 20,
                                                 FontWeight.w600,
                                                 primaryTextColorLight,

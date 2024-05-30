@@ -136,6 +136,8 @@ class Strings extends Translations {
           'gallery': "Gallery",
           'stock_filter': "Stock Filter",
           'apply': "Apply",
+          'msg_product_stock_update': "Product Stock Updated!",
+          'update_stock': "Update Stock",
         },
         'hi_IN': {'login': 'Login'}
       };

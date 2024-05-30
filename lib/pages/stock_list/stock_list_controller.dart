@@ -13,6 +13,7 @@ import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
 import '../../utils/AlertDialogHelper.dart';
+import '../../web_services/response/base_response.dart';
 import '../../web_services/response/module_info.dart';
 import '../common/drop_down_list_dialog.dart';
 import '../common/listener/DialogButtonClickListener.dart';
@@ -21,6 +22,7 @@ import '../products/add_product/model/add_product_request.dart';
 import '../products/add_product/model/store_product_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
+import '../stock_edit_quantiry/model/store_stock_request.dart';
 import '../store_list/model/store_list_response.dart';
 
 class StockListController extends GetxController
@@ -37,7 +39,8 @@ class StockListController extends GetxController
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
       isScanQrCode = false.obs,
-      isLoadMore = false.obs;
+      isLoadMore = false.obs,
+      isUpdateStockButtonVisible = false.obs;
 
   final filters = ''.obs, search = ''.obs, mSupplierCategoryFilter = ''.obs;
   var offset = 0;
@@ -48,6 +51,7 @@ class StockListController extends GetxController
   @override
   void onInit() async {
     super.onInit();
+    // onClickUploadStockButton();
     AppStorage.storeId = Get.find<AppStorage>().getStoreId();
     AppStorage.storeName = Get.find<AppStorage>().getStoreName();
     if (!StringHelper.isEmptyString(AppStorage.storeName)) {
@@ -56,10 +60,8 @@ class StockListController extends GetxController
     controller = ScrollController();
     controller.addListener(_scrollListener);
 
-    print("010101");
     bool isInternet = await AppUtils.interNetCheck();
-    print("232323");
-    print("isInternet:"+isInternet.toString());
+    print("isInternet:" + isInternet.toString());
     if (isInternet) {
       getStoreListApi();
     } else {
@@ -105,11 +107,13 @@ class StockListController extends GetxController
     }
   }
 
-  Future<void> moveStockEditQuantityScreen(String? productId) async {
+  Future<void> moveStockEditQuantityScreen(
+      String? productId, ProductInfo? productInfo) async {
     var result;
     if (productId != null) {
       var arguments = {
         AppConstants.intentKey.productId: productId,
+        AppConstants.intentKey.productInfo: productInfo,
       };
       result = await Get.toNamed(AppRoutes.stockEditQuantityScreen,
           arguments: arguments);
@@ -121,7 +125,12 @@ class StockListController extends GetxController
       getStockListApi(true, false, "", true, true);
     } else {
       if (result != null && result) {
-        getStockListApi(true, false, "", true, true);
+        bool isInternet = await AppUtils.interNetCheck();
+        if (isInternet) {
+          getStockListApi(true, false, "", true, true);
+        } else {
+          setOfflineData();
+        }
       }
     }
   }
@@ -259,7 +268,8 @@ class StockListController extends GetxController
               isMainViewVisible.value = true;
               if (scanQrCode) {
                 if (response.info!.isNotEmpty) {
-                  moveStockEditQuantityScreen(response.info![0].id!.toString());
+                  moveStockEditQuantityScreen(
+                      response.info![0].id!.toString(), null);
                 }
               } else {
                 if (offset == 0) {
@@ -441,7 +451,7 @@ class StockListController extends GetxController
           StoreProductResponse response =
               StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            moveStockEditQuantityScreen(response.info!.id.toString());
+            moveStockEditQuantityScreen(response.info!.id.toString(), null);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -561,17 +571,68 @@ class StockListController extends GetxController
     );
   }
 
+  Future<void> onClickUploadStockButton() async {
+    bool isInternet = await AppUtils.interNetCheck();
+    if(isInternet){
+      List<StockStoreRequest> list = AppStorage().getStoredStockList();
+      print(jsonEncode("Local List:" + jsonEncode(list)));
+      storeLocalStocks(true, jsonEncode(list));
+    }else{
+      AppUtils.showSnackBarMessage('no_internet'.tr);
+    }
+  }
+
+  Future<void> storeLocalStocks(bool isProgress, String data) async {
+    Map<String, dynamic> map = {};
+    map["app_data"] = data;
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print(map.toString());
+    if (isProgress) isLoading.value = true;
+    _api.storeLocalStock(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          BaseResponse response =
+              BaseResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            if (!StringHelper.isEmptyString(response.Message)) {
+              AppUtils.showSnackBarMessage(response.Message ?? "");
+            }
+            AppStorage().clearStoredStockList();
+            isUpdateStockButtonVisible.value =
+                !StringHelper.isEmptyList(AppStorage().getStoredStockList());
+            getStockListApi(true, false, "", true, true);
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
   void setOfflineData() {
-    // AppUtils.showSnackBarMessage('no_internet'.tr);
     isMainViewVisible.value = true;
     if (AppStorage().getStockData() != null) {
-      print("333");
       ProductListResponse response = AppStorage().getStockData()!;
       tempList.clear();
       tempList.addAll(response.info!);
       productList.value = tempList;
       productList.refresh();
-      // print("Name:${item.name!}");
     }
+
+    isUpdateStockButtonVisible.value =
+        !StringHelper.isEmptyList(AppStorage().getStoredStockList());
   }
 }

@@ -13,6 +13,7 @@ import 'package:otm_inventory/pages/stock_list/widgets/stock_empty_view.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_filter_clear_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_filter_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_list.dart';
+import 'package:otm_inventory/pages/stock_list/widgets/upload_stock_button_widget.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 
 import '../../../res/colors.dart';
@@ -117,7 +118,8 @@ class _StockListScreenState extends State<StockListScreen> {
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      UploadStockButtonWidget()
                     ]),
                   ),
                 ),

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/model/stock_quantity_response.dart';
+import 'package:otm_inventory/pages/stock_edit_quantiry/model/store_stock_request.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_repository.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
@@ -57,18 +58,38 @@ class StockEditQuantityController extends GetxController
   DateTime selectedDate = DateTime.now();
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     var arguments = Get.arguments;
     // quantityController.value.text = "1";
     if (!StringHelper.isEmptyString(Get.find<AppStorage>().getQuantityNote())) {
       noteController.value.text = Get.find<AppStorage>().getQuantityNote();
     }
+
+    bool isInternet = await AppUtils.interNetCheck();
+    print("isInternet:" + isInternet.toString());
     if (arguments != null) {
-      productId = arguments[AppConstants.intentKey.productId]!;
-      getStockQuantityDetailsApi(true, productId.toString());
+      if (isInternet) {
+        productId = arguments[AppConstants.intentKey.productId]!;
+        getStockQuantityDetailsApi(true, productId.toString());
+      } else {
+        print("1111111111");
+        productId = arguments[AppConstants.intentKey.productId]!;
+        ProductInfo? info = arguments[AppConstants.intentKey.productInfo];
+        print("Name" + info!.name!);
+        setProductInfo(info);
+      }
     }
-    getStoreResourcesApi();
+    if (isInternet) {
+      getStoreResourcesApi();
+    } else {
+      if (AppStorage().getStockResources() != null) {
+        StoreResourcesResponse response = AppStorage().getStockResources()!;
+        listUsers.clear();
+        listUsers.addAll(response.users!);
+        // print("Name:${item.name!}");
+      }
+    }
   }
 
   Future<void> addStockClick(ProductInfo? info) async {
@@ -203,12 +224,13 @@ class StockEditQuantityController extends GetxController
               StockQuantityDetailsResponse.fromJson(
                   jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            productInfo.value = response.info!;
-            // quantityController.value.text = productInfo.value.qty.toString();
-            // quantityController.value.text = "0";
-            initialQuantity = productInfo.value.qty ?? 0;
-            finalQuantity = productInfo.value.qty ?? 0;
-            isMainViewVisible.value = true;
+            setProductInfo(response.info);
+            // productInfo.value = response.info!;
+            // // quantityController.value.text = productInfo.value.qty.toString();
+            // // quantityController.value.text = "0";
+            // initialQuantity = productInfo.value.qty ?? 0;
+            // finalQuantity = productInfo.value.qty ?? 0;
+            // isMainViewVisible.value = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
             Get.back();
@@ -227,6 +249,15 @@ class StockEditQuantityController extends GetxController
         }
       },
     );
+  }
+
+  void setProductInfo(ProductInfo? info) {
+    if (info != null) {
+      productInfo.value = info;
+      initialQuantity = productInfo.value.qty ?? 0;
+      finalQuantity = productInfo.value.qty ?? 0;
+      isMainViewVisible.value = true;
+    }
   }
 
   Future<void> storeStockQuantityApi(
@@ -301,6 +332,7 @@ class StockEditQuantityController extends GetxController
           if (response.IsSuccess!) {
             listUsers.clear();
             listUsers.addAll(response.users!);
+            AppStorage().setStockResources(response);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -447,7 +479,7 @@ class StockEditQuantityController extends GetxController
     );
   }
 
-  void onUpdateQuantityClick(bool isDeduct) {
+  Future<void> onUpdateQuantityClick(bool isDeduct) async {
     if (formKey.currentState!.validate()) {
       String note = noteController.value.text.toString().trim();
       String qtyString = quantityController.value.text.toString().trim();
@@ -470,8 +502,60 @@ class StockEditQuantityController extends GetxController
 
       String price = priceController.value.text.toString().trim();
       String date = dateController.value.text.toString().trim();
-      storeStockQuantityApi(true, productId.toString(), finalQty.toString(),
-          note, price, date, isDeduct ? "remove" : "add");
+
+      bool isInternet = await AppUtils.interNetCheck();
+      if (isInternet) {
+        storeStockQuantityApi(true, productId.toString(), finalQty.toString(),
+            note, price, date, isDeduct ? "remove" : "add");
+      } else {
+        // Add stock in local storage
+        List<StockStoreRequest> list = AppStorage().getStoredStockList();
+        StockStoreRequest request = StockStoreRequest();
+        request.product_id = productId.toString();
+        request.store_id = AppStorage.storeId.toString();
+        request.qty = finalQty.toString();
+        if (isUserDropdownVisible.value) {
+          request.user_id = userId.toString();
+        }
+        if (isReferenceVisible.value) {
+          request.note = note;
+        }
+        request.mode = isDeduct ? "remove" : "add";
+        list.add(request);
+        AppStorage().setStoredStockList(list);
+
+        print("Saved List Count:" +
+            AppStorage().getStoredStockList().length.toString());
+        print("finalQty:" + finalQty.toString());
+
+        productInfo.value.qty = productInfo.value.qty != null
+            ? (productInfo.value.qty! + finalQty)
+            : finalQty;
+        productInfo.refresh();
+        print("productInfo.value.qty:" + productInfo.value.qty.toString());
+
+        //Update list quantity
+        if (AppStorage().getStockData() != null) {
+          print("1");
+          ProductListResponse response = AppStorage().getStockData()!;
+          if (!StringHelper.isEmptyList(response.info)) {
+            print("2");
+            for (int i = 0; i < response.info!.length; i++) {
+              print(response.info![i].id.toString()+"::::"+productId);
+              if (response.info![i].id.toString() == productId) {
+                print("Matched:"+productInfo.value.qty.toString());
+                response.info![i].qty = productInfo.value.qty;
+                break;
+              }
+            }
+          }else{
+            print("3");
+          }
+          AppStorage().setStockData(response);
+        }
+        AppUtils.showSnackBarMessage('msg_product_stock_update'.tr);
+        isUpdated = true;
+      }
     }
   }
 

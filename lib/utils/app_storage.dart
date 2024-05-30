@@ -5,8 +5,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
+import '../pages/add_store/model/store_resources_response.dart';
 import '../pages/otp_verification/model/user_info.dart';
 import '../pages/products/product_list/models/product_list_response.dart';
+import '../pages/stock_edit_quantiry/model/store_stock_request.dart';
 
 class AppStorage extends GetxController {
   final storage = GetStorage();
@@ -97,6 +99,42 @@ class AppStorage extends GetxController {
     return ProductListResponse.fromJson(jsonMap);
   }
 
+  void setStockResources(StoreResourcesResponse stockData) {
+    storage.write(
+        AppConstants.sharedPreferenceKey.stockResources, jsonEncode(stockData));
+  }
+
+  StoreResourcesResponse? getStockResources() {
+    final stockData =
+        storage.read(AppConstants.sharedPreferenceKey.stockResources) ?? "";
+
+    final jsonMap = json.decode(stockData);
+    return StoreResourcesResponse.fromJson(jsonMap);
+  }
+
+  void setStoredStockList(List<StockStoreRequest> list) {
+    storage.write(
+        AppConstants.sharedPreferenceKey.localStoredStockList, jsonEncode(list));
+  }
+
+  List<StockStoreRequest> getStoredStockList() {
+    final jsonString =
+        storage.read(AppConstants.sharedPreferenceKey.localStoredStockList) ?? "";
+    if (!StringHelper.isEmptyString(jsonString)) {
+      final jsonMap = json.decode(jsonString);
+      List<StockStoreRequest> list = (jsonMap as List)
+          .map((itemWord) => StockStoreRequest.fromJson(itemWord))
+          .toList();
+      return list;
+    } else {
+      return [];
+    }
+  }
+
+  void clearStoredStockList(){
+    removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
+  }
+
   // void clearAllData(){
   //   box.erase();
   // }
@@ -108,6 +146,8 @@ class AppStorage extends GetxController {
     removeData(AppConstants.sharedPreferenceKey.accessToken);
     removeData(AppConstants.sharedPreferenceKey.quantityNote);
     removeData(AppConstants.sharedPreferenceKey.stockList);
+    removeData(AppConstants.sharedPreferenceKey.stockResources);
+    removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
   }
 
   void removeData(String key) {
