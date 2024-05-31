@@ -23,6 +23,7 @@ import '../products/add_product/model/store_product_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../stock_edit_quantiry/model/store_stock_request.dart';
+import '../stock_filter/model/filter_request.dart';
 import '../store_list/model/store_list_response.dart';
 
 class StockListController extends GetxController
@@ -102,8 +103,33 @@ class StockListController extends GetxController
     var code = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (!StringHelper.isEmptyString(code)) {
       mBarCode = code;
-      // moveStockEditQuantityScreen(productId);
-      getStockListApi(true, true, code, true, true);
+      bool isInternet = await AppUtils.interNetCheck();
+      if (isInternet) {
+        getStockListApi(true, true, code, true, true);
+      } else {
+        int index = 0;
+        for (int i = 0; i < productList.length; i++) {
+          print(productList[i].id.toString() + "::::" + mBarCode);
+          String mBarcodeText = "";
+          if (!StringHelper.isEmptyString(productList[i].barcode_text)) {
+            mBarcodeText = productList[i].barcode_text!;
+            print(productList[i].barcode_text! + "::::" + mBarCode);
+          }
+          if (productList[i].id.toString() == mBarCode ||
+              mBarcodeText == mBarCode) {
+            index = i;
+            print("Matched");
+            break;
+          }
+        }
+
+        if (index != 0) {
+          moveStockEditQuantityScreen(
+              productList[index].id.toString(), productList[index]);
+        } else {
+          AppUtils.showSnackBarMessage('msg_no_qr_code_product_match'.tr);
+        }
+      }
     }
   }
 
@@ -241,7 +267,15 @@ class StockListController extends GetxController
     map["is_stock"] = 1;
     map["store_id"] = AppStorage.storeId.toString();
     if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value)) {
-      map["supplier_category"] = mSupplierCategoryFilter.value;
+      final jsonMap = json.decode(mSupplierCategoryFilter.value);
+      List<FilterRequest> list = (jsonMap as List)
+          .map((itemWord) => FilterRequest.fromJson(itemWord))
+          .toList();
+      if (list.isNotEmpty) {
+        map["supplier"] = list[0].supplier!;
+        map["category"] = list[0].category!;
+      }
+      // map["supplier_category"] = mSupplierCategoryFilter.value;
     }
     if (scanQrCode) {
       map["barcode_text"] = code;
@@ -573,11 +607,11 @@ class StockListController extends GetxController
 
   Future<void> onClickUploadStockButton() async {
     bool isInternet = await AppUtils.interNetCheck();
-    if(isInternet){
+    if (isInternet) {
       List<StockStoreRequest> list = AppStorage().getStoredStockList();
       print(jsonEncode("Local List:" + jsonEncode(list)));
       storeLocalStocks(true, jsonEncode(list));
-    }else{
+    } else {
       AppUtils.showSnackBarMessage('no_internet'.tr);
     }
   }

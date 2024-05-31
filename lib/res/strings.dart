@@ -138,6 +138,8 @@ class Strings extends Translations {
           'apply': "Apply",
           'msg_product_stock_update': "Product Stock Updated!",
           'update_stock': "Update Stock",
+          'msg_no_qr_code_product_match':
+              "We do not find this product in our record",
         },
         'hi_IN': {'login': 'Login'}
       };
