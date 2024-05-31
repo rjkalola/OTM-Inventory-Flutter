@@ -11,6 +11,7 @@ import '../../../utils/image_utils.dart';
 
 class MainDrawer extends StatelessWidget {
   MainDrawer({super.key});
+
   var userInfo = Get.find<AppStorage>().getUserInfo();
 
   @override
@@ -29,6 +30,15 @@ class MainDrawer extends StatelessWidget {
             tileColor: getItemBgColor(AppRoutes.dashboardScreen),
             onTap: () {
               navigate(AppRoutes.dashboardScreen);
+            },
+          ),
+          drawerItem(
+            text: 'stocks'.tr,
+            iconPath: Drawable.homeDrawerIcon,
+            textIconColor: getItemColor(AppRoutes.stockListScreen),
+            tileColor: getItemBgColor(AppRoutes.stockListScreen),
+            onTap: () {
+              navigate(AppRoutes.stockListScreen);
             },
           ),
           drawerItem(
@@ -139,12 +149,13 @@ class MainDrawer extends StatelessWidget {
         height: 28,
         iconPath,
         // color: primaryTextColor,
-        colorFilter:
-         ColorFilter.mode(textIconColor, BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(textIconColor, BlendMode.srcIn),
       ),
       title: Text(
         text,
-        style: TextStyle(color: textIconColor,),
+        style: TextStyle(
+          color: textIconColor,
+        ),
       ),
       tileColor: tileColor,
       onTap: onTap,

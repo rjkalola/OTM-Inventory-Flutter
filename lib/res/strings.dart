@@ -140,6 +140,11 @@ class Strings extends Translations {
           'update_stock': "Update Stock",
           'msg_no_qr_code_product_match':
               "We do not find this product in our record",
+          'in_stock': "In Stock",
+          'low_stock': "Low Stock",
+          'out_of_stock': "Out of stock",
+          'download': "Download",
+          'upload': "Upload",
         },
         'hi_IN': {'login': 'Login'}
       };

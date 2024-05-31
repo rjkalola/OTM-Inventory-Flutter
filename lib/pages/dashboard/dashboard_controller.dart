@@ -4,6 +4,8 @@ import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
+import 'package:otm_inventory/pages/dashboard/models/dashboard_stock_count_response.dart';
+import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/profile/profile_tab.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
@@ -35,14 +37,15 @@ class DashboardController extends GetxController
       DataUtils.getHeaderActionButtonsList().obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs;
+      isMainViewVisible = true.obs;
   final title = 'dashboard'.tr.obs;
   final selectedIndex = 0.obs;
 
   // final pageController = PageController();
   late final PageController pageController;
   final tabs = <Widget>[
-    StockListScreen(),
+    // StockListScreen(),
+    HomeTab(),
     // ProfileTab(),
     MoreTab(),
   ];
@@ -58,12 +61,13 @@ class DashboardController extends GetxController
     pageController = PageController(initialPage: selectedIndex.value);
     setTitle(selectedIndex.value);
 
-    /* AppStorage.storeId = Get.find<AppStorage>().getStoreId();
+    AppStorage.storeId = Get.find<AppStorage>().getStoreId();
     AppStorage.storeName = Get.find<AppStorage>().getStoreName();
     if (!StringHelper.isEmptyString(AppStorage.storeName)) {
       storeNameController.value.text = AppStorage.storeName;
+    }else{
+      getStoreListApi();
     }
-    getStoreListApi();*/
 
     // else {
     //   isMainViewVisible.value = true;
@@ -179,7 +183,8 @@ class DashboardController extends GetxController
     var result;
     result = await Get.toNamed(AppRoutes.stockMultipleQuantityUpdateScreen);
     if (result != null && result) {
-      Get.put(StockListController()).getStockListApi(true, false, "", true,true);
+      Get.put(StockListController())
+          .getStockListApi(true, false, "", true, true);
     }
   }
 
@@ -230,6 +235,39 @@ class DashboardController extends GetxController
     );
   }
 
+  void getDashboardStockCountApi() async {
+    Map<String, dynamic> map = {};
+    multi.FormData formData = multi.FormData.fromMap(map);
+    isLoading.value = true;
+    _api.getDashboardStockCountResponse(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          DashboardStockCountResponse response =
+              DashboardStockCountResponse.fromJson(
+                  jsonDecode(responseModel.result!));
+          if (response.isSuccess!) {
+            isMainViewVisible.value = true;
+          } else {
+            AppUtils.showSnackBarMessage(response.message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
   void setHeaderListArray() {
     listHeaderButtons_.clear();
     listHeaderButtons_.addAll(
@@ -254,7 +292,8 @@ class DashboardController extends GetxController
     if (!StringHelper.isEmptyString(result)) {
       print("result" + result);
       Get.put(StockListController()).mSupplierCategoryFilter.value = result;
-      Get.put(StockListController()).getStockListApi(true, false, "", true,false);
+      Get.put(StockListController())
+          .getStockListApi(true, false, "", true, false);
     }
   }
 }
