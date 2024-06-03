@@ -8,10 +8,11 @@ import '../../../../routes/app_routes.dart';
 import '../../../../utils/AlertDialogHelper.dart';
 import '../../../../utils/app_storage.dart';
 import '../../../common/listener/DialogButtonClickListener.dart';
+import '../../dashboard_controller.dart';
 import '../../widgets/more_tab_buttons.dart';
 
 class MoreTab extends StatefulWidget {
-  const MoreTab({super.key});
+  MoreTab({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -20,6 +21,8 @@ class MoreTab extends StatefulWidget {
 }
 
 class MoreTabState extends State<MoreTab> implements DialogButtonClickListener {
+  final dashboardController = Get.put(DashboardController());
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -54,7 +57,7 @@ class MoreTabState extends State<MoreTab> implements DialogButtonClickListener {
                       onPressed: () {}),
                   divider(),
                   InkWell(
-                    child:  Padding(
+                    child: Padding(
                       padding: const EdgeInsets.fromLTRB(23, 18, 14, 18),
                       child: SizedBox(
                         width: double.infinity,
@@ -91,7 +94,8 @@ class MoreTabState extends State<MoreTab> implements DialogButtonClickListener {
     );
   }
 
-  Widget divider() => const Padding(
+  Widget divider() =>
+      const Padding(
         padding: EdgeInsets.only(left: 18, right: 20),
         child: Divider(thickness: 0.4, height: 0.4, color: dividerColor),
       );
@@ -99,16 +103,14 @@ class MoreTabState extends State<MoreTab> implements DialogButtonClickListener {
   @override
   void onNegativeButtonClicked(String dialogIdentifier) {
     if (dialogIdentifier == AppConstants.dialogIdentifier.logout) {
-      Navigator.of(context).pop(); //
+      Get.back();
     }
   }
 
   @override
   void onPositiveButtonClicked(String dialogIdentifier) {
     if (dialogIdentifier == AppConstants.dialogIdentifier.logout) {
-      Get.find<AppStorage>().clearAllData();
-      // Navigator.of(context).pop(); //
-      Get.offAllNamed(AppRoutes.loginScreen);
+      dashboardController.logoutAPI();
     }
   }
 

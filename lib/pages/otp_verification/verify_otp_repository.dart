@@ -11,7 +11,9 @@ class VerifyOtpRepository {
     Function(ResponseModel error)? onError,
   }) {
     ApiRequest(
-        url: ApiConstants.verifyPhoneUrl, formData: formData, isFormData: true)
+            url: ApiConstants.verifyPhoneUrl,
+            formData: formData,
+            isFormData: true)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);
@@ -25,8 +27,7 @@ class VerifyOtpRepository {
     Function(ResponseModel responseModel)? onSuccess,
     Function(ResponseModel error)? onError,
   }) {
-    ApiRequest(
-        url: ApiConstants.loginUrl, formData: formData, isFormData: true)
+    ApiRequest(url: ApiConstants.loginUrl, formData: formData, isFormData: true)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);
@@ -34,4 +35,5 @@ class VerifyOtpRepository {
       onError: (error) => {if (onError != null) onError(error)},
     );
   }
+
 }

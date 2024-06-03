@@ -60,7 +60,7 @@ class StockListController extends GetxController
     controller = ScrollController();
     controller.addListener(_scrollListener);
 
-  /*  bool isInternet = await AppUtils.interNetCheck();
+    /*  bool isInternet = await AppUtils.interNetCheck();
     if (isInternet) {
       getStoreListApi();
     } else {
@@ -108,24 +108,24 @@ class StockListController extends GetxController
       //   getStockListApi(true, true, code, true, true);
       // } else {
       int index = 0;
-        for (int i = 0; i < productList.length; i++) {
-          String mBarcodeText = "";
-          if (!StringHelper.isEmptyString(productList[i].barcode_text)) {
-            mBarcodeText = productList[i].barcode_text!;
-          }
-          if (productList[i].id.toString() == mBarCode ||
-              mBarcodeText == mBarCode) {
-            index = i;
-            break;
-          }
+      for (int i = 0; i < productList.length; i++) {
+        String mBarcodeText = "";
+        if (!StringHelper.isEmptyString(productList[i].barcode_text)) {
+          mBarcodeText = productList[i].barcode_text!;
         }
+        if (productList[i].id.toString() == mBarCode ||
+            mBarcodeText == mBarCode) {
+          index = i;
+          break;
+        }
+      }
 
-        if (index != 0) {
-          moveStockEditQuantityScreen(
-              productList[index].id.toString(), productList[index]);
-        } else {
-          AppUtils.showSnackBarMessage('msg_no_qr_code_product_match'.tr);
-        }
+      if (index != 0) {
+        moveStockEditQuantityScreen(
+            productList[index].id.toString(), productList[index]);
+      } else {
+        AppUtils.showSnackBarMessage('msg_no_qr_code_product_match'.tr);
+      }
       // }
     }
   }
@@ -401,6 +401,7 @@ class StockListController extends GetxController
 
   Future<void> getAllStockListApi() async {
     isLoadMore.value = offset > 0;
+    isLoading.value = true;
     Map<String, dynamic> map = {};
     map["filters"] = "";
     map["offset"] = offset.toString();
@@ -424,6 +425,7 @@ class StockListController extends GetxController
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             AppStorage().setStockData(response);
+            setOfflineData();
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
