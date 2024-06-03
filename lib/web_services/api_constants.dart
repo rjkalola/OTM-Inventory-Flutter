@@ -9,7 +9,6 @@ class ApiConstants {
     return {
       "Content-Type": "application/json",
       "Authorization": "Bearer $accessToken",
-      "Isinventory": "1",
     };
   }
 
