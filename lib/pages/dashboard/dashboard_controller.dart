@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
 import 'package:otm_inventory/pages/dashboard/models/dashboard_stock_count_response.dart';
@@ -369,6 +371,7 @@ class DashboardController extends GetxController
           if (response.IsSuccess!) {
             AppStorage().setStockData(response);
             if (isDownloadResources) {
+              loadAllImages();
               getStoreResourcesApi();
             } else {
               isLoading.value = false;
@@ -428,6 +431,21 @@ class DashboardController extends GetxController
         }
       },
     );
+  }
+
+  void loadAllImages() {
+    if (AppStorage().getStockData() != null) {
+      ProductListResponse response = AppStorage().getStockData()!;
+      if (response.info!.isNotEmpty) {
+        for (int i = 0; i < response.info!.length; i++) {
+          if (!StringHelper.isEmptyString(response.info![i].imageThumb)) {
+            DefaultCacheManager()
+                .downloadFile(response.info![i].imageThumb!)
+                .then((_) {});
+          }
+        }
+      }
+    }
   }
 
   void setHeaderListArray() {

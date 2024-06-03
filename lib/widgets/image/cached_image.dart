@@ -17,7 +17,8 @@ class CachedImage extends StatelessWidget {
             width: size,
             imageUrl: url ?? "",
             placeholder: (context, url) => PlaceHolderErrorImage(size: size),
-            errorWidget: (context, url, error) => PlaceHolderErrorImage(size: size),
+            errorWidget: (context, url, error) =>
+                PlaceHolderErrorImage(size: size),
           )
         // Image.network(
         //         stockListController
