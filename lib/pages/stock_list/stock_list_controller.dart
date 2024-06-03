@@ -58,7 +58,7 @@ class StockListController extends GetxController
       storeNameController.value.text = AppStorage.storeName;
     }
     controller = ScrollController();
-    controller.addListener(_scrollListener);
+    // controller.addListener(_scrollListener);
 
     /*  bool isInternet = await AppUtils.interNetCheck();
     if (isInternet) {
@@ -75,7 +75,7 @@ class StockListController extends GetxController
         !controller.position.outOfRange &&
         !mIsLastPage) {
       print("_scrollListener");
-      getStockListApi(false, false, "", false, false);
+      // getStockListApi(false, false, "", false, false);
     }
     if (controller.offset <= controller.position.minScrollExtent &&
         !controller.position.outOfRange) {
