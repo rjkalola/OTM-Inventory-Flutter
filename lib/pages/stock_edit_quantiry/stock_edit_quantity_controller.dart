@@ -66,7 +66,7 @@ class StockEditQuantityController extends GetxController
       noteController.value.text = Get.find<AppStorage>().getQuantityNote();
     }
 
-    bool isInternet = await AppUtils.interNetCheck();
+    /* bool isInternet = await AppUtils.interNetCheck();
     print("isInternet:" + isInternet.toString());
     if (arguments != null) {
       if (isInternet) {
@@ -89,6 +89,16 @@ class StockEditQuantityController extends GetxController
         listUsers.addAll(response.users!);
         // print("Name:${item.name!}");
       }
+    }*/
+
+    productId = arguments[AppConstants.intentKey.productId]!;
+    ProductInfo? info = arguments[AppConstants.intentKey.productInfo];
+    setProductInfo(info);
+
+    if (AppStorage().getStockResources() != null) {
+      StoreResourcesResponse response = AppStorage().getStockResources()!;
+      listUsers.clear();
+      listUsers.addAll(response.users!);
     }
   }
 
@@ -503,59 +513,51 @@ class StockEditQuantityController extends GetxController
       String price = priceController.value.text.toString().trim();
       String date = dateController.value.text.toString().trim();
 
-      bool isInternet = await AppUtils.interNetCheck();
-      if (isInternet) {
-        storeStockQuantityApi(true, productId.toString(), finalQty.toString(),
-            note, price, date, isDeduct ? "remove" : "add");
-      } else {
-        // Add stock in local storage
-        List<StockStoreRequest> list = AppStorage().getStoredStockList();
-        StockStoreRequest request = StockStoreRequest();
-        request.product_id = productId.toString();
-        request.store_id = AppStorage.storeId.toString();
-        request.qty = finalQty.toString();
-        if (isUserDropdownVisible.value) {
-          request.user_id = userId.toString();
-        }
-        if (isReferenceVisible.value) {
-          request.note = note;
-        }
-        request.mode = isDeduct ? "remove" : "add";
-        list.add(request);
-        AppStorage().setStoredStockList(list);
-
-        print("Saved List Count:" +
-            AppStorage().getStoredStockList().length.toString());
-        print("finalQty:" + finalQty.toString());
-
-        productInfo.value.qty = productInfo.value.qty != null
-            ? (productInfo.value.qty! + finalQty)
-            : finalQty;
-        productInfo.refresh();
-        print("productInfo.value.qty:" + productInfo.value.qty.toString());
-
-        //Update list quantity
-        if (AppStorage().getStockData() != null) {
-          print("1");
-          ProductListResponse response = AppStorage().getStockData()!;
-          if (!StringHelper.isEmptyList(response.info)) {
-            print("2");
-            for (int i = 0; i < response.info!.length; i++) {
-              print(response.info![i].id.toString()+"::::"+productId);
-              if (response.info![i].id.toString() == productId) {
-                print("Matched:"+productInfo.value.qty.toString());
-                response.info![i].qty = productInfo.value.qty;
-                break;
-              }
-            }
-          }else{
-            print("3");
-          }
-          AppStorage().setStockData(response);
-        }
-        AppUtils.showSnackBarMessage('msg_product_stock_update'.tr);
-        isUpdated = true;
+      // bool isInternet = await AppUtils.interNetCheck();
+      // if (isInternet) {
+      //   storeStockQuantityApi(true, productId.toString(), finalQty.toString(),
+      //       note, price, date, isDeduct ? "remove" : "add");
+      // } else {
+      // Add stock in local storage
+      List<StockStoreRequest> list = AppStorage().getStoredStockList();
+      StockStoreRequest request = StockStoreRequest();
+      request.product_id = productId.toString();
+      request.store_id = AppStorage.storeId.toString();
+      request.qty = finalQty.toString();
+      if (isUserDropdownVisible.value) {
+        request.user_id = userId.toString();
       }
+      if (isReferenceVisible.value) {
+        request.note = note;
+      }
+      request.mode = isDeduct ? "remove" : "add";
+      list.add(request);
+      AppStorage().setStoredStockList(list);
+
+      productInfo.value.qty = productInfo.value.qty != null
+          ? (productInfo.value.qty! + finalQty)
+          : finalQty;
+      productInfo.refresh();
+
+      //Update list quantity
+      if (AppStorage().getStockData() != null) {
+        ProductListResponse response = AppStorage().getStockData()!;
+        if (!StringHelper.isEmptyList(response.info)) {
+          for (int i = 0; i < response.info!.length; i++) {
+            if (response.info![i].id.toString() == productId) {
+              response.info![i].qty = productInfo.value.qty;
+              break;
+            }
+          }
+        }
+        AppStorage().setStockData(response);
+      }
+
+      AppUtils.showToastMessage('msg_product_stock_update'.tr);
+      Get.back(result: true);
+
+      // isUpdated = true;
+      // }
     }
   }
 

@@ -6,6 +6,7 @@ import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../pages/add_store/model/store_resources_response.dart';
+import '../pages/dashboard/models/dashboard_stock_count_response.dart';
 import '../pages/otp_verification/model/user_info.dart';
 import '../pages/products/product_list/models/product_list_response.dart';
 import '../pages/stock_edit_quantiry/model/store_stock_request.dart';
@@ -113,13 +114,14 @@ class AppStorage extends GetxController {
   }
 
   void setStoredStockList(List<StockStoreRequest> list) {
-    storage.write(
-        AppConstants.sharedPreferenceKey.localStoredStockList, jsonEncode(list));
+    storage.write(AppConstants.sharedPreferenceKey.localStoredStockList,
+        jsonEncode(list));
   }
 
   List<StockStoreRequest> getStoredStockList() {
     final jsonString =
-        storage.read(AppConstants.sharedPreferenceKey.localStoredStockList) ?? "";
+        storage.read(AppConstants.sharedPreferenceKey.localStoredStockList) ??
+            "";
     if (!StringHelper.isEmptyString(jsonString)) {
       final jsonMap = json.decode(jsonString);
       List<StockStoreRequest> list = (jsonMap as List)
@@ -131,7 +133,21 @@ class AppStorage extends GetxController {
     }
   }
 
-  void clearStoredStockList(){
+  void setDashboardStockCountData(DashboardStockCountResponse data) {
+    storage.write(AppConstants.sharedPreferenceKey.dashboardItemCountData,
+        jsonEncode(data));
+  }
+
+  DashboardStockCountResponse? getDashboardStockCountData() {
+    final data =
+        storage.read(AppConstants.sharedPreferenceKey.dashboardItemCountData) ??
+            "";
+
+    final jsonMap = json.decode(data);
+    return DashboardStockCountResponse.fromJson(jsonMap);
+  }
+
+  void clearStoredStockList() {
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
   }
 

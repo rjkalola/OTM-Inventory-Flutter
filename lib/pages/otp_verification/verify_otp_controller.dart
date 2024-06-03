@@ -54,6 +54,7 @@ class VerifyOtpController extends GetxController {
       map["device_type"] = AppConstants.deviceType;
       map["model_name"] = deviceModelName;
       multi.FormData formData = multi.FormData.fromMap(map);
+      print("request parameter:" + map.toString());
       isLoading.value = true;
       _api.verifyOtp(
         formData: formData,

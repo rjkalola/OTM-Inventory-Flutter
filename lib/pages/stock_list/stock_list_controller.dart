@@ -52,7 +52,6 @@ class StockListController extends GetxController
   @override
   void onInit() async {
     super.onInit();
-    // onClickUploadStockButton();
     AppStorage.storeId = Get.find<AppStorage>().getStoreId();
     AppStorage.storeName = Get.find<AppStorage>().getStoreName();
     if (!StringHelper.isEmptyString(AppStorage.storeName)) {
@@ -61,13 +60,14 @@ class StockListController extends GetxController
     controller = ScrollController();
     controller.addListener(_scrollListener);
 
-    bool isInternet = await AppUtils.interNetCheck();
-    print("isInternet:" + isInternet.toString());
+  /*  bool isInternet = await AppUtils.interNetCheck();
     if (isInternet) {
       getStoreListApi();
     } else {
       setOfflineData();
-    }
+    }*/
+
+    setOfflineData();
   }
 
   _scrollListener() {
@@ -93,7 +93,7 @@ class StockListController extends GetxController
     } else {
       results = tempList
           .where((element) =>
-              element.name!.toLowerCase().contains(value.toLowerCase()))
+              element.shortName!.toLowerCase().contains(value.toLowerCase()))
           .toList();
     }
     productList.value = results;
@@ -103,22 +103,19 @@ class StockListController extends GetxController
     var code = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (!StringHelper.isEmptyString(code)) {
       mBarCode = code;
-      bool isInternet = await AppUtils.interNetCheck();
-      if (isInternet) {
-        getStockListApi(true, true, code, true, true);
-      } else {
-        int index = 0;
+      // bool isInternet = await AppUtils.interNetCheck();
+      // if (isInternet) {
+      //   getStockListApi(true, true, code, true, true);
+      // } else {
+      int index = 0;
         for (int i = 0; i < productList.length; i++) {
-          print(productList[i].id.toString() + "::::" + mBarCode);
           String mBarcodeText = "";
           if (!StringHelper.isEmptyString(productList[i].barcode_text)) {
             mBarcodeText = productList[i].barcode_text!;
-            print(productList[i].barcode_text! + "::::" + mBarCode);
           }
           if (productList[i].id.toString() == mBarCode ||
               mBarcodeText == mBarCode) {
             index = i;
-            print("Matched");
             break;
           }
         }
@@ -129,7 +126,7 @@ class StockListController extends GetxController
         } else {
           AppUtils.showSnackBarMessage('msg_no_qr_code_product_match'.tr);
         }
-      }
+      // }
     }
   }
 
@@ -148,15 +145,17 @@ class StockListController extends GetxController
     if (isScanQrCode.value) {
       mBarCode = "";
       openQrCodeScanner();
-      getStockListApi(true, false, "", true, true);
+      // getStockListApi(true, false, "", true, true);
+      setOfflineData();
     } else {
       if (result != null && result) {
-        bool isInternet = await AppUtils.interNetCheck();
-        if (isInternet) {
-          getStockListApi(true, false, "", true, true);
-        } else {
-          setOfflineData();
-        }
+        // bool isInternet = await AppUtils.interNetCheck();
+        // if (isInternet) {
+        //   getStockListApi(true, false, "", true, true);
+        // } else {
+        //   setOfflineData();
+        // }
+        setOfflineData();
       }
     }
   }
@@ -590,16 +589,11 @@ class StockListController extends GetxController
       onError: (ResponseModel error) {
         isLoading.value = false;
         isMainViewVisible.value = true;
-        print("111");
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          print("222");
           // AppUtils.showSnackBarMessage('no_internet'.tr);
           setOfflineData();
         } else if (error.statusMessage!.isNotEmpty) {
-          print("444");
           AppUtils.showSnackBarMessage(error.statusMessage!);
-        } else {
-          print("555");
         }
       },
     );
