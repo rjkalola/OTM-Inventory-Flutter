@@ -32,7 +32,8 @@ class StockListView extends StatelessWidget {
                   onTap: () {
                     stockListController.moveStockEditQuantityScreen(
                         stockListController.productList[position].id!
-                            .toString(),stockListController.productList[position]);
+                            .toString(),
+                        stockListController.productList[position]);
                   },
                   child: CardView(
                       child: Padding(

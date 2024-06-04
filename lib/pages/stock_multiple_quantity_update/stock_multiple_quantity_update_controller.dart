@@ -19,6 +19,7 @@ import '../../../web_services/response/response_model.dart';
 import '../../web_services/response/module_info.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
+import '../stock_edit_quantiry/model/store_stock_request.dart';
 
 class StockMultipleQuantityUpdateController extends GetxController {
   final _api = StockListRepository();
@@ -43,8 +44,24 @@ class StockMultipleQuantityUpdateController extends GetxController {
   void onInit() {
     super.onInit();
     controller = ScrollController();
-    controller.addListener(_scrollListener);
-    getStockListApi(true, true);
+    // controller.addListener(_scrollListener);
+    // getStockListApi(true, true);
+    setOfflineData();
+  }
+
+  void setOfflineData() {
+    isMainViewVisible.value = true;
+    if (AppStorage().getStockData() != null) {
+      ProductListResponse response = AppStorage().getStockData()!;
+      tempList.clear();
+      tempList.addAll(response.info!);
+      controllers.clear();
+      for (int i = 0; i < response.info!.length; i++) {
+        controllers.add(TextEditingController());
+      }
+      productList.value = tempList;
+      productList.refresh();
+    }
   }
 
   @override
@@ -59,14 +76,10 @@ class StockMultipleQuantityUpdateController extends GetxController {
     if (controller.offset >= controller.position.maxScrollExtent &&
         !controller.position.outOfRange &&
         !mIsLastPage) {
-      getStockListApi(false, false);
+      // getStockListApi(false, false);
     }
     if (controller.offset <= controller.position.minScrollExtent &&
-        !controller.position.outOfRange) {
-      // setState(() {
-      //   message = "reach the top";
-      // });
-    }
+        !controller.position.outOfRange) {}
   }
 
   Future<void> searchItem(String value) async {
@@ -77,27 +90,56 @@ class StockMultipleQuantityUpdateController extends GetxController {
     } else {
       results = tempList
           .where((element) =>
-              element.name!.toLowerCase().contains(value.toLowerCase()))
+              element.shortName!.toLowerCase().contains(value.toLowerCase()))
           .toList();
     }
     productList.value = results;
   }
 
   void onClickAddQuantityButton() {
-    List<AddQuantityRequest> listQty = [];
+    // List<AddQuantityRequest> listQty = [];
+    // for (int i = 0; i < productList.length; i++) {
+    //   AddQuantityRequest info = AddQuantityRequest();
+    //   int qty = 0;
+    //   if (productList[i].qty != null) qty = productList[i].qty!;
+    //   if (productList[i].newQty != null) qty = qty + productList[i].newQty!;
+    //   // info.qty = qty;
+    //   info.qty = productList[i].newQty ?? 0;
+    //   info.store_id = AppStorage.storeId.toString();
+    //   info.product_id = productList[i].id;
+    //   listQty.add(info);
+    // }
+    // if (kDebugMode) print(jsonEncode(listQty));
+    // addStockApi(true, jsonEncode(listQty));
+
+    ProductListResponse response = ProductListResponse();
     for (int i = 0; i < productList.length; i++) {
-      AddQuantityRequest info = AddQuantityRequest();
-      int qty = 0;
+      int qty = 0, newQty = 0;
       if (productList[i].qty != null) qty = productList[i].qty!;
-      if (productList[i].newQty != null) qty = qty + productList[i].newQty!;
-      // info.qty = qty;
-      info.qty = productList[i].newQty ?? 0;
-      info.store_id = AppStorage.storeId.toString();
-      info.product_id = productList[i].id;
-      listQty.add(info);
+      if (productList[i].newQty != null) newQty = productList[i].newQty!;
+      productList[i].qty = qty + newQty;
+      if (newQty != 0) {
+        addStock(productList[i].id!, newQty);
+      }
+      productList[i].newQty = 0;
     }
-    if (kDebugMode) print(jsonEncode(listQty));
-    addStockApi(true, jsonEncode(listQty));
+    response.info = productList;
+    AppStorage().setStockData(response);
+    Get.back(result: true);
+  }
+
+  void addStock(int productId, int qty) {
+    print("-----------Record Added-----------");
+    print("qty:" + qty.toString());
+    print("----------------------------------");
+    List<StockStoreRequest> list = AppStorage().getStoredStockList();
+    StockStoreRequest request = StockStoreRequest();
+    request.product_id = productId.toString();
+    request.store_id = AppStorage.storeId.toString();
+    request.qty = qty.toString();
+    request.mode = qty < 0 ? "remove" : "add";
+    list.add(request);
+    AppStorage().setStoredStockList(list);
   }
 
   Future<void> getStockListApi(bool isProgress, bool clearOffset) async {

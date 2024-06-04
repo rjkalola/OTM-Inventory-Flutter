@@ -185,6 +185,14 @@ class StockListController extends GetxController
     }
   }
 
+  Future<void> addMultipleStockQuantity() async {
+    var result;
+    result = await Get.toNamed(AppRoutes.stockMultipleQuantityUpdateScreen);
+    if (result != null && result) {
+      setOfflineData();
+    }
+  }
+
   void onClickSelectButton(ProductInfo info) {
     addProductRequest = AddProductRequest();
     addProductRequest.categories = [];

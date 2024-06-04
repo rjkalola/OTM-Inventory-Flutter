@@ -145,6 +145,20 @@ class _StockListScreenState extends State<StockListScreen> {
       //     // stockListController.addStockClick(null);
       //   },
       // ),
+      InkWell(
+          onTap: () {
+            stockListController.addMultipleStockQuantity();
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(right: 14),
+            child: Text(
+              "+${'add_stock'.tr}",
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: defaultAccentColor,
+                  fontWeight: FontWeight.w500),
+            ),
+          )),
     ];
   }
 

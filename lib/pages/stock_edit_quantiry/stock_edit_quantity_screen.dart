@@ -462,23 +462,20 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
       //     stockEditQuantityController.onClickQrCode();
       //   },
       // ),
-      // Visibility(
-      //   visible: dashboardController.selectedIndex.value == 0,
-      //   child: InkWell(
-      //       onTap: () {
-      //         dashboardController.addMultipleStockQuantity();
-      //       },
-      //       child: Padding(
-      //         padding: const EdgeInsets.only(right: 14),
-      //         child: Text(
-      //           "+${'add_stock'.tr}",
-      //           style: const TextStyle(
-      //               fontSize: 16,
-      //               color: defaultAccentColor,
-      //               fontWeight: FontWeight.w500),
-      //         ),
-      //       )),
-      // ),
+      // InkWell(
+      //     onTap: () {
+      //       stockEditQuantityController.addMultipleStockQuantity();
+      //     },
+      //     child: Padding(
+      //       padding: const EdgeInsets.only(right: 14),
+      //       child: Text(
+      //         "+${'add_stock'.tr}",
+      //         style: const TextStyle(
+      //             fontSize: 16,
+      //             color: defaultAccentColor,
+      //             fontWeight: FontWeight.w500),
+      //       ),
+      //     )),
     ];
   }
 
