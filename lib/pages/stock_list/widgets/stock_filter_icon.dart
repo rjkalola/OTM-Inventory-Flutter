@@ -29,11 +29,15 @@ class StockFilterIcon extends StatelessWidget {
           width: 35,
           height: 35,
           decoration: BoxDecoration(
-              color: !StringHelper.isEmptyString(Get.put(StockListController())
-                      .mSupplierCategoryFilter
-                      .value)
-                  ? backgroundColor
-                  : defaultAccentColor,
+              // color: !StringHelper.isEmptyString(Get.put(StockListController())
+              //         .mSupplierCategoryFilter
+              //         .value)
+              //     ? backgroundColor
+              //     : defaultAccentColor,color: !StringHelper.isEmptyString(Get.put(StockListController())
+              //         .mSupplierCategoryFilter
+              //         .value)
+              //     ? backgroundColor
+              //     : defaultAccentColor,
               border: Border.all(color: !StringHelper.isEmptyString(Get.put(StockListController())
                   .mSupplierCategoryFilter
                   .value)
@@ -55,7 +59,7 @@ class StockFilterIcon extends StatelessWidget {
                           .mSupplierCategoryFilter
                           .value)
                       ? Colors.black
-                      : Colors.white,
+                      : defaultAccentColor,
                   BlendMode.srcIn),
             ),
           ),
