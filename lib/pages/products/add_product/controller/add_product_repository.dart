@@ -6,7 +6,6 @@ import '../../../../web_services/network/api_request.dart';
 import '../../../../web_services/response/response_model.dart';
 
 class AddProductRepository {
-
   void getProductResources({
     multi.FormData? formData,
     Function(ResponseModel responseModel)? onSuccess,
@@ -30,9 +29,29 @@ class AddProductRepository {
     Function(ResponseModel responseModel)? onSuccess,
     Function(ResponseModel error)? onError,
   }) {
-    if (kDebugMode)print("formData:$formData");
+    if (kDebugMode) print("formData:$formData");
     ApiRequest(
-        url: ApiConstants.storeProductUrl, formData: formData, isFormData: true)
+            url: ApiConstants.storeProductUrl,
+            formData: formData,
+            isFormData: true)
+        .postRequest(
+      onSuccess: (data) {
+        onSuccess!(data);
+      },
+      onError: (error) => {if (onError != null) onError(error)},
+    );
+  }
+
+  void storeMultipleProduct({
+    multi.FormData? formData,
+    Function(ResponseModel responseModel)? onSuccess,
+    Function(ResponseModel error)? onError,
+  }) {
+    if (kDebugMode) print("formData:$formData");
+    ApiRequest(
+        url: ApiConstants.storeMultipleProductUrl,
+        formData: formData,
+        isFormData: true)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);
@@ -48,9 +67,9 @@ class AddProductRepository {
   }) {
     if (kDebugMode) print("formData:$formData");
     ApiRequest(
-        url: ApiConstants.getProductDetailsUrl,
-        formData: formData,
-        isFormData: true)
+            url: ApiConstants.getProductDetailsUrl,
+            formData: formData,
+            isFormData: true)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);
@@ -65,14 +84,14 @@ class AddProductRepository {
     Function(ResponseModel error)? onError,
   }) {
     ApiRequest(
-        url: ApiConstants.deleteProduct, formData: formData, isFormData: true)
+            url: ApiConstants.deleteProduct,
+            formData: formData,
+            isFormData: true)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);
       },
-      onError: (error) => {
-        if (onError != null) onError(error)
-      },
+      onError: (error) => {if (onError != null) onError(error)},
     );
   }
 
@@ -82,14 +101,14 @@ class AddProductRepository {
     Function(ResponseModel error)? onError,
   }) {
     ApiRequest(
-        url: ApiConstants.deleteProductImage, formData: formData, isFormData: true)
+            url: ApiConstants.deleteProductImage,
+            formData: formData,
+            isFormData: true)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);
       },
-      onError: (error) => {
-        if (onError != null) onError(error)
-      },
+      onError: (error) => {if (onError != null) onError(error)},
     );
   }
 }

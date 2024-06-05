@@ -11,7 +11,7 @@ class ImageGridview extends StatelessWidget {
       required this.onViewClick,
       required this.onRemoveClick});
 
-  final List<FileInfo> filesList;
+  final List<FilesInfo> filesList;
   final ValueChanged<int> onViewClick;
   final ValueChanged<int> onRemoveClick;
 

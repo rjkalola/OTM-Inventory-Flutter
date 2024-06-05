@@ -43,7 +43,7 @@ class AddProductController extends GetxController
   final _api = AddProductRepository();
   final productResourcesResponse = ProductResourcesResponse().obs;
   final addProductRequest = AddProductRequest();
-  var filesList = <FileInfo>[].obs;
+  var filesList = <FilesInfo>[].obs;
   var selectedImageIndex = 0;
 
   final productTitleController = TextEditingController().obs;
@@ -82,7 +82,7 @@ class AddProductController extends GetxController
       getProductDetails(productId);
       // }
     } else {
-      FileInfo info = FileInfo();
+      FilesInfo info = FilesInfo();
       filesList.add(info);
 
       title.value = 'add_product'.tr;
@@ -343,7 +343,7 @@ class AddProductController extends GetxController
 
   addPhotoToList(String? path) {
     if (!StringHelper.isEmptyString(path)) {
-      FileInfo info = FileInfo();
+      FilesInfo info = FilesInfo();
       info.file = path;
       filesList.add(info);
       print(filesList.length.toString());
@@ -430,7 +430,7 @@ class AddProductController extends GetxController
       }
     }
 
-    var list = <FileInfo>[];
+    var list = <FilesInfo>[];
     for (int i = 0; i < filesList.length; i++) {
       if (!StringHelper.isEmptyString(filesList[i].file ?? "") &&
           !filesList[i].file!.startsWith("http")) {
@@ -447,7 +447,7 @@ class AddProductController extends GetxController
     // }
 
     // var formData = multi.FormData();
-
+  
     map["mode_type"] = addProductRequest.mode_type;
 
     multi.FormData formData = multi.FormData.fromMap(map);
@@ -461,9 +461,7 @@ class AddProductController extends GetxController
     }
 
     print("Request Data:" + map.toString());
-
     isLoading.value = true;
-
     _api.storeProduct(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
@@ -588,13 +586,13 @@ class AddProductController extends GetxController
               jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             setProductDetails(response.info!);
-            FileInfo info = FileInfo();
+            FilesInfo info = FilesInfo();
             filesList.add(info);
 
             for (int i = 0; i < response.info!.product_images!.length; i++) {
               ProductImageInfo productImageInfo =
                   response.info!.product_images![i];
-              FileInfo info = FileInfo();
+              FilesInfo info = FilesInfo();
               info.id = productImageInfo.id;
               info.file = productImageInfo.imageUrl;
               info.fileThumb = productImageInfo.imageThumbUrl;

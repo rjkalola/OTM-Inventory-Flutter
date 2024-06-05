@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:otm_inventory/pages/products/add_product/model/add_product_request.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
@@ -147,6 +148,26 @@ class AppStorage extends GetxController {
     }
   }
 
+  void setStoredProductList(List<AddProductRequest> list) {
+    storage.write(AppConstants.sharedPreferenceKey.localStoredProductList,
+        jsonEncode(list));
+  }
+
+  List<AddProductRequest> getStoredProductList() {
+    final jsonString =
+        storage.read(AppConstants.sharedPreferenceKey.localStoredProductList) ??
+            "";
+    if (!StringHelper.isEmptyString(jsonString)) {
+      final jsonMap = json.decode(jsonString);
+      List<AddProductRequest> list = (jsonMap as List)
+          .map((itemWord) => AddProductRequest.fromJson(itemWord))
+          .toList();
+      return list;
+    } else {
+      return [];
+    }
+  }
+
   void setDashboardStockCountData(DashboardStockCountResponse data) {
     storage.write(AppConstants.sharedPreferenceKey.dashboardItemCountData,
         jsonEncode(data));
@@ -190,6 +211,7 @@ class AppStorage extends GetxController {
     removeData(AppConstants.sharedPreferenceKey.stockList);
     removeData(AppConstants.sharedPreferenceKey.stockResources);
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
+    removeData(AppConstants.sharedPreferenceKey.localStoredProductList);
   }
 
   void removeData(String key) {

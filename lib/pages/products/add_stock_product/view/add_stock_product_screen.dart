@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_supplier.dart';
+import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_manufacturer.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_button.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_list.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_title_view.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_barcode.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_description.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_manufacturer.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_name.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_price.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_supplier.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_title.dart';
 
@@ -49,23 +55,37 @@ class AddStockProductScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Divider(),
+                            AddStockProductPhotosTitleView(),
+                            AddStockProductPhotosList(),
                             TextFieldStockProductName(),
                             TextFieldStockProductTitle(),
+                            TextFieldStockProductBarCode(),
                             TextFieldStockProductSupplier(),
+                            TextFieldStockProductManufacturer(),
+                            TextFieldStockProductPrice(),
+                            TextFieldStockProductDescription(),
                             // AddProductPhotosTitleView(),
                             // AddProductPhotosList(),
                             Padding(
-                              padding: const EdgeInsets.only(left: 14,bottom: 18),
+                              padding:
+                                  const EdgeInsets.only(left: 14, bottom: 18),
                               child: Row(
                                 children: [
-                                  Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
-                                  const SizedBox(width: 4,),
+                                  Text(
+                                    'status'.tr,
+                                    style: const TextStyle(
+                                        fontSize: 16, color: primaryTextColor),
+                                  ),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
                                   Switch(
-                                      value: addStockProductController.isStatus.value,
+                                      value: addStockProductController
+                                          .isStatus.value,
                                       activeColor: defaultAccentColor,
                                       onChanged: (isVisible) {
-                                        addStockProductController.isStatus.value =
-                                            isVisible;
+                                        addStockProductController
+                                            .isStatus.value = isVisible;
                                       })
                                 ],
                               ),

@@ -63,10 +63,10 @@ class ProductListController extends GetxController {
       var arguments = {
         AppConstants.intentKey.productId: info.id.toString(),
       };
-      result =
-          await Get.toNamed(AppRoutes.addProductScreen, arguments: arguments);
+      result = await Get.toNamed(AppRoutes.addStockProductScreen,
+          arguments: arguments);
     } else {
-      result = await Get.toNamed(AppRoutes.addProductScreen);
+      result = await Get.toNamed(AppRoutes.addStockProductScreen);
     }
 
     if (result != null && result) {

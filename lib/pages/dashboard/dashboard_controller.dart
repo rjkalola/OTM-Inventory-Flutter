@@ -5,11 +5,13 @@ import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/common/model/file_info.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
 import 'package:otm_inventory/pages/dashboard/models/dashboard_stock_count_response.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/profile/profile_tab.dart';
+import 'package:otm_inventory/pages/products/add_product/model/add_product_request.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
@@ -97,6 +99,7 @@ class DashboardController extends GetxController
     print("isInternet:" + isInternet.toString());
     if (isInternet) {
       getDashboardStockCountApi(true);
+      getProductResourcesApi();
     } else {
       isMainViewVisible.value = true;
       if (AppStorage().getDashboardStockCountData() != null) {
@@ -497,6 +500,70 @@ class DashboardController extends GetxController
             if (!StringHelper.isEmptyString(response.Message)) {
               AppUtils.showSnackBarMessage(response.Message ?? "");
             }
+            List<AddProductRequest> listProducts =
+                AppStorage().getStoredProductList();
+            if (listProducts.isNotEmpty) {
+              storeLocalProducts(isProgress);
+            } else {
+              AppStorage().clearStoredStockList();
+              getAllStockListApi(false);
+            }
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
+  Future<void> storeLocalProducts(bool isProgress) async {
+    Map<String, dynamic> map = {};
+    List<AddProductRequest> listProducts = AppStorage().getStoredProductList();
+    map["data"] = jsonEncode(listProducts);
+    multi.FormData formData = multi.FormData.fromMap(map);
+    for (int i = 0; i < listProducts.length; i++) {
+      var listFiles = <FilesInfo>[];
+      for (int j = 0; j < listProducts[i].product_images!.length; j++) {
+        if (!StringHelper.isEmptyString(
+                listProducts[i].product_images![j].file ?? "") &&
+            !listProducts[i].product_images![j].file!.startsWith("http")) {
+          listFiles.add(listProducts[i].product_images![j]);
+        }
+      }
+      if (listFiles.isNotEmpty) {
+        for (var info in listFiles) {
+          formData.files.addAll([
+            MapEntry("files[" + i.toString() + "]",
+                await multi.MultipartFile.fromFile(info.file ?? "")),
+          ]);
+        }
+      }
+    }
+
+    print(map.toString());
+    if (isProgress) isLoading.value = true;
+    AddProductRepository().storeMultipleProduct(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          BaseResponse response =
+              BaseResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            if (!StringHelper.isEmptyString(response.Message)) {
+              AppUtils.showSnackBarMessage(response.Message ?? "");
+            }
             AppStorage().clearStoredStockList();
             getAllStockListApi(false);
           } else {
@@ -603,6 +670,8 @@ class DashboardController extends GetxController
   }
 
   Future<void> onClickUploadStockButton() async {
+    // List<AddProductRequest> list = AppStorage().getStoredProductList();
+    // print(jsonEncode("Product List:" + jsonEncode(list)));
     bool isInternet = await AppUtils.interNetCheck();
     if (isInternet) {
       List<StockStoreRequest> list = AppStorage().getStoredStockList();

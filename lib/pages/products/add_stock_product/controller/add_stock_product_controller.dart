@@ -10,12 +10,14 @@ import 'package:otm_inventory/web_services/response/module_info.dart';
 
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_constants.dart';
+import '../../../../utils/app_storage.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../web_services/api_constants.dart';
 import '../../../../web_services/response/response_model.dart';
 import '../../../common/drop_down_list_dialog.dart';
 import '../../../common/listener/select_item_listener.dart';
 import '../../../common/model/file_info.dart';
+import '../../../common/select_Item_list_dialog.dart';
 import '../../add_product/model/add_product_request.dart';
 import '../../add_product/model/product_resources_response.dart';
 import '../../add_product/model/store_product_response.dart';
@@ -33,45 +35,75 @@ class AddStockProductController extends GetxController
   final _api = AddStockProductRepository();
   final productResourcesResponse = ProductResourcesResponse().obs;
   final addProductRequest = AddProductRequest();
-  var filesList = <FileInfo>[].obs;
+  var filesList = <FilesInfo>[].obs;
 
   final productTitleController = TextEditingController().obs;
   final productNameController = TextEditingController().obs;
   final productSupplierController = TextEditingController().obs;
+  final productManufacturerController = TextEditingController().obs;
+  final productPriceController = TextEditingController().obs;
+  final productDescriptionController = TextEditingController().obs;
+  final productBarcodeController = TextEditingController().obs;
 
   final ImagePicker _picker = ImagePicker();
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     var arguments = Get.arguments;
     if (arguments != null) {
       mBarCode = arguments[AppConstants.intentKey.barCode];
-      print("mBarCode:"+mBarCode);
+      print("mBarCode:" + mBarCode);
     }
     title.value = 'add_product'.tr;
 
-    FileInfo info = FileInfo();
+    FilesInfo info = FilesInfo();
     filesList.add(info);
 
-    FileInfo info1 = FileInfo();
-    info1.file =
-        "https://fastly.picsum.photos/id/68/536/354.jpg?hmac=1HfgJb31lF-wUi81l2uZsAMfntViiCV9z5_ntQvW3Ks";
-    filesList.add(info1);
+    // FileInfo info1 = FileInfo();
+    // info1.file =
+    //     "https://fastly.picsum.photos/id/68/536/354.jpg?hmac=1HfgJb31lF-wUi81l2uZsAMfntViiCV9z5_ntQvW3Ks";
+    // filesList.add(info1);
 
-    getProductResourcesApi();
+    // bool isInternet = await AppUtils.interNetCheck();
+    // if (isInternet) {
+    //   getProductResourcesApi();
+    // } else {
+      if (AppStorage().getProductResources() != null) {
+        productResourcesResponse.value = AppStorage().getProductResources()!;
+        isMainViewVisible.value = true;
+      }
+    // }
   }
 
   void onSubmitClick() {
-    print("onSubmitClick");
     if (formKey.currentState!.validate()) {
       addProductRequest.shortName =
           productTitleController.value.text.toString().trim();
       addProductRequest.name =
           productNameController.value.text.toString().trim();
-      addProductRequest.mode_type = 1;
+      addProductRequest.price =
+          productPriceController.value.text.toString().trim();
+      addProductRequest.description =
+          productDescriptionController.value.text.toString().trim();
+      addProductRequest.barcode_text =
+          productBarcodeController.value.text.toString().trim();
+      // addProductRequest.mode_type = 1;
+      if (addProductRequest.id != null && addProductRequest.id != 0) {
+        addProductRequest.mode_type = 2;
+      } else {
+        addProductRequest.mode_type = 1;
+      }
       addProductRequest.status = isStatus.value;
-      storeProductApi();
+      filesList.removeAt(0);
+      addProductRequest.product_images = filesList;
+
+      List<AddProductRequest> list = AppStorage().getStoredProductList();
+      list.add(addProductRequest);
+      AppStorage().setStoredProductList(list);
+      print("Size:" + list.length.toString());
+      Get.back(result: true);
+      // storeProductApi();
     }
   }
 
@@ -80,6 +112,17 @@ class AddStockProductController extends GetxController
         productResourcesResponse.value.supplier!.isNotEmpty) {
       showDropDownDialog(AppConstants.dialogIdentifier.supplierList,
           'supplier'.tr, productResourcesResponse.value.supplier!, this);
+    }
+  }
+
+  void showManufacturerList() {
+    if (productResourcesResponse.value.manufacturer != null &&
+        productResourcesResponse.value.manufacturer!.isNotEmpty) {
+      showDropDownDialog(
+          AppConstants.dialogIdentifier.manufacturerList,
+          'manufacturer'.tr,
+          productResourcesResponse.value.manufacturer!,
+          this);
     }
   }
 
@@ -98,32 +141,92 @@ class AddStockProductController extends GetxController
 
   @override
   void onSelectItem(int position, int id, String name, String action) {
-     if (action == AppConstants.dialogIdentifier.supplierList) {
+    if (action == AppConstants.dialogIdentifier.supplierList) {
       productSupplierController.value.text = name;
       addProductRequest.supplier_id = id;
+    } else if (action == AppConstants.dialogIdentifier.manufacturerList) {
+      productManufacturerController.value.text = name;
+      addProductRequest.manufacturer_id = id;
+    } else if (action == AppConstants.action.selectImageFromCamera ||
+        action == AppConstants.action.selectImageFromGallery) {
+      selectImage(action);
     }
   }
 
-  onSelectPhoto() async {
-    print("pickImage");
-
+  void selectImage(String action) async {
     try {
-      final XFile? pickedFile = await _picker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 900,
-        maxHeight: 900,
-        imageQuality: 90,
-      );
-      addPhotoToList(pickedFile!.path ?? "");
-      print("Path:" + pickedFile.path ?? "");
+      XFile? pickedFile;
+      if (action == AppConstants.action.selectImageFromCamera) {
+        pickedFile = await _picker.pickImage(
+          source: ImageSource.camera,
+          maxWidth: 900,
+          maxHeight: 900,
+          imageQuality: 90,
+        );
+      } else if (action == AppConstants.action.selectImageFromGallery) {
+        pickedFile = await _picker.pickImage(
+          source: ImageSource.gallery,
+          maxWidth: 900,
+          maxHeight: 900,
+          imageQuality: 90,
+        );
+      }
+
+      if (pickedFile != null) {
+        addPhotoToList(pickedFile!.path ?? "");
+        print("Path:" + pickedFile.path ?? "");
+      }
     } catch (e) {
       print("error:" + e.toString());
     }
   }
 
+  void showAttachmentOptionsDialog(String dialogType, String title,
+      List<ModuleInfo> list, SelectItemListener listener) {
+    Get.bottomSheet(
+        SelectItemListDialog(
+            title: title,
+            dialogType: dialogType,
+            list: list,
+            listener: listener),
+        backgroundColor: Colors.transparent,
+        enableDrag: false,
+        isScrollControlled: false);
+  }
+
+  onSelectPhoto(int index) async {
+    print("pickImage");
+    if (index == 0) {
+      var listOptions = <ModuleInfo>[].obs;
+      ModuleInfo? info;
+
+      info = ModuleInfo();
+      info.name = 'camera'.tr;
+      info.action = AppConstants.action.selectImageFromCamera;
+      listOptions.add(info);
+
+      info = ModuleInfo();
+      info.name = 'gallery'.tr;
+      info.action = AppConstants.action.selectImageFromGallery;
+      listOptions.add(info);
+
+      // showAttachmentOptionsDialog(
+      //     AppConstants.dialogIdentifier.attachmentOptionsList,
+      //     'select_photo'.tr,
+      //     listOptions,
+      //     this);
+
+      showAttachmentOptionsDialog(
+          AppConstants.dialogIdentifier.attachmentOptionsList,
+          'select_photo_from_'.tr,
+          listOptions,
+          this);
+    } else {}
+  }
+
   addPhotoToList(String? path) {
     if (!StringHelper.isEmptyString(path)) {
-      FileInfo info = FileInfo();
+      FilesInfo info = FilesInfo();
       info.file = path;
       filesList.add(info);
       print(filesList.length.toString());
@@ -140,8 +243,8 @@ class AddStockProductController extends GetxController
       var arguments = {
         AppConstants.intentKey.productId: productId,
       };
-      result =
-      await Get.toNamed(AppRoutes.stockEditQuantityScreen, arguments: arguments);
+      result = await Get.toNamed(AppRoutes.stockEditQuantityScreen,
+          arguments: arguments);
     }
     Get.back(result: true);
   }
@@ -203,7 +306,8 @@ class AddStockProductController extends GetxController
         if (responseModel.statusCode == 200) {
           // BaseResponse response =
           //     BaseResponse.fromJson(jsonDecode(responseModel.result!));
-          StoreProductResponse response = StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
+          StoreProductResponse response =
+              StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             moveStockEditQuantityScreen(response.info!.id!.toString());
           } else {

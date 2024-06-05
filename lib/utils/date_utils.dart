@@ -40,12 +40,16 @@ class DateUtil {
   }
 
   static Future<void> showDatePickerDialog(
-      DateTime? initialDate, DateTime firstDate, DateTime lastDate,String dialogIdentifier,SelectDateListener listener) async {
+      DateTime? initialDate,
+      DateTime firstDate,
+      DateTime lastDate,
+      String dialogIdentifier,
+      SelectDateListener listener) async {
     final DateTime? picked = await showDatePicker(
-        context: Get.context!,
-        initialDate: initialDate,
-        firstDate: firstDate,
-        lastDate: lastDate,
+      context: Get.context!,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
     );
     if (picked != null) {
       listener.onSelectDate(picked, dialogIdentifier);
@@ -171,6 +175,4 @@ class DateUtil {
   static String DD_MMM_EEE_COMMA_SPACE_HH_MM_24 = "dd MMM, HH:mm";
 
   static String DD_MMMM_YYYY_TIME_24 = "dd MMMM yyyy HH:mm:ss";
-
-
 }

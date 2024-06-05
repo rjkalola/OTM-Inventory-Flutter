@@ -1,7 +1,7 @@
 class ApiConstants {
-  // static String appUrl = "https://dev.otmsystem.com/api/v1";
+  static String appUrl = "https://dev.otmsystem.com/api/v1";
 
-  static String appUrl = "https://otmsystem.com/api/v1";
+  // static String appUrl = "https://otmsystem.com/api/v1";
 
   static String accessToken = "";
   static const CODE_NO_INTERNET_CONNECTION = 10000;
@@ -41,4 +41,5 @@ class ApiConstants {
   static String stockFilterUrl = '$appUrl/products/category-filter';
   static String storeLocalStockUrl = '$appUrl/stocks/app-add-stock';
   static String getDashboardStockCount = '$appUrl/stocks/product-stocks';
+  static String storeMultipleProductUrl = '$appUrl/products/add-products';
 }

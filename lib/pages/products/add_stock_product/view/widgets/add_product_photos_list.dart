@@ -16,7 +16,7 @@ class AddStockProductPhotosList extends StatelessWidget {
         child: ImageGridview(
             filesList: addProductController.filesList,
             onViewClick: (int index) {
-              addProductController.onSelectPhoto();
+              addProductController.onSelectPhoto(index);
             },
             onRemoveClick: (int index) {
               addProductController.removePhotoFromList(index);
