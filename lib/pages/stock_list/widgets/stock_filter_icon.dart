@@ -38,11 +38,13 @@ class StockFilterIcon extends StatelessWidget {
               //         .value)
               //     ? backgroundColor
               //     : defaultAccentColor,
-              border: Border.all(color: !StringHelper.isEmptyString(Get.put(StockListController())
-                  .mSupplierCategoryFilter
-                  .value)
-                  ? rectangleBorderColor
-                  : defaultAccentColor),
+              border: Border.all(
+                  color: !StringHelper.isEmptyString(
+                          Get.put(StockListController())
+                              .mSupplierCategoryFilter
+                              .value)
+                      ? rectangleBorderColor
+                      : defaultAccentColor),
               borderRadius: const BorderRadius.all(Radius.circular(6))),
           child: Padding(
             padding: const EdgeInsets.all(6.0),
