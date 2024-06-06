@@ -63,59 +63,59 @@ class _ProductListScreenState extends State<ProductListScreen> {
             inAsyncCall: productListController.isLoading.value,
             opacity: 0,
             progressIndicator: const CustomProgressbar(),
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await productListController.getProductListApi(false, "0", true);
-              },
-              child: Column(children: [
-                const Divider(
-                  thickness: 1,
-                  height: 1,
-                  color: dividerColor,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Expanded(child: SearchProductWidget()),
-                    QrCodeIcon()
-                  ],
-                ),
-                const SizedBox(
-                  height: 6,
-                ),
-                productListController.productList.isNotEmpty
-                    ? ProductListView()
-                    : ProductListEmptyView(),
-                const SizedBox(
-                  height: 6,
-                ),
-                Visibility(
-                  visible: productListController.isLoadMore.value,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator()),
-                        const SizedBox(
-                          width: 14,
-                        ),
-                        Text(
-                          'loading_more_'.tr,
-                          style: const TextStyle(fontSize: 17),
-                        )
-                      ],
-                    ),
+            child: Column(children: [
+              const Divider(
+                thickness: 1,
+                height: 1,
+                color: dividerColor,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Expanded(child: SearchProductWidget()),
+                  QrCodeIcon()
+                ],
+              ),
+              const SizedBox(
+                height: 6,
+              ),
+              productListController.productList.isNotEmpty
+                  ? ProductListView()
+                  : ProductListEmptyView(),
+              const SizedBox(
+                height: 6,
+              ),
+              Visibility(
+                visible: productListController.isLoadMore.value,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator()),
+                      const SizedBox(
+                        width: 14,
+                      ),
+                      Text(
+                        'loading_more_'.tr,
+                        style: const TextStyle(fontSize: 17),
+                      )
+                    ],
                   ),
-                )
-              ]),
-            ),
+                ),
+              )
+            ]),
+            // child: RefreshIndicator(
+            //   onRefresh: () async {
+            //     await productListController.getProductListApi(false, "0", true);
+            //   },
+            // ),
           ),
         ),
       )),

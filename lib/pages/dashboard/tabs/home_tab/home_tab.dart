@@ -106,6 +106,14 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                        child: PrimaryTextView(
+                          text: 'msg_press_upload_button_before_download'.tr,
+                          color: primaryTextColor,
+                          fontSize: 13,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [

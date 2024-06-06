@@ -4,7 +4,6 @@ import 'package:otm_inventory/widgets/search_text_field.dart';
 
 import '../../controller/product_list_controller.dart';
 
-
 class SearchProductWidget extends StatefulWidget {
   const SearchProductWidget({super.key});
 
@@ -19,13 +18,15 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 0, 6, 0),
-      child: SearchTextField(
-          onValueChange: (value) {
-            productListController.searchItem(value.toString());
-            // setModalState(() {
-            //   filterSearchResults(value, list);
-            // });
-          }),
+      child: Container(
+        height: 37,
+        child: SearchTextField(onValueChange: (value) {
+          productListController.searchItem(value.toString());
+          // setModalState(() {
+          //   filterSearchResults(value, list);
+          // });
+        }),
+      ),
     );
   }
 }

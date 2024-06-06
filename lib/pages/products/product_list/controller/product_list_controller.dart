@@ -8,6 +8,7 @@ import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../../../routes/app_routes.dart';
+import '../../../../utils/app_storage.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../web_services/api_constants.dart';
 import '../../../../web_services/response/response_model.dart';
@@ -37,8 +38,20 @@ class ProductListController extends GetxController {
   void onInit() {
     super.onInit();
     controller = ScrollController();
-    controller.addListener(_scrollListener);
-    getProductListApi(true, "0", true);
+    // controller.addListener(_scrollListener);
+    // getProductListApi(true, "0", true);
+    setOfflineData();
+  }
+
+  void setOfflineData() {
+    isMainViewVisible.value = true;
+    if (AppStorage().getStockData() != null) {
+      ProductListResponse response = AppStorage().getStockData()!;
+      tempList.clear();
+      tempList.addAll(response.info!);
+      productList.value = tempList;
+      productList.refresh();
+    }
   }
 
   _scrollListener() {
@@ -57,12 +70,13 @@ class ProductListController extends GetxController {
   Future<void> addProductClick(ProductInfo? info) async {
     var result;
     if (info != null) {
-      // var arguments = {
-      //   AppConstants.intentKey.productInfo: info,
-      // };
       var arguments = {
-        AppConstants.intentKey.productId: info.id.toString(),
+        AppConstants.intentKey.productInfo: info,
+        AppConstants.intentKey.productId: info.id.toString()
       };
+      // var arguments = {
+      //   AppConstants.intentKey.productId: info.id.toString(),
+      // };
       result = await Get.toNamed(AppRoutes.addStockProductScreen,
           arguments: arguments);
     } else {
@@ -70,7 +84,8 @@ class ProductListController extends GetxController {
     }
 
     if (result != null && result) {
-      getProductListApi(true, "0", true);
+      // getProductListApi(true, "0", true);
+      setOfflineData();
     }
   }
 
@@ -91,7 +106,8 @@ class ProductListController extends GetxController {
   Future<void> openQrCodeScanner() async {
     var result = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (result != null && !StringHelper.isEmptyString(result)) {
-      getProductListApi(true, result, true);
+      // getProductListApi(true, result, true);
+      setOfflineData();
     }
   }
 

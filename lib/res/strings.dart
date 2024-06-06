@@ -146,6 +146,9 @@ class Strings extends Translations {
           'download': "Download",
           'upload': "Upload",
           'msg_stock_data_downloaded': "Stock Data Downloaded!",
+          'msg_stock_data_uploaded': "Stock Data Uploaded!",
+          'msg_press_upload_button_before_download':
+              "Note: Press upload button before downloading the data.",
         },
         'hi_IN': {'login': 'Login'}
       };

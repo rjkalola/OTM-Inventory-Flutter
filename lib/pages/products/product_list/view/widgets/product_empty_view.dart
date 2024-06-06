@@ -30,7 +30,7 @@ class ProductListEmptyView extends StatelessWidget {
                   height: 30,
                   fontSize: 14,
                   onPressed: () {
-                    productListController.getProductListApi(true, "0",true);
+                    // productListController.getProductListApi(true, "0",true);
                   },
                 )
               ],

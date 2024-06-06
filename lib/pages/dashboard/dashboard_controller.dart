@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -10,7 +9,6 @@ import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
 import 'package:otm_inventory/pages/dashboard/models/dashboard_stock_count_response.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
-import 'package:otm_inventory/pages/dashboard/tabs/profile/profile_tab.dart';
 import 'package:otm_inventory/pages/products/add_product/model/add_product_request.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
@@ -33,7 +31,6 @@ import '../stock_edit_quantiry/model/store_stock_request.dart';
 import '../stock_edit_quantiry/stock_edit_quantity_repository.dart';
 import '../stock_list/stock_list_controller.dart';
 import '../stock_list/stock_list_repository.dart';
-import '../stock_list/stock_list_screen.dart';
 import '../store_list/model/store_list_response.dart';
 import 'models/DashboardActionItemInfo.dart';
 
@@ -284,6 +281,7 @@ class DashboardController extends GetxController
           if (response.isSuccess!) {
             isMainViewVisible.value = true;
             AppStorage().setDashboardStockCountData(response);
+            AppStorage().setStockSize(response.data_size ?? "");
             setItemCount(response);
           } else {
             AppUtils.showSnackBarMessage(response.message!);
@@ -332,6 +330,7 @@ class DashboardController extends GetxController
               jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             AppStorage().setStockResources(response);
+            AppUtils.showSnackBarMessage('msg_stock_data_downloaded'.tr);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -497,14 +496,12 @@ class DashboardController extends GetxController
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            if (!StringHelper.isEmptyString(response.Message)) {
-              AppUtils.showSnackBarMessage(response.Message ?? "");
-            }
             List<AddProductRequest> listProducts =
                 AppStorage().getStoredProductList();
             if (listProducts.isNotEmpty) {
               storeLocalProducts(isProgress);
             } else {
+              AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
               AppStorage().clearStoredStockList();
               getAllStockListApi(false);
             }
@@ -534,17 +531,22 @@ class DashboardController extends GetxController
     multi.FormData formData = multi.FormData.fromMap(map);
     for (int i = 0; i < listProducts.length; i++) {
       var listFiles = <FilesInfo>[];
+      print("listProducts[i].product_images!.length:" +
+          listProducts[i].product_images!.length.toString());
       for (int j = 0; j < listProducts[i].product_images!.length; j++) {
         if (!StringHelper.isEmptyString(
                 listProducts[i].product_images![j].file ?? "") &&
             !listProducts[i].product_images![j].file!.startsWith("http")) {
+          print("listProducts[i].product_images![j].file:" +
+              listProducts[i].product_images![j].file!);
           listFiles.add(listProducts[i].product_images![j]);
         }
       }
       if (listFiles.isNotEmpty) {
         for (var info in listFiles) {
+          print("files[$i][]${info.file!}");
           formData.files.addAll([
-            MapEntry("files[" + i.toString() + "]",
+            MapEntry("files[$i][]",
                 await multi.MultipartFile.fromFile(info.file ?? "")),
           ]);
         }
@@ -561,9 +563,7 @@ class DashboardController extends GetxController
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            if (!StringHelper.isEmptyString(response.Message)) {
-              AppUtils.showSnackBarMessage(response.Message ?? "");
-            }
+            AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
             AppStorage().clearStoredStockList();
             getAllStockListApi(false);
           } else {
@@ -678,6 +678,11 @@ class DashboardController extends GetxController
       if (list.isNotEmpty) {
         print(jsonEncode("Local List:" + jsonEncode(list)));
         storeLocalStocks(true, jsonEncode(list));
+      } else {
+        List<AddProductRequest> list = AppStorage().getStoredProductList();
+        if (list.isNotEmpty) {
+          storeLocalProducts(true);
+        }
       }
     } else {
       AppUtils.showSnackBarMessage('no_internet'.tr);

@@ -404,7 +404,7 @@ class AddProductController extends GetxController
   void storeProductApi() async {
     Map<String, dynamic> map = {};
     map["id"] = addProductRequest.id;
-    map["shortName"] = addProductRequest.shortName;
+    map["short_name"] = addProductRequest.shortName;
     map["name"] = addProductRequest.name;
     map["supplier_id"] = addProductRequest.supplier_id;
     map["length"] = addProductRequest.length;
@@ -447,7 +447,7 @@ class AddProductController extends GetxController
     // }
 
     // var formData = multi.FormData();
-  
+
     map["mode_type"] = addProductRequest.mode_type;
 
     multi.FormData formData = multi.FormData.fromMap(map);

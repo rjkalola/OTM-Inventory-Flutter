@@ -21,6 +21,8 @@ import '../../../common/select_Item_list_dialog.dart';
 import '../../add_product/model/add_product_request.dart';
 import '../../add_product/model/product_resources_response.dart';
 import '../../add_product/model/store_product_response.dart';
+import '../../product_list/models/product_image_info.dart';
+import '../../product_list/models/product_info.dart';
 import 'add_stock_product_repository.dart';
 
 class AddStockProductController extends GetxController
@@ -50,15 +52,23 @@ class AddStockProductController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
-    var arguments = Get.arguments;
-    if (arguments != null) {
-      mBarCode = arguments[AppConstants.intentKey.barCode];
-      print("mBarCode:" + mBarCode);
-    }
-    title.value = 'add_product'.tr;
 
     FilesInfo info = FilesInfo();
     filesList.add(info);
+
+    var arguments = Get.arguments;
+    if (arguments != null) {
+      mBarCode = arguments[AppConstants.intentKey.barCode] ?? "";
+      ProductInfo? info = arguments[AppConstants.intentKey.productInfo];
+      if (info != null) {
+        title.value = 'edit_product'.tr;
+        setProductDetails(info);
+      } else {
+        title.value = 'add_product'.tr;
+      }
+    } else {
+      title.value = 'add_product'.tr;
+    }
 
     // FileInfo info1 = FileInfo();
     // info1.file =
@@ -69,11 +79,39 @@ class AddStockProductController extends GetxController
     // if (isInternet) {
     //   getProductResourcesApi();
     // } else {
-      if (AppStorage().getProductResources() != null) {
-        productResourcesResponse.value = AppStorage().getProductResources()!;
-        isMainViewVisible.value = true;
-      }
+    if (AppStorage().getProductResources() != null) {
+      productResourcesResponse.value = AppStorage().getProductResources()!;
+      isMainViewVisible.value = true;
+    }
     // }
+  }
+
+  void setProductDetails(ProductInfo info) {
+    addProductRequest.categories = [];
+    addProductRequest.id = info.id ?? 0;
+    addProductRequest.supplier_id = info.supplierId ?? 0;
+    addProductRequest.lengthUnit_id = info.length_unit_id ?? 0;
+    addProductRequest.weightUnit_id = info.weight_unit_id ?? 0;
+    addProductRequest.manufacturer_id = info.manufacturer_id ?? 0;
+    addProductRequest.model_id = info.model_id ?? 0;
+    productTitleController.value.text = info.shortName ?? "";
+    productNameController.value.text = info.name ?? "";
+    productManufacturerController.value.text = info.manufacturer_name ?? "";
+    productPriceController.value.text = info.price ?? "";
+    productDescriptionController.value.text = info.description ?? "";
+    productSupplierController.value.text = info.supplier_name ?? "";
+    productBarcodeController.value.text = info.barcode_text ?? "";
+    mBarCode = info.barcode_text ?? "";
+    isStatus.value = info.status ?? false;
+
+    for (int i = 0; i < info.product_images!.length; i++) {
+      ProductImageInfo productImageInfo = info.product_images![i];
+      FilesInfo fileInfo = FilesInfo();
+      fileInfo.id = productImageInfo.id;
+      fileInfo.file = productImageInfo.imageUrl;
+      fileInfo.fileThumb = productImageInfo.imageThumbUrl;
+      filesList.add(fileInfo);
+    }
   }
 
   void onSubmitClick() {
@@ -99,9 +137,25 @@ class AddStockProductController extends GetxController
       addProductRequest.product_images = filesList;
 
       List<AddProductRequest> list = AppStorage().getStoredProductList();
-      list.add(addProductRequest);
+      if (addProductRequest.id != null && addProductRequest.id! != 0) {
+        int index = -1;
+        for (int i = 0; i < list.length; i++) {
+          if (list[i].id == addProductRequest.id!) {
+            index = i;
+            break;
+          }
+        }
+        print("index:" + index.toString());
+        if (index != -1) {
+          list[index] = addProductRequest;
+        } else {
+          list.add(addProductRequest);
+        }
+      } else {
+        list.add(addProductRequest);
+      }
+      print("List Size:" + list.length.toString());
       AppStorage().setStoredProductList(list);
-      print("Size:" + list.length.toString());
       Get.back(result: true);
       // storeProductApi();
     }

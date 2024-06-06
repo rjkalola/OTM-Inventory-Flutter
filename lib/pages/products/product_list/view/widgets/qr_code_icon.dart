@@ -19,8 +19,8 @@ class QrCodeIcon extends StatelessWidget {
           productListController.openQrCodeScanner();
         },
         child: Container(
-          width: 39,
-          height: 39,
+          width: 90,
+          height: 35,
           decoration: const BoxDecoration(
               color: defaultAccentColor,
               borderRadius: BorderRadius.all(Radius.circular(6))),

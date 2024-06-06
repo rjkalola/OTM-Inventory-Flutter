@@ -75,6 +75,7 @@ class AddProductRequest extends BaseResponse {
       });
     }
     barcode_text = json['barcode_text'];
+    mode_type = json['mode_type'];
     if (json['categories'] != null) {
       categories = json['categories'].cast<String>();
     }
@@ -101,6 +102,7 @@ class AddProductRequest extends BaseResponse {
     data['model_id'] = model_id;
     data['qty'] = qty;
     data['barcode_text'] = barcode_text;
+    data['mode_type'] = mode_type;
     if (categories != null) {
       data['categories'] = this.categories;
     }

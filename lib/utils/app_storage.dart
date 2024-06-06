@@ -98,8 +98,12 @@ class AppStorage extends GetxController {
   ProductListResponse? getStockData() {
     final stockData =
         storage.read(AppConstants.sharedPreferenceKey.stockList) ?? "";
-    final jsonMap = json.decode(stockData);
-    return ProductListResponse.fromJson(jsonMap);
+    if (!StringHelper.isEmptyString(stockData)) {
+      final jsonMap = json.decode(stockData);
+      return ProductListResponse.fromJson(jsonMap);
+    } else {
+      return null;
+    }
   }
 
   void setStockResources(StoreResourcesResponse stockData) {
@@ -194,8 +198,18 @@ class AppStorage extends GetxController {
     return ProductListResponse.fromJson(jsonMap);
   }*/
 
+  void setStockSize(String size) {
+    storage.write(AppConstants.sharedPreferenceKey.stockSize, size);
+  }
+
+  String getStockSize() {
+    final size = storage.read(AppConstants.sharedPreferenceKey.stockSize) ?? "";
+    return size;
+  }
+
   void clearStoredStockList() {
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
+    removeData(AppConstants.sharedPreferenceKey.localStoredProductList);
   }
 
   // void clearAllData(){

@@ -43,7 +43,10 @@ class StockListController extends GetxController
       isLoadMore = false.obs,
       isUpdateStockButtonVisible = false.obs;
 
-  final filters = ''.obs, search = ''.obs, mSupplierCategoryFilter = ''.obs;
+  final filters = ''.obs,
+      search = ''.obs,
+      mSupplierCategoryFilter = ''.obs,
+      downloadTitle = 'download'.tr.obs;
   var offset = 0;
   var mIsLastPage = false;
   var mBarCode = "";
@@ -67,6 +70,7 @@ class StockListController extends GetxController
       setOfflineData();
     }*/
 
+    setDownloadTitle();
     setOfflineData();
   }
 
@@ -181,7 +185,8 @@ class StockListController extends GetxController
     if (result != null && result) {
       mBarCode = "";
       isScanQrCode.value = false;
-      getStockListApi(true, false, "", true, true);
+      setOfflineData();
+      // getStockListApi(true, false, "", true, true);
     }
   }
 
@@ -672,5 +677,13 @@ class StockListController extends GetxController
 
     isUpdateStockButtonVisible.value =
         !StringHelper.isEmptyList(AppStorage().getStoredStockList());
+  }
+
+  void setDownloadTitle() {
+    if (!StringHelper.isEmptyString(AppStorage().getStockSize())) {
+      downloadTitle.value = "${'download'.tr} (${AppStorage().getStockSize()})";
+    } else {
+      downloadTitle.value = 'download'.tr;
+    }
   }
 }
