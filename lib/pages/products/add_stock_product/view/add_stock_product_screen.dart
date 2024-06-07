@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:otm_inventory/pages/products/add_product/view/widgets/textfield_product_manufacturer.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_button.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_list.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_title_view.dart';

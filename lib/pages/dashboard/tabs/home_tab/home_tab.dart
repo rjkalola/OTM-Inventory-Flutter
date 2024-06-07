@@ -110,6 +110,7 @@ class _HomeTabState extends State<HomeTab> {
                           text: 'msg_press_upload_button_before_download'.tr,
                           color: primaryTextColor,
                           fontSize: 13,
+                          softWrap: true,
                         ),
                       ),
                       Padding(
