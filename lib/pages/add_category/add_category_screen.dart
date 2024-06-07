@@ -47,22 +47,22 @@ class AddCategoryScreen extends StatelessWidget {
                           children: [
                             const Divider(),
                             TextFieldCategoryName(),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 14,bottom: 18),
-                              child: Row(
-                                children: [
-                                  Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
-                                  const SizedBox(width: 4,),
-                                  Switch(
-                                      value: addCategoryController.isStatus.value,
-                                      activeColor: defaultAccentColor,
-                                      onChanged: (isVisible) {
-                                        addCategoryController.isStatus.value =
-                                            isVisible;
-                                      })
-                                ],
-                              ),
-                            )
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 14,bottom: 18),
+                            //   child: Row(
+                            //     children: [
+                            //       Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
+                            //       const SizedBox(width: 4,),
+                            //       Switch(
+                            //           value: addCategoryController.isStatus.value,
+                            //           activeColor: defaultAccentColor,
+                            //           onChanged: (isVisible) {
+                            //             addCategoryController.isStatus.value =
+                            //                 isVisible;
+                            //           })
+                            //     ],
+                            //   ),
+                            // )
                           ]),
                     ),
                   ),

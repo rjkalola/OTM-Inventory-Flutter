@@ -61,22 +61,22 @@ class AddStoreScreen extends StatelessWidget {
                             ),
                             TextFieldStoreAddress(),
                             TextFieldStoreManager(),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 14,bottom: 18),
-                              child: Row(
-                                children: [
-                                  Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
-                                  const SizedBox(width: 4,),
-                                  Switch(
-                                      value: addStoreController.isStatus.value,
-                                      activeColor: defaultAccentColor,
-                                      onChanged: (isVisible) {
-                                        addStoreController.isStatus.value =
-                                            isVisible;
-                                      })
-                                ],
-                              ),
-                            )
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 14,bottom: 18),
+                            //   child: Row(
+                            //     children: [
+                            //       Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
+                            //       const SizedBox(width: 4,),
+                            //       Switch(
+                            //           value: addStoreController.isStatus.value,
+                            //           activeColor: defaultAccentColor,
+                            //           onChanged: (isVisible) {
+                            //             addStoreController.isStatus.value =
+                            //                 isVisible;
+                            //           })
+                            //     ],
+                            //   ),
+                            // )
                           ]),
                     ),
                   ),

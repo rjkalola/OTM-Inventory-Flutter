@@ -419,7 +419,8 @@ class AddProductController extends GetxController
     map["price"] = addProductRequest.price;
     map["tax"] = addProductRequest.tax;
     map["description"] = addProductRequest.description;
-    map["status"] = addProductRequest.status;
+    // map["status"] = addProductRequest.status;
+    map["status"] = true;
     map["mode_type"] = addProductRequest.mode_type;
     map["barcode_text"] = addProductRequest.barcode_text ?? "";
 

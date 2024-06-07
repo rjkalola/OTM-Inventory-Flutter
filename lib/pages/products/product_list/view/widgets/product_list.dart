@@ -17,7 +17,8 @@ class ProductListView extends StatelessWidget {
           visible: productListController.isMainViewVisible.value,
           child: Expanded(
             child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(), //
+              physics: const AlwaysScrollableScrollPhysics(),
+              //
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               controller: productListController.controller,
@@ -32,11 +33,12 @@ class ProductListView extends StatelessWidget {
                       child: Padding(
                     padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                     child: Row(children: [
-                      productListController.productList[position].imageThumb !=
+                      productListController
+                                  .productList[position].imageThumbUrl !=
                               null
                           ? Image.network(
                               productListController
-                                      .productList[position].imageThumb ??
+                                      .productList[position].imageThumbUrl ??
                                   "",
                               height: 60,
                               width: 60,
@@ -69,7 +71,7 @@ class ProductListView extends StatelessWidget {
                                       productListController
                                           .productList[position].price),
                                   child: Text(
-                                      "${productListController.productList[position].currency!}${productListController.productList[position].price!}",
+                                      "${productListController.productList[position].currency ?? "£"}${productListController.productList[position].price!}",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(

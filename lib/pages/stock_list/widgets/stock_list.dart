@@ -42,7 +42,7 @@ class StockListView extends StatelessWidget {
                       CachedImage(
                         size: 60,
                         url: stockListController
-                            .productList[position].imageThumb,
+                            .productList[position].imageThumbUrl,
                       ),
                       Expanded(
                           child: Padding(
@@ -156,7 +156,7 @@ class StockListView extends StatelessWidget {
     return Visibility(
       visible: !StringHelper.isEmptyString(
           stockListController.productList[position].qty.toString()),
-      child: Text(stockListController.productList[position].qty!.toString(),
+      child: Text(stockListController.productList[position].qty.toString(),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(

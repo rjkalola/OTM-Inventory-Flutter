@@ -66,6 +66,7 @@ class SharedPreferenceKey {
   final String dashboardItemCountData = "DASHBOARD_ITEM_COUNT_DATA";
   final String localStoredProductList = "LOCAL_STORED_PRODUCT_LIST";
   final String stockSize = "STOCK_SIZE";
+  final String tempIds = "TEMP_IDS";
 }
 
 class Action {

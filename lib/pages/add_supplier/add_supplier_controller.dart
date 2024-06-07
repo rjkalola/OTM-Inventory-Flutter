@@ -216,7 +216,8 @@ class AddSupplierController extends GetxController
     map["company_name"] = addRequest.company_name;
     map["weight"] = addRequest.weight;
     map["weight_unit_id"] = addRequest.weight_unit_id;
-    map["status"] = addRequest.status;
+    // map["status"] = addRequest.status;
+    map["status"] = true;
     map["mode_type"] = addRequest.mode_type;
     multi.FormData formData = multi.FormData.fromMap(map);
 

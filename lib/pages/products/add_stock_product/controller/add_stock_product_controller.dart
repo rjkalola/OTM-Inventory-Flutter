@@ -18,11 +18,13 @@ import '../../../common/drop_down_list_dialog.dart';
 import '../../../common/listener/select_item_listener.dart';
 import '../../../common/model/file_info.dart';
 import '../../../common/select_Item_list_dialog.dart';
+import '../../../stock_list/stock_list_repository.dart';
 import '../../add_product/model/add_product_request.dart';
 import '../../add_product/model/product_resources_response.dart';
 import '../../add_product/model/store_product_response.dart';
 import '../../product_list/models/product_image_info.dart';
 import '../../product_list/models/product_info.dart';
+import '../../product_list/models/product_list_response.dart';
 import 'add_stock_product_repository.dart';
 
 class AddStockProductController extends GetxController
@@ -36,7 +38,7 @@ class AddStockProductController extends GetxController
   final formKey = GlobalKey<FormState>();
   final _api = AddStockProductRepository();
   final productResourcesResponse = ProductResourcesResponse().obs;
-  final addProductRequest = AddProductRequest();
+  ProductInfo? addProductRequest;
   var filesList = <FilesInfo>[].obs;
 
   final productTitleController = TextEditingController().obs;
@@ -59,14 +61,21 @@ class AddStockProductController extends GetxController
     var arguments = Get.arguments;
     if (arguments != null) {
       mBarCode = arguments[AppConstants.intentKey.barCode] ?? "";
-      ProductInfo? info = arguments[AppConstants.intentKey.productInfo];
-      if (info != null) {
+      addProductRequest = arguments[AppConstants.intentKey.productInfo];
+      if (addProductRequest != null) {
+        // print("localId-----:${addProductRequest?.local_id!}");
         title.value = 'edit_product'.tr;
-        setProductDetails(info);
+        setProductDetails(addProductRequest!);
       } else {
+        addProductRequest = ProductInfo();
+        addProductRequest?.id = 0;
+        addProductRequest?.local_id = 0;
         title.value = 'add_product'.tr;
       }
     } else {
+      addProductRequest = ProductInfo();
+      addProductRequest?.id = 0;
+      addProductRequest?.local_id = 0;
       title.value = 'add_product'.tr;
     }
 
@@ -87,13 +96,14 @@ class AddStockProductController extends GetxController
   }
 
   void setProductDetails(ProductInfo info) {
-    addProductRequest.categories = [];
-    addProductRequest.id = info.id ?? 0;
-    addProductRequest.supplier_id = info.supplierId ?? 0;
-    addProductRequest.lengthUnit_id = info.length_unit_id ?? 0;
-    addProductRequest.weightUnit_id = info.weight_unit_id ?? 0;
-    addProductRequest.manufacturer_id = info.manufacturer_id ?? 0;
-    addProductRequest.model_id = info.model_id ?? 0;
+    // addProductRequest.categories = [];
+    // addProductRequest.id = info.id ?? 0;
+    // addProductRequest.supplier_id = info.supplierId ?? 0;
+    // addProductRequest.lengthUnit_id = info.length_unit_id ?? 0;
+    // addProductRequest.weightUnit_id = info.weight_unit_id ?? 0;
+    // addProductRequest.manufacturer_id = info.manufacturer_id ?? 0;
+    // addProductRequest.model_id = info.model_id ?? 0;
+
     productTitleController.value.text = info.shortName ?? "";
     productNameController.value.text = info.name ?? "";
     productManufacturerController.value.text = info.manufacturer_name ?? "";
@@ -104,60 +114,103 @@ class AddStockProductController extends GetxController
     mBarCode = info.barcode_text ?? "";
     isStatus.value = info.status ?? false;
 
-    for (int i = 0; i < info.product_images!.length; i++) {
-      ProductImageInfo productImageInfo = info.product_images![i];
-      FilesInfo fileInfo = FilesInfo();
-      fileInfo.id = productImageInfo.id;
-      fileInfo.file = productImageInfo.imageUrl;
-      fileInfo.fileThumb = productImageInfo.imageThumbUrl;
-      filesList.add(fileInfo);
+    if (info.id != null && info.id! > 0) {
+      print("IDDD:" + info.id!.toString());
+      for (int i = 0; i < info.product_images!.length; i++) {
+        ProductImageInfo productImageInfo = info.product_images![i];
+        FilesInfo fileInfo = FilesInfo();
+        fileInfo.id = productImageInfo.id;
+        fileInfo.file = productImageInfo.imageUrl;
+        fileInfo.fileThumb = productImageInfo.imageThumbUrl;
+        filesList.add(fileInfo);
+      }
+    } else if (info.local_id != null && info.local_id! > 0) {
+      print("local_idDDDD:" + info.local_id!.toString());
+      for (int i = 0; i < info.temp_images!.length; i++) {
+        filesList.add(info.temp_images![i]);
+      }
     }
   }
 
-  void onSubmitClick() {
+  Future<void> onSubmitClick() async {
     if (formKey.currentState!.validate()) {
-      addProductRequest.shortName =
+      addProductRequest?.shortName =
           productTitleController.value.text.toString().trim();
-      addProductRequest.name =
+      addProductRequest?.name =
           productNameController.value.text.toString().trim();
-      addProductRequest.price =
+      addProductRequest?.price =
           productPriceController.value.text.toString().trim();
-      addProductRequest.description =
+      addProductRequest?.description =
           productDescriptionController.value.text.toString().trim();
-      addProductRequest.barcode_text =
+      addProductRequest?.barcode_text =
           productBarcodeController.value.text.toString().trim();
-      // addProductRequest.mode_type = 1;
-      if (addProductRequest.id != null && addProductRequest.id != 0) {
-        addProductRequest.mode_type = 2;
+      if (addProductRequest?.id != null && addProductRequest?.id != 0) {
+        addProductRequest?.mode_type = 2;
       } else {
-        addProductRequest.mode_type = 1;
+        addProductRequest?.mode_type = 1;
       }
-      addProductRequest.status = isStatus.value;
+      addProductRequest?.status = isStatus.value;
       filesList.removeAt(0);
-      addProductRequest.product_images = filesList;
+      addProductRequest?.temp_images = filesList;
 
-      List<AddProductRequest> list = AppStorage().getStoredProductList();
-      if (addProductRequest.id != null && addProductRequest.id! != 0) {
-        int index = -1;
-        for (int i = 0; i < list.length; i++) {
-          if (list[i].id == addProductRequest.id!) {
-            index = i;
-            break;
-          }
-        }
-        print("index:" + index.toString());
-        if (index != -1) {
-          list[index] = addProductRequest;
-        } else {
-          list.add(addProductRequest);
-        }
+      bool isInternet = await AppUtils.interNetCheck();
+      if (isInternet) {
+        storeProductApi();
       } else {
-        list.add(addProductRequest);
+        List<ProductInfo> listStoredProducts = [];
+        if (AppStorage().getStockData() != null) {
+          ProductListResponse response = AppStorage().getStockData()!;
+          listStoredProducts.addAll(response.info!);
+        }
+
+        addProductRequest?.localStored = true;
+        int id = 0, localId = 0;
+        if ((addProductRequest?.id != null && addProductRequest?.id! != 0) ||
+            (addProductRequest?.local_id != null &&
+                addProductRequest?.local_id! != 0)) {
+          int index = -1;
+
+          int id_ = addProductRequest?.id ?? 0;
+          int localId_ = addProductRequest?.local_id ?? 0;
+
+          for (int i = 0; i < listStoredProducts.length; i++) {
+            id = listStoredProducts[i].id ?? 0;
+            localId = listStoredProducts[i].local_id ?? 0;
+            if ((id_ > 0 && id == id_) ||
+                (localId_ > 0 && localId == localId_)) {
+              index = i;
+              break;
+            }
+          }
+
+          print("index:" + index.toString());
+          if (index != -1) {
+            listStoredProducts[index] = addProductRequest!;
+          } else {
+            int localId = AppStorage().getTempId() + 1;
+            print("localId:" + localId.toString());
+            addProductRequest?.local_id = localId;
+            AppStorage().setTempId(localId);
+            listStoredProducts.insert(0, addProductRequest!);
+          }
+        } else {
+          int localId = AppStorage().getTempId() + 1;
+          addProductRequest?.local_id = localId;
+          AppStorage().setTempId(localId);
+          print("addProductRequest?.local_id!:${addProductRequest?.local_id!}");
+          listStoredProducts.insert(0, addProductRequest!);
+        }
+        ProductListResponse response = AppStorage().getStockData()!;
+        response.info = listStoredProducts;
+        print(
+            "listStoredProducts size:" + listStoredProducts.length.toString());
+        AppStorage().setStockData(response);
+        Get.back(result: true);
+        // listTempProducts.add(addProductRequest!);
+        // print("List Size:" + listTempProducts.length.toString());
+        // AppStorage().setStoredProductList(listTempProducts);
+        // Get.back(result: true);
       }
-      print("List Size:" + list.length.toString());
-      AppStorage().setStoredProductList(list);
-      Get.back(result: true);
-      // storeProductApi();
     }
   }
 
@@ -197,10 +250,11 @@ class AddStockProductController extends GetxController
   void onSelectItem(int position, int id, String name, String action) {
     if (action == AppConstants.dialogIdentifier.supplierList) {
       productSupplierController.value.text = name;
-      addProductRequest.supplier_id = id;
+      addProductRequest?.supplierId = id;
+      addProductRequest?.supplier_name = name;
     } else if (action == AppConstants.dialogIdentifier.manufacturerList) {
       productManufacturerController.value.text = name;
-      addProductRequest.manufacturer_id = id;
+      addProductRequest?.manufacturer_id = id;
     } else if (action == AppConstants.action.selectImageFromCamera ||
         action == AppConstants.action.selectImageFromGallery) {
       selectImage(action);
@@ -339,31 +393,49 @@ class AddStockProductController extends GetxController
 
   void storeProductApi() async {
     Map<String, dynamic> map = {};
-    map["id"] = addProductRequest.id;
-    map["shortName"] = addProductRequest.shortName;
-    map["name"] = addProductRequest.name;
-    map["supplier_id"] = addProductRequest.supplier_id;
-    map["status"] = addProductRequest.status;
-    map["mode_type"] = addProductRequest.mode_type;
-    map["barcode_text"] = mBarCode;
-    // map["categories[0]"] = "9";
+    map["id"] = addProductRequest?.id;
+    map["short_name"] = addProductRequest?.shortName;
+    map["name"] = addProductRequest?.name;
+    map["supplier_id"] = addProductRequest?.supplierId;
+    map["manufacturer_id"] = addProductRequest?.manufacturer_id;
+    map["price"] = addProductRequest?.price;
+    map["description"] = addProductRequest?.description;
+    // map["status"] = addProductRequest?.status;
+    map["status"] = true;
+    map["mode_type"] = addProductRequest?.mode_type;
+    map["barcode_text"] = addProductRequest?.barcode_text ?? "";
+
     multi.FormData formData = multi.FormData.fromMap(map);
 
+    var list = <FilesInfo>[];
+    for (int i = 0; i < filesList.length; i++) {
+      if (!StringHelper.isEmptyString(filesList[i].file ?? "") &&
+          !filesList[i].file!.startsWith("http")) {
+        list.add(filesList[i]);
+      }
+    }
+
+    if (list.isNotEmpty) {
+      for (var info in list) {
+        formData.files.addAll([
+          MapEntry(
+              "files[]", await multi.MultipartFile.fromFile(info.file ?? "")),
+        ]);
+      }
+    }
+
     print("Request Data:" + map.toString());
-
     isLoading.value = true;
-
     _api.storeProduct(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          // BaseResponse response =
-          //     BaseResponse.fromJson(jsonDecode(responseModel.result!));
           StoreProductResponse response =
               StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            moveStockEditQuantityScreen(response.info!.id!.toString());
+            getAllStockListApi();
+            // moveStockEditQuantityScreen(response.info!.id!.toString());
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -373,6 +445,49 @@ class AddStockProductController extends GetxController
       },
       onError: (ResponseModel error) {
         isLoading.value = false;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
+  Future<void> getAllStockListApi() async {
+    Map<String, dynamic> map = {};
+    map["filters"] = "";
+    map["offset"] = 0;
+    map["limit"] = AppConstants.productListLimit.toString();
+    map["search"] = "";
+    map["product_id"] = "0";
+    // map["is_stock"] = 1;
+    map["store_id"] = AppStorage.storeId.toString();
+    map["allData"] = "true";
+
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print(map.toString());
+    isLoading.value = true;
+    StockListRepository().getStockList(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          ProductListResponse response =
+              ProductListResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            AppStorage().setStockData(response);
+            Get.back(result: true);
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           AppUtils.showSnackBarMessage('no_internet'.tr);
         } else if (error.statusMessage!.isNotEmpty) {

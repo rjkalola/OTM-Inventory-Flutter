@@ -51,16 +51,20 @@ class AddStoreController extends GetxController
 
       addRequest.id = info.id ?? 0;
       addRequest.store_name = info.storeName ?? "";
-      addRequest.phone_extension_id = info.phoneExtensionId ?? AppConstants.defaultPhoneExtensionId;
-      addRequest.phone_extension = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
+      addRequest.phone_extension_id =
+          info.phoneExtensionId ?? AppConstants.defaultPhoneExtensionId;
+      addRequest.phone_extension =
+          info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       addRequest.phone = info.phone ?? "";
       addRequest.address = info.address ?? "";
 
       storeNameController.value.text = info.storeName ?? "";
-      mExtension.value = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
+      mExtension.value =
+          info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       mFlag.value = info.flagName ?? AppConstants.defaultFlagUrl;
 
-      phoneExtensionController.value.text = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
+      phoneExtensionController.value.text =
+          info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       phoneNumberController.value.text = info.phone ?? "";
       addressController.value.text = info.address ?? "";
 
@@ -78,7 +82,7 @@ class AddStoreController extends GetxController
       mExtension.value = AppConstants.defaultPhoneExtension;
       mFlag.value = AppConstants.defaultFlagUrl;
 
-      addRequest.phone_extension_id =AppConstants.defaultPhoneExtensionId;
+      addRequest.phone_extension_id = AppConstants.defaultPhoneExtensionId;
       addRequest.phone_extension = AppConstants.defaultPhoneExtension;
     }
     getStoreResourcesApi();
@@ -187,9 +191,9 @@ class AddStoreController extends GetxController
             isMainViewVisible.value = true;
             if (!StringHelper.isEmptyString(addRequest.store_managers)) {
               List<String> listIds =
-              StringHelper.getListFromCommaSeparateString(
-                  addRequest.store_managers!);
-              for (int i = 0; i < resourcesResponse.value.users!.length;i++) {
+                  StringHelper.getListFromCommaSeparateString(
+                      addRequest.store_managers!);
+              for (int i = 0; i < resourcesResponse.value.users!.length; i++) {
                 if (listIds.contains(
                     resourcesResponse.value.users![i].id.toString())) {
                   resourcesResponse.value.users![i].check = true;
@@ -224,7 +228,8 @@ class AddStoreController extends GetxController
     map["phone_extension"] = addRequest.phone_extension;
     map["address"] = addRequest.address;
     map["store_managers"] = addRequest.store_managers;
-    map["status"] = addRequest.status;
+    // map["status"] = addRequest.status;
+    map["status"] = true;
     map["mode_type"] = addRequest.mode_type;
     multi.FormData formData = multi.FormData.fromMap(map);
 

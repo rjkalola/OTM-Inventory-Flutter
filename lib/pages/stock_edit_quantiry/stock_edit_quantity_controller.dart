@@ -638,10 +638,11 @@ class StockEditQuantityController extends GetxController
 
   Future<void> editProductClick() async {
     var arguments = {
-      AppConstants.intentKey.productId: productId,
+      AppConstants.intentKey.productInfo: productInfo.value,
+      AppConstants.intentKey.productId: productId
     };
     var result =
-        await Get.toNamed(AppRoutes.addProductScreen, arguments: arguments);
+        await Get.toNamed(AppRoutes.addStockProductScreen, arguments: arguments);
     if (result != null && result) {
       Get.back(result: true);
     }

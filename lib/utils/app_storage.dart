@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:otm_inventory/pages/products/add_product/model/add_product_request.dart';
+import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
@@ -152,25 +153,25 @@ class AppStorage extends GetxController {
     }
   }
 
-  void setStoredProductList(List<AddProductRequest> list) {
-    storage.write(AppConstants.sharedPreferenceKey.localStoredProductList,
-        jsonEncode(list));
-  }
-
-  List<AddProductRequest> getStoredProductList() {
-    final jsonString =
-        storage.read(AppConstants.sharedPreferenceKey.localStoredProductList) ??
-            "";
-    if (!StringHelper.isEmptyString(jsonString)) {
-      final jsonMap = json.decode(jsonString);
-      List<AddProductRequest> list = (jsonMap as List)
-          .map((itemWord) => AddProductRequest.fromJson(itemWord))
-          .toList();
-      return list;
-    } else {
-      return [];
-    }
-  }
+  // void setStoredProductList(List<ProductInfo> list) {
+  //   storage.write(AppConstants.sharedPreferenceKey.localStoredProductList,
+  //       jsonEncode(list));
+  // }
+  //
+  // List<ProductInfo> getStoredProductList() {
+  //   final jsonString =
+  //       storage.read(AppConstants.sharedPreferenceKey.localStoredProductList) ??
+  //           "";
+  //   if (!StringHelper.isEmptyString(jsonString)) {
+  //     final jsonMap = json.decode(jsonString);
+  //     List<ProductInfo> list = (jsonMap as List)
+  //         .map((itemWord) => ProductInfo.fromJson(itemWord))
+  //         .toList();
+  //     return list;
+  //   } else {
+  //     return [];
+  //   }
+  // }
 
   void setDashboardStockCountData(DashboardStockCountResponse data) {
     storage.write(AppConstants.sharedPreferenceKey.dashboardItemCountData,
@@ -205,6 +206,15 @@ class AppStorage extends GetxController {
   String getStockSize() {
     final size = storage.read(AppConstants.sharedPreferenceKey.stockSize) ?? "";
     return size;
+  }
+
+  void setTempId(int id) {
+    storage.write(AppConstants.sharedPreferenceKey.tempIds, id);
+  }
+
+  int getTempId() {
+    final id = storage.read(AppConstants.sharedPreferenceKey.tempIds) ?? 0;
+    return id;
   }
 
   void clearStoredStockList() {

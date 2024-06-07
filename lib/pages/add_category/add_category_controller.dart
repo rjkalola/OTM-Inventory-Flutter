@@ -55,7 +55,8 @@ class AddCategoryController extends GetxController {
     Map<String, dynamic> map = {};
     map["id"] = addRequest.id;
     map["category_name"] = addRequest.category_name;
-    map["status"] = addRequest.status;
+    // map["status"] = addRequest.status;
+    map["status"] = true;
     multi.FormData formData = multi.FormData.fromMap(map);
 
     print("Request Data:" + map.toString());

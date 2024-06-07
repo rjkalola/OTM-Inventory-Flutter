@@ -32,11 +32,11 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
                       child: Padding(
                     padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                     child: Row(children: [
-                      stockListController.productList[position].imageThumb !=
+                      stockListController.productList[position].imageThumbUrl !=
                               null
                           ? Image.network(
                               stockListController
-                                      .productList[position].imageThumb ??
+                                      .productList[position].imageThumbUrl ??
                                   "",
                               height: 60,
                               width: 60,

@@ -3,6 +3,7 @@ import '../../../common/model/file_info.dart';
 
 class AddProductRequest extends BaseResponse {
   int? id,
+      local_id,
       supplier_id,
       lengthUnit_id,
       weightUnit_id,
@@ -27,6 +28,7 @@ class AddProductRequest extends BaseResponse {
 
   AddProductRequest(
       {this.id,
+      this.local_id,
       this.shortName,
       this.name,
       this.categories,
@@ -51,6 +53,7 @@ class AddProductRequest extends BaseResponse {
 
   AddProductRequest.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    local_id = json['local_id'];
     supplier_id = json['supplier_id'];
     shortName = json['short_name'];
     name = json['name'];
@@ -84,6 +87,7 @@ class AddProductRequest extends BaseResponse {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['local_id'] = local_id;
     data['supplier_id'] = supplier_id;
     data['short_name'] = shortName;
     data['name'] = name;

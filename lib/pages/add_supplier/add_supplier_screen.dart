@@ -59,8 +59,13 @@ class AddSupplierScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Flexible(flex: 3,child: TextFieldSupplierPhoneExtension(),),
-                                Flexible(flex: 4, child: TextFieldSupplierPhoneNumber()),
+                                Flexible(
+                                  flex: 3,
+                                  child: TextFieldSupplierPhoneExtension(),
+                                ),
+                                Flexible(
+                                    flex: 4,
+                                    child: TextFieldSupplierPhoneNumber()),
                               ],
                             ),
                             TextFieldSupplierCompanyName(),
@@ -77,22 +82,22 @@ class AddSupplierScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 14,bottom: 18),
-                              child: Row(
-                                children: [
-                                  Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
-                                  const SizedBox(width: 4,),
-                                  Switch(
-                                      value: addSupplierController.isStatus.value,
-                                      activeColor: defaultAccentColor,
-                                      onChanged: (isVisible) {
-                                        addSupplierController.isStatus.value =
-                                            isVisible;
-                                      })
-                                ],
-                              ),
-                            )
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 14,bottom: 18),
+                            //   child: Row(
+                            //     children: [
+                            //       Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
+                            //       const SizedBox(width: 4,),
+                            //       Switch(
+                            //           value: addSupplierController.isStatus.value,
+                            //           activeColor: defaultAccentColor,
+                            //           onChanged: (isVisible) {
+                            //             addSupplierController.isStatus.value =
+                            //                 isVisible;
+                            //           })
+                            //     ],
+                            //   ),
+                            // )
                           ]),
                     ),
                   ),

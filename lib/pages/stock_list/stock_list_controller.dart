@@ -107,11 +107,12 @@ class StockListController extends GetxController
     var code = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (!StringHelper.isEmptyString(code)) {
       mBarCode = code;
+      print("mBarCode:"+mBarCode);
       // bool isInternet = await AppUtils.interNetCheck();
       // if (isInternet) {
       //   getStockListApi(true, true, code, true, true);
       // } else {
-      int index = 0;
+      int index = -1;
       for (int i = 0; i < productList.length; i++) {
         String mBarcodeText = "";
         if (!StringHelper.isEmptyString(productList[i].barcode_text)) {
@@ -124,11 +125,12 @@ class StockListController extends GetxController
         }
       }
 
-      if (index != 0) {
+      if (index != -1) {
         moveStockEditQuantityScreen(
             productList[index].id.toString(), productList[index]);
       } else {
-        AppUtils.showSnackBarMessage('msg_no_qr_code_product_match'.tr);
+        showAddStockProductDialog();
+        // AppUtils.showSnackBarMessage('msg_no_qr_code_product_match'.tr);
       }
       // }
     }
@@ -228,10 +230,19 @@ class StockListController extends GetxController
   }
 
   showAddStockProductDialog() {
+    // AlertDialogHelper.showAlertDialog(
+    //     "",
+    //     'empty_qr_code_scan_msg'.tr,
+    //     'attach_product'.tr,
+    //     'cancel'.tr,
+    //     "add_new_product".tr,
+    //     true,
+    //     this,
+    //     AppConstants.dialogIdentifier.stockOptionsDialog);
     AlertDialogHelper.showAlertDialog(
         "",
         'empty_qr_code_scan_msg'.tr,
-        'attach_product'.tr,
+        "",
         'cancel'.tr,
         "add_new_product".tr,
         true,

@@ -2,16 +2,19 @@ import 'package:otm_inventory/pages/products/product_list/models/product_image_i
 import 'package:otm_inventory/pages/stock_edit_quantiry/model/stock_qty_history_info.dart';
 
 import '../../../../web_services/response/module_info.dart';
+import '../../../common/model/file_info.dart';
 
 class ProductInfo {
   int? id,
+      local_id,
       supplierId,
       manufacturer_id,
       weight_unit_id,
       length_unit_id,
       model_id,
       qty,
-      newQty = 0;
+      newQty = 0,
+      mode_type;
   String? shortName,
       name,
       description,
@@ -40,12 +43,14 @@ class ProductInfo {
       dimension,
       barcode_text;
   List<ModuleInfo>? categories;
-  bool? status;
+  bool? status, localStored;
   List<StockQtyHistoryInfo>? stock_histories;
   List<ProductImageInfo>? product_images;
+  List<FilesInfo>? temp_images;
 
   ProductInfo(
       {this.id,
+      this.local_id,
       this.supplierId,
       this.shortName,
       this.name,
@@ -83,10 +88,14 @@ class ProductInfo {
       this.barcode_text,
       this.stock_histories,
       this.newQty,
-      this.product_images});
+      this.product_images,
+      this.mode_type,
+      this.temp_images,
+      this.localStored});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    local_id = json['local_id'];
     supplierId = json['supplier_id'];
     shortName = json['short_name'];
     name = json['name'];
@@ -119,6 +128,7 @@ class ProductInfo {
     supplier_name = json['supplier_name'];
     supplier_code = json['supplier_code'];
     qty = json['qty'];
+    mode_type = json['mode_type'];
     dimension = json['dimension'];
     if (json['categories'] != null) {
       categories = <ModuleInfo>[];
@@ -139,11 +149,19 @@ class ProductInfo {
       });
     }
     barcode_text = json['barcode_text'];
+    if (json['temp_images'] != null) {
+      temp_images = <FilesInfo>[];
+      json['temp_images'].forEach((v) {
+        temp_images!.add(FilesInfo.fromJson(v));
+      });
+    }
+    localStored = json['local_stored'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['local_id'] = local_id;
     data['supplier_id'] = supplierId;
     data['short_name'] = shortName;
     data['name'] = name;
@@ -176,6 +194,7 @@ class ProductInfo {
     data['supplier_name'] = supplier_name;
     data['supplier_code'] = supplier_code;
     data['qty'] = qty;
+    data['mode_type'] = mode_type;
     data['dimension'] = dimension;
     data['barcode_text'] = barcode_text;
     if (categories != null) {
@@ -188,6 +207,10 @@ class ProductInfo {
     if (product_images != null) {
       data['product_images'] = product_images!.map((v) => v.toJson()).toList();
     }
+    if (temp_images != null) {
+      data['temp_images'] = temp_images!.map((v) => v.toJson()).toList();
+    }
+    data['local_stored'] = localStored;
     return data;
   }
 }
