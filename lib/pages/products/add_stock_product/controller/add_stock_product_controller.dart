@@ -192,8 +192,10 @@ class AddStockProductController extends GetxController
 
       print("index:" + index.toString());
       if (index != -1) {
+        AppUtils.showToastMessage('product_updated_successfully'.tr);
         listStoredProducts[index] = addProductRequest!;
       } else {
+        AppUtils.showToastMessage('product_added_successfully'.tr);
         int localId = AppStorage().getTempId() + 1;
         print("localId:" + localId.toString());
         addProductRequest?.local_id = localId;
@@ -201,6 +203,7 @@ class AddStockProductController extends GetxController
         listStoredProducts.insert(0, addProductRequest!);
       }
     } else {
+      AppUtils.showToastMessage('product_added_successfully'.tr);
       int localId = AppStorage().getTempId() + 1;
       addProductRequest?.local_id = localId;
       AppStorage().setTempId(localId);

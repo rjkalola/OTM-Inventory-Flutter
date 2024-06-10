@@ -151,6 +151,8 @@ class Strings extends Translations {
           'msg_stock_data_uploaded': "Stock Data Uploaded!",
           'msg_press_upload_button_before_download':
               "Note: Press upload button before downloading the data.",
+          'product_added_successfully': "Product added successfully",
+          'product_updated_successfully': "Product updated successfully",
         },
         'hi_IN': {'login': 'Login'}
       };
