@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,7 +8,6 @@ import 'package:otm_inventory/pages/stock_list/widgets/search_stock.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_empty_view.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_filter_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_list.dart';
-import 'package:otm_inventory/pages/stock_list/widgets/upload_stock_button_widget.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 
 import '../../../res/colors.dart';

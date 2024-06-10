@@ -22,6 +22,7 @@ import '../../../stock_list/stock_list_repository.dart';
 import '../../add_product/model/add_product_request.dart';
 import '../../add_product/model/product_resources_response.dart';
 import '../../add_product/model/store_product_response.dart';
+import '../../add_product/model/store_stock_product_response.dart';
 import '../../product_list/models/product_image_info.dart';
 import '../../product_list/models/product_info.dart';
 import '../../product_list/models/product_list_response.dart';
@@ -157,61 +158,60 @@ class AddStockProductController extends GetxController
       if (isInternet) {
         storeProductApi();
       } else {
-        List<ProductInfo> listStoredProducts = [];
-        if (AppStorage().getStockData() != null) {
-          ProductListResponse response = AppStorage().getStockData()!;
-          listStoredProducts.addAll(response.info!);
-        }
-
-        addProductRequest?.localStored = true;
-        int id = 0, localId = 0;
-        if ((addProductRequest?.id != null && addProductRequest?.id! != 0) ||
-            (addProductRequest?.local_id != null &&
-                addProductRequest?.local_id! != 0)) {
-          int index = -1;
-
-          int id_ = addProductRequest?.id ?? 0;
-          int localId_ = addProductRequest?.local_id ?? 0;
-
-          for (int i = 0; i < listStoredProducts.length; i++) {
-            id = listStoredProducts[i].id ?? 0;
-            localId = listStoredProducts[i].local_id ?? 0;
-            if ((id_ > 0 && id == id_) ||
-                (localId_ > 0 && localId == localId_)) {
-              index = i;
-              break;
-            }
-          }
-
-          print("index:" + index.toString());
-          if (index != -1) {
-            listStoredProducts[index] = addProductRequest!;
-          } else {
-            int localId = AppStorage().getTempId() + 1;
-            print("localId:" + localId.toString());
-            addProductRequest?.local_id = localId;
-            AppStorage().setTempId(localId);
-            listStoredProducts.insert(0, addProductRequest!);
-          }
-        } else {
-          int localId = AppStorage().getTempId() + 1;
-          addProductRequest?.local_id = localId;
-          AppStorage().setTempId(localId);
-          print("addProductRequest?.local_id!:${addProductRequest?.local_id!}");
-          listStoredProducts.insert(0, addProductRequest!);
-        }
-        ProductListResponse response = AppStorage().getStockData()!;
-        response.info = listStoredProducts;
-        print(
-            "listStoredProducts size:" + listStoredProducts.length.toString());
-        AppStorage().setStockData(response);
-        Get.back(result: true);
-        // listTempProducts.add(addProductRequest!);
-        // print("List Size:" + listTempProducts.length.toString());
-        // AppStorage().setStoredProductList(listTempProducts);
-        // Get.back(result: true);
+        storeProductInList(true, addProductRequest);
       }
     }
+  }
+
+  void storeProductInList(bool isOffline, ProductInfo? addProductRequest) {
+    List<ProductInfo> listStoredProducts = [];
+    if (AppStorage().getStockData() != null) {
+      ProductListResponse response = AppStorage().getStockData()!;
+      listStoredProducts.addAll(response.info!);
+    }
+
+    addProductRequest?.localStored = isOffline;
+
+    int id = 0, localId = 0;
+    if ((addProductRequest?.id != null && addProductRequest?.id! != 0) ||
+        (addProductRequest?.local_id != null &&
+            addProductRequest?.local_id! != 0)) {
+      int index = -1;
+
+      int id_ = addProductRequest?.id ?? 0;
+      int localId_ = addProductRequest?.local_id ?? 0;
+
+      for (int i = 0; i < listStoredProducts.length; i++) {
+        id = listStoredProducts[i].id ?? 0;
+        localId = listStoredProducts[i].local_id ?? 0;
+        if ((id_ > 0 && id == id_) || (localId_ > 0 && localId == localId_)) {
+          index = i;
+          break;
+        }
+      }
+
+      print("index:" + index.toString());
+      if (index != -1) {
+        listStoredProducts[index] = addProductRequest!;
+      } else {
+        int localId = AppStorage().getTempId() + 1;
+        print("localId:" + localId.toString());
+        addProductRequest?.local_id = localId;
+        AppStorage().setTempId(localId);
+        listStoredProducts.insert(0, addProductRequest!);
+      }
+    } else {
+      int localId = AppStorage().getTempId() + 1;
+      addProductRequest?.local_id = localId;
+      AppStorage().setTempId(localId);
+      print("addProductRequest?.local_id!:${addProductRequest?.local_id!}");
+      listStoredProducts.insert(0, addProductRequest!);
+    }
+    ProductListResponse response = AppStorage().getStockData()!;
+    response.info = listStoredProducts;
+    print("listStoredProducts size:" + listStoredProducts.length.toString());
+    AppStorage().setStockData(response);
+    Get.back(result: true);
   }
 
   void showSupplierList() {
@@ -434,7 +434,8 @@ class AddStockProductController extends GetxController
           StoreProductResponse response =
               StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            getAllStockListApi();
+            // getAllStockListApi();
+            storeProductInList(true, addProductRequest);
             // moveStockEditQuantityScreen(response.info!.id!.toString());
           } else {
             AppUtils.showSnackBarMessage(response.Message!);

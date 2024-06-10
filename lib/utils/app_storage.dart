@@ -227,6 +227,7 @@ class AppStorage extends GetxController {
   // }
 
   void clearAllData() {
+    AppConstants.isResourcesLoaded = false;
     removeData(AppConstants.sharedPreferenceKey.storeId);
     removeData(AppConstants.sharedPreferenceKey.storeName);
     removeData(AppConstants.sharedPreferenceKey.userInfo);

@@ -19,7 +19,7 @@ import '../common/drop_down_list_dialog.dart';
 import '../common/listener/DialogButtonClickListener.dart';
 import '../common/listener/select_item_listener.dart';
 import '../products/add_product/model/add_product_request.dart';
-import '../products/add_product/model/store_product_response.dart';
+import '../products/add_product/model/store_stock_product_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../stock_edit_quantiry/model/store_stock_request.dart';
@@ -47,7 +47,7 @@ class StockListController extends GetxController
       search = ''.obs,
       mSupplierCategoryFilter = ''.obs,
       downloadTitle = 'download'.tr.obs;
-  var offset = 0;
+  var offset = 0, stockCountType = 0;
   var mIsLastPage = false;
   var mBarCode = "";
   late ScrollController controller;
@@ -69,6 +69,12 @@ class StockListController extends GetxController
     } else {
       setOfflineData();
     }*/
+
+    var arguments = Get.arguments;
+    if (arguments != null) {
+      stockCountType = arguments[AppConstants.intentKey.stockCountType];
+      if(stockCountType != 0) mSupplierCategoryFilter.value = "-";
+    }
 
     setDownloadTitle();
     setOfflineData();
@@ -107,7 +113,7 @@ class StockListController extends GetxController
     var code = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
     if (!StringHelper.isEmptyString(code)) {
       mBarCode = code;
-      print("mBarCode:"+mBarCode);
+      print("mBarCode:" + mBarCode);
       // bool isInternet = await AppUtils.interNetCheck();
       // if (isInternet) {
       //   getStockListApi(true, true, code, true, true);
@@ -279,8 +285,10 @@ class StockListController extends GetxController
     }
     if (clearFilter) {
       mSupplierCategoryFilter.value = "";
+      stockCountType = 0;
     }
-    isLoadMore.value = offset > 0;
+    setOfflineData();
+   /* isLoadMore.value = offset > 0;
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
     map["offset"] = offset.toString();
@@ -289,7 +297,8 @@ class StockListController extends GetxController
     map["product_id"] = "0";
     map["is_stock"] = 1;
     map["store_id"] = AppStorage.storeId.toString();
-    if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value)) {
+    if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value) &&
+        mSupplierCategoryFilter.value != "-") {
       final jsonMap = json.decode(mSupplierCategoryFilter.value);
       List<FilterRequest> list = (jsonMap as List)
           .map((itemWord) => FilterRequest.fromJson(itemWord))
@@ -369,7 +378,7 @@ class StockListController extends GetxController
           AppUtils.showSnackBarMessage(error.statusMessage!);
         }
       },
-    );
+    );*/
   }
 
   Future<void> getStockListWithCodeApi(
@@ -507,8 +516,9 @@ class StockListController extends GetxController
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          StoreProductResponse response =
-              StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
+          StoreStockProductResponse response =
+              StoreStockProductResponse.fromJson(
+                  jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             moveStockEditQuantityScreen(response.info!.id.toString(), null);
           } else {
@@ -681,7 +691,16 @@ class StockListController extends GetxController
     if (AppStorage().getStockData() != null) {
       ProductListResponse response = AppStorage().getStockData()!;
       tempList.clear();
-      tempList.addAll(response.info!);
+      if (stockCountType == 0) {
+        tempList.addAll(response.info!);
+      } else {
+        for (var info in response.info!) {
+          if (info.stock_status_id == stockCountType) {
+            tempList.add(info);
+          }
+        }
+      }
+
       productList.value = tempList;
       productList.refresh();
     }

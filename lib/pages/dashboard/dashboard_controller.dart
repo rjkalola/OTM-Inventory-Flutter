@@ -51,7 +51,8 @@ class DashboardController extends GetxController
   final selectedIndex = 0.obs,
       mInStockCount = 0.obs,
       mLowStockCount = 0.obs,
-      mOutOfStockCount = 0.obs;
+      mOutOfStockCount = 0.obs,
+      mMinusStockCount = 0.obs;
 
   // final pageController = PageController();
   late final PageController pageController;
@@ -81,7 +82,6 @@ class DashboardController extends GetxController
     } else {
       getStoreListApi();
     }
-
     // else {
     //   isMainViewVisible.value = true;
     //   setHeaderListArray();
@@ -96,7 +96,6 @@ class DashboardController extends GetxController
     print("isInternet:" + isInternet.toString());
     if (isInternet) {
       getDashboardStockCountApi(true);
-      getProductResourcesApi();
     } else {
       isMainViewVisible.value = true;
       if (AppStorage().getDashboardStockCountData() != null) {
@@ -218,6 +217,13 @@ class DashboardController extends GetxController
     }
   }
 
+  Future<void> onClickStockItem(int stockCountType) async {
+    var arguments = {
+      AppConstants.intentKey.stockCountType: stockCountType,
+    };
+    Get.toNamed(AppRoutes.stockListScreen, arguments: arguments);
+  }
+
   void getStoreListApi() async {
     Map<String, dynamic> map = {};
     multi.FormData formData = multi.FormData.fromMap(map);
@@ -283,6 +289,7 @@ class DashboardController extends GetxController
             AppStorage().setDashboardStockCountData(response);
             AppStorage().setStockSize(response.data_size ?? "");
             setItemCount(response);
+            storeStockData(false);
           } else {
             AppUtils.showSnackBarMessage(response.message!);
           }
@@ -307,6 +314,7 @@ class DashboardController extends GetxController
       mInStockCount.value = response.inStockCount ?? 0;
       mLowStockCount.value = response.lowStockCount ?? 0;
       mOutOfStockCount.value = response.outOfStockCount ?? 0;
+      mMinusStockCount.value = response.minusStockCount ?? 0;
 
       if (!StringHelper.isEmptyString(response.data_size)) {
         downloadTitle.value = "${'download'.tr} (${response.data_size!})";
@@ -319,7 +327,7 @@ class DashboardController extends GetxController
   void getStoreResourcesApi() async {
     Map<String, dynamic> map = {};
     multi.FormData formData = multi.FormData.fromMap(map);
-    // isLoading.value = true;
+    // isLoading.value = isProgress;
 
     StockEditQuantityRepository().getStoreResources(
       formData: formData,
@@ -330,7 +338,7 @@ class DashboardController extends GetxController
               jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             AppStorage().setStockResources(response);
-            AppUtils.showSnackBarMessage('msg_stock_data_downloaded'.tr);
+            AppConstants.isResourcesLoaded = true;
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -339,7 +347,7 @@ class DashboardController extends GetxController
         }
       },
       onError: (ResponseModel error) {
-        // isLoading.value = false;
+        isLoading.value = false;
         // isMainViewVisible.value = true;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           AppUtils.showSnackBarMessage('no_internet'.tr);
@@ -350,7 +358,7 @@ class DashboardController extends GetxController
     );
   }
 
-  Future<void> getAllStockListApi(bool isDownloadResources) async {
+  Future<void> getAllStockListApi(bool isProgress) async {
     Map<String, dynamic> map = {};
     map["filters"] = "";
     map["offset"] = 0;
@@ -363,23 +371,20 @@ class DashboardController extends GetxController
 
     multi.FormData formData = multi.FormData.fromMap(map);
     print(map.toString());
-    isLoading.value = true;
+    isLoading.value = isProgress;
     StockListRepository().getStockList(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
-        // isLoading.value = false;
+        isLoading.value = false;
         if (responseModel.statusCode == 200) {
           ProductListResponse response =
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             AppStorage().setStockData(response);
-            print("isDownloadResources:" + isDownloadResources.toString());
-            if (isDownloadResources) {
+            if (!AppConstants.isResourcesLoaded) {
               loadAllImages();
               getStoreResourcesApi();
               getProductResourcesApi();
-            } else {
-              isLoading.value = false;
             }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -434,55 +439,6 @@ class DashboardController extends GetxController
     );
   }
 
-/*  Future<void> getAllProductListApi(
-      bool isProgress, bool isDownloadResources) async {
-    Map<String, dynamic> map = {};
-    map["filters"] = "";
-    map["offset"] = 0;
-    map["limit"] = AppConstants.productListLimit.toString();
-    map["search"] = "";
-    map["product_id"] = "0";
-    // map["is_stock"] = 1;
-    map["store_id"] = AppStorage.storeId.toString();
-    map["allData"] = "true";
-
-    multi.FormData formData = multi.FormData.fromMap(map);
-    print(map.toString());
-    if (isProgress) isLoading.value = isProgress;
-    StockListRepository().getStockList(
-      formData: formData,
-      onSuccess: (ResponseModel responseModel) {
-        // isLoading.value = false;
-        if (responseModel.statusCode == 200) {
-          ProductListResponse response =
-              ProductListResponse.fromJson(jsonDecode(responseModel.result!));
-          if (response.IsSuccess!) {
-            AppStorage().setProductsData(response);
-            if (isDownloadResources) {
-              loadAllImages();
-              getProductResourcesApi();
-            } else {
-              isLoading.value = false;
-            }
-          } else {
-            AppUtils.showSnackBarMessage(response.Message!);
-          }
-        } else {
-          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
-        }
-      },
-      onError: (ResponseModel error) {
-        isLoading.value = false;
-        isMainViewVisible.value = true;
-        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-        } else if (error.statusMessage!.isNotEmpty) {
-          AppUtils.showSnackBarMessage(error.statusMessage!);
-        }
-      },
-    );
-  }*/
-
   Future<void> storeLocalStocksAPI(bool isProgress, String data) async {
     Map<String, dynamic> map = {};
     map["app_data"] = data;
@@ -498,11 +454,11 @@ class DashboardController extends GetxController
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             if (isLocalProductsAvailable()) {
-              storeLocalProducts(true, getLocalStoredProduct());
+              storeLocalProducts(isProgress, getLocalStoredProduct());
             } else {
-              AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
+              if(isProgress)AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
               AppStorage().clearStoredStockList();
-              getAllStockListApi(false);
+              getAllStockListApi(isProgress);
             }
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -530,20 +486,15 @@ class DashboardController extends GetxController
     multi.FormData formData = multi.FormData.fromMap(map);
     for (int i = 0; i < listProducts.length; i++) {
       var listFiles = <FilesInfo>[];
-      print("listProducts[i].product_images!.length:" +
-          listProducts[i].temp_images!.length.toString());
       for (int j = 0; j < listProducts[i].temp_images!.length; j++) {
         if (!StringHelper.isEmptyString(
                 listProducts[i].temp_images![j].file ?? "") &&
             !listProducts[i].temp_images![j].file!.startsWith("http")) {
-          print("listProducts[i].product_images![j].file:" +
-              listProducts[i].temp_images![j].file!);
           listFiles.add(listProducts[i].temp_images![j]);
         }
       }
       if (listFiles.isNotEmpty) {
         for (var info in listFiles) {
-          print("files[$i][]${info.file!}");
           formData.files.addAll([
             MapEntry("files[$i][]",
                 await multi.MultipartFile.fromFile(info.file ?? "")),
@@ -562,9 +513,9 @@ class DashboardController extends GetxController
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
+            if(isProgress)AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
             AppStorage().clearStoredStockList();
-            getAllStockListApi(false);
+            getAllStockListApi(true);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -589,14 +540,18 @@ class DashboardController extends GetxController
       ProductListResponse response = AppStorage().getStockData()!;
       if (response.info!.isNotEmpty) {
         for (int i = 0; i < response.info!.length; i++) {
-          if (response.info![i].imageThumbUrl != null && !StringHelper
-              .isEmptyString(response.info![i].imageThumbUrl)) {
-          DefaultCacheManager()
-              .downloadFile(response.info![i].imageThumbUrl!)
-              .then((_) {});
+          if (response.info![i].imageThumbUrl != null &&
+              !StringHelper.isEmptyString(response.info![i].imageThumbUrl)) {
+            DefaultCacheManager()
+                .downloadFile(response.info![i].imageThumbUrl!)
+                .then((_) {});
           }
         }
       }
+    }
+    var userInfo = Get.find<AppStorage>().getUserInfo();
+    if (!StringHelper.isEmptyString(userInfo.image)) {
+      DefaultCacheManager().downloadFile(userInfo.image!).then((_) {});
     }
   }
 
@@ -672,20 +627,29 @@ class DashboardController extends GetxController
   Future<void> onClickUploadStockButton() async {
     bool isInternet = await AppUtils.interNetCheck();
     if (isInternet) {
-      storeStockData();
+      storeStockData(true);
     } else {
       AppUtils.showSnackBarMessage('no_internet'.tr);
     }
   }
 
-  void storeStockData() {
+  Future<void> onClickSyncStockButton() async {
+    bool isInternet = await AppUtils.interNetCheck();
+    if (isInternet) {
+      storeStockData(true);
+    } else {
+      AppUtils.showSnackBarMessage('no_internet'.tr);
+    }
+  }
+
+  void storeStockData(bool isProgress) {
     if (isLocalStocksAvailable()) {
       List<StockStoreRequest> list = AppStorage().getStoredStockList();
-      storeLocalStocksAPI(true, jsonEncode(list));
+      storeLocalStocksAPI(isProgress, jsonEncode(list));
     } else if (isLocalProductsAvailable()) {
-      storeLocalProducts(true, getLocalStoredProduct());
+      storeLocalProducts(isProgress, getLocalStoredProduct());
     } else {
-      print("No Stock Available");
+      getAllStockListApi(isProgress);
     }
   }
 

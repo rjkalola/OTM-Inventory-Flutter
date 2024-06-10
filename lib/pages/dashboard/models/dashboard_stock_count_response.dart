@@ -1,7 +1,7 @@
 class DashboardStockCountResponse {
   bool? isSuccess;
   String? message, data_size;
-  int? inStockCount, lowStockCount, outOfStockCount;
+  int? inStockCount, lowStockCount, outOfStockCount, minusStockCount;
 
   DashboardStockCountResponse(
       {this.isSuccess,
@@ -9,7 +9,8 @@ class DashboardStockCountResponse {
       this.data_size,
       this.inStockCount,
       this.lowStockCount,
-      this.outOfStockCount});
+      this.outOfStockCount,
+      this.minusStockCount});
 
   DashboardStockCountResponse.fromJson(Map<String, dynamic> json) {
     isSuccess = json['IsSuccess'];
@@ -18,6 +19,7 @@ class DashboardStockCountResponse {
     inStockCount = json['in_stock_count'];
     lowStockCount = json['low_stock_count'];
     outOfStockCount = json['out_of_stock_count'];
+    minusStockCount = json['minus_stock_count'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class DashboardStockCountResponse {
     data['in_stock_count'] = inStockCount;
     data['low_stock_count'] = lowStockCount;
     data['out_of_stock_count'] = outOfStockCount;
+    data['minus_stock_count'] = minusStockCount;
     return data;
   }
 }

@@ -25,7 +25,7 @@ import '../common/drop_down_list_dialog.dart';
 import '../common/listener/DialogButtonClickListener.dart';
 import '../common/listener/select_date_listener.dart';
 import '../common/listener/select_item_listener.dart';
-import '../products/add_product/model/store_product_response.dart';
+import '../products/add_product/model/store_stock_product_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../stock_list/stock_list_repository.dart';
@@ -273,7 +273,7 @@ class StockEditQuantityController extends GetxController
   Future<void> storeStockQuantityApi(
       bool isProgress,
       String productId,
-      String quantity,
+      int quantity,
       String note,
       String price,
       String date,
@@ -281,7 +281,7 @@ class StockEditQuantityController extends GetxController
     Map<String, dynamic> map = {};
     map["store_id"] = AppStorage.storeId.toString();
     map["product_id"] = productId;
-    map["qty"] = quantity;
+    map["qty"] = quantity.toString();
     if (isUserDropdownVisible.value) {
       map["user_id"] = userId;
     }
@@ -304,10 +304,13 @@ class StockEditQuantityController extends GetxController
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             Get.find<AppStorage>().setQuantityNote(note);
-            AppUtils.showSnackBarMessage(response.Message!);
-            // Get.back(result: true);
-            isUpdated = true;
-            getStockQuantityDetailsApi(true, productId);
+            productInfo.value.qty = productInfo.value.qty != null
+                ? (productInfo.value.qty! + quantity)
+                : quantity;
+            productInfo.refresh();
+            updateQtyInLocalList(productInfo.value.qty ?? 0);
+            AppUtils.showToastMessage('msg_product_stock_update'.tr);
+            Get.back(result: true);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -426,8 +429,9 @@ class StockEditQuantityController extends GetxController
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          StoreProductResponse response =
-              StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
+          StoreStockProductResponse response =
+              StoreStockProductResponse.fromJson(
+                  jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             AppUtils.showSnackBarMessage(message);
             isUpdated = true;
@@ -513,51 +517,53 @@ class StockEditQuantityController extends GetxController
       String price = priceController.value.text.toString().trim();
       String date = dateController.value.text.toString().trim();
 
-      // bool isInternet = await AppUtils.interNetCheck();
-      // if (isInternet) {
-      //   storeStockQuantityApi(true, productId.toString(), finalQty.toString(),
-      //       note, price, date, isDeduct ? "remove" : "add");
-      // } else {
-      // Add stock in local storage
-      List<StockStoreRequest> list = AppStorage().getStoredStockList();
-      StockStoreRequest request = StockStoreRequest();
-      request.product_id = productId.toString();
-      request.store_id = AppStorage.storeId.toString();
-      request.qty = finalQty.toString();
-      if (isUserDropdownVisible.value) {
-        request.user_id = userId.toString();
-      }
-      if (isReferenceVisible.value) {
-        request.note = note;
-      }
-      request.mode = isDeduct ? "remove" : "add";
-      list.add(request);
-      AppStorage().setStoredStockList(list);
+      bool isInternet = await AppUtils.interNetCheck();
+      if (isInternet) {
+        storeStockQuantityApi(true, productId.toString(), finalQty,
+            note, price, date, isDeduct ? "remove" : "add");
+      } else {
+        // Add stock in local storage
+        List<StockStoreRequest> list = AppStorage().getStoredStockList();
+        StockStoreRequest request = StockStoreRequest();
+        request.product_id = productId.toString();
+        request.store_id = AppStorage.storeId.toString();
+        request.qty = finalQty.toString();
+        if (isUserDropdownVisible.value) {
+          request.user_id = userId.toString();
+        }
+        if (isReferenceVisible.value) {
+          request.note = note;
+        }
+        request.mode = isDeduct ? "remove" : "add";
+        list.add(request);
+        AppStorage().setStoredStockList(list);
+        Get.find<AppStorage>().setQuantityNote(note);
 
-      productInfo.value.qty = productInfo.value.qty != null
-          ? (productInfo.value.qty! + finalQty)
-          : finalQty;
-      productInfo.refresh();
+        productInfo.value.qty = productInfo.value.qty != null
+            ? (productInfo.value.qty! + finalQty)
+            : finalQty;
+        productInfo.refresh();
 
-      //Update list quantity
-      if (AppStorage().getStockData() != null) {
-        ProductListResponse response = AppStorage().getStockData()!;
-        if (!StringHelper.isEmptyList(response.info)) {
-          for (int i = 0; i < response.info!.length; i++) {
-            if (response.info![i].id.toString() == productId) {
-              response.info![i].qty = productInfo.value.qty;
-              break;
-            }
+        updateQtyInLocalList(productInfo.value.qty ?? 0);
+        AppUtils.showToastMessage('msg_product_stock_update'.tr);
+        Get.back(result: true);
+        // isUpdated = true;
+      }
+    }
+  }
+
+  void updateQtyInLocalList(int qty) {
+    if (AppStorage().getStockData() != null) {
+      ProductListResponse response = AppStorage().getStockData()!;
+      if (!StringHelper.isEmptyList(response.info)) {
+        for (int i = 0; i < response.info!.length; i++) {
+          if (response.info![i].id.toString() == productId) {
+            response.info![i].qty = productInfo.value.qty;
+            break;
           }
         }
-        AppStorage().setStockData(response);
       }
-
-      AppUtils.showToastMessage('msg_product_stock_update'.tr);
-      Get.back(result: true);
-
-      // isUpdated = true;
-      // }
+      AppStorage().setStockData(response);
     }
   }
 
@@ -641,8 +647,8 @@ class StockEditQuantityController extends GetxController
       AppConstants.intentKey.productInfo: productInfo.value,
       AppConstants.intentKey.productId: productId
     };
-    var result =
-        await Get.toNamed(AppRoutes.addStockProductScreen, arguments: arguments);
+    var result = await Get.toNamed(AppRoutes.addStockProductScreen,
+        arguments: arguments);
     if (result != null && result) {
       Get.back(result: true);
     }

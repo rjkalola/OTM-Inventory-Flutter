@@ -7,6 +7,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/dashboard_stock_count_item.dart';
 import 'package:otm_inventory/pages/otp_verification/model/user_info.dart';
+import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../../../res/colors.dart';
@@ -87,6 +88,10 @@ class _HomeTabState extends State<HomeTab> {
                                 value: dashboardController.mInStockCount
                                     .toString(),
                                 valueColor: Colors.green,
+                                onPressed: () {
+                                  dashboardController.onClickStockItem(
+                                      AppConstants.stockCountType.inStock);
+                                },
                               ),
 
                               DashboardStockCountItem(
@@ -94,6 +99,10 @@ class _HomeTabState extends State<HomeTab> {
                                 value: dashboardController.mLowStockCount
                                     .toString(),
                                 valueColor: Colors.orange,
+                                onPressed: () {
+                                  dashboardController.onClickStockItem(
+                                      AppConstants.stockCountType.lowStock);
+                                },
                               ),
 
                               DashboardStockCountItem(
@@ -101,46 +110,74 @@ class _HomeTabState extends State<HomeTab> {
                                 value: dashboardController.mOutOfStockCount
                                     .toString(),
                                 valueColor: Colors.red,
+                                onPressed: () {
+                                  dashboardController.onClickStockItem(
+                                      AppConstants.stockCountType.outOfStock);
+                                },
+                              ),
+
+                              DashboardStockCountItem(
+                                title: 'minus_stock'.tr,
+                                value: dashboardController.mMinusStockCount
+                                    .toString(),
+                                valueColor: Colors.red,
+                                onPressed: () {
+                                  dashboardController.onClickStockItem(
+                                      AppConstants.stockCountType.minusStock);
+                                },
                               ),
                             ]),
                       ),
+                      // Padding(
+                      //   padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                      //   child: PrimaryTextView(
+                      //     text: 'msg_press_upload_button_before_download'.tr,
+                      //     color: primaryTextColor,
+                      //     fontSize: 13,
+                      //     softWrap: true,
+                      //   ),
+                      // ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                        child: PrimaryTextView(
-                          text: 'msg_press_upload_button_before_download'.tr,
-                          color: primaryTextColor,
-                          fontSize: 13,
-                          softWrap: true,
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        child:  SizedBox(
+                          width: double.infinity,
+                          child: PrimaryBorderButton(
+                            buttonText:
+                            'sync'.tr,
+                            textColor: defaultAccentColor,
+                            borderColor: defaultAccentColor,
+                            onPressed: () {
+                              dashboardController
+                                  .onClickDownloadStockButton();
+                            },
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            PrimaryBorderButton(
-                              buttonText:
-                                  dashboardController.downloadTitle.value,
-                              textColor: Colors.green,
-                              borderColor: Colors.green,
-                              onPressed: () {
-                                dashboardController
-                                    .onClickDownloadStockButton();
-                              },
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            PrimaryBorderButton(
-                              buttonText: 'upload'.tr,
-                              textColor: defaultAccentColor,
-                              borderColor: defaultAccentColor,
-                              onPressed: () {
-                                dashboardController.onClickUploadStockButton();
-                              },
-                            )
-                          ],
-                        ),
+                        // child: Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.stretch,
+                        //   children: [
+                        //     PrimaryBorderButton(
+                        //       buttonText:
+                        //           dashboardController.downloadTitle.value,
+                        //       textColor: Colors.green,
+                        //       borderColor: Colors.green,
+                        //       onPressed: () {
+                        //         dashboardController
+                        //             .onClickDownloadStockButton();
+                        //       },
+                        //     ),
+                        //     const SizedBox(
+                        //       height: 16,
+                        //     ),
+                        //     PrimaryBorderButton(
+                        //       buttonText: 'upload'.tr,
+                        //       textColor: defaultAccentColor,
+                        //       borderColor: defaultAccentColor,
+                        //       onPressed: () {
+                        //         dashboardController.onClickUploadStockButton();
+                        //       },
+                        //     )
+                        //   ],
+                        // ),
                       )
                     ]),
               ),

@@ -14,7 +14,9 @@ class ProductInfo {
       model_id,
       qty,
       newQty = 0,
-      mode_type;
+      mode_type,
+      stock_status_id;
+
   String? shortName,
       name,
       description,
@@ -41,7 +43,8 @@ class ProductInfo {
       supplier_name,
       supplier_code,
       dimension,
-      barcode_text;
+      barcode_text,
+      stock_status;
   List<ModuleInfo>? categories;
   bool? status, localStored;
   List<StockQtyHistoryInfo>? stock_histories;
@@ -91,7 +94,9 @@ class ProductInfo {
       this.product_images,
       this.mode_type,
       this.temp_images,
-      this.localStored});
+      this.localStored,
+      this.stock_status_id,
+      this.stock_status});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -156,6 +161,8 @@ class ProductInfo {
       });
     }
     localStored = json['local_stored'];
+    stock_status_id = json['stock_status_id'];
+    stock_status = json['stock_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -211,6 +218,8 @@ class ProductInfo {
       data['temp_images'] = temp_images!.map((v) => v.toJson()).toList();
     }
     data['local_stored'] = localStored;
+    data['stock_status_id'] = stock_status_id;
+    data['stock_status'] = stock_status;
     return data;
   }
 }

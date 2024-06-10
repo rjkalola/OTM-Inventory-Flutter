@@ -38,8 +38,7 @@ class StoreListView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               titleTextView(storeListController
                                   .storeList[position].storeName),
@@ -50,15 +49,18 @@ class StoreListView extends StatelessWidget {
                                     AppStorage.storeName = storeListController
                                         .storeList[position].storeName!;
 
-                                    Get.find<AppStorage>().setStoreId(AppStorage.storeId);
-                                    Get.find<AppStorage>().setStoreName(AppStorage.storeName);
+                                    Get.find<AppStorage>()
+                                        .setStoreId(AppStorage.storeId);
+                                    Get.find<AppStorage>()
+                                        .setStoreName(AppStorage.storeName);
 
-                                    storeListController.activeStoreId.value = AppStorage.storeId;
+                                    storeListController.activeStoreId.value =
+                                        AppStorage.storeId;
                                     AppUtils.showSnackBarMessage(
                                         "${storeListController.storeList[position].storeName} Activated");
                                   },
-                                  child: const Icon(
-                                      Icons.remove_red_eye_outlined))
+                                  child:
+                                      const Icon(Icons.remove_red_eye_outlined))
                             ],
                           ),
                           const SizedBox(
@@ -66,27 +68,27 @@ class StoreListView extends StatelessWidget {
                           ),
                           itemTextView(
                               'phone'.tr,
-                              storeListController.storeList[position]
-                                  .phoneWithExtension),
-                          Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                itemTextView(
-                                    'address'.tr,
-                                    storeListController
-                                        .storeList[position].address),
-                                Visibility(
-                                  visible: storeListController
-                                      .storeList[position].id! == storeListController.activeStoreId.value,
-                                  child: Text('active'.tr,
-                                      style: const TextStyle(
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 13,
-                                      )),
-                                )
-                              ]),
+                              storeListController
+                                  .storeList[position].phoneWithExtension),
+                          Row(children: [
+                            Expanded(
+                              child: itemTextView(
+                                  'address'.tr,
+                                  storeListController
+                                      .storeList[position].address),
+                            ),
+                            Visibility(
+                              visible:
+                                  storeListController.storeList[position].id! ==
+                                      storeListController.activeStoreId.value,
+                              child: Text('active'.tr,
+                                  style: const TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 13,
+                                  )),
+                            )
+                          ]),
                         ],
                       ),
                     ),
@@ -113,6 +115,7 @@ class StoreListView extends StatelessWidget {
   Widget itemTextView(String title, String? text) => Visibility(
         visible: !StringHelper.isEmptyString(text),
         child: Text("$title: ${text ?? "-"}",
+            softWrap: true,
             style: const TextStyle(
               color: secondaryLightTextColor,
               fontWeight: FontWeight.w400,

@@ -143,8 +143,10 @@ class Strings extends Translations {
           'in_stock': "In Stock",
           'low_stock': "Low Stock",
           'out_of_stock': "Out of stock",
+          'minus_stock': "Minus Stock",
           'download': "Download",
           'upload': "Upload",
+          'sync': "Sync",
           'msg_stock_data_downloaded': "Stock Data Downloaded!",
           'msg_stock_data_uploaded': "Stock Data Uploaded!",
           'msg_press_upload_button_before_download':

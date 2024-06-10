@@ -5,12 +5,14 @@ class AppConstants {
   static const IntentKey intentKey = IntentKey();
   static const Action action = Action();
   static const StockFilterType stockFilterType = StockFilterType();
+  static const StockCountType stockCountType = StockCountType();
   static const String deviceType = "1";
   static const int productListLimit = 20;
   static const int defaultPhoneExtensionId = 1;
   static const String defaultPhoneExtension = "+44";
   static const String defaultFlagUrl =
       "https://devcdn.otmsystem.com/flags/png/gb_32.png";
+  static bool isResourcesLoaded = false;
 }
 
 class IntentKey {
@@ -26,6 +28,7 @@ class IntentKey {
   final String storeId = 'STORE_ID';
   final String dashboardTabIndex = 'DASHBOARD_TAB_INDEX';
   final String barCode = 'BAR_CODE';
+  final String stockCountType = 'STOCK_COUNT_TYPE';
 }
 
 class DialogIdentifier {
@@ -92,4 +95,12 @@ class StockFilterType {
   final String filterAll = "FILTER_ALL";
   final String filterIn = "FILTER_IN";
   final String filterOut = "FILTER_OUT";
+}
+
+class StockCountType {
+  const StockCountType(); //
+  final int inStock = 1;
+  final int lowStock = 2;
+  final int outOfStock = 3;
+  final int minusStock = 4;
 }
