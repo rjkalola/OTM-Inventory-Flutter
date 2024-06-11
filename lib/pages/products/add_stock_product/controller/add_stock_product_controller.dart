@@ -130,7 +130,8 @@ class AddStockProductController extends GetxController
     } else if (info.local_id != null && info.local_id! > 0) {
       print("local_idDDDD:" + info.local_id!.toString());
       for (int i = 0; i < info.temp_images!.length; i++) {
-        filesList.add(info.temp_images![i]);
+        if (!StringHelper.isEmptyString(info.temp_images![i].file))
+          filesList.add(info.temp_images![i]);
       }
     }
   }
@@ -450,6 +451,7 @@ class AddStockProductController extends GetxController
               StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             // getAllStockListApi();
+            if (addProductRequest?.qty != null) response.info!.qty = addProductRequest?.qty;
             storeProductInList(false, response.info);
             // moveStockEditQuantityScreen(response.info!.id!.toString());
           } else {

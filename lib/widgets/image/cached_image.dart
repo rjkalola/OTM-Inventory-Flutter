@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
@@ -12,21 +14,21 @@ class CachedImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return !StringHelper.isEmptyString(url)
-        ? CachedNetworkImage(
-            height: size,
-            width: size,
-            imageUrl: url ?? "",
-            placeholder: (context, url) => PlaceHolderErrorImage(size: size),
-            errorWidget: (context, url, error) =>
-                PlaceHolderErrorImage(size: size),
-          )
-        // Image.network(
-        //         stockListController
-        //                 .productList[position].imageThumb ??
-        //             "",
-        //         height: 60,
-        //         width: 60,
-        //       )
+        ? url!.startsWith("http")
+            ? CachedNetworkImage(
+                height: size,
+                width: size,
+                imageUrl: url ?? "",
+                placeholder: (context, url) =>
+                    PlaceHolderErrorImage(size: size),
+                errorWidget: (context, url, error) =>
+                    PlaceHolderErrorImage(size: size),
+              )
+            : Image.file(
+                File(url ?? ""),
+                height: size,
+                width: size,
+              )
         : PlaceHolderErrorImage(size: size);
   }
 }

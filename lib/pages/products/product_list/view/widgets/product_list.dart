@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 import '../../../../../res/colors.dart';
+import '../../../../../widgets/image/cached_image.dart';
 import '../../controller/product_list_controller.dart';
 
 class ProductListView extends StatelessWidget {
@@ -33,17 +34,11 @@ class ProductListView extends StatelessWidget {
                       child: Padding(
                     padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                     child: Row(children: [
-                      productListController
-                                  .productList[position].imageThumbUrl !=
-                              null
-                          ? Image.network(
-                              productListController
-                                      .productList[position].imageThumbUrl ??
-                                  "",
-                              height: 60,
-                              width: 60,
-                            )
-                          : const Icon(Icons.photo_outlined, size: 60),
+                      CachedImage(
+                        size: 60,
+                        url: productListController
+                            .productList[position].imageThumbUrl,
+                      ),
                       Expanded(
                           child: Padding(
                         padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
