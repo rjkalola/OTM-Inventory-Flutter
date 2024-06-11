@@ -340,20 +340,20 @@ class DashboardController extends GetxController
             AppStorage().setStockResources(response);
             AppConstants.isResourcesLoaded = true;
           } else {
-            AppUtils.showSnackBarMessage(response.Message!);
+            // AppUtils.showSnackBarMessage(response.Message!);
           }
         } else {
-          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+          // AppUtils.showSnackBarMessage(responseModel.statusMessage!);
         }
       },
       onError: (ResponseModel error) {
         isLoading.value = false;
         // isMainViewVisible.value = true;
-        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-        } else if (error.statusMessage!.isNotEmpty) {
-          AppUtils.showSnackBarMessage(error.statusMessage!);
-        }
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   AppUtils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
       },
     );
   }
@@ -387,20 +387,20 @@ class DashboardController extends GetxController
               getProductResourcesApi();
             }
           } else {
-            AppUtils.showSnackBarMessage(response.Message!);
+            // AppUtils.showSnackBarMessage(response.Message!);
           }
         } else {
-          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+          // AppUtils.showSnackBarMessage(responseModel.statusMessage!);
         }
       },
       onError: (ResponseModel error) {
         isLoading.value = false;
         isMainViewVisible.value = true;
-        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-        } else if (error.statusMessage!.isNotEmpty) {
-          AppUtils.showSnackBarMessage(error.statusMessage!);
-        }
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   AppUtils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
       },
     );
   }
@@ -421,20 +421,20 @@ class DashboardController extends GetxController
             // AppUtils.showSnackBarMessage('msg_stock_data_downloaded'.tr);
             AppStorage().setProductResources(response);
           } else {
-            AppUtils.showSnackBarMessage(response.Message!);
+            // AppUtils.showSnackBarMessage(response.Message!);
           }
         } else {
-          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+          // AppUtils.showSnackBarMessage(responseModel.statusMessage!);
         }
       },
       onError: (ResponseModel error) {
         isLoading.value = false;
         // isMainViewVisible.value = true;
-        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-        } else if (error.statusMessage!.isNotEmpty) {
-          AppUtils.showSnackBarMessage(error.statusMessage!);
-        }
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   AppUtils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
       },
     );
   }
@@ -462,20 +462,20 @@ class DashboardController extends GetxController
               getAllStockListApi(isProgress);
             }
           } else {
-            AppUtils.showSnackBarMessage(response.Message!);
+            // AppUtils.showSnackBarMessage(response.Message!);
           }
         } else {
-          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+          // AppUtils.showSnackBarMessage(responseModel.statusMessage!);
         }
       },
       onError: (ResponseModel error) {
         isLoading.value = false;
         isMainViewVisible.value = true;
-        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-        } else if (error.statusMessage!.isNotEmpty) {
-          AppUtils.showSnackBarMessage(error.statusMessage!);
-        }
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   AppUtils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
       },
     );
   }
@@ -519,20 +519,20 @@ class DashboardController extends GetxController
             AppStorage().clearStoredStockList();
             getAllStockListApi(true);
           } else {
-            AppUtils.showSnackBarMessage(response.Message!);
+            // AppUtils.showSnackBarMessage(response.Message!);
           }
         } else {
-          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+          // AppUtils.showSnackBarMessage(responseModel.statusMessage!);
         }
       },
       onError: (ResponseModel error) {
         isLoading.value = false;
         isMainViewVisible.value = true;
-        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-        } else if (error.statusMessage!.isNotEmpty) {
-          AppUtils.showSnackBarMessage(error.statusMessage!);
-        }
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   AppUtils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
       },
     );
   }

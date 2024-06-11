@@ -51,14 +51,14 @@ class AddStoreScreen extends StatelessWidget {
                           children: [
                             const Divider(),
                             TextFieldStoreName(),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Flexible(flex: 3,child: TextFieldStorePhoneExtension(),),
-                                Flexible(flex: 4, child: TextFieldPhoneNumber()),
-                              ],
-                            ),
+                            // Row(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   mainAxisAlignment: MainAxisAlignment.start,
+                            //   children: [
+                            //     Flexible(flex: 3,child: TextFieldStorePhoneExtension(),),
+                            //     Flexible(flex: 4, child: TextFieldPhoneNumber()),
+                            //   ],
+                            // ),
                             TextFieldStoreAddress(),
                             TextFieldStoreManager(),
                             // Padding(

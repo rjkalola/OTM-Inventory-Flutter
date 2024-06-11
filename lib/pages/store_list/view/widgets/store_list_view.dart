@@ -64,12 +64,12 @@ class StoreListView extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(
-                            height: 2,
+                            height: 9,
                           ),
-                          itemTextView(
-                              'phone'.tr,
-                              storeListController
-                                  .storeList[position].phoneWithExtension),
+                          // itemTextView(
+                          //     'phone'.tr,
+                          //     storeListController
+                          //         .storeList[position].phoneWithExtension),
                           Row(children: [
                             Expanded(
                               child: itemTextView(

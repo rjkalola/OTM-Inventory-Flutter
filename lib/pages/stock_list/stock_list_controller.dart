@@ -616,56 +616,56 @@ class StockListController extends GetxController
     );
   }
 
-  Future<void> onClickUploadStockButton() async {
-    bool isInternet = await AppUtils.interNetCheck();
-    if (isInternet) {
-      List<StockStoreRequest> list = AppStorage().getStoredStockList();
-      print(jsonEncode("Local List:" + jsonEncode(list)));
-      storeLocalStocks(true, jsonEncode(list));
-    } else {
-      AppUtils.showSnackBarMessage('no_internet'.tr);
-    }
-  }
+  // Future<void> onClickUploadStockButton() async {
+  //   bool isInternet = await AppUtils.interNetCheck();
+  //   if (isInternet) {
+  //     List<StockStoreRequest> list = AppStorage().getStoredStockList();
+  //     print(jsonEncode("Local List:" + jsonEncode(list)));
+  //     storeLocalStocksAPI(true, jsonEncode(list));
+  //   } else {
+  //     AppUtils.showSnackBarMessage('no_internet'.tr);
+  //   }
+  // }
 
-  Future<void> storeLocalStocks(bool isProgress, String data) async {
-    Map<String, dynamic> map = {};
-    map["app_data"] = data;
-    multi.FormData formData = multi.FormData.fromMap(map);
-    print(map.toString());
-    if (isProgress) isLoading.value = true;
-    _api.storeLocalStock(
-      formData: formData,
-      onSuccess: (ResponseModel responseModel) {
-        isLoading.value = false;
-        if (responseModel.statusCode == 200) {
-          BaseResponse response =
-              BaseResponse.fromJson(jsonDecode(responseModel.result!));
-          if (response.IsSuccess!) {
-            if (!StringHelper.isEmptyString(response.Message)) {
-              AppUtils.showSnackBarMessage(response.Message ?? "");
-            }
-            AppStorage().clearStoredStockList();
-            isUpdateStockButtonVisible.value =
-                !StringHelper.isEmptyList(AppStorage().getStoredStockList());
-            getStockListApi(true, false, "", true, true);
-          } else {
-            AppUtils.showSnackBarMessage(response.Message!);
-          }
-        } else {
-          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
-        }
-      },
-      onError: (ResponseModel error) {
-        isLoading.value = false;
-        isMainViewVisible.value = true;
-        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-        } else if (error.statusMessage!.isNotEmpty) {
-          AppUtils.showSnackBarMessage(error.statusMessage!);
-        }
-      },
-    );
-  }
+  // Future<void> storeLocalStocks(bool isProgress, String data) async {
+  //   Map<String, dynamic> map = {};
+  //   map["app_data"] = data;
+  //   multi.FormData formData = multi.FormData.fromMap(map);
+  //   print(map.toString());
+  //   if (isProgress) isLoading.value = true;
+  //   _api.storeLocalStock(
+  //     formData: formData,
+  //     onSuccess: (ResponseModel responseModel) {
+  //       isLoading.value = false;
+  //       if (responseModel.statusCode == 200) {
+  //         BaseResponse response =
+  //             BaseResponse.fromJson(jsonDecode(responseModel.result!));
+  //         if (response.IsSuccess!) {
+  //           if (!StringHelper.isEmptyString(response.Message)) {
+  //             AppUtils.showSnackBarMessage(response.Message ?? "");
+  //           }
+  //           AppStorage().clearStoredStockList();
+  //           isUpdateStockButtonVisible.value =
+  //               !StringHelper.isEmptyList(AppStorage().getStoredStockList());
+  //           getStockListApi(true, false, "", true, true);
+  //         } else {
+  //           AppUtils.showSnackBarMessage(response.Message!);
+  //         }
+  //       } else {
+  //         AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+  //       }
+  //     },
+  //     onError: (ResponseModel error) {
+  //       isLoading.value = false;
+  //       isMainViewVisible.value = true;
+  //       if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+  //         AppUtils.showSnackBarMessage('no_internet'.tr);
+  //       } else if (error.statusMessage!.isNotEmpty) {
+  //         AppUtils.showSnackBarMessage(error.statusMessage!);
+  //       }
+  //     },
+  //   );
+  // }
 
   void setOfflineData() {
     isMainViewVisible.value = true;
@@ -684,7 +684,7 @@ class StockListController extends GetxController
       productList.value = tempList;
       productList.refresh();
     }
-    onCLickUploadData(false, localProductCount());
+    onCLickUploadData(false, localStockCount(), localProductCount());
     setTotalCountButtons();
     isUpdateStockButtonVisible.value =
         !StringHelper.isEmptyList(AppStorage().getStoredStockList());
@@ -735,11 +735,16 @@ class StockListController extends GetxController
     }
   }
 
-  Future<void> onCLickUploadData(bool isProgress, int productCount) async {
+  Future<void> onCLickUploadData(
+      bool isProgress, int stockCount, int productCount) async {
     bool isInternet = await AppUtils.interNetCheck();
     if (isInternet) {
-      List<StockStoreRequest> list = AppStorage().getStoredStockList();
-      storeLocalStocksAPI(isProgress, jsonEncode(list), productCount);
+      if (stockCount > 0) {
+        List<StockStoreRequest> list = AppStorage().getStoredStockList();
+        storeLocalStocksAPI(isProgress, jsonEncode(list), productCount);
+      } else if (productCount > 0) {
+        storeLocalProducts(isProgress, getLocalStoredProduct());
+      }
     } else {
       if (isProgress) AppUtils.showSnackBarMessage('no_internet'.tr);
     }
@@ -766,7 +771,8 @@ class StockListController extends GetxController
               if (isProgress)
                 AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
               AppStorage().clearStoredStockList();
-              setOfflineData();
+              setTotalCountButtons();
+              // setOfflineData();
             }
           } else {
             // AppUtils.showSnackBarMessage(response.Message!);
@@ -824,7 +830,8 @@ class StockListController extends GetxController
             if (isProgress)
               AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
             AppStorage().clearStoredStockList();
-            setOfflineData();
+            setTotalCountButtons();
+            // setOfflineData();
           } else {
             // AppUtils.showSnackBarMessage(response.Message!);
           }

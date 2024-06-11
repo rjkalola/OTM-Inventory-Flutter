@@ -26,7 +26,7 @@ class UploadStockButtonWidget extends StatelessWidget {
               textColor: defaultAccentColor,
               borderColor: defaultAccentColor,
               onPressed: () {
-                stockListController.onClickUploadStockButton();
+                // stockListController.onClickUploadStockButton();
               },
             )),
       ),

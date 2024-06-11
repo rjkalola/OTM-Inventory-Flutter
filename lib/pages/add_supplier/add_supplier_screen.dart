@@ -54,34 +54,34 @@ class AddSupplierScreen extends StatelessWidget {
                           children: [
                             const Divider(),
                             TextFieldSupplierContactName(),
-                            TextFieldSupplierEmail(),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  flex: 3,
-                                  child: TextFieldSupplierPhoneExtension(),
-                                ),
-                                Flexible(
-                                    flex: 4,
-                                    child: TextFieldSupplierPhoneNumber()),
-                              ],
-                            ),
+                            // TextFieldSupplierEmail(),
+                            // Row(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   mainAxisAlignment: MainAxisAlignment.start,
+                            //   children: [
+                            //     Flexible(
+                            //       flex: 3,
+                            //       child: TextFieldSupplierPhoneExtension(),
+                            //     ),
+                            //     Flexible(
+                            //         flex: 4,
+                            //         child: TextFieldSupplierPhoneNumber()),
+                            //   ],
+                            // ),
                             TextFieldSupplierCompanyName(),
-                            TextFieldSupplierAddress(),
-                            Row(
-                              children: [
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFieldSupplierWeight(),
-                                ),
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFieldSupplierWeightUnit(),
-                                ),
-                              ],
-                            ),
+                            // TextFieldSupplierAddress(),
+                            // Row(
+                            //   children: [
+                            //     Flexible(
+                            //       flex: 1,
+                            //       child: TextFieldSupplierWeight(),
+                            //     ),
+                            //     Flexible(
+                            //       flex: 1,
+                            //       child: TextFieldSupplierWeightUnit(),
+                            //     ),
+                            //   ],
+                            // ),
                             // Padding(
                             //   padding: const EdgeInsets.only(left: 14,bottom: 18),
                             //   child: Row(

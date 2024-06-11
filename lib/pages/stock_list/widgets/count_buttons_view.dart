@@ -27,7 +27,9 @@ class CountButtonsView extends StatelessWidget {
                 borderColor: defaultAccentColor,
                 onPressed: () {
                   stockListController.onCLickUploadData(
-                      true, stockListController.localProductCount());
+                      true,
+                      stockListController.localStockCount(),
+                      stockListController.localProductCount());
                 },
               ),
             ),
