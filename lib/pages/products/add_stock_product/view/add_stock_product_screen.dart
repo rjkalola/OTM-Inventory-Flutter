@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_button.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_list.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_title_view.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_barcode.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_description.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_manufacturer.dart';
@@ -58,7 +60,17 @@ class AddStockProductScreen extends StatelessWidget {
                             AddStockProductPhotosList(),
                             TextFieldStockProductName(),
                             TextFieldStockProductTitle(),
-                            TextFieldStockProductBarCode(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(child: TextFieldStockProductBarCode()),
+                                QrCodeIconAddStockProduct()
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 18,
+                            ),
                             TextFieldStockProductSupplier(),
                             TextFieldStockProductManufacturer(),
                             TextFieldStockProductPrice(),

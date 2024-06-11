@@ -43,69 +43,76 @@ class _StockListScreenState extends State<StockListScreen> {
                   widgets: actionButtons()),
               drawer: MainDrawer(),
               bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-              body: ModalProgressHUD(
-                inAsyncCall: stockListController.isLoading.value,
-                opacity: 0,
-                progressIndicator: const CustomProgressbar(),
-                // child: RefreshIndicator(
-                //   onRefresh: () async {
-                //     await stockListController.getStockListApi(
-                //         false, false, "", true, true);
-                //   },
-                //   child: Column(children: [])),
-                child: Column(children: [
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: dividerColor,
-                  ),
-                  // const SizedBox(height:20,),
-                  // TextFieldSelectStore(),
-                  const SizedBox(
-                    height: 9,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      StockFilterIcon(),
-                      // StockFilterClearIcon(),
-                      const Expanded(child: SearchStockWidget()),
-                      QrCodeIcon()
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  stockListController.productList.isNotEmpty
-                      ? StockListView()
-                      : StockListEmptyView(),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  Visibility(
-                    visible: stockListController.isLoadMore.value,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator()),
-                          const SizedBox(
-                            width: 14,
+              body: Column(
+                children: [
+                  Expanded(
+                    child: ModalProgressHUD(
+                      inAsyncCall: stockListController.isLoading.value,
+                      opacity: 0,
+                      progressIndicator: const CustomProgressbar(),
+                      // child: RefreshIndicator(
+                      //   onRefresh: () async {
+                      //     await stockListController.getStockListApi(
+                      //         false, false, "", true, true);
+                      //   },
+                      //   child: Column(children: [])),
+                      child: Column(children: [
+                        const Divider(
+                          thickness: 1,
+                          height: 1,
+                          color: dividerColor,
+                        ),
+                        // const SizedBox(height:20,),
+                        // TextFieldSelectStore(),
+                        const SizedBox(
+                          height: 9,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            StockFilterIcon(),
+                            // StockFilterClearIcon(),
+                            const Expanded(child: SearchStockWidget()),
+                            QrCodeIcon()
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        stockListController.productList.isNotEmpty
+                            ? StockListView()
+                            : StockListEmptyView(),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Visibility(
+                          visible: stockListController.isLoadMore.value,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              children: [
+                                const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator()),
+                                const SizedBox(
+                                  width: 14,
+                                ),
+                                Text(
+                                  'loading_more_'.tr,
+                                  style: const TextStyle(fontSize: 17),
+                                )
+                              ],
+                            ),
                           ),
-                          Text(
-                            'loading_more_'.tr,
-                            style: const TextStyle(fontSize: 17),
-                          )
-                        ],
-                      ),
+                        ),
+                        // UploadStockButtonWidget()
+                      ]),
                     ),
                   ),
-                  // UploadStockButtonWidget()
-                ]),
+                  // const CountButtonsView()
+                ],
               ),
             )));
   }

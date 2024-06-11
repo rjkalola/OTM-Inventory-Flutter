@@ -451,7 +451,8 @@ class AddStockProductController extends GetxController
               StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             // getAllStockListApi();
-            if (addProductRequest?.qty != null) response.info!.qty = addProductRequest?.qty;
+            if (addProductRequest?.qty != null)
+              response.info!.qty = addProductRequest?.qty;
             storeProductInList(false, response.info);
             // moveStockEditQuantityScreen(response.info!.id!.toString());
           } else {
@@ -513,5 +514,14 @@ class AddStockProductController extends GetxController
         }
       },
     );
+  }
+
+  Future<void> openQrCodeScanner() async {
+    var code = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
+    if (!StringHelper.isEmptyString(code)) {
+      mBarCode = code;
+      print("mBarCode:" + mBarCode);
+      productBarcodeController.value.text = mBarCode;
+    }
   }
 }

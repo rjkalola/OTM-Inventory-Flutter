@@ -23,7 +23,6 @@ import '../products/add_product/model/store_stock_product_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../stock_edit_quantiry/model/store_stock_request.dart';
-import '../stock_filter/model/filter_request.dart';
 import '../store_list/model/store_list_response.dart';
 
 class StockListController extends GetxController
@@ -35,6 +34,7 @@ class StockListController extends GetxController
   final productList = <ProductInfo>[].obs;
   var storeList = <ModuleInfo>[].obs;
   final storeNameController = TextEditingController().obs;
+  final isPendingDataCount = false.obs;
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
@@ -272,8 +272,10 @@ class StockListController extends GetxController
   @override
   void onPositiveButtonClicked(String dialogIdentifier) {
     if (dialogIdentifier == AppConstants.dialogIdentifier.stockOptionsDialog) {
-      getStockListWithCodeApi(true, true, "null");
+      isScanQrCode.value = true;
+      // getStockListWithCodeApi(true, true, "null");
       Get.back();
+      setOfflineData();
     }
   }
 
@@ -481,29 +483,7 @@ class StockListController extends GetxController
   void storeProductApi() async {
     Map<String, dynamic> map = {};
     map["id"] = addProductRequest.id;
-    /*map["shortName"] = addProductRequest.shortName;
-    map["name"] = addProductRequest.name;
-    map["supplier_id"] = addProductRequest.supplier_id;
-    map["length"] = addProductRequest.length;
-    map["width"] = addProductRequest.width;
-    map["height"] = addProductRequest.height;
-    map["length_unit_id"] = addProductRequest.lengthUnit_id;
-    map["weight"] = addProductRequest.weight;
-    map["weight_unit_id"] = addProductRequest.weightUnit_id;
-    map["manufacturer_id"] = addProductRequest.manufacturer_id;
-    map["model_id"] = addProductRequest.model_id;
-    map["sku"] = addProductRequest.sku;
-    map["price"] = addProductRequest.price;
-    map["tax"] = addProductRequest.tax;
-    map["description"] = addProductRequest.description;
-    map["status"] = addProductRequest.status;
-    map["mode_type"] = 2;
-    if (addProductRequest.categories != null &&
-        addProductRequest.categories!.isNotEmpty) {
-      for (int i = 0; i < addProductRequest.categories!.length; i++) {
-        map['categories[${i.toString()}]'] = addProductRequest.categories![i];
-      }
-    }*/
+
     map["barcode_text"] = mBarCode;
     multi.FormData formData = multi.FormData.fromMap(map);
 
@@ -589,7 +569,6 @@ class StockListController extends GetxController
   void getStoreListApi() async {
     Map<String, dynamic> map = {};
     multi.FormData formData = multi.FormData.fromMap(map);
-    print("getStoreList");
     isLoading.value = true;
     _api.getStoreList(
       formData: formData,
@@ -612,7 +591,6 @@ class StockListController extends GetxController
               showStoreListDialog(AppConstants.dialogIdentifier.storeList,
                   'stores'.tr, storeList, false, false, false, false, this);
             } else {
-              print("Call Stock API");
               getStockListApi(true, false, "", true, true);
             }
           } else {
@@ -700,7 +678,6 @@ class StockListController extends GetxController
           }
         }
       }
-
       productList.value = tempList;
       productList.refresh();
     }

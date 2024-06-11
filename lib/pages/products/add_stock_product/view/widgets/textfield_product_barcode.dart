@@ -14,7 +14,7 @@ class TextFieldStockProductBarCode extends StatelessWidget {
   Widget build(BuildContext context) {
     return Visibility(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
+        padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
         child: TextFieldBorder(
           textEditingController:
               addProductController.productBarcodeController.value,

@@ -141,10 +141,8 @@ class StockListView extends StatelessWidget {
         stockListController.isScanQrCode.value) {
       if (!StringHelper.isEmptyString(
           stockListController.productList[position].barcode_text)) {
-        print("Barcode");
         return quantityWidget(position);
       } else {
-        print("select button");
         return selectButtonWidget(position);
       }
     } else {

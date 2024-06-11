@@ -153,6 +153,7 @@ class Strings extends Translations {
               "Note: Press upload button before downloading the data.",
           'product_added_successfully': "Product added successfully",
           'product_updated_successfully': "Product updated successfully",
+          'app_up_to_Date': "App is up to date"
         },
         'hi_IN': {'login': 'Login'}
       };
