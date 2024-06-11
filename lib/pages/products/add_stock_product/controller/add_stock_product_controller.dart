@@ -72,6 +72,8 @@ class AddStockProductController extends GetxController
         addProductRequest?.id = 0;
         addProductRequest?.local_id = 0;
         title.value = 'add_product'.tr;
+        if (!StringHelper.isEmptyString(mBarCode))
+          productBarcodeController.value.text = mBarCode;
       }
     } else {
       addProductRequest = ProductInfo();
@@ -151,7 +153,7 @@ class AddStockProductController extends GetxController
         addProductRequest?.mode_type = 1;
       }
       addProductRequest?.status = isStatus.value;
-      filesList.removeAt(0);
+      // filesList.removeAt(0);
       addProductRequest?.temp_images = filesList;
 
       bool isInternet = await AppUtils.interNetCheck();
@@ -171,6 +173,11 @@ class AddStockProductController extends GetxController
     }
 
     addProductRequest?.localStored = isOffline;
+
+    if (isOffline && addProductRequest!.temp_images!.length > 1) {
+      addProductRequest.imageThumbUrl = addProductRequest.temp_images![1].file;
+      addProductRequest.imageUrl = addProductRequest.temp_images![1].file;
+    }
 
     int id = 0, localId = 0;
     if ((addProductRequest?.id != null && addProductRequest?.id! != 0) ||
@@ -425,6 +432,11 @@ class AddStockProductController extends GetxController
               "files[]", await multi.MultipartFile.fromFile(info.file ?? "")),
         ]);
       }
+
+      formData.files.add(
+        MapEntry("product_file",
+            await multi.MultipartFile.fromFile(list[0].file ?? "")),
+      );
     }
 
     print("Request Data:" + map.toString());
@@ -438,7 +450,7 @@ class AddStockProductController extends GetxController
               StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             // getAllStockListApi();
-            storeProductInList(true, addProductRequest);
+            storeProductInList(false, response.info);
             // moveStockEditQuantityScreen(response.info!.id!.toString());
           } else {
             AppUtils.showSnackBarMessage(response.Message!);

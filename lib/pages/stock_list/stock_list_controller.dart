@@ -73,7 +73,7 @@ class StockListController extends GetxController
     var arguments = Get.arguments;
     if (arguments != null) {
       stockCountType = arguments[AppConstants.intentKey.stockCountType];
-      if(stockCountType != 0) mSupplierCategoryFilter.value = "-";
+      if (stockCountType != 0) mSupplierCategoryFilter.value = "-";
     }
 
     setDownloadTitle();
@@ -288,7 +288,7 @@ class StockListController extends GetxController
       stockCountType = 0;
     }
     setOfflineData();
-   /* isLoadMore.value = offset > 0;
+    /* isLoadMore.value = offset > 0;
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
     map["offset"] = offset.toString();
