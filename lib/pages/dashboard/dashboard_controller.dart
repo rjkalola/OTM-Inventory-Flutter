@@ -456,7 +456,8 @@ class DashboardController extends GetxController
             if (isLocalProductsAvailable()) {
               storeLocalProducts(isProgress, getLocalStoredProduct());
             } else {
-              if(isProgress)AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
+              if (isProgress)
+                AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
               AppStorage().clearStoredStockList();
               getAllStockListApi(isProgress);
             }
@@ -513,7 +514,8 @@ class DashboardController extends GetxController
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            if(isProgress)AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
+            if (isProgress)
+              AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
             AppStorage().clearStoredStockList();
             getAllStockListApi(true);
           } else {

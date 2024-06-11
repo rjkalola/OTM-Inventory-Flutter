@@ -3,31 +3,38 @@ import 'package:get/get.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/PrimaryBorderButton.dart';
+import '../stock_list_controller.dart';
 
 class CountButtonsView extends StatelessWidget {
-  const CountButtonsView({super.key});
+  CountButtonsView({super.key});
+
+  final stockListController = Get.put(StockListController());
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Visibility(
-          visible: false,
+          visible: stockListController.isPendingDataCount.value,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
             child: SizedBox(
               width: double.infinity,
               child: PrimaryBorderButton(
-                buttonText: 'sync'.tr,
+                buttonText:
+                    stockListController.pendingDataCountButtonTitle.value,
                 textColor: defaultAccentColor,
                 borderColor: defaultAccentColor,
-                onPressed: () {},
+                onPressed: () {
+                  stockListController.onCLickUploadData(
+                      true, stockListController.localProductCount());
+                },
               ),
             ),
           ),
         ),
         Visibility(
-          visible: false,
+          visible: stockListController.isUpToDateData.value,
           child: Container(
             color: bottomTabBackgroundColor,
             width: double.infinity,

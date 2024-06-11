@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
+import 'package:otm_inventory/pages/stock_list/widgets/count_buttons_view.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/search_stock.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_empty_view.dart';
@@ -13,7 +14,6 @@ import 'package:otm_inventory/utils/app_utils.dart';
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
 import '../../widgets/appbar/base_appbar.dart';
-import '../common/widgets/common_bottom_navigation_bar_widget.dart';
 import '../dashboard/widgets/main_drawer.dart';
 
 class StockListScreen extends StatefulWidget {
@@ -42,7 +42,7 @@ class _StockListScreenState extends State<StockListScreen> {
                   isBack: true,
                   widgets: actionButtons()),
               drawer: MainDrawer(),
-              bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+              // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
               body: Column(
                 children: [
                   Expanded(
@@ -111,7 +111,7 @@ class _StockListScreenState extends State<StockListScreen> {
                       ]),
                     ),
                   ),
-                  // const CountButtonsView()
+                  CountButtonsView()
                 ],
               ),
             )));
