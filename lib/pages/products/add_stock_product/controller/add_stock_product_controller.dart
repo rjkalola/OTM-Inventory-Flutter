@@ -155,39 +155,37 @@ class AddStockProductController extends GetxController
       // filesList.removeAt(0);
       addProductRequest?.temp_images = filesList;
 
-      bool isBarcodeAvailable = true;
-      // if (AppStorage().getStockData() != null) {
-      //   ProductListResponse response = AppStorage().getStockData()!;
-      //   for (int i = 0; i < response.info!.length; i++) {
-      //     ProductInfo item = response.info![i];
-      //     String mBarCode = item.barcode_text ?? "";
-      //     String enteredBarCode = addProductRequest?.barcode_text ?? "";
-      //     if (!StringHelper.isEmptyString(enteredBarCode) &&
-      //         mBarCode == enteredBarCode) {
-      //       isBarcodeAvailable = true;
-      //       break;
-      //     }
-      //   }
-      // }
-
-      bool isInternet = await AppUtils.interNetCheck();
-      if (isInternet) {
-        storeProductApi();
-      } else {
-        storeProductInList(true, addProductRequest);
+      bool isBarcodeAvailable = false;
+      if (AppStorage().getStockData() != null) {
+        ProductListResponse response = AppStorage().getStockData()!;
+        for (int i = 0; i < response.info!.length; i++) {
+          ProductInfo item = response.info![i];
+          int itemId = item.id ?? 0;
+          int id_ = addProductRequest?.id ?? 0;
+          int localId_ = addProductRequest?.local_id ?? 0;
+          String mBarCode = item.barcode_text ?? "";
+          bool currentProduct = itemId == id_ || itemId == localId_;
+          if (!currentProduct) {
+            String enteredBarCode = addProductRequest?.barcode_text ?? "";
+            if (!StringHelper.isEmptyString(enteredBarCode) &&
+                mBarCode == enteredBarCode) {
+              isBarcodeAvailable = true;
+              break;
+            }
+          }
+        }
       }
 
-
-      // if (!isBarcodeAvailable) {
-      //   bool isInternet = await AppUtils.interNetCheck();
-      //   if (isInternet) {
-      //     storeProductApi();
-      //   } else {
-      //     storeProductInList(true, addProductRequest);
-      //   }
-      // } else {
-      //   AppUtils.showSnackBarMessage('msg_barcode_already_exist'.tr);
-      // }
+      if (!isBarcodeAvailable) {
+        bool isInternet = await AppUtils.interNetCheck();
+        if (isInternet) {
+          storeProductApi();
+        } else {
+          storeProductInList(true, addProductRequest);
+        }
+      } else {
+        AppUtils.showSnackBarMessage('msg_barcode_already_exist'.tr);
+      }
     }
   }
 
