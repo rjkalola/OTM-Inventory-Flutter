@@ -11,6 +11,7 @@ import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
 
+import '../../../utils/app_storage.dart';
 import '../../../web_services/response/response_model.dart';
 
 class StockFilterController extends GetxController {
@@ -27,7 +28,18 @@ class StockFilterController extends GetxController {
   void onInit() {
     super.onInit();
 
-    getFiltersListApi();
+    if (AppStorage().getStockFiltersData() != null) {
+      StockFilterResponse response = AppStorage().getStockFiltersData()!;
+      if (response.info != null && response.info!.isNotEmpty) {
+        supplierList.addAll(response.info!);
+        if (supplierList.isNotEmpty) {
+          categoriesList.value = supplierList[0].data!;
+        }
+      }
+      isMainViewVisible.value = true;
+    }
+
+    // getFiltersListApi();
 
     // var arguments = Get.arguments;
     // quantityController.value.text = "1";
@@ -82,7 +94,7 @@ class StockFilterController extends GetxController {
     Get.back(result: jsonEncode(list));
   }
 
- /* List<FilterInfo> filterList() {
+  /* List<FilterInfo> filterList() {
     var suppliers = <FilterInfo>[];
 
     FilterInfo? supplierInfo, categoryInfo;

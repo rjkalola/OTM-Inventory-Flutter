@@ -13,6 +13,7 @@ import '../pages/otp_verification/model/user_info.dart';
 import '../pages/products/add_product/model/product_resources_response.dart';
 import '../pages/products/product_list/models/product_list_response.dart';
 import '../pages/stock_edit_quantiry/model/store_stock_request.dart';
+import '../pages/stock_filter/model/stock_filter_response.dart';
 
 class AppStorage extends GetxController {
   final storage = GetStorage();
@@ -102,6 +103,22 @@ class AppStorage extends GetxController {
     if (!StringHelper.isEmptyString(stockData)) {
       final jsonMap = json.decode(stockData);
       return ProductListResponse.fromJson(jsonMap);
+    } else {
+      return null;
+    }
+  }
+
+  void setStockFiltersData(StockFilterResponse stockData) {
+    storage.write(AppConstants.sharedPreferenceKey.stockFilterData,
+        jsonEncode(stockData));
+  }
+
+  StockFilterResponse? getStockFiltersData() {
+    final stockData =
+        storage.read(AppConstants.sharedPreferenceKey.stockFilterData) ?? "";
+    if (!StringHelper.isEmptyString(stockData)) {
+      final jsonMap = json.decode(stockData);
+      return StockFilterResponse.fromJson(jsonMap);
     } else {
       return null;
     }

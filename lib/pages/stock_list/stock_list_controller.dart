@@ -25,6 +25,7 @@ import '../products/add_product/model/store_stock_product_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../stock_edit_quantiry/model/store_stock_request.dart';
+import '../stock_filter/model/filter_request.dart';
 import '../store_list/model/store_list_response.dart';
 
 class StockListController extends GetxController
@@ -179,8 +180,39 @@ class StockListController extends GetxController
     var result = await Get.toNamed(AppRoutes.stockFilterScreen);
     if (!StringHelper.isEmptyString(result)) {
       mSupplierCategoryFilter.value = result;
-      getStockListApi(true, false, "", true, false);
+      setOfflineData();
+      // getStockListApi(true, false, "", true, false);
     }
+  }
+
+  int getSupplierId() {
+    int id = 0;
+    if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value) &&
+        mSupplierCategoryFilter.value != "-") {
+      final jsonMap = json.decode(mSupplierCategoryFilter.value);
+      List<FilterRequest> list = (jsonMap as List)
+          .map((itemWord) => FilterRequest.fromJson(itemWord))
+          .toList();
+      if (list.isNotEmpty && !StringHelper.isEmptyString(list[0].supplier)) {
+        id = int.parse(list[0].supplier!);
+      }
+    }
+    return id;
+  }
+
+  int getCategoryId() {
+    int id = 0;
+    if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value) &&
+        mSupplierCategoryFilter.value != "-") {
+      final jsonMap = json.decode(mSupplierCategoryFilter.value);
+      List<FilterRequest> list = (jsonMap as List)
+          .map((itemWord) => FilterRequest.fromJson(itemWord))
+          .toList();
+      if (list.isNotEmpty && !StringHelper.isEmptyString(list[0].category)) {
+        id = int.parse(list[0].category!);
+      }
+    }
+    return id;
   }
 
   Future<void> addStockProductScreen() async {
@@ -673,7 +705,13 @@ class StockListController extends GetxController
       ProductListResponse response = AppStorage().getStockData()!;
       tempList.clear();
       if (stockCountType == 0) {
-        tempList.addAll(response.info!);
+        int supplierId = getSupplierId();
+        int categoryId = getCategoryId();
+        if (supplierId != 0 || categoryId != 0) {
+          setFilterList(supplierId, categoryId, response.info!);
+        } else {
+          tempList.addAll(response.info!);
+        }
       } else {
         for (var info in response.info!) {
           if (info.stock_status_id == stockCountType) {
@@ -688,6 +726,31 @@ class StockListController extends GetxController
     setTotalCountButtons();
     isUpdateStockButtonVisible.value =
         !StringHelper.isEmptyList(AppStorage().getStoredStockList());
+  }
+
+  void setFilterList(int supplierId, int categoryId, List<ProductInfo>? list) {
+    for (var element in list!) {
+      List<String> categoryIds = [];
+      for (var categoryInfo in element.categories!) {
+        categoryIds.add(categoryInfo.id!.toString());
+      }
+      if (supplierId != 0 && categoryId != 0) {
+        if ((element.supplierId != null && element.supplierId! == supplierId) &&
+            categoryIds.contains(categoryId.toString())) {
+          tempList.add(element);
+        }
+      } else if (supplierId != 0 && categoryId == 0) {
+        if (element.supplierId != null && element.supplierId! == supplierId) {
+          tempList.add(element);
+        }
+      } else if (supplierId == 0 && categoryId != 0) {
+        if (categoryIds.contains(categoryId.toString())) {
+          tempList.add(element);
+        }
+      } else {
+        tempList.addAll(list);
+      }
+    }
   }
 
   void setDownloadTitle() {

@@ -64,15 +64,18 @@ class ProductListView extends StatelessWidget {
                                 Visibility(
                                   visible: !StringHelper.isEmptyString(
                                       productListController
-                                          .productList[position].price),
+                                          .productList[position].qty
+                                          .toString()),
                                   child: Text(
-                                      "${productListController.productList[position].currency ?? "£"}${productListController.productList[position].price!}",
+                                      productListController
+                                          .productList[position].qty
+                                          .toString(),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         color: defaultAccentColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
                                       )),
                                 )
                               ],

@@ -70,6 +70,7 @@ class SharedPreferenceKey {
   final String localStoredProductList = "LOCAL_STORED_PRODUCT_LIST";
   final String stockSize = "STOCK_SIZE";
   final String tempIds = "TEMP_IDS";
+  final String stockFilterData = "STOCK_FILTER_DATA";
 }
 
 class Action {

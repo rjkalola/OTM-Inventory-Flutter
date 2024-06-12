@@ -29,6 +29,8 @@ import '../products/add_product/model/product_resources_response.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../stock_edit_quantiry/model/store_stock_request.dart';
 import '../stock_edit_quantiry/stock_edit_quantity_repository.dart';
+import '../stock_filter/controller/stock_filter_repository.dart';
+import '../stock_filter/model/stock_filter_response.dart';
 import '../stock_list/stock_list_controller.dart';
 import '../stock_list/stock_list_repository.dart';
 import '../store_list/model/store_list_response.dart';
@@ -385,6 +387,7 @@ class DashboardController extends GetxController
               loadAllImages();
               getStoreResourcesApi();
               getProductResourcesApi();
+              getFiltersListApi();
             }
           } else {
             // AppUtils.showSnackBarMessage(response.Message!);
@@ -533,6 +536,38 @@ class DashboardController extends GetxController
         // } else if (error.statusMessage!.isNotEmpty) {
         //   AppUtils.showSnackBarMessage(error.statusMessage!);
         // }
+      },
+    );
+  }
+
+  void getFiltersListApi() async {
+    Map<String, dynamic> map = {};
+    multi.FormData formData = multi.FormData.fromMap(map);
+    // isLoading.value = true;
+    StockFilterRepository().getStockFiltersList(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          StockFilterResponse response =
+              StockFilterResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.isSuccess!) {
+            AppStorage().setStockFiltersData(response);
+          } else {
+            AppUtils.showSnackBarMessage(response.message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
       },
     );
   }
