@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
@@ -160,6 +161,7 @@ class StockListController extends GetxController
 
     if (isScanQrCode.value) {
       mBarCode = "";
+      isScanQrCode.value = false;
       openQrCodeScanner();
       // getStockListApi(true, false, "", true, true);
       setOfflineData();
@@ -241,8 +243,8 @@ class StockListController extends GetxController
     }
   }
 
-  void onClickSelectButton(ProductInfo info) {
-    addProductRequest = AddProductRequest();
+  void onClickSelectButton(int position, ProductInfo info) {
+    /*addProductRequest = AddProductRequest();
     addProductRequest.categories = [];
     addProductRequest.id = info.id ?? 0;
     addProductRequest.supplier_id = info.supplierId ?? 0;
@@ -267,28 +269,44 @@ class StockListController extends GetxController
     addProductRequest.description = info.description ?? "";
     addProductRequest.status = info.status ?? false;
 
-    storeProductApi();
+    storeProductApi();*/
+
+    if (AppStorage().getStockData() != null) {
+      ProductListResponse response = AppStorage().getStockData()!;
+      for (int i = 0; i < response.info!.length; i++) {
+        ProductInfo item = response.info![i];
+        if (item.id == info.id) {
+          print("mBarCode:" + mBarCode);
+          item.barcode_text = mBarCode;
+          item.mode_type = 2;
+          item.localStored = true;
+          AppStorage().setStockData(response);
+          moveStockEditQuantityScreen(item.id.toString(), item);
+          break;
+        }
+      }
+    }
   }
 
   showAddStockProductDialog() {
-    // AlertDialogHelper.showAlertDialog(
-    //     "",
-    //     'empty_qr_code_scan_msg'.tr,
-    //     'attach_product'.tr,
-    //     'cancel'.tr,
-    //     "add_new_product".tr,
-    //     true,
-    //     this,
-    //     AppConstants.dialogIdentifier.stockOptionsDialog);
     AlertDialogHelper.showAlertDialog(
         "",
         'empty_qr_code_scan_msg'.tr,
-        "",
+        'attach_product'.tr,
         'cancel'.tr,
         "add_new_product".tr,
         true,
         this,
         AppConstants.dialogIdentifier.stockOptionsDialog);
+    // AlertDialogHelper.showAlertDialog(
+    //     "",
+    //     'empty_qr_code_scan_msg'.tr,
+    //     "",
+    //     'cancel'.tr,
+    //     "add_new_product".tr,
+    //     true,
+    //     this,
+    //     AppConstants.dialogIdentifier.stockOptionsDialog);
   }
 
   @override
@@ -801,6 +819,9 @@ class StockListController extends GetxController
   Future<void> onCLickUploadData(
       bool isProgress, int stockCount, int productCount) async {
     bool isInternet = await AppUtils.interNetCheck();
+
+    print(jsonEncode(getLocalStoredProduct()));
+
     if (isInternet) {
       if (stockCount > 0) {
         List<StockStoreRequest> list = AppStorage().getStoredStockList();
@@ -863,11 +884,13 @@ class StockListController extends GetxController
     multi.FormData formData = multi.FormData.fromMap(map);
     for (int i = 0; i < listProducts.length; i++) {
       var listFiles = <FilesInfo>[];
-      for (int j = 0; j < listProducts[i].temp_images!.length; j++) {
-        if (!StringHelper.isEmptyString(
-                listProducts[i].temp_images![j].file ?? "") &&
-            !listProducts[i].temp_images![j].file!.startsWith("http")) {
-          listFiles.add(listProducts[i].temp_images![j]);
+      if (!StringHelper.isEmptyList(listProducts[i].temp_images)) {
+        for (int j = 0; j < listProducts[i].temp_images!.length; j++) {
+          if (!StringHelper.isEmptyString(
+                  listProducts[i].temp_images![j].file ?? "") &&
+              !listProducts[i].temp_images![j].file!.startsWith("http")) {
+            listFiles.add(listProducts[i].temp_images![j]);
+          }
         }
       }
       if (listFiles.isNotEmpty) {
@@ -890,8 +913,7 @@ class StockListController extends GetxController
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            if (isProgress)
-              AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
+            if (isProgress) AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
             AppStorage().clearStoredStockList();
             setTotalCountButtons();
             // setOfflineData();

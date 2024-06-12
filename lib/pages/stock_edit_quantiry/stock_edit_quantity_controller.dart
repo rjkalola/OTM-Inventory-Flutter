@@ -270,18 +270,16 @@ class StockEditQuantityController extends GetxController
     }
   }
 
-  Future<void> storeStockQuantityApi(
-      bool isProgress,
-      String productId,
-      int quantity,
-      String note,
-      String price,
-      String date,
-      String mode) async {
+  Future<void> storeStockQuantityApi(bool isProgress, String productId,
+      int quantity, String note, String price, String date, String mode) async {
     Map<String, dynamic> map = {};
     map["store_id"] = AppStorage.storeId.toString();
     map["product_id"] = productId;
-    map["qty"] = quantity.toString();
+    String qtyString = quantity.toString();
+    // if (qtyString.startsWith("+") || qtyString.startsWith("-")) {
+    //   qtyString = qtyString.substring(1, qtyString.length);
+    // }
+    map["qty"] = qtyString;
     if (isUserDropdownVisible.value) {
       map["user_id"] = userId;
     }
@@ -304,9 +302,15 @@ class StockEditQuantityController extends GetxController
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             Get.find<AppStorage>().setQuantityNote(note);
-            productInfo.value.qty = productInfo.value.qty != null
-                ? (productInfo.value.qty! + quantity)
-                : quantity;
+            if (mode == 'add') {
+              productInfo.value.qty = productInfo.value.qty != null
+                  ? (productInfo.value.qty! + quantity)
+                  : quantity;
+            } else if (mode == 'remove') {
+              productInfo.value.qty = productInfo.value.qty != null
+                  ? (productInfo.value.qty! - quantity)
+                  : quantity;
+            }
             productInfo.refresh();
             updateQtyInLocalList(productInfo.value.qty ?? 0);
             AppUtils.showToastMessage('msg_product_stock_update'.tr);
@@ -502,25 +506,22 @@ class StockEditQuantityController extends GetxController
       }
       int qty = int.parse(qtyString);
       int finalQty = 0;
+
       // if (isDeduct) {
-      //   finalQty = initialQuantity - qty;
+      //   finalQty = -qty;
       // } else {
-      //   finalQty = initialQuantity + qty;
+      //   finalQty = qty;
       // }
 
-      if (isDeduct) {
-        finalQty = -qty;
-      } else {
-        finalQty = qty;
-      }
+      finalQty = qty;
 
       String price = priceController.value.text.toString().trim();
       String date = dateController.value.text.toString().trim();
 
       bool isInternet = await AppUtils.interNetCheck();
       if (isInternet) {
-        storeStockQuantityApi(true, productId.toString(), finalQty,
-            note, price, date, isDeduct ? "remove" : "add");
+        storeStockQuantityApi(true, productId.toString(), finalQty, note, price,
+            date, isDeduct ? "remove" : "add");
       } else {
         // Add stock in local storage
         List<StockStoreRequest> list = AppStorage().getStoredStockList();
@@ -539,9 +540,16 @@ class StockEditQuantityController extends GetxController
         AppStorage().setStoredStockList(list);
         Get.find<AppStorage>().setQuantityNote(note);
 
-        productInfo.value.qty = productInfo.value.qty != null
-            ? (productInfo.value.qty! + finalQty)
-            : finalQty;
+        if (isDeduct) {
+          productInfo.value.qty = productInfo.value.qty != null
+              ? (productInfo.value.qty! - finalQty)
+              : finalQty;
+        } else {
+          productInfo.value.qty = productInfo.value.qty != null
+              ? (productInfo.value.qty! + finalQty)
+              : finalQty;
+        }
+
         productInfo.refresh();
 
         updateQtyInLocalList(productInfo.value.qty ?? 0);

@@ -187,6 +187,7 @@ class ProductInfo {
     data['qr_code_thumb'] = qrCodeThumb;
     data['image_thumb_url'] = imageThumbUrl;
     data['image_url'] = imageUrl;
+    data['barcode_text'] = barcode_text;
     data['weight'] = weight;
     data['length'] = length;
     data['width'] = width;
@@ -203,7 +204,6 @@ class ProductInfo {
     data['qty'] = qty;
     data['mode_type'] = mode_type;
     data['dimension'] = dimension;
-    data['barcode_text'] = barcode_text;
     if (categories != null) {
       data['categories'] = categories!.map((v) => v.toJson()).toList();
     }

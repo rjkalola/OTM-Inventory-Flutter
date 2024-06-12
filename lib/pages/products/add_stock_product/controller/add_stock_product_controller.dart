@@ -118,7 +118,6 @@ class AddStockProductController extends GetxController
     isStatus.value = info.status ?? false;
 
     if (info.id != null && info.id! > 0) {
-      print("IDDD:" + info.id!.toString());
       for (int i = 0; i < info.product_images!.length; i++) {
         ProductImageInfo productImageInfo = info.product_images![i];
         FilesInfo fileInfo = FilesInfo();
@@ -128,7 +127,6 @@ class AddStockProductController extends GetxController
         filesList.add(fileInfo);
       }
     } else if (info.local_id != null && info.local_id! > 0) {
-      print("local_idDDDD:" + info.local_id!.toString());
       for (int i = 0; i < info.temp_images!.length; i++) {
         if (!StringHelper.isEmptyString(info.temp_images![i].file))
           filesList.add(info.temp_images![i]);
@@ -157,12 +155,39 @@ class AddStockProductController extends GetxController
       // filesList.removeAt(0);
       addProductRequest?.temp_images = filesList;
 
+      bool isBarcodeAvailable = true;
+      // if (AppStorage().getStockData() != null) {
+      //   ProductListResponse response = AppStorage().getStockData()!;
+      //   for (int i = 0; i < response.info!.length; i++) {
+      //     ProductInfo item = response.info![i];
+      //     String mBarCode = item.barcode_text ?? "";
+      //     String enteredBarCode = addProductRequest?.barcode_text ?? "";
+      //     if (!StringHelper.isEmptyString(enteredBarCode) &&
+      //         mBarCode == enteredBarCode) {
+      //       isBarcodeAvailable = true;
+      //       break;
+      //     }
+      //   }
+      // }
+
       bool isInternet = await AppUtils.interNetCheck();
       if (isInternet) {
         storeProductApi();
       } else {
         storeProductInList(true, addProductRequest);
       }
+
+
+      // if (!isBarcodeAvailable) {
+      //   bool isInternet = await AppUtils.interNetCheck();
+      //   if (isInternet) {
+      //     storeProductApi();
+      //   } else {
+      //     storeProductInList(true, addProductRequest);
+      //   }
+      // } else {
+      //   AppUtils.showSnackBarMessage('msg_barcode_already_exist'.tr);
+      // }
     }
   }
 

@@ -176,7 +176,7 @@ class StockListView extends StatelessWidget {
         fontSize: 14,
         onPressed: () {
           stockListController
-              .onClickSelectButton(stockListController.productList[position]);
+              .onClickSelectButton(position,stockListController.productList[position]);
         },
       ),
     );

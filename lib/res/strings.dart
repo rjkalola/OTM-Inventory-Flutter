@@ -153,7 +153,8 @@ class Strings extends Translations {
               "Note: Press upload button before downloading the data.",
           'product_added_successfully': "Product added successfully",
           'product_updated_successfully': "Product updated successfully",
-          'app_up_to_Date': "App is up to date"
+          'app_up_to_Date': "App is up to date",
+          'msg_barcode_already_exist': "This barcode already exist"
         },
         'hi_IN': {'login': 'Login'}
       };

@@ -8,6 +8,7 @@ import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
 import 'package:otm_inventory/pages/dashboard/models/dashboard_stock_count_response.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
+import 'package:otm_inventory/pages/products/add_product/model/add_local_product_request.dart';
 import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
@@ -490,13 +491,16 @@ class DashboardController extends GetxController
     multi.FormData formData = multi.FormData.fromMap(map);
     for (int i = 0; i < listProducts.length; i++) {
       var listFiles = <FilesInfo>[];
-      for (int j = 0; j < listProducts[i].temp_images!.length; j++) {
-        if (!StringHelper.isEmptyString(
-                listProducts[i].temp_images![j].file ?? "") &&
-            !listProducts[i].temp_images![j].file!.startsWith("http")) {
-          listFiles.add(listProducts[i].temp_images![j]);
+      if (!StringHelper.isEmptyList(listProducts[i].temp_images)) {
+        for (int j = 0; j < listProducts[i].temp_images!.length; j++) {
+          if (!StringHelper.isEmptyString(
+                  listProducts[i].temp_images![j].file ?? "") &&
+              !listProducts[i].temp_images![j].file!.startsWith("http")) {
+            listFiles.add(listProducts[i].temp_images![j]);
+          }
         }
       }
+
       if (listFiles.isNotEmpty) {
         for (var info in listFiles) {
           formData.files.addAll([
@@ -740,9 +744,25 @@ class DashboardController extends GetxController
       ProductListResponse response = AppStorage().getStockData()!;
       if (response.info!.isNotEmpty) {
         for (int i = 0; i < response.info!.length; i++) {
+          ProductInfo info = response.info![i];
           bool isLocalStored = response.info![i].localStored ?? false;
           if (isLocalStored) {
-            listProducts.add(response.info![i]);
+            // AddLocalProductRequest request = AddLocalProductRequest();
+            // request.id = info.id ?? 0;
+            // request.name = info.name ?? "";
+            // request.shortName = info.shortName ?? "";
+            // request.price = info.price ?? "";
+            // request.description = info.description ?? "";
+            // request.barcode_text = info.barcode_text ?? "";
+            // request.supplier_id = info.supplierId ?? 0;
+            // request.manufacturer_id = info.manufacturer_id ?? 0;
+            // request.mode_type = info.mode_type ?? 0;
+            // request.qty = info.qty ?? 0;
+            // request.status = info.status ?? false;
+            // if (!StringHelper.isEmptyList(info.temp_images)) {
+            //   request.temp_images = info.temp_images;
+            // }
+            listProducts.add(info);
           }
         }
       }

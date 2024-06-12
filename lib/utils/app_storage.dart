@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:otm_inventory/pages/products/add_product/model/add_product_request.dart';
@@ -236,7 +237,17 @@ class AppStorage extends GetxController {
 
   void clearStoredStockList() {
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
-    removeData(AppConstants.sharedPreferenceKey.localStoredProductList);
+    if (getStockData() != null) {
+      ProductListResponse response = getStockData()!;
+      if (!StringHelper.isEmptyList(response.info!)) {
+        for (int i = 0; i < response.info!.length; i++) {
+          if (response.info![i].localStored ?? false) {
+            response.info![i].localStored = false;
+          }
+        }
+      }
+      setStockData(response);
+    }
   }
 
   // void clearAllData(){
@@ -253,7 +264,6 @@ class AppStorage extends GetxController {
     removeData(AppConstants.sharedPreferenceKey.stockList);
     removeData(AppConstants.sharedPreferenceKey.stockResources);
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
-    removeData(AppConstants.sharedPreferenceKey.localStoredProductList);
   }
 
   void removeData(String key) {
