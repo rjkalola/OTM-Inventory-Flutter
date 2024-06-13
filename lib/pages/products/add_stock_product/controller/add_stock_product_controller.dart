@@ -275,7 +275,8 @@ class AddStockProductController extends GetxController
             dialogType: dialogType,
             list: list,
             listener: listener,
-            isCloseEnable: true),
+            isCloseEnable: true,
+          isSearchEnable: true,),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);
   }

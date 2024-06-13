@@ -264,6 +264,10 @@ class AppStorage extends GetxController {
     removeData(AppConstants.sharedPreferenceKey.stockList);
     removeData(AppConstants.sharedPreferenceKey.stockResources);
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
+    removeData(AppConstants.sharedPreferenceKey.dashboardItemCountData);
+    removeData(AppConstants.sharedPreferenceKey.stockSize);
+    removeData(AppConstants.sharedPreferenceKey.stockFilterData);
+    removeData(AppConstants.sharedPreferenceKey.tempIds);
   }
 
   void removeData(String key) {

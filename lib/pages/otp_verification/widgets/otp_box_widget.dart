@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 class OtpBoxWidget extends StatelessWidget {
   TextEditingController boxController = TextEditingController();
-  
+
   OtpBoxWidget({super.key, required this.boxController});
 
   // final verifyOtpController = Get.put(VerifyOtpController());
@@ -15,12 +15,12 @@ class OtpBoxWidget extends StatelessWidget {
       height: 56,
       decoration: BoxDecoration(
           border: Border.all(color: const Color(0xffc6c6c6)),
-          borderRadius: BorderRadius.circular(0)),
+          borderRadius: BorderRadius.circular(45)),
       child: TextFormField(
         onChanged: (value) {
           if (value.length == 1) {
             FocusScope.of(context).nextFocus();
-          }else if(value.isEmpty){
+          } else if (value.isEmpty) {
             FocusScope.of(context).previousFocus();
           }
         },

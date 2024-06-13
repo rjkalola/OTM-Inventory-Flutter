@@ -223,11 +223,13 @@ class AddProductController extends GetxController
       List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(
         DropDownListDialog(
-            title: title,
-            dialogType: dialogType,
-            list: list,
-            listener: listener,
-            isCloseEnable: true),
+          title: title,
+          dialogType: dialogType,
+          list: list,
+          listener: listener,
+          isCloseEnable: true,
+          isSearchEnable: true,
+        ),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);
   }

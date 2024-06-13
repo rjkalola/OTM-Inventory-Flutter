@@ -68,7 +68,7 @@ class AddSupplierScreen extends StatelessWidget {
                             //         child: TextFieldSupplierPhoneNumber()),
                             //   ],
                             // ),
-                            TextFieldSupplierCompanyName(),
+                            // TextFieldSupplierCompanyName(),
                             // TextFieldSupplierAddress(),
                             // Row(
                             //   children: [

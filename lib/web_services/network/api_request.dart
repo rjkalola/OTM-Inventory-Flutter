@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
@@ -198,17 +199,19 @@ class ApiRequest {
       barrierDismissible: false,
       PopScope(
         canPop: false,
-        child: AlertDialog(
-          content: Text('unauthorized_message'.tr),
+        child: CupertinoAlertDialog(
+          content: Text('unauthorized_message'.tr, style: const TextStyle(fontSize: 18)),
           actions: [
             TextButton(
-              child: const Text("OK"),
+              child: const Text("OK", style:  TextStyle(fontSize: 18)),
               onPressed: () {
                 Get.find<AppStorage>().clearAllData();
                 Get.offAllNamed(AppRoutes.loginScreen);
               },
             ),
           ],
+          // shape: const RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.all(Radius.circular(8.0))),
         ),
       ),
     );

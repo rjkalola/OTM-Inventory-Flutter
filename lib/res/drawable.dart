@@ -18,6 +18,7 @@ class Drawable {
   static const String settingsIcon = 'assets/images/ic_settings.svg';
   static const String homeDrawerIcon = 'assets/images/ic_home_drawer.svg';
   static const String qrCodeIcon = 'assets/images/ic_qr_code.svg';
+  static const String barCodeIcon = 'assets/images/ic_barcode.svg';
   static const String deleteIcon = 'assets/images/ic_delete.svg';
   static const String descriptionIcon = 'assets/images/ic_description.svg';
   static const String personIcon = 'assets/images/ic_person.svg';

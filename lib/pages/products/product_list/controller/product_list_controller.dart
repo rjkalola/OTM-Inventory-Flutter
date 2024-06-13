@@ -11,6 +11,7 @@ import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_storage.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../web_services/api_constants.dart';
+import '../../../../web_services/response/module_info.dart';
 import '../../../../web_services/response/response_model.dart';
 import '../models/product_info.dart';
 import '../models/product_list_response.dart';
@@ -89,6 +90,20 @@ class ProductListController extends GetxController {
     }
   }
 
+  // Future<void> searchItem(String value) async {
+  //   print(value);
+  //   List<ProductInfo> results = [];
+  //   if (value.isEmpty) {
+  //     results = tempList;
+  //   } else {
+  //     results = tempList
+  //         .where((element) =>
+  //             element.name!.toLowerCase().contains(value.toLowerCase()))
+  //         .toList();
+  //   }
+  //   productList.value = results;
+  // }
+
   Future<void> searchItem(String value) async {
     print(value);
     List<ProductInfo> results = [];
@@ -97,10 +112,35 @@ class ProductListController extends GetxController {
     } else {
       results = tempList
           .where((element) =>
-              element.name!.toLowerCase().contains(value.toLowerCase()))
+              (!StringHelper.isEmptyString(element.shortName) &&
+                  element.shortName!
+                      .toLowerCase()
+                      .contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.name) &&
+                  element.name!.toLowerCase().contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.description) &&
+                  element.description!
+                      .toLowerCase()
+                      .contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.barcode_text) &&
+                  element.barcode_text!
+                      .toLowerCase()
+                      .contains(value.toLowerCase())) ||
+              (listCategories(element.categories!)
+                  .contains(value.toLowerCase())))
           .toList();
     }
     productList.value = results;
+  }
+
+  List<String> listCategories(List<ModuleInfo>? list) {
+    List<String> categoryNames = [];
+    if (!StringHelper.isEmptyList(list)) {
+      for (var item in list!) {
+        categoryNames.add(item.name!.toLowerCase());
+      }
+    }
+    return categoryNames;
   }
 
   Future<void> openQrCodeScanner() async {

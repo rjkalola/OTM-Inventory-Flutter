@@ -172,7 +172,7 @@ class AddProductScreen extends StatelessWidget {
         child: IconButton(
           icon: SvgPicture.asset(
             width: 26,
-            Drawable.qrCodeIcon,
+            Drawable.barCodeIcon,
           ),
           onPressed: () {
             addProductController.onClickQrCode();

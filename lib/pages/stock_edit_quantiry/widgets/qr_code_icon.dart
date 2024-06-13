@@ -19,7 +19,7 @@ class QrCodeIconEditStock extends StatelessWidget {
         },
         child: SvgPicture.asset(
           width: 30,
-          Drawable.qrCodeIcon,
+          Drawable.barCodeIcon,
         ),
       ),
     );

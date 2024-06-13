@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/web_services/response/module_info.dart';
@@ -11,6 +12,7 @@ class DropDownListDialog extends StatefulWidget {
   final String dialogType;
   final SelectItemListener listener;
   final bool isCloseEnable;
+  final bool isSearchEnable;
 
   const DropDownListDialog(
       {super.key,
@@ -18,11 +20,12 @@ class DropDownListDialog extends StatefulWidget {
       required this.dialogType,
       required this.list,
       required this.isCloseEnable,
-      required this.listener});
+      required this.listener,
+      required this.isSearchEnable});
 
   @override
-  State<DropDownListDialog> createState() =>
-      DropDownListDialogState(title, dialogType, list, listener,isCloseEnable);
+  State<DropDownListDialog> createState() => DropDownListDialogState(
+      title, dialogType, list, listener, isCloseEnable, isSearchEnable);
 }
 
 class DropDownListDialogState extends State<DropDownListDialog> {
@@ -31,10 +34,10 @@ class DropDownListDialogState extends State<DropDownListDialog> {
   String dialogType;
   SelectItemListener listener;
   List<ModuleInfo> tempList = [];
-  bool isCloseEnable;
+  bool isCloseEnable, isSearchEnable;
 
-  DropDownListDialogState(
-      this.title, this.dialogType, this.list, this.listener,this.isCloseEnable);
+  DropDownListDialogState(this.title, this.dialogType, this.list, this.listener,
+      this.isCloseEnable, this.isSearchEnable);
 
   @override
   void initState() {
@@ -92,27 +95,31 @@ class DropDownListDialogState extends State<DropDownListDialog> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                    child: TextField(
-                      onChanged: (value) {
-                        setModalState(() {
-                          filterSearchResults(value, list);
-                        });
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.fromLTRB(0, 2, 14, 0),
-                        prefixIcon:
-                            const Icon(Icons.search, color: Colors.black26),
-                        border: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xffbab8b8), width: 1.3),
+                  Visibility(
+                    visible: isSearchEnable,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                      child: TextField(
+                        onChanged: (value) {
+                          setModalState(() {
+                            filterSearchResults(value, list);
+                          });
+                        },
+                        decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(0, 2, 14, 0),
+                          prefixIcon:
+                              const Icon(Icons.search, color: Colors.black26),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color(0xffbab8b8), width: 1.3),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color(0xffbab8b8), width: 1.3),
+                          ),
+                          hintText: 'search'.tr,
                         ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color(0xffbab8b8), width: 1.3),
-                        ),
-                        hintText: 'search'.tr,
                       ),
                     ),
                   ),

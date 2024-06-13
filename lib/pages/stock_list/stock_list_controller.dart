@@ -39,6 +39,7 @@ class StockListController extends GetxController
   var storeList = <ModuleInfo>[].obs;
   final storeNameController = TextEditingController().obs;
   final isPendingDataCount = false.obs, isUpToDateData = false.obs;
+  final totalPendingCount = 0.obs;
   final pendingDataCountButtonTitle = "".obs;
 
   RxBool isLoading = false.obs,
@@ -52,7 +53,10 @@ class StockListController extends GetxController
       search = ''.obs,
       mSupplierCategoryFilter = ''.obs,
       downloadTitle = 'download'.tr.obs;
-  var offset = 0, stockCountType = 0;
+  var offset = 0,
+      stockCountType = 0,
+      mSelectedProductId = 0,
+      mSelectedLocalId = 0;
   var mIsLastPage = false;
   var mBarCode = "";
   late ScrollController controller;
@@ -83,6 +87,7 @@ class StockListController extends GetxController
 
     setDownloadTitle();
     setOfflineData();
+    getAllStockListApi(false, false);
   }
 
   _scrollListener() {
@@ -108,10 +113,35 @@ class StockListController extends GetxController
     } else {
       results = tempList
           .where((element) =>
-              element.shortName!.toLowerCase().contains(value.toLowerCase()))
+              (!StringHelper.isEmptyString(element.shortName) &&
+                  element.shortName!
+                      .toLowerCase()
+                      .contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.name) &&
+                  element.name!.toLowerCase().contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.description) &&
+                  element.description!
+                      .toLowerCase()
+                      .contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.barcode_text) &&
+                  element.barcode_text!
+                      .toLowerCase()
+                      .contains(value.toLowerCase())) ||
+              (listCategories(element.categories!)
+                  .contains(value.toLowerCase())))
           .toList();
     }
     productList.value = results;
+  }
+
+  List<String> listCategories(List<ModuleInfo>? list) {
+    List<String> categoryNames = [];
+    if (!StringHelper.isEmptyList(list)) {
+      for (var item in list!) {
+        categoryNames.add(item.name!.toLowerCase());
+      }
+    }
+    return categoryNames;
   }
 
   Future<void> openQrCodeScanner() async {
@@ -151,6 +181,11 @@ class StockListController extends GetxController
       String? productId, ProductInfo? productInfo) async {
     var result;
     if (productId != null) {
+      if (productInfo != null) {
+        if (productInfo.id != null) mSelectedProductId = productInfo.id!;
+        if (productInfo.local_id != null)
+          mSelectedLocalId = productInfo.local_id!;
+      }
       var arguments = {
         AppConstants.intentKey.productId: productId,
         AppConstants.intentKey.productInfo: productInfo,
@@ -173,7 +208,37 @@ class StockListController extends GetxController
         // } else {
         //   setOfflineData();
         // }
-        setOfflineData();
+
+        if (AppStorage().getStockData() != null) {
+          ProductListResponse response = AppStorage().getStockData()!;
+          ProductInfo? updatedInfo;
+          tempList.clear();
+          tempList.addAll(response.info!);
+          for (var info in response.info!) {
+            int infoId = info.id ?? 0;
+            int infoLocalId = info.local_id ?? 0;
+            if (infoId == mSelectedProductId ||
+                infoLocalId == mSelectedLocalId) {
+              updatedInfo = info;
+            }
+          }
+
+          int index = -1;
+          for (int i = 0; i < productList.length; i++) {
+            int infoId = productList[i].id ?? 0;
+            int infoLocalId = productList[i].local_id ?? 0;
+            if (infoId == mSelectedProductId ||
+                infoLocalId == mSelectedLocalId) {
+              index = i;
+            }
+          }
+          if (index != -1 && updatedInfo != null) {
+            productList.insert(index, updatedInfo);
+          }
+          productList.refresh();
+        }
+
+        // setOfflineData();
       }
     }
   }
@@ -487,9 +552,9 @@ class StockListController extends GetxController
     );
   }
 
-  Future<void> getAllStockListApi() async {
+  Future<void> getAllStockListApi(bool isProgress, bool isInitialLoad) async {
     isLoadMore.value = offset > 0;
-    isLoading.value = true;
+    isLoading.value = isProgress;
     Map<String, dynamic> map = {};
     map["filters"] = "";
     map["offset"] = offset.toString();
@@ -513,7 +578,7 @@ class StockListController extends GetxController
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             AppStorage().setStockData(response);
-            setOfflineData();
+            if (isInitialLoad) setOfflineData();
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -597,11 +662,13 @@ class StockListController extends GetxController
         PopScope(
           canPop: canPop,
           child: DropDownListDialog(
-              title: title,
-              dialogType: dialogType,
-              list: list,
-              listener: listener,
-              isCloseEnable: isClose),
+            title: title,
+            dialogType: dialogType,
+            list: list,
+            listener: listener,
+            isCloseEnable: isClose,
+            isSearchEnable: false,
+          ),
         ),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);
@@ -740,7 +807,7 @@ class StockListController extends GetxController
       productList.value = tempList;
       productList.refresh();
     }
-    onCLickUploadData(false, localStockCount(), localProductCount());
+    // onCLickUploadData(false, localStockCount(), localProductCount());
     setTotalCountButtons();
     isUpdateStockButtonVisible.value =
         !StringHelper.isEmptyList(AppStorage().getStoredStockList());
@@ -805,9 +872,11 @@ class StockListController extends GetxController
   void setTotalCountButtons() {
     int stockCount = localStockCount();
     int productCount = localProductCount();
-    int totalCount = stockCount + productCount;
-    if (totalCount > 0) {
-      pendingDataCountButtonTitle.value = "$totalCount Changes Pending";
+    totalPendingCount.value = stockCount + productCount;
+
+    if (totalPendingCount.value > 0) {
+      pendingDataCountButtonTitle.value =
+          "$totalPendingCount.value Changes Pending";
       isPendingDataCount.value = true;
       isUpToDateData.value = false;
     } else {
@@ -819,15 +888,14 @@ class StockListController extends GetxController
   Future<void> onCLickUploadData(
       bool isProgress, int stockCount, int productCount) async {
     bool isInternet = await AppUtils.interNetCheck();
-
-    print(jsonEncode(getLocalStoredProduct()));
-
     if (isInternet) {
       if (stockCount > 0) {
         List<StockStoreRequest> list = AppStorage().getStoredStockList();
         storeLocalStocksAPI(isProgress, jsonEncode(list), productCount);
       } else if (productCount > 0) {
         storeLocalProducts(isProgress, getLocalStoredProduct());
+      }else{
+        getAllStockListApi(isProgress, true);
       }
     } else {
       if (isProgress) AppUtils.showSnackBarMessage('no_internet'.tr);
@@ -856,6 +924,7 @@ class StockListController extends GetxController
                 AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
               AppStorage().clearStoredStockList();
               setTotalCountButtons();
+              getAllStockListApi(false, false);
               // setOfflineData();
             }
           } else {
@@ -913,9 +982,11 @@ class StockListController extends GetxController
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            if (isProgress) AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
+            if (isProgress)
+              AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
             AppStorage().clearStoredStockList();
             setTotalCountButtons();
+            getAllStockListApi(false, false);
             // setOfflineData();
           } else {
             // AppUtils.showSnackBarMessage(response.Message!);

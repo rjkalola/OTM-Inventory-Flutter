@@ -131,11 +131,13 @@ class StockEditQuantityController extends GetxController
       List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(
         DropDownListDialog(
-            title: title,
-            dialogType: dialogType,
-            list: list,
-            listener: listener,
-            isCloseEnable: true),
+          title: title,
+          dialogType: dialogType,
+          list: list,
+          listener: listener,
+          isCloseEnable: true,
+          isSearchEnable: true,
+        ),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);
   }
@@ -627,6 +629,8 @@ class StockEditQuantityController extends GetxController
               labelStyle: const TextStyle(fontWeight: FontWeight.normal),
               hintStyle: const TextStyle(fontWeight: FontWeight.normal))),
       actions: listButtons,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.0))),
     );
     // show the dialog
 

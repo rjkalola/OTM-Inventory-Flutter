@@ -4,6 +4,7 @@ class Strings extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'en_US': {
+          'app_title': 'OTM Inventory',
           'login': 'Login',
           'required_field': 'Required Field',
           'phone': 'Phone',

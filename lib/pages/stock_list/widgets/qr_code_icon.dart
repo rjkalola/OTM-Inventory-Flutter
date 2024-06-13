@@ -30,7 +30,7 @@ class QrCodeIcon extends StatelessWidget {
             child: SvgPicture.asset(
               width: 24,
               height: 24,
-              Drawable.qrCodeIcon,
+              Drawable.barCodeIcon,
               colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
           ),

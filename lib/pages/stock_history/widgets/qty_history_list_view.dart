@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../../../res/colors.dart';
 import '../../../res/drawable.dart';
+import '../../../widgets/text/PrimaryTextView.dart';
 import '../stock_quantity_history_controller.dart';
 
 class QtyHistoryListView extends StatelessWidget {
@@ -33,52 +35,96 @@ class QtyHistoryListView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                customTextView(
-                                    stockQuantityHistoryController
-                                            .stockHistoryList[position]
-                                            .created_at_formatted ??
-                                        "",
-                                    13,
-                                    FontWeight.w400,
-                                    primaryTextColorLight,
-                                    const EdgeInsets.all(0)),
-                                QtyHistoryUserInfo(
-                                  user: stockQuantityHistoryController
-                                      .stockHistoryList[position].user,
-                                )
-                              ],
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  customTextView(
+                                      stockQuantityHistoryController
+                                              .stockHistoryList[position]
+                                              .created_at_formatted ??
+                                          "",
+                                      13,
+                                      FontWeight.w400,
+                                      primaryTextColorLight,
+                                      const EdgeInsets.all(0)),
+                                  !StringHelper.isEmptyObject(
+                                          stockQuantityHistoryController
+                                              .stockHistoryList[position].user)
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: PrimaryTextView(
+                                            text: stockQuantityHistoryController
+                                                    .stockHistoryList[position]
+                                                    .user!
+                                                    .name ??
+                                                "",
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        )
+                                      : Container(),
+                                  !StringHelper.isEmptyString(
+                                          stockQuantityHistoryController
+                                                  .stockHistoryList[position]
+                                                  .reference ??
+                                              "")
+                                      ? InkWell(
+                                          onTap: () {
+                                            stockQuantityHistoryController
+                                                .showNote(
+                                                    stockQuantityHistoryController
+                                                            .stockHistoryList[
+                                                                position]
+                                                            .reference ??
+                                                        "");
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                9, 3, 4, 3),
+                                            child: SvgPicture.asset(
+                                              width: 24,
+                                              Drawable.descriptionIcon,
+                                              colorFilter:
+                                                  const ColorFilter.mode(
+                                                      Colors.black,
+                                                      BlendMode.srcIn),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
+                                  !StringHelper.isEmptyString(
+                                          stockQuantityHistoryController
+                                                  .stockHistoryList[position]
+                                                  .reference ??
+                                              "")
+                                      ? Flexible(
+                                          child: Text(
+                                            stockQuantityHistoryController
+                                                .stockHistoryList[position]
+                                                .reference!,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            softWrap: false,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        )
+                                      : Container(),
+                                  const SizedBox(
+                                    width: 10,
+                                  )
+                                  // QtyHistoryUserInfo(
+                                  //   user: stockQuantityHistoryController
+                                  //       .stockHistoryList[position].user,
+                                  // )
+                                ],
+                              ),
                             ),
                             Row(
                               children: [
-                                !StringHelper.isEmptyString(
-                                        stockQuantityHistoryController
-                                                .stockHistoryList[position]
-                                                .reference ??
-                                            "")
-                                    ? InkWell(
-                                        onTap: () {
-                                          stockQuantityHistoryController
-                                              .showNote(
-                                                  stockQuantityHistoryController
-                                                          .stockHistoryList[
-                                                              position]
-                                                          .reference ??
-                                                      "");
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              6, 3, 6, 3),
-                                          child: SvgPicture.asset(
-                                            width: 24,
-                                            Drawable.descriptionIcon,
-                                          ),
-                                        ),
-                                      )
-                                    : Container(),
                                 customTextView(
                                     stockQuantityHistoryController
                                         .stockHistoryList[position].qty,

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-
 class QrCodeScanner extends StatefulWidget {
   const QrCodeScanner({Key? key}) : super(key: key);
 
@@ -43,12 +42,23 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
         body: Stack(
           children: <Widget>[
             _buildQrView(context),
-            InkWell(onTap: () {
-              Get.back();
-            },child: const Padding(
-              padding: EdgeInsets.all(14.0),
-              child: Icon(Icons.close,size: 32,),
-            ))
+            InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(14, 18, 0, 0),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.white38,
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      width: 32,
+                      height: 32,
+                      child: const Icon(
+                        Icons.close,
+                        size: 24,
+                      )),
+                ))
             // Expanded(
             //   flex: 1,
             //   child: FittedBox(
@@ -113,7 +123,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
-        MediaQuery.of(context).size.height < 400)
+            MediaQuery.of(context).size.height < 400)
         ? 200.0
         : 400.0;
     // To ensure the Scanner view is properly sizes after rotation

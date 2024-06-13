@@ -4,7 +4,7 @@ class FilterInfo {
   bool? check;
   List<FilterInfo>? data;
 
-  FilterInfo({this.id, this.name, this.data,this.check});
+  FilterInfo({this.id, this.name, this.data, this.check});
 
   FilterInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];

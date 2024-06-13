@@ -15,9 +15,9 @@ class SplashServices {
       // List<UserInfo> list = Get.find<AppStorage>().getLoginUsers();
       // print("array length:"+list.length.toString());
 
-      if(ApiConstants.accessToken.isNotEmpty){
-        Get.offAllNamed(AppRoutes.dashboardScreen);
-      }else{
+      if (ApiConstants.accessToken.isNotEmpty) {
+        Get.offAllNamed(AppRoutes.stockListScreen);
+      } else {
         Get.offAllNamed(AppRoutes.loginScreen);
       }
     });

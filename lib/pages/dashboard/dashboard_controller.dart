@@ -188,11 +188,13 @@ class DashboardController extends GetxController
         PopScope(
           canPop: canPop,
           child: DropDownListDialog(
-              title: title,
-              dialogType: dialogType,
-              list: list,
-              listener: listener,
-              isCloseEnable: isClose),
+            title: title,
+            dialogType: dialogType,
+            list: list,
+            listener: listener,
+            isCloseEnable: isClose,
+            isSearchEnable: false,
+          ),
         ),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);

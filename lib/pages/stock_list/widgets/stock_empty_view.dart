@@ -35,7 +35,7 @@ class StockListEmptyView extends StatelessWidget {
                       borderColor: Colors.green,
                       fontSize: 14,
                       onPressed: () {
-                        stockListController.getAllStockListApi();
+                        stockListController.getAllStockListApi(true,true);
                       },
                     ),
                   ),

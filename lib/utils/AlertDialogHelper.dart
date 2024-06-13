@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../pages/common/listener/DialogButtonClickListener.dart';
-
 
 class AlertDialogHelper {
   static showAlertDialog(
@@ -18,11 +18,14 @@ class AlertDialogHelper {
     List<Widget> listButtons = [];
     if (textNegativeButton.isNotEmpty) {
       Widget cancelButton = TextButton(
-        child: Text(textNegativeButton),
+        child: Text(
+          textNegativeButton,
+          style: const TextStyle(fontSize: 17),
+        ),
         onPressed: () {
           if (buttonClickListener == null) {
             // Navigator.of(context).pop(); // dismis
-            Get.back();// s dialog
+            Get.back(); // s dialog
           } else {
             buttonClickListener.onNegativeButtonClicked(dialogIdentifier);
           }
@@ -33,7 +36,7 @@ class AlertDialogHelper {
 
     if (textPositiveButton.isNotEmpty) {
       Widget positiveButton = TextButton(
-        child: Text(textPositiveButton),
+        child: Text(textPositiveButton, style: const TextStyle(fontSize: 17)),
         onPressed: () {
           if (buttonClickListener == null) {
             // Navigator.of(context).pop(); //
@@ -49,7 +52,7 @@ class AlertDialogHelper {
 
     if (textOtherButton.isNotEmpty) {
       Widget otherButton = TextButton(
-        child: Text(textOtherButton),
+        child: Text(textOtherButton, style: const TextStyle(fontSize: 18)),
         onPressed: () {
           if (buttonClickListener == null) {
             // Navigator.of(context).pop(); // dismiss dialog
@@ -62,13 +65,18 @@ class AlertDialogHelper {
       listButtons.add(otherButton);
     }
     // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: title.isNotEmpty?Text(title):null,
-      content: message.isNotEmpty?Text(message):null,
+    CupertinoAlertDialog alert = CupertinoAlertDialog(
+      title: title.isNotEmpty ? Text(title) : null,
+      content: message.isNotEmpty
+          ? Text(message, style: const TextStyle(fontSize: 18))
+          : null,
       actions: listButtons,
+      // shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(8.0))),
+      // backgroundColor: backgroundColor,
     );
     // show the dialog
 
-    Get.dialog(barrierDismissible: isCancelable,alert);
+    Get.dialog(barrierDismissible: isCancelable, alert);
   }
 }

@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_controller.dart';
-import 'package:otm_inventory/widgets/text_field_border.dart';
+
+import 'custom_text_field_stock_quantity.dart';
 
 class TextFieldQuantity extends StatelessWidget {
   TextFieldQuantity({super.key});
@@ -13,7 +14,7 @@ class TextFieldQuantity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: TextFieldBorder(
+      child: CustomTextFieldStockQuantity(
         textEditingController:
             stockEditQuantityController.quantityController.value,
         hintText: 'quantity'.tr,
@@ -23,7 +24,7 @@ class TextFieldQuantity extends StatelessWidget {
         textAlign: TextAlign.center,
         autofocus: true,
         validator: MultiValidator([
-          RequiredValidator(errorText: 'required_field'.tr),
+          RequiredValidator(errorText: ''.tr),
         ]),
         inputFormatters: <TextInputFormatter>[
           // for below version 2 use this
@@ -45,12 +46,12 @@ class TextFieldQuantity extends StatelessWidget {
               stockEditQuantityController.quantityController.value.text =
                   newText;
             }
-            if(!text.startsWith("+")){
-              String newText = "+$text";
-              print("new text:"+newText);
-              stockEditQuantityController.quantityController.value.text =
-                  newText;
-            }
+            // if(!text.startsWith("+")){
+            //   String newText = "+$text";
+            //   print("new text:"+newText);
+            //   stockEditQuantityController.quantityController.value.text =
+            //       newText;
+            // }
           } else {
               if(!text.startsWith("-")){
                 String newText = "-$text";

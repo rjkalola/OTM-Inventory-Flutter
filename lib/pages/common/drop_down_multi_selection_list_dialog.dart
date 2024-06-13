@@ -120,23 +120,6 @@ class DropDownMultiSelectionListDialogState
                         Flexible(
                           fit: FlexFit.tight,
                           flex: 1,
-                          child:PrimaryBorderButton(
-                            buttonText: 'select'.tr,
-                            textColor: defaultAccentColor,
-                            borderColor: defaultAccentColor,
-                            onPressed: () {
-                              listener.onSelectMultiItem(
-                                  tempList, dialogType);
-                              Navigator.pop(context);
-                            },
-                          )
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Flexible(
-                          fit: FlexFit.tight,
-                          flex: 1,
                           child: PrimaryBorderButton(
                             buttonText: 'cancel'.tr,
                             textColor: Colors.red,
@@ -145,7 +128,24 @@ class DropDownMultiSelectionListDialogState
                               Navigator.pop(context);
                             },
                           ),
-                        )
+                        ),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Flexible(
+                            fit: FlexFit.tight,
+                            flex: 1,
+                            child:PrimaryBorderButton(
+                              buttonText: 'select'.tr,
+                              textColor: defaultAccentColor,
+                              borderColor: defaultAccentColor,
+                              onPressed: () {
+                                listener.onSelectMultiItem(
+                                    tempList, dialogType);
+                                Navigator.pop(context);
+                              },
+                            )
+                        ),
                       ],
                     ),
                   )

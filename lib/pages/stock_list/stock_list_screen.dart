@@ -41,6 +41,40 @@ class _StockListScreenState extends State<StockListScreen> {
                   title: 'stocks'.tr,
                   isBack: true,
                   widgets: actionButtons()),
+              floatingActionButton:
+                  (stockListController.totalPendingCount.value == 0)
+                      ? FloatingActionButton(
+                          mini: true,
+                          backgroundColor: Colors.green,
+                          tooltip: '',
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(45)),
+                          onPressed: () {},
+                          child: const Icon(Icons.check,
+                              color: Colors.white, size: 25),
+                        )
+                      : SizedBox(
+                          height: 40,
+                          child: FloatingActionButton.extended(
+                            backgroundColor: defaultAccentColor,
+                            onPressed: () {
+                              stockListController.onCLickUploadData(
+                                  true,
+                                  stockListController.localStockCount(),
+                                  stockListController.localProductCount());
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6)),
+                            label: Text(
+                              stockListController.totalPendingCount.value
+                                  .toString(),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
+                            ),
+                            icon: const Icon(Icons.autorenew_outlined,
+                                color: Colors.white, size: 24),
+                          ),
+                        ),
               drawer: MainDrawer(),
               // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
               body: Column(
@@ -50,68 +84,69 @@ class _StockListScreenState extends State<StockListScreen> {
                       inAsyncCall: stockListController.isLoading.value,
                       opacity: 0,
                       progressIndicator: const CustomProgressbar(),
-                      // child: RefreshIndicator(
-                      //   onRefresh: () async {
-                      //     await stockListController.getStockListApi(
-                      //         false, false, "", true, true);
-                      //   },
-                      //   child: Column(children: [])),
-                      child: Column(children: [
-                        const Divider(
-                          thickness: 1,
-                          height: 1,
-                          color: dividerColor,
-                        ),
-                        // const SizedBox(height:20,),
-                        // TextFieldSelectStore(),
-                        const SizedBox(
-                          height: 9,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            StockFilterIcon(),
-                            // StockFilterClearIcon(),
-                            const Expanded(child: SearchStockWidget()),
-                            QrCodeIcon()
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        stockListController.productList.isNotEmpty
-                            ? StockListView()
-                            : StockListEmptyView(),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Visibility(
-                          visible: stockListController.isLoadMore.value,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
+                      child: RefreshIndicator(
+                          onRefresh: () async {
+                            await stockListController.onCLickUploadData(
+                                true,
+                                stockListController.localStockCount(),
+                                stockListController.localProductCount());
+                          },
+                          child: Column(children: [
+                            const Divider(
+                              thickness: 1,
+                              height: 1,
+                              color: dividerColor,
+                            ),
+                            // const SizedBox(height:20,),
+                            // TextFieldSelectStore(),
+                            const SizedBox(
+                              height: 9,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator()),
-                                const SizedBox(
-                                  width: 14,
-                                ),
-                                Text(
-                                  'loading_more_'.tr,
-                                  style: const TextStyle(fontSize: 17),
-                                )
+                                StockFilterIcon(),
+                                // StockFilterClearIcon(),
+                                const Expanded(child: SearchStockWidget()),
+                                QrCodeIcon()
                               ],
                             ),
-                          ),
-                        ),
-                        // UploadStockButtonWidget()
-                      ]),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            stockListController.productList.isNotEmpty
+                                ? StockListView()
+                                : StockListEmptyView(),
+                            const SizedBox(
+                              height: 6,
+                            ),
+                            Visibility(
+                              visible: stockListController.isLoadMore.value,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                        width: 24,
+                                        height: 24,
+                                        child: CircularProgressIndicator()),
+                                    const SizedBox(
+                                      width: 14,
+                                    ),
+                                    Text(
+                                      'loading_more_'.tr,
+                                      style: const TextStyle(fontSize: 17),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // UploadStockButtonWidget()
+                          ])),
                     ),
                   ),
-                  CountButtonsView()
+                  // CountButtonsView()
                 ],
               ),
             )));

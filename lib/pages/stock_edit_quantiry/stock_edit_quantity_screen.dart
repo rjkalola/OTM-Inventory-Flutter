@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -8,7 +9,6 @@ import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_cont
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/row_reference_users.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quantity_button.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_quantity.dart';
-import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../res/colors.dart';
@@ -232,6 +232,27 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                 const EdgeInsets.fromLTRB(18, 14, 18, 14),
                                 () => {}),
                             dividerItem(),
+                            Visibility(
+                              visible: !StringHelper.isEmptyString(
+                                  stockEditQuantityController
+                                          .productInfo.value.description ??
+                                      ""),
+                              child: customTextView(
+                                  stockEditQuantityController
+                                          .productInfo.value.description ??
+                                      "",
+                                  15,
+                                  FontWeight.w500,
+                                  primaryTextColor,
+                                  const EdgeInsets.fromLTRB(18, 14, 18, 14),
+                                  () => {}),
+                            ),
+                            Visibility(
+                                visible: !StringHelper.isEmptyString(
+                                    stockEditQuantityController
+                                            .productInfo.value.description ??
+                                        ""),
+                                child: dividerItem()),
                             // TextFieldStockPrice(),
                             // TextFieldEditStockDate(),
                             // dividerItem(),
@@ -332,19 +353,19 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                         String newText =
                                             text.substring(1, text.length);
                                         text = newText;
-                                        // stockEditQuantityController
-                                        //     .quantityController
-                                        //     .value
-                                        //     .text = newText;
-                                      }
-                                      if (!text.startsWith("+")) {
-                                        String newText = "+$text";
-                                        print("new text:" + newText);
                                         stockEditQuantityController
                                             .quantityController
                                             .value
                                             .text = newText;
                                       }
+                                      // if (!text.startsWith("+")) {
+                                      //   String newText = "+$text";
+                                      //   print("new text:" + newText);
+                                      //   stockEditQuantityController
+                                      //       .quantityController
+                                      //       .value
+                                      //       .text = newText;
+                                      // }
                                       stockEditQuantityController
                                           .isAddQtyVisible.value = true;
                                       stockEditQuantityController
@@ -434,6 +455,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
         icon: SvgPicture.asset(
           width: 26,
           Drawable.editIcon,
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
         ),
         onPressed: () {
           stockEditQuantityController.editProductClick();
@@ -443,6 +465,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
         icon: SvgPicture.asset(
           width: 26,
           Drawable.historyIcon,
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
         ),
         onPressed: () {
           var arguments = {
@@ -453,10 +476,11 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
               arguments: arguments);
         },
       ),
+      const SizedBox(width: 9,)
       // IconButton(
       //   icon: SvgPicture.asset(
       //     width: 26,
-      //     Drawable.qrCodeIcon,
+      //     Drawable.barCodeIcon,
       //   ),
       //   onPressed: () {
       //     stockEditQuantityController.onClickQrCode();
