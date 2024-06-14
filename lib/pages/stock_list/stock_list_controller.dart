@@ -237,7 +237,9 @@ class StockListController extends GetxController
           }
           productList.refresh();
         }
-
+        setTotalCountButtons();
+        isUpdateStockButtonVisible.value =
+        !StringHelper.isEmptyList(AppStorage().getStoredStockList());
         // setOfflineData();
       }
     }
@@ -580,20 +582,21 @@ class StockListController extends GetxController
             AppStorage().setStockData(response);
             if (isInitialLoad) setOfflineData();
           } else {
-            AppUtils.showSnackBarMessage(response.Message!);
+            if (isProgress) AppUtils.showSnackBarMessage(response.Message!);
           }
         } else {
-          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+          if (isProgress)
+            AppUtils.showSnackBarMessage(responseModel.statusMessage!);
         }
       },
       onError: (ResponseModel error) {
         isLoading.value = false;
         isMainViewVisible.value = true;
-        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
-          AppUtils.showSnackBarMessage('no_internet'.tr);
-        } else if (error.statusMessage!.isNotEmpty) {
-          AppUtils.showSnackBarMessage(error.statusMessage!);
-        }
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   AppUtils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
       },
     );
   }
@@ -894,7 +897,7 @@ class StockListController extends GetxController
         storeLocalStocksAPI(isProgress, jsonEncode(list), productCount);
       } else if (productCount > 0) {
         storeLocalProducts(isProgress, getLocalStoredProduct());
-      }else{
+      } else {
         getAllStockListApi(isProgress, true);
       }
     } else {
