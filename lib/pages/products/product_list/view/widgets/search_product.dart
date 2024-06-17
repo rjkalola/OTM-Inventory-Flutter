@@ -18,14 +18,21 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 0, 6, 0),
-      child: Container(
-        height: 37,
-        child: SearchTextField(onValueChange: (value) {
-          productListController.searchItem(value.toString());
-          // setModalState(() {
-          //   filterSearchResults(value, list);
-          // });
-        }),
+      child: SizedBox(
+        height: 40,
+        child: SearchTextField(
+          controller: productListController.searchController.value,
+          onValueChange: (value) {
+            productListController.searchItem(value.toString());
+            // setModalState(() {
+            //   filterSearchResults(value, list);
+            // });
+          },
+          onPressedClear: () {
+            productListController.searchController.value.clear();
+            productListController.searchItem("");
+          },
+        ),
       ),
     );
   }

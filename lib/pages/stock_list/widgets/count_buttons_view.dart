@@ -28,6 +28,7 @@ class CountButtonsView extends StatelessWidget {
                 onPressed: () {
                   stockListController.onCLickUploadData(
                       true,
+                      false,
                       stockListController.localStockCount(),
                       stockListController.localProductCount());
                 },

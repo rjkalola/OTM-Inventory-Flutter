@@ -18,6 +18,7 @@ class SupplierListController extends GetxController {
   final searchController = TextEditingController().obs;
 
   var itemList = <SupplierInfo>[].obs;
+  List<SupplierInfo> tempList = [];
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
@@ -46,10 +47,10 @@ class SupplierListController extends GetxController {
           SupplierListResponse response =
               SupplierListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            itemList.clear();
-            itemList.addAll(response.info!);
+            tempList.clear();
+            tempList.addAll(response.info!);
+            itemList.value = tempList;
             isMainViewVisible.value = true;
-            print("Array Lenth:" + response.info!.length.toString());
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -84,5 +85,16 @@ class SupplierListController extends GetxController {
     if (result != null && result) {
       getSupplierListApi(true);
     }
+  }
+
+  Future<void> searchItem(String value) async{
+    print("Search item:"+value);
+    List<SupplierInfo> results = [];
+    if (value.isEmpty) {
+      results = tempList;
+    }else{
+      results = tempList.where((element) => element.contactName!.toLowerCase().contains(value.toLowerCase())).toList();
+    }
+    itemList.value = results;
   }
 }

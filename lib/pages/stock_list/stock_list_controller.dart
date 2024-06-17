@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
@@ -21,7 +20,6 @@ import '../common/listener/DialogButtonClickListener.dart';
 import '../common/listener/select_item_listener.dart';
 import '../common/model/file_info.dart';
 import '../products/add_product/controller/add_product_repository.dart';
-import '../products/add_product/model/add_product_request.dart';
 import '../products/add_product/model/store_stock_product_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
@@ -33,7 +31,8 @@ class StockListController extends GetxController
     implements DialogButtonClickListener, SelectItemListener {
   final _api = StockListRepository();
   final searchController = TextEditingController().obs;
-  var addProductRequest = AddProductRequest();
+
+  // var addProductRequest = AddProductRequest();
   List<ProductInfo> tempList = [];
   final productList = <ProductInfo>[].obs;
   var storeList = <ModuleInfo>[].obs;
@@ -87,7 +86,7 @@ class StockListController extends GetxController
 
     setDownloadTitle();
     setOfflineData();
-    getAllStockListApi(false, false);
+    onCLickUploadData(false, false, localStockCount(), localProductCount());
   }
 
   _scrollListener() {
@@ -194,6 +193,8 @@ class StockListController extends GetxController
           arguments: arguments);
     }
 
+    onCLickUploadData(false, false, localStockCount(), localProductCount());
+
     if (isScanQrCode.value) {
       mBarCode = "";
       isScanQrCode.value = false;
@@ -239,7 +240,7 @@ class StockListController extends GetxController
         }
         setTotalCountButtons();
         isUpdateStockButtonVisible.value =
-        !StringHelper.isEmptyList(AppStorage().getStoredStockList());
+            !StringHelper.isEmptyList(AppStorage().getStoredStockList());
         // setOfflineData();
       }
     }
@@ -247,6 +248,12 @@ class StockListController extends GetxController
 
   Future<void> stockFilter() async {
     var result = await Get.toNamed(AppRoutes.stockFilterScreen);
+    // if (result != null) {
+    //   FilterRequest request = result as FilterRequest;
+    //   print("supplier:" + request.supplier.toString());
+    //   print("category:" + request.category.toString());
+    //   print("supplier key:" + request.supplier_key.toString());
+    // }
     if (!StringHelper.isEmptyString(result)) {
       mSupplierCategoryFilter.value = result;
       setOfflineData();
@@ -293,7 +300,7 @@ class StockListController extends GetxController
       result = await Get.toNamed(AppRoutes.addStockProductScreen,
           arguments: arguments);
     }
-
+    openQrCodeScanner();
     if (result != null && result) {
       mBarCode = "";
       isScanQrCode.value = false;
@@ -310,7 +317,7 @@ class StockListController extends GetxController
     }
   }
 
-  void onClickSelectButton(int position, ProductInfo info) {
+  Future<void> onClickSelectButton(int position, ProductInfo info) async {
     /*addProductRequest = AddProductRequest();
     addProductRequest.categories = [];
     addProductRequest.id = info.id ?? 0;
@@ -338,17 +345,23 @@ class StockListController extends GetxController
 
     storeProductApi();*/
 
+    bool isInternet = await AppUtils.interNetCheck();
+
     if (AppStorage().getStockData() != null) {
       ProductListResponse response = AppStorage().getStockData()!;
       for (int i = 0; i < response.info!.length; i++) {
         ProductInfo item = response.info![i];
         if (item.id == info.id) {
-          print("mBarCode:" + mBarCode);
           item.barcode_text = mBarCode;
-          item.mode_type = 2;
-          item.localStored = true;
-          AppStorage().setStockData(response);
-          moveStockEditQuantityScreen(item.id.toString(), item);
+          if (isInternet) {
+            AppStorage().setStockData(response);
+            storeProductApi(item);
+          } else {
+            item.mode_type = 2;
+            item.localStored = true;
+            AppStorage().setStockData(response);
+            moveStockEditQuantityScreen(item.id.toString(), item);
+          }
           break;
         }
       }
@@ -601,13 +614,11 @@ class StockListController extends GetxController
     );
   }
 
-  void storeProductApi() async {
+  void storeProductApi(ProductInfo info) async {
     Map<String, dynamic> map = {};
-    map["id"] = addProductRequest.id;
-
+    map["id"] = info.id;
     map["barcode_text"] = mBarCode;
     multi.FormData formData = multi.FormData.fromMap(map);
-
     print("Request Data:" + map.toString());
 
     isLoading.value = true;
@@ -621,7 +632,7 @@ class StockListController extends GetxController
               StoreStockProductResponse.fromJson(
                   jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            moveStockEditQuantityScreen(response.info!.id.toString(), null);
+            moveStockEditQuantityScreen(info.id.toString(), info);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -793,13 +804,34 @@ class StockListController extends GetxController
       ProductListResponse response = AppStorage().getStockData()!;
       tempList.clear();
       if (stockCountType == 0) {
-        int supplierId = getSupplierId();
-        int categoryId = getCategoryId();
-        if (supplierId != 0 || categoryId != 0) {
-          setFilterList(supplierId, categoryId, response.info!);
+        if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value) &&
+            mSupplierCategoryFilter.value != "-") {
+          final jsonMap = json.decode(mSupplierCategoryFilter.value);
+          FilterRequest filterRequest = FilterRequest.fromJson(jsonMap);
+          int supplierId = !StringHelper.isEmptyString(filterRequest.supplier)
+              ? int.parse(filterRequest.supplier!)
+              : 0;
+          int categoryId = !StringHelper.isEmptyString(filterRequest.category)
+              ? int.parse(filterRequest.category!)
+              : 0;
+          String supplierKey =
+              !StringHelper.isEmptyString(filterRequest.supplier_key)
+                  ? filterRequest.supplier_key!
+                  : "";
+          print("supplier:" + supplierId.toString());
+          print("category:" + categoryId.toString());
+          print("supplier key:" + supplierKey.toString());
+          setFilterList(supplierId, categoryId, supplierKey, response.info!);
         } else {
           tempList.addAll(response.info!);
         }
+        // int supplierId = getSupplierId();
+        // int categoryId = getCategoryId();
+        // if (supplierId != 0 || categoryId != 0) {
+        //   setFilterList(supplierId, categoryId, response.info!);
+        // } else {
+        //   tempList.addAll(response.info!);
+        // }
       } else {
         for (var info in response.info!) {
           if (info.stock_status_id == stockCountType) {
@@ -816,28 +848,68 @@ class StockListController extends GetxController
         !StringHelper.isEmptyList(AppStorage().getStoredStockList());
   }
 
-  void setFilterList(int supplierId, int categoryId, List<ProductInfo>? list) {
+  void setFilterList(int supplierId, int categoryId, String supplierKey,
+      List<ProductInfo>? list) {
     for (var element in list!) {
+      print("-----------------------------");
       List<String> categoryIds = [];
       for (var categoryInfo in element.categories!) {
         categoryIds.add(categoryInfo.id!.toString());
       }
-      if (supplierId != 0 && categoryId != 0) {
+
+      if (supplierKey == 'all_category') {
+        if (categoryId != 0) {
+          if (categoryIds.contains(categoryId.toString())) {
+            tempList.add(element);
+          }
+        } else {
+          tempList.addAll(list);
+        }
+      } else if (supplierKey == 'no_supplier_category') {
+        if (categoryId != 0) {
+          if ((element.supplierId == null || element.supplierId! == 0) &&
+              categoryIds.contains(categoryId.toString())) {
+            tempList.add(element);
+          }
+        } else {
+          if ((element.supplierId == null || element.supplierId! == 0)) {
+            tempList.add(element);
+          }
+        }
+      } else if (supplierId != 0 && categoryId != 0) {
+        if ((element.supplierId != null && element.supplierId! == supplierId) &&
+            categoryIds.contains(categoryId.toString())) {
+          tempList.add(element);
+        }
+      } else if (supplierId != 0 && categoryId != 0) {
         if ((element.supplierId != null && element.supplierId! == supplierId) &&
             categoryIds.contains(categoryId.toString())) {
           tempList.add(element);
         }
       } else if (supplierId != 0 && categoryId == 0) {
-        if (element.supplierId != null && element.supplierId! == supplierId) {
-          tempList.add(element);
-        }
-      } else if (supplierId == 0 && categoryId != 0) {
-        if (categoryIds.contains(categoryId.toString())) {
+        if ((element.supplierId != null && element.supplierId! == supplierId)) {
           tempList.add(element);
         }
       } else {
         tempList.addAll(list);
       }
+
+      // if (supplierId != 0 && categoryId != 0) {
+      //   if ((element.supplierId != null && element.supplierId! == supplierId) &&
+      //       categoryIds.contains(categoryId.toString())) {
+      //     tempList.add(element);
+      //   }
+      // } else if (supplierId != 0 && categoryId == 0) {
+      //   if (element.supplierId != null && element.supplierId! == supplierId) {
+      //     tempList.add(element);
+      //   }
+      // } else if (supplierId == 0 && categoryId != 0) {
+      //   if (categoryIds.contains(categoryId.toString())) {
+      //     tempList.add(element);
+      //   }
+      // } else {
+      //   tempList.addAll(list);
+      // }
     }
   }
 
@@ -889,7 +961,7 @@ class StockListController extends GetxController
   }
 
   Future<void> onCLickUploadData(
-      bool isProgress, int stockCount, int productCount) async {
+      bool isProgress, bool isInitial, int stockCount, int productCount) async {
     bool isInternet = await AppUtils.interNetCheck();
     if (isInternet) {
       if (stockCount > 0) {
@@ -898,7 +970,7 @@ class StockListController extends GetxController
       } else if (productCount > 0) {
         storeLocalProducts(isProgress, getLocalStoredProduct());
       } else {
-        getAllStockListApi(isProgress, true);
+        getAllStockListApi(isProgress, isInitial);
       }
     } else {
       if (isProgress) AppUtils.showSnackBarMessage('no_internet'.tr);

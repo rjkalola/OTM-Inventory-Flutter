@@ -67,9 +67,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
                 height: 1,
                 color: dividerColor,
               ),
-              Visibility(
-                  visible: storeListController.storeList.isNotEmpty,
-                  child: const SearchStoreWidget()),
+              const SearchStoreWidget(),
               storeListController.storeList.isNotEmpty
                   ? StoreListView()
                   : StoreListEmptyView(),

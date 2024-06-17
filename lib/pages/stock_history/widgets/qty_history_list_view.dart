@@ -39,15 +39,15 @@ class QtyHistoryListView extends StatelessWidget {
                             Expanded(
                               child: Row(
                                 children: [
-                                  customTextView(
-                                      stockQuantityHistoryController
-                                              .stockHistoryList[position]
-                                              .created_at_formatted ??
-                                          "",
-                                      13,
-                                      FontWeight.w400,
-                                      primaryTextColorLight,
-                                      const EdgeInsets.all(0)),
+                                  PrimaryTextView(
+                                    text: stockQuantityHistoryController
+                                            .stockHistoryList[position]
+                                            .created_at_formatted ??
+                                        "",
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                    color: primaryTextColor,
+                                  ),
                                   !StringHelper.isEmptyObject(
                                           stockQuantityHistoryController
                                               .stockHistoryList[position].user)
@@ -61,7 +61,7 @@ class QtyHistoryListView extends StatelessWidget {
                                                     .name ??
                                                 "",
                                             fontSize: 16,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w400,
                                           ),
                                         )
                                       : Container(),
@@ -108,8 +108,8 @@ class QtyHistoryListView extends StatelessWidget {
                                             maxLines: 1,
                                             softWrap: false,
                                             style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
                                           ),
                                         )
                                       : Container(),
@@ -123,39 +123,48 @@ class QtyHistoryListView extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Row(
-                              children: [
-                                customTextView(
-                                    stockQuantityHistoryController
-                                        .stockHistoryList[position].qty,
-                                    18,
-                                    FontWeight.w500,
-                                    (!StringHelper.isEmptyString(
-                                                stockQuantityHistoryController
-                                                        .stockHistoryList[
-                                                            position]
-                                                        .qty ??
-                                                    "") &&
-                                            int.parse(
-                                                    stockQuantityHistoryController
-                                                            .stockHistoryList[
-                                                                position]
-                                                            .qty ??
-                                                        "0") >
-                                                0)
-                                        ? Colors.green
-                                        : Colors.red,
-                                    const EdgeInsets.all(0)),
-                                const SizedBox(
-                                  width: 6,
-                                ),
-                                customTextView(
-                                    getUpdatedQuantity(position),
-                                    18,
-                                    FontWeight.w500,
-                                    primaryTextColor,
-                                    const EdgeInsets.all(0))
-                              ],
+                            SizedBox(
+                              width: 90,
+                              child: Row(
+                                children: [
+                                  customTextView(
+                                      stockQuantityHistoryController
+                                          .stockHistoryList[position].qty,
+                                      18,
+                                      FontWeight.w500,
+                                      (!StringHelper.isEmptyString(
+                                                  stockQuantityHistoryController
+                                                          .stockHistoryList[
+                                                              position]
+                                                          .qty ??
+                                                      "") &&
+                                              int.parse(
+                                                      stockQuantityHistoryController
+                                                              .stockHistoryList[
+                                                                  position]
+                                                              .qty ??
+                                                          "0") >
+                                                  0)
+                                          ? Colors.green
+                                          : Colors.red,
+                                      const EdgeInsets.all(0)),
+                                  const SizedBox(
+                                    width: 6,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      getUpdatedQuantity(position),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      softWrap: false,
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          color: primaryTextColor,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),

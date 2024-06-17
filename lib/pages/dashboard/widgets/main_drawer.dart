@@ -173,6 +173,10 @@ class MainDrawer extends StatelessWidget {
   navigate(String routPath) {
     // Navigator.pop(context as BuildContext);
     // Get.back();
-    Get.offNamed(routPath);
+    if (AppStorage.storeId == 0) {
+      if (routPath == AppRoutes.dashboardScreen) Get.offNamed(routPath);
+    } else {
+      Get.offNamed(routPath);
+    }
   }
 }

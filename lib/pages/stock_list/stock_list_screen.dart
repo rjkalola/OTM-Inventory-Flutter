@@ -60,6 +60,7 @@ class _StockListScreenState extends State<StockListScreen> {
                             onPressed: () {
                               stockListController.onCLickUploadData(
                                   true,
+                                  false,
                                   stockListController.localStockCount(),
                                   stockListController.localProductCount());
                             },
@@ -87,6 +88,7 @@ class _StockListScreenState extends State<StockListScreen> {
                       child: RefreshIndicator(
                           onRefresh: () async {
                             await stockListController.onCLickUploadData(
+                                true,
                                 true,
                                 stockListController.localStockCount(),
                                 stockListController.localProductCount());

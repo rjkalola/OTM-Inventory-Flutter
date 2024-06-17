@@ -16,11 +16,20 @@ class _SearchStoreWidgetState extends State<SearchStoreWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      child: SearchTextField(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+      child: SizedBox(
+        height: 40,
+        child: SearchTextField(
+          controller: storeListController.searchController.value,
           onValueChange: (value) {
             storeListController.searchItem(value.toString());
-          }),
+          },
+          onPressedClear: () {
+            storeListController.searchController.value.clear();
+            storeListController.searchItem("");
+          },
+        ),
+      ),
     );
   }
 }

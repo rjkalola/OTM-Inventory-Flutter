@@ -8,7 +8,6 @@ import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
 import 'package:otm_inventory/pages/dashboard/models/dashboard_stock_count_response.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
-import 'package:otm_inventory/pages/products/add_product/model/add_local_product_request.dart';
 import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
@@ -254,6 +253,8 @@ class DashboardController extends GetxController
             if (AppStorage.storeId == 0 && storeList.isNotEmpty) {
               showStoreListDialog(AppConstants.dialogIdentifier.storeList,
                   'stores'.tr, storeList, false, false, false, false, this);
+            } else if (AppStorage.storeId == 0 && storeList.isEmpty) {
+              Get.offNamed(AppRoutes.storeListScreen);
             } else {
               setHeaderListArray();
             }

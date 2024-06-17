@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
 import 'package:otm_inventory/widgets/search_text_field.dart';
 
@@ -17,15 +18,18 @@ class _SearchStockWidgetWidgetState extends State<SearchStockWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 6, 0),
-      child: Container(
-        height: 37,
+      child: SizedBox(
+        height: 40,
         child: SearchTextField(
-            onValueChange: (value) {
-              stockListController.searchItem(value.toString());
-              // setModalState(() {
-              //   filterSearchResults(value, list);
-              // });
-            }),
+          controller: stockListController.searchController.value,
+          onValueChange: (value) {
+            stockListController.searchItem(value.toString());
+          },
+          onPressedClear: () {
+            stockListController.searchController.value.clear();
+            stockListController.searchItem("");
+          },
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:otm_inventory/pages/stock_filter/view/widgets/all_items.dart';
 import 'package:otm_inventory/pages/stock_filter/view/widgets/stock_filter_categories_list.dart';
 import 'package:otm_inventory/pages/stock_filter/view/widgets/stock_filter_supplier_list.dart';
 
@@ -57,7 +58,13 @@ class _StockFilterScreenState extends State<StockFilterScreen> {
                                   color: Colors.grey,
                                   child: StockFilterSupplierList())),
                           Expanded(
-                              flex: 3, child: StockFilterCategoriesList())
+                              flex: 3,
+                              child: Column(
+                                children: [
+                                  AllItems(),
+                                  StockFilterCategoriesList()
+                                ],
+                              ))
                         ],
                       ),
                     ),

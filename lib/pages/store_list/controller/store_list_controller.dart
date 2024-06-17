@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/store_list/controller/store_list_repository.dart';
 import 'package:otm_inventory/pages/store_list/model/store_info.dart';
@@ -17,7 +18,7 @@ class StoreListController extends GetxController {
   final _api = StoreListRepository();
   var storeList = <StoreInfo>[].obs;
   List<StoreInfo> tempList = [];
-
+  final searchController = TextEditingController().obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/category_list/category_list_repository.dart';
 import 'package:otm_inventory/pages/category_list/model/category_info.dart';
@@ -16,7 +17,7 @@ class CategoryListController extends GetxController {
   final _api = CategoryListRepository();
   var categoryList = <CategoryInfo>[].obs;
   List<CategoryInfo> tempList = [];
-
+  final searchController = TextEditingController().obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;

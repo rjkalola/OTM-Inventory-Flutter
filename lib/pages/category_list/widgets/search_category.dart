@@ -20,11 +20,20 @@ class _SearchCategoryState extends State<SearchCategory> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      child: SearchTextField(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+      child: SizedBox(
+        height: 40,
+        child: SearchTextField(
+          controller: categoryListController.searchController.value,
           onValueChange: (value) {
             categoryListController.searchItem(value.toString());
-          }),
+          },
+          onPressedClear: () {
+            categoryListController.searchController.value.clear();
+            categoryListController.searchItem("");
+          },
+        ),
+      ),
     );
   }
 }

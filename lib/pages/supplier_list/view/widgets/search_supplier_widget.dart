@@ -15,18 +15,25 @@ class SearchSupplierWidget extends StatefulWidget {
 }
 
 class _SearchSupplierWidgetState extends State<SearchSupplierWidget> {
-  SupplierListController supplierListController = SupplierListController();
+  final supplierListController = Get.put(SupplierListController());
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      child: SearchTextField(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+      child: SizedBox(
+        height: 40,
+        child: SearchTextField(
+          controller: supplierListController.searchController.value,
           onValueChange: (value) {
-            // setModalState(() {
-            //   filterSearchResults(value, list);
-            // });
-          }),
+            supplierListController.searchItem(value);
+          },
+          onPressedClear: () {
+            supplierListController.searchController.value.clear();
+            supplierListController.searchItem("");
+          },
+        ),
+      ),
     );
   }
 }

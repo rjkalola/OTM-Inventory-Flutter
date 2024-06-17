@@ -78,6 +78,7 @@ class CustomTextFieldStockQuantity extends StatelessWidget {
             fontWeight: FontWeight.w400, fontSize: 15, color: Colors.grey),
         hintStyle: const TextStyle(
             fontWeight: FontWeight.w400, fontSize: 15, color: Colors.grey),
+        errorStyle: const TextStyle(height: 0),
       ),
       validator: validator!,
     );

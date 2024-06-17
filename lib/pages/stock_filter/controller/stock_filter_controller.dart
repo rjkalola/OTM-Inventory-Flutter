@@ -69,6 +69,19 @@ class StockFilterController extends GetxController {
     applyFilter();
   }
 
+  void applyFilter_(int categoryId) {
+    FilterInfo supplierInfo = supplierList[selectedSupplierIndex.value];
+    FilterRequest request = FilterRequest();
+    request.supplier =
+        supplierInfo.id != null ? supplierInfo.id!.toString() : "";
+    request.category = categoryId.toString();
+    request.supplier_key = supplierInfo.key ?? "";
+    print("pass request");
+    // Get.back(result: request);
+    print(jsonEncode(request));
+    Get.back(result: jsonEncode(request));
+  }
+
   void applyFilter() {
     var list = <FilterRequest>[];
     for (int i = 0; i < supplierList.length; i++) {
@@ -87,6 +100,7 @@ class StockFilterController extends GetxController {
             supplierInfo.id != null ? supplierInfo.id!.toString() : "";
         request.category =
             StringHelper.getCommaSeparatedStringIds(listCategoryIds);
+        request.supplier_key = supplierInfo.key ?? "";
         list.add(request);
       }
     }
