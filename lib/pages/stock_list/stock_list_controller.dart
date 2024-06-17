@@ -166,13 +166,39 @@ class StockListController extends GetxController
       }
 
       if (index != -1) {
-        moveStockEditQuantityScreen(
+        moveStockEditQuantityScreenFromQrCode(
             productList[index].id.toString(), productList[index]);
       } else {
         showAddStockProductDialog();
         // AppUtils.showSnackBarMessage('msg_no_qr_code_product_match'.tr);
       }
       // }
+    }
+  }
+
+  Future<void> moveStockEditQuantityScreenFromQrCode(
+      String? productId, ProductInfo? productInfo) async {
+    var result;
+    if (productId != null) {
+      if (productInfo != null) {
+        if (productInfo.id != null) mSelectedProductId = productInfo.id!;
+        if (productInfo.local_id != null)
+          mSelectedLocalId = productInfo.local_id!;
+      }
+      var arguments = {
+        AppConstants.intentKey.productId: productId,
+        AppConstants.intentKey.productInfo: productInfo,
+      };
+      result = await Get.toNamed(AppRoutes.stockEditQuantityScreen,
+          arguments: arguments);
+
+      if (!StringHelper.isEmptyString(mBarCode)) {
+        mBarCode = "";
+        isScanQrCode.value = false;
+        openQrCodeScanner();
+        // getStockListApi(true, false, "", true, true);
+        setOfflineData();
+      }
     }
   }
 
