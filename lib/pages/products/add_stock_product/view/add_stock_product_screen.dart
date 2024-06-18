@@ -8,6 +8,7 @@ import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_title_view.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_barcode.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_category.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_description.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_manufacturer.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_name.dart';
@@ -71,6 +72,7 @@ class AddStockProductScreen extends StatelessWidget {
                             const SizedBox(
                               height: 18,
                             ),
+                            TextFieldStockProductCategory(),
                             TextFieldStockProductSupplier(),
                             TextFieldStockProductManufacturer(),
                             TextFieldStockProductPrice(),

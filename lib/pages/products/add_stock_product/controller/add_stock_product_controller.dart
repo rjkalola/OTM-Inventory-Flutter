@@ -14,7 +14,9 @@ import '../../../../utils/app_utils.dart';
 import '../../../../web_services/api_constants.dart';
 import '../../../../web_services/response/response_model.dart';
 import '../../../common/drop_down_list_dialog.dart';
+import '../../../common/drop_down_multi_selection_list_dialog.dart';
 import '../../../common/listener/select_item_listener.dart';
+import '../../../common/listener/select_multi_item_listener.dart';
 import '../../../common/model/file_info.dart';
 import '../../../common/select_Item_list_dialog.dart';
 import '../../../stock_list/stock_list_repository.dart';
@@ -26,7 +28,7 @@ import '../../product_list/models/product_list_response.dart';
 import 'add_stock_product_repository.dart';
 
 class AddStockProductController extends GetxController
-    implements SelectItemListener {
+    implements SelectItemListener, SelectMultiItemListener {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
@@ -46,6 +48,7 @@ class AddStockProductController extends GetxController
   final productPriceController = TextEditingController().obs;
   final productDescriptionController = TextEditingController().obs;
   final productBarcodeController = TextEditingController().obs;
+  final productCategoryController = TextEditingController().obs;
 
   final ImagePicker _picker = ImagePicker();
   String thumbImage = "";
@@ -53,6 +56,11 @@ class AddStockProductController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
+
+    if (AppStorage().getProductResources() != null) {
+      productResourcesResponse.value = AppStorage().getProductResources()!;
+      isMainViewVisible.value = true;
+    }
 
     FilesInfo info = FilesInfo();
     filesList.add(info);
@@ -72,12 +80,14 @@ class AddStockProductController extends GetxController
         title.value = 'add_product'.tr;
         if (!StringHelper.isEmptyString(mBarCode))
           productBarcodeController.value.text = mBarCode;
+        addProductRequest?.categories = [];
       }
     } else {
       addProductRequest = ProductInfo();
       addProductRequest?.id = 0;
       addProductRequest?.local_id = 0;
       title.value = 'add_product'.tr;
+      addProductRequest?.categories = [];
     }
 
     // FileInfo info1 = FileInfo();
@@ -89,10 +99,10 @@ class AddStockProductController extends GetxController
     // if (isInternet) {
     //   getProductResourcesApi();
     // } else {
-    if (AppStorage().getProductResources() != null) {
-      productResourcesResponse.value = AppStorage().getProductResources()!;
-      isMainViewVisible.value = true;
-    }
+    // if (AppStorage().getProductResources() != null) {
+    //   productResourcesResponse.value = AppStorage().getProductResources()!;
+    //   isMainViewVisible.value = true;
+    // }
     // }
   }
 
@@ -114,6 +124,29 @@ class AddStockProductController extends GetxController
     productBarcodeController.value.text = info.barcode_text ?? "";
     mBarCode = info.barcode_text ?? "";
     isStatus.value = info.status ?? false;
+
+    if (!StringHelper.isEmptyList(info.categories)) {
+      List<String> ids = [];
+      for (int i = 0; i < info.categories!.length; i++) {
+        ids.add(info.categories![i].id!.toString());
+      }
+      if (!StringHelper.isEmptyList(
+          productResourcesResponse.value.categories)) {
+        for (int i = 0;
+            i < productResourcesResponse.value.categories!.length;
+            i++) {
+          if (ids.contains(
+              productResourcesResponse.value.categories![i].id!.toString())) {
+            productResourcesResponse.value.categories![i].check = true;
+          }
+        }
+      }
+      addProductRequest?.categories = info.categories!;
+      productCategoryController.value.text =
+          StringHelper.getCommaSeparatedNames(info.categories!);
+    }else{
+      addProductRequest?.categories = [];
+    }
 
     if (!StringHelper.isEmptyString(info.imageThumbUrl) &&
         info.imageThumbUrl!.startsWith("http")) {
@@ -271,6 +304,17 @@ class AddStockProductController extends GetxController
     }
   }
 
+  void showCategoryList() {
+    if (productResourcesResponse.value.categories != null &&
+        productResourcesResponse.value.categories!.isNotEmpty) {
+      showMultipleSelectionDropDownDialog(
+          AppConstants.dialogIdentifier.categoryList,
+          'category'.tr,
+          productResourcesResponse.value.categories!,
+          this);
+    }
+  }
+
   void showDropDownDialog(String dialogType, String title,
       List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(
@@ -298,6 +342,42 @@ class AddStockProductController extends GetxController
     } else if (action == AppConstants.action.selectImageFromCamera ||
         action == AppConstants.action.selectImageFromGallery) {
       selectImage(action);
+    }
+  }
+
+  void showMultipleSelectionDropDownDialog(String dialogType, String title,
+      List<ModuleInfo> list, SelectMultiItemListener listener) {
+    Get.bottomSheet(
+        DropDownMultiSelectionListDialog(
+            title: title,
+            dialogType: dialogType,
+            list: list,
+            listener: listener),
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true);
+  }
+
+  @override
+  void onSelectMultiItem(List<ModuleInfo> tempList, String action) {
+    if (action == AppConstants.dialogIdentifier.categoryList) {
+      productResourcesResponse.value.categories!.clear();
+      productResourcesResponse.value.categories!.addAll(tempList);
+
+      List<ModuleInfo> listSelectedItems = [];
+      for (int i = 0; i < tempList.length; i++) {
+        if (tempList[i].check ?? false) {
+          listSelectedItems.add(tempList[i]);
+        }
+      }
+      if(!StringHelper.isEmptyList(addProductRequest?.categories)){
+        addProductRequest?.categories!.clear();
+        addProductRequest?.categories!.addAll(listSelectedItems);
+      }else{
+        addProductRequest?.categories = [];
+        addProductRequest?.categories!.addAll(listSelectedItems);
+      }
+      productCategoryController.value.text =
+          StringHelper.getCommaSeparatedNames(listSelectedItems);
     }
   }
 
@@ -445,6 +525,12 @@ class AddStockProductController extends GetxController
     map["status"] = true;
     map["mode_type"] = addProductRequest?.mode_type;
     map["barcode_text"] = addProductRequest?.barcode_text ?? "";
+
+    if (!StringHelper.isEmptyList(addProductRequest?.categories)) {
+      for (int i = 0; i < addProductRequest!.categories!.length; i++) {
+        map['categories[${i.toString()}]'] = addProductRequest!.categories![i].id;
+      }
+    }
 
     multi.FormData formData = multi.FormData.fromMap(map);
 

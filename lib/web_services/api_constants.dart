@@ -43,6 +43,4 @@ class ApiConstants {
   static String getDashboardStockCount = '$appUrl/stocks/product-stocks';
   static String storeMultipleProductUrl = '$appUrl/products/add-products';
   static String getLastProductUpdateTime = '$appUrl/products/latest-product';
-
-
 }
