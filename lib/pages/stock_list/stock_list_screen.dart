@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
-import 'package:otm_inventory/pages/stock_list/widgets/count_buttons_view.dart';
+import 'package:otm_inventory/pages/stock_list/widgets/pull_to_refresh_view.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/search_stock.dart';
 import 'package:otm_inventory/pages/stock_list/widgets/stock_empty_view.dart';
@@ -87,6 +87,9 @@ class _StockListScreenState extends State<StockListScreen> {
                       progressIndicator: const CustomProgressbar(),
                       child: RefreshIndicator(
                           onRefresh: () async {
+                            stockListController.pullToRefreshTime.value = "";
+                            stockListController.pullToRefreshVisible.value =
+                                false;
                             await stockListController.onCLickUploadData(
                                 true,
                                 true,
@@ -101,6 +104,7 @@ class _StockListScreenState extends State<StockListScreen> {
                             ),
                             // const SizedBox(height:20,),
                             // TextFieldSelectStore(),
+                            PullToRefreshView(),
                             const SizedBox(
                               height: 9,
                             ),

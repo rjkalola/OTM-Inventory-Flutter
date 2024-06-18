@@ -235,6 +235,16 @@ class AppStorage extends GetxController {
     return id;
   }
 
+  void setLastUpdateTime(String time) {
+    storage.write(AppConstants.sharedPreferenceKey.lastUpdateTime, time);
+  }
+
+  String getLastUpdateTime() {
+    final time =
+        storage.read(AppConstants.sharedPreferenceKey.lastUpdateTime) ?? "";
+    return time;
+  }
+
   void clearStoredStockList() {
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
     if (getStockData() != null) {

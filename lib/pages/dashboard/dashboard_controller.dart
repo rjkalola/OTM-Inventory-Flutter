@@ -26,6 +26,7 @@ import '../common/listener/select_item_listener.dart';
 import '../common/model/file_info.dart';
 import '../products/add_product/controller/add_product_repository.dart';
 import '../products/add_product/model/product_resources_response.dart';
+import '../products/product_list/models/last_product_update_time_response.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../stock_edit_quantiry/model/store_stock_request.dart';
 import '../stock_edit_quantiry/stock_edit_quantity_repository.dart';
@@ -277,6 +278,42 @@ class DashboardController extends GetxController
     );
   }
 
+  Future<void> getLastProductUpdateTimeAPI(bool isProgress) async {
+    Map<String, dynamic> map = {};
+    map["store_id"] = AppStorage.storeId.toString();
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print(map.toString());
+    if (isProgress) isLoading.value = true;
+    StockListRepository().getLastProductUpdateTime(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          LastProductUpdateTimeResponse response =
+              LastProductUpdateTimeResponse.fromJson(
+                  jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            if (!StringHelper.isEmptyString(response.updated_at)) {
+              AppStorage().setLastUpdateTime(response.updated_at!);
+            }
+          } else {
+            // AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          // AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   AppUtils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
+      },
+    );
+  }
+
   void getDashboardStockCountApi(bool isProgress) async {
     Map<String, dynamic> map = {};
     map["store_id"] = AppStorage.storeId.toString();
@@ -296,6 +333,7 @@ class DashboardController extends GetxController
             AppStorage().setStockSize(response.data_size ?? "");
             setItemCount(response);
             storeStockData(false);
+            getLastProductUpdateTimeAPI(false);
           } else {
             AppUtils.showSnackBarMessage(response.message!);
           }

@@ -29,7 +29,6 @@ class ProductInfo {
       sku,
       model_name,
       manufacturer_name,
-      imageThumb,
       qrCodeThumb,
       imageUrl,
       imageThumbUrl,
@@ -68,7 +67,6 @@ class ProductInfo {
       this.sku,
       this.model_name,
       this.manufacturer_name,
-      this.imageThumb,
       this.qrCodeThumb,
       this.imageThumbUrl,
       this.imageUrl,
@@ -120,7 +118,6 @@ class ProductInfo {
     width = json['width'];
     height = json['height'];
     imageUrl = json['image_url'];
-    imageThumb = json['image_thumb'];
     qrCodeThumb = json['qr_code_thumb'];
     imageThumbUrl = json['image_thumb_url'];
     tax = json['tax'];
@@ -183,7 +180,6 @@ class ProductInfo {
     data['sku'] = sku;
     data['model_name'] = model_name;
     data['manufacturer_name'] = manufacturer_name;
-    data['image_thumb'] = imageThumb;
     data['qr_code_thumb'] = qrCodeThumb;
     data['image_thumb_url'] = imageThumbUrl;
     data['image_url'] = imageUrl;

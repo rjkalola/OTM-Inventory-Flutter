@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,10 +18,8 @@ import '../../../common/listener/select_item_listener.dart';
 import '../../../common/model/file_info.dart';
 import '../../../common/select_Item_list_dialog.dart';
 import '../../../stock_list/stock_list_repository.dart';
-import '../../add_product/model/add_product_request.dart';
 import '../../add_product/model/product_resources_response.dart';
 import '../../add_product/model/store_product_response.dart';
-import '../../add_product/model/store_stock_product_response.dart';
 import '../../product_list/models/product_image_info.dart';
 import '../../product_list/models/product_info.dart';
 import '../../product_list/models/product_list_response.dart';
@@ -51,6 +48,7 @@ class AddStockProductController extends GetxController
   final productBarcodeController = TextEditingController().obs;
 
   final ImagePicker _picker = ImagePicker();
+  String thumbImage = "";
 
   @override
   Future<void> onInit() async {
@@ -116,6 +114,12 @@ class AddStockProductController extends GetxController
     productBarcodeController.value.text = info.barcode_text ?? "";
     mBarCode = info.barcode_text ?? "";
     isStatus.value = info.status ?? false;
+
+    if (!StringHelper.isEmptyString(info.imageThumbUrl) &&
+        info.imageThumbUrl!.startsWith("http")) {
+      thumbImage = info.imageThumbUrl ?? "";
+    }
+    print("thumbImage:" + thumbImage);
 
     if (info.id != null && info.id! > 0) {
       for (int i = 0; i < info.product_images!.length; i++) {
@@ -271,12 +275,13 @@ class AddStockProductController extends GetxController
       List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(
         DropDownListDialog(
-            title: title,
-            dialogType: dialogType,
-            list: list,
-            listener: listener,
-            isCloseEnable: true,
-          isSearchEnable: true,),
+          title: title,
+          dialogType: dialogType,
+          list: list,
+          listener: listener,
+          isCloseEnable: true,
+          isSearchEnable: true,
+        ),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);
   }
@@ -428,6 +433,7 @@ class AddStockProductController extends GetxController
 
   void storeProductApi() async {
     Map<String, dynamic> map = {};
+    map["store_id"] = AppStorage.storeId.toString();
     map["id"] = addProductRequest?.id;
     map["short_name"] = addProductRequest?.shortName;
     map["name"] = addProductRequest?.name;
@@ -452,16 +458,19 @@ class AddStockProductController extends GetxController
 
     if (list.isNotEmpty) {
       for (var info in list) {
+        print("File:" + info.file!);
         formData.files.addAll([
           MapEntry(
               "files[]", await multi.MultipartFile.fromFile(info.file ?? "")),
         ]);
       }
-
-      formData.files.add(
-        MapEntry("product_file",
-            await multi.MultipartFile.fromFile(list[0].file ?? "")),
-      );
+      print("product_file:" + list[0].file!);
+      if (StringHelper.isEmptyString(thumbImage)) {
+        formData.files.add(
+          MapEntry("product_file",
+              await multi.MultipartFile.fromFile(list[0].file ?? "")),
+        );
+      }
     }
 
     print("Request Data:" + map.toString());

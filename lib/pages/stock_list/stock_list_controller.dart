@@ -13,6 +13,7 @@ import '../../../utils/app_utils.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/response_model.dart';
 import '../../utils/AlertDialogHelper.dart';
+import '../../utils/date_utils.dart';
 import '../../web_services/response/base_response.dart';
 import '../../web_services/response/module_info.dart';
 import '../common/drop_down_list_dialog.dart';
@@ -21,10 +22,13 @@ import '../common/listener/select_item_listener.dart';
 import '../common/model/file_info.dart';
 import '../products/add_product/controller/add_product_repository.dart';
 import '../products/add_product/model/store_stock_product_response.dart';
+import '../products/product_list/models/last_product_update_time_response.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../stock_edit_quantiry/model/store_stock_request.dart';
+import '../stock_filter/controller/stock_filter_repository.dart';
 import '../stock_filter/model/filter_request.dart';
+import '../stock_filter/model/stock_filter_response.dart';
 import '../store_list/model/store_list_response.dart';
 
 class StockListController extends GetxController
@@ -39,14 +43,15 @@ class StockListController extends GetxController
   final storeNameController = TextEditingController().obs;
   final isPendingDataCount = false.obs, isUpToDateData = false.obs;
   final totalPendingCount = 0.obs;
-  final pendingDataCountButtonTitle = "".obs;
+  final pendingDataCountButtonTitle = "".obs, pullToRefreshTime = "".obs;
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
       isScanQrCode = false.obs,
       isLoadMore = false.obs,
-      isUpdateStockButtonVisible = false.obs;
+      isUpdateStockButtonVisible = false.obs,
+      pullToRefreshVisible = false.obs;
 
   final filters = ''.obs,
       search = ''.obs,
@@ -229,19 +234,16 @@ class StockListController extends GetxController
       setOfflineData();
     } else {
       if (result != null && result) {
-        // bool isInternet = await AppUtils.interNetCheck();
-        // if (isInternet) {
-        //   getStockListApi(true, false, "", true, true);
-        // } else {
-        //   setOfflineData();
-        // }
-
         if (AppStorage().getStockData() != null) {
           ProductListResponse response = AppStorage().getStockData()!;
-          ProductInfo? updatedInfo;
+          // ProductInfo? updatedInfo;
           tempList.clear();
           tempList.addAll(response.info!);
-          for (var info in response.info!) {
+          productList.value = tempList;
+          if (!StringHelper.isEmptyString(searchController.value.text))
+            searchItem(searchController.value.text);
+          productList.refresh();
+        /*  for (var info in response.info!) {
             int infoId = info.id ?? 0;
             int infoLocalId = info.local_id ?? 0;
             if (infoId == mSelectedProductId ||
@@ -260,9 +262,10 @@ class StockListController extends GetxController
             }
           }
           if (index != -1 && updatedInfo != null) {
-            productList.insert(index, updatedInfo);
+            // productList.insert(index, updatedInfo);
+            productList[index] = updatedInfo;
           }
-          productList.refresh();
+          productList.refresh();*/
         }
         setTotalCountButtons();
         isUpdateStockButtonVisible.value =
@@ -990,11 +993,14 @@ class StockListController extends GetxController
       bool isProgress, bool isInitial, int stockCount, int productCount) async {
     bool isInternet = await AppUtils.interNetCheck();
     if (isInternet) {
+      getLastProductUpdateTimeAPI(false);
+      getFiltersListApi();
       if (stockCount > 0) {
         List<StockStoreRequest> list = AppStorage().getStoredStockList();
-        storeLocalStocksAPI(isProgress, jsonEncode(list), productCount);
+        storeLocalStocksAPI(
+            isProgress, jsonEncode(list), productCount, isInitial);
       } else if (productCount > 0) {
-        storeLocalProducts(isProgress, getLocalStoredProduct());
+        storeLocalProducts(isProgress, getLocalStoredProduct(), isInitial);
       } else {
         getAllStockListApi(isProgress, isInitial);
       }
@@ -1004,7 +1010,7 @@ class StockListController extends GetxController
   }
 
   Future<void> storeLocalStocksAPI(
-      bool isProgress, String data, int productCount) async {
+      bool isProgress, String data, int productCount, bool isInitial) async {
     Map<String, dynamic> map = {};
     map["app_data"] = data;
     multi.FormData formData = multi.FormData.fromMap(map);
@@ -1019,13 +1025,14 @@ class StockListController extends GetxController
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             if (productCount > 0) {
-              storeLocalProducts(isProgress, getLocalStoredProduct());
+              storeLocalProducts(
+                  isProgress, getLocalStoredProduct(), isInitial);
             } else {
               if (isProgress)
                 AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
               AppStorage().clearStoredStockList();
               setTotalCountButtons();
-              getAllStockListApi(false, false);
+              getAllStockListApi(false, isInitial);
               // setOfflineData();
             }
           } else {
@@ -1048,7 +1055,7 @@ class StockListController extends GetxController
   }
 
   Future<void> storeLocalProducts(
-      bool isProgress, List<ProductInfo> listProducts) async {
+      bool isProgress, List<ProductInfo> listProducts, bool isInitial) async {
     Map<String, dynamic> map = {};
     map["data"] = jsonEncode(listProducts);
     multi.FormData formData = multi.FormData.fromMap(map);
@@ -1104,6 +1111,97 @@ class StockListController extends GetxController
         // } else if (error.statusMessage!.isNotEmpty) {
         //   AppUtils.showSnackBarMessage(error.statusMessage!);
         // }
+      },
+    );
+  }
+
+  Future<void> getLastProductUpdateTimeAPI(bool isProgress) async {
+    Map<String, dynamic> map = {};
+    map["store_id"] = AppStorage.storeId.toString();
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print(map.toString());
+    if (isProgress) isLoading.value = true;
+    _api.getLastProductUpdateTime(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          LastProductUpdateTimeResponse response =
+              LastProductUpdateTimeResponse.fromJson(
+                  jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            String responseTime = response.updated_at ?? "";
+            // if (!StringHelper.isEmptyString(responseTime)) {
+            //   pullToRefreshTime.value = responseTime;
+            //   pullToRefreshVisible.value = true;
+            // }
+            if (!StringHelper.isEmptyString(responseTime)) {
+              String lastTime = AppStorage().getLastUpdateTime();
+              print("lastTime:" + lastTime);
+              print("responseTime:" + responseTime);
+              if (!StringHelper.isEmptyString(lastTime)) {
+                DateTime? lastDateTime = DateUtil.stringToDate(
+                    lastTime, DateUtil.DD_MM_YYYY_TIME_24_SLASH);
+                DateTime? responseDateTime = DateUtil.stringToDate(
+                    responseTime, DateUtil.DD_MM_YYYY_TIME_24_SLASH);
+                if (responseDateTime!.isAfter(lastDateTime!)) {
+                  pullToRefreshTime.value = lastTime;
+                  pullToRefreshVisible.value = true;
+                }
+                print("pullToRefreshVisible.value:" +
+                    pullToRefreshVisible.value.toString());
+              } else {
+                pullToRefreshTime.value = lastTime;
+                pullToRefreshVisible.value = true;
+              }
+              AppStorage().setLastUpdateTime(response.updated_at!);
+            }
+          } else {
+            // AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          // AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   AppUtils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
+      },
+    );
+  }
+
+  void getFiltersListApi() async {
+    Map<String, dynamic> map = {};
+    multi.FormData formData = multi.FormData.fromMap(map);
+    // isLoading.value = true;
+    StockFilterRepository().getStockFiltersList(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          StockFilterResponse response =
+              StockFilterResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.isSuccess!) {
+            AppStorage().setStockFiltersData(response);
+          } else {
+            AppUtils.showSnackBarMessage(response.message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
       },
     );
   }

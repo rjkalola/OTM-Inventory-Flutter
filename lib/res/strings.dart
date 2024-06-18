@@ -156,6 +156,7 @@ class Strings extends Translations {
           'product_updated_successfully': "Product updated successfully",
           'app_up_to_Date': "App is up to date",
           'msg_barcode_already_exist': "This barcode already exist",
+          'pull_down_to_refresh': "Pull down to refresh",
         },
         'hi_IN': {'login': 'Login'}
       };

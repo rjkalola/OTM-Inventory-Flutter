@@ -45,6 +45,19 @@ class AppUtils {
     return deviceName;
   }
 
+  static Future<String> getDeviceUniqueId() async {
+    String deviceId = "";
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      deviceId = androidInfo.id ?? "";
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      deviceId = iosInfo.identifierForVendor ?? "";
+    }
+    return deviceId;
+  }
+
   static haxColor(String colorHexCode) {
     String colorNew = '0xff$colorHexCode';
     colorNew = colorNew.replaceAll("#", '');

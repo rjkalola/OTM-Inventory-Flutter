@@ -70,6 +70,7 @@ class SharedPreferenceKey {
   final String stockSize = "STOCK_SIZE";
   final String tempIds = "TEMP_IDS";
   final String stockFilterData = "STOCK_FILTER_DATA";
+  final String lastUpdateTime = "LAST_UPDATE_TIME";
 }
 
 class Action {

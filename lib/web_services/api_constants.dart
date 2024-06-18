@@ -42,4 +42,7 @@ class ApiConstants {
   static String storeLocalStockUrl = '$appUrl/stocks/app-add-stock';
   static String getDashboardStockCount = '$appUrl/stocks/product-stocks';
   static String storeMultipleProductUrl = '$appUrl/products/add-products';
+  static String getLastProductUpdateTime = '$appUrl/products/latest-product';
+
+
 }
