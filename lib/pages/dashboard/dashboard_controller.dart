@@ -293,8 +293,8 @@ class DashboardController extends GetxController
               LastProductUpdateTimeResponse.fromJson(
                   jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            if (!StringHelper.isEmptyString(response.updated_at)) {
-              AppStorage().setLastUpdateTime(response.updated_at!);
+            if (!StringHelper.isEmptyString(response.created_at)) {
+              AppStorage().setLastUpdateTime(response.created_at!);
             }
           } else {
             // AppUtils.showSnackBarMessage(response.Message!);
@@ -487,6 +487,7 @@ class DashboardController extends GetxController
   Future<void> storeLocalStocksAPI(bool isProgress, String data) async {
     Map<String, dynamic> map = {};
     map["app_data"] = data;
+    map["store_id"] = AppStorage.storeId.toString();
     multi.FormData formData = multi.FormData.fromMap(map);
     print(map.toString());
     if (isProgress) isLoading.value = true;
@@ -529,6 +530,7 @@ class DashboardController extends GetxController
       bool isProgress, List<ProductInfo> listProducts) async {
     Map<String, dynamic> map = {};
     map["data"] = jsonEncode(listProducts);
+    map["store_id"] = AppStorage.storeId.toString();
     multi.FormData formData = multi.FormData.fromMap(map);
     for (int i = 0; i < listProducts.length; i++) {
       var listFiles = <FilesInfo>[];

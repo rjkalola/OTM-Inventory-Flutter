@@ -43,45 +43,43 @@ class TextFieldBorder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        onTap: () {
-          onPressed!();
-        },
-        autofocus: autofocus ?? false,
-        onChanged: onValueChange,
-        style: const TextStyle(
-            fontWeight: FontWeight.w400, fontSize: 15, color: primaryTextColor),
-        controller: textEditingController,
-        keyboardType: keyboardType,
-        textInputAction: textInputAction,
-        maxLines: maxLines,
-        textAlignVertical: textAlignVertical,
-        textAlign: textAlign ?? TextAlign.start,
-        readOnly: isReadOnly ?? false,
-        inputFormatters: inputFormatters,
-        decoration: InputDecoration(
-          suffixIcon: suffixIcon,
-          counterText: "",
-          contentPadding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-          floatingLabelBehavior: FloatingLabelBehavior.auto,
-          border: const OutlineInputBorder(
-            borderSide:
-                BorderSide(color: focusedTextFieldBorderColor, width: 1),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide:
-                BorderSide(color: focusedTextFieldBorderColor, width: 1),
-          ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: normalTextFieldBorderColor, width: 1),
-          ),
-          hintText: hintText,
-          labelText: labelText,
-          labelStyle: const TextStyle(
-              fontWeight: FontWeight.w400, fontSize: 15, color: Colors.grey),
-          hintStyle: const TextStyle(
-              fontWeight: FontWeight.w400, fontSize: 15, color: Colors.grey),
+      onTap: () {
+        onPressed!();
+      },
+      autofocus: autofocus ?? false,
+      onChanged: onValueChange,
+      style: const TextStyle(
+          fontWeight: FontWeight.w400, fontSize: 15, color: primaryTextColor),
+      controller: textEditingController,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      maxLines: maxLines,
+      textAlignVertical: textAlignVertical,
+      textAlign: textAlign ?? TextAlign.start,
+      readOnly: isReadOnly ?? false,
+      inputFormatters: inputFormatters,
+      decoration: InputDecoration(
+        suffixIcon: suffixIcon,
+        counterText: "",
+        contentPadding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        border: const OutlineInputBorder(
+          borderSide: BorderSide(color: focusedTextFieldBorderColor, width: 1),
         ),
-        validator: validator!,);
-
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: focusedTextFieldBorderColor, width: 1),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: normalTextFieldBorderColor, width: 1),
+        ),
+        hintText: hintText,
+        labelText: labelText,
+        labelStyle: const TextStyle(
+            fontWeight: FontWeight.w400, fontSize: 15, color: Colors.grey),
+        hintStyle: const TextStyle(
+            fontWeight: FontWeight.w400, fontSize: 15, color: Colors.grey),
+      ),
+      validator: validator!,
+    );
   }
 }

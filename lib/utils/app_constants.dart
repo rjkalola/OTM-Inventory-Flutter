@@ -71,6 +71,8 @@ class SharedPreferenceKey {
   final String tempIds = "TEMP_IDS";
   final String stockFilterData = "STOCK_FILTER_DATA";
   final String lastUpdateTime = "LAST_UPDATE_TIME";
+  final String editStockUserName = "EDIT_STOCK_USER_NAME";
+  final String editStockUserId = "EDIT_STOCK_USER_ID";
 }
 
 class Action {

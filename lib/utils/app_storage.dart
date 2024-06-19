@@ -245,6 +245,26 @@ class AppStorage extends GetxController {
     return time;
   }
 
+  void setEditStockUserName(String name) {
+    storage.write(AppConstants.sharedPreferenceKey.editStockUserName, name);
+  }
+
+  String getEditStockUserName() {
+    final name =
+        storage.read(AppConstants.sharedPreferenceKey.editStockUserName) ?? "";
+    return name;
+  }
+
+  void setEditStockUserId(int id) {
+    storage.write(AppConstants.sharedPreferenceKey.editStockUserId, id);
+  }
+
+  int getEditStockUserId() {
+    final id =
+        storage.read(AppConstants.sharedPreferenceKey.editStockUserId) ?? 0;
+    return id;
+  }
+
   void clearStoredStockList() {
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
     if (getStockData() != null) {

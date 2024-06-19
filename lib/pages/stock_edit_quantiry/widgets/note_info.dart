@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:otm_inventory/pages/otp_verification/model/user_info.dart';
 
-import '../../../utils/image_utils.dart';
 import '../../../utils/string_helper.dart';
 import '../../../widgets/text/PrimaryTextView.dart';
 class QtyHistoryNoteInfo extends StatelessWidget {

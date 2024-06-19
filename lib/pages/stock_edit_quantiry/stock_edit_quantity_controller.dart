@@ -44,7 +44,7 @@ class StockEditQuantityController extends GetxController
   final dateController = TextEditingController().obs;
   final priceController = TextEditingController().obs;
   final productInfo = ProductInfo().obs;
-  String productId = "", mBarCode = "";
+  String productId = "", mBarCode = "", userName = "";
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
@@ -64,6 +64,12 @@ class StockEditQuantityController extends GetxController
     // quantityController.value.text = "1";
     if (!StringHelper.isEmptyString(Get.find<AppStorage>().getQuantityNote())) {
       noteController.value.text = Get.find<AppStorage>().getQuantityNote();
+    }
+    if (!StringHelper.isEmptyString(
+        Get.find<AppStorage>().getEditStockUserName())) {
+      userController.value.text = AppStorage().getEditStockUserName();
+      userName = AppStorage().getEditStockUserName();
+      userId = AppStorage().getEditStockUserId();
     }
 
     /* bool isInternet = await AppUtils.interNetCheck();
@@ -147,6 +153,7 @@ class StockEditQuantityController extends GetxController
     if (action == AppConstants.dialogIdentifier.usersList) {
       userController.value.text = name;
       userId = id;
+      userName = name;
     }
   }
 
@@ -284,9 +291,12 @@ class StockEditQuantityController extends GetxController
     map["qty"] = qtyString;
     if (isUserDropdownVisible.value) {
       map["user_id"] = userId;
+      AppStorage().setEditStockUserId(userId);
+      AppStorage().setEditStockUserName(userName);
     }
     if (isReferenceVisible.value) {
       map["reference"] = note;
+      Get.find<AppStorage>().setQuantityNote(note);
     }
     map["price"] = price;
     map["date"] = date;
@@ -303,7 +313,6 @@ class StockEditQuantityController extends GetxController
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            Get.find<AppStorage>().setQuantityNote(note);
             if (mode == 'add') {
               productInfo.value.qty = productInfo.value.qty != null
                   ? (productInfo.value.qty! + quantity)
@@ -533,14 +542,16 @@ class StockEditQuantityController extends GetxController
         request.qty = finalQty.toString();
         if (isUserDropdownVisible.value) {
           request.user_id = userId.toString();
+          AppStorage().setEditStockUserId(userId);
+          AppStorage().setEditStockUserName(userName);
         }
         if (isReferenceVisible.value) {
           request.note = note;
+          Get.find<AppStorage>().setQuantityNote(note);
         }
         request.mode = isDeduct ? "remove" : "add";
         list.add(request);
         AppStorage().setStoredStockList(list);
-        Get.find<AppStorage>().setQuantityNote(note);
 
         if (isDeduct) {
           productInfo.value.qty = productInfo.value.qty != null

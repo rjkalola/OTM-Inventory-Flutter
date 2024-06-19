@@ -243,7 +243,7 @@ class StockListController extends GetxController
           if (!StringHelper.isEmptyString(searchController.value.text))
             searchItem(searchController.value.text);
           productList.refresh();
-        /*  for (var info in response.info!) {
+          /*  for (var info in response.info!) {
             int infoId = info.id ?? 0;
             int infoLocalId = info.local_id ?? 0;
             if (infoId == mSelectedProductId ||
@@ -1012,6 +1012,7 @@ class StockListController extends GetxController
   Future<void> storeLocalStocksAPI(
       bool isProgress, String data, int productCount, bool isInitial) async {
     Map<String, dynamic> map = {};
+    map["store_id"] = AppStorage.storeId.toString();
     map["app_data"] = data;
     multi.FormData formData = multi.FormData.fromMap(map);
     print(map.toString());
@@ -1057,6 +1058,7 @@ class StockListController extends GetxController
   Future<void> storeLocalProducts(
       bool isProgress, List<ProductInfo> listProducts, bool isInitial) async {
     Map<String, dynamic> map = {};
+    map["store_id"] = AppStorage.storeId.toString();
     map["data"] = jsonEncode(listProducts);
     multi.FormData formData = multi.FormData.fromMap(map);
     for (int i = 0; i < listProducts.length; i++) {
@@ -1130,7 +1132,7 @@ class StockListController extends GetxController
               LastProductUpdateTimeResponse.fromJson(
                   jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            String responseTime = response.updated_at ?? "";
+            String responseTime = response.created_at ?? "";
             // if (!StringHelper.isEmptyString(responseTime)) {
             //   pullToRefreshTime.value = responseTime;
             //   pullToRefreshVisible.value = true;
@@ -1154,7 +1156,7 @@ class StockListController extends GetxController
                 pullToRefreshTime.value = lastTime;
                 pullToRefreshVisible.value = true;
               }
-              AppStorage().setLastUpdateTime(response.updated_at!);
+              AppStorage().setLastUpdateTime(response.created_at!);
             }
           } else {
             // AppUtils.showSnackBarMessage(response.Message!);

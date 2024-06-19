@@ -144,7 +144,7 @@ class AddStockProductController extends GetxController
       addProductRequest?.categories = info.categories!;
       productCategoryController.value.text =
           StringHelper.getCommaSeparatedNames(info.categories!);
-    }else{
+    } else {
       addProductRequest?.categories = [];
     }
 
@@ -369,10 +369,10 @@ class AddStockProductController extends GetxController
           listSelectedItems.add(tempList[i]);
         }
       }
-      if(!StringHelper.isEmptyList(addProductRequest?.categories)){
+      if (!StringHelper.isEmptyList(addProductRequest?.categories)) {
         addProductRequest?.categories!.clear();
         addProductRequest?.categories!.addAll(listSelectedItems);
-      }else{
+      } else {
         addProductRequest?.categories = [];
         addProductRequest?.categories!.addAll(listSelectedItems);
       }
@@ -528,7 +528,8 @@ class AddStockProductController extends GetxController
 
     if (!StringHelper.isEmptyList(addProductRequest?.categories)) {
       for (int i = 0; i < addProductRequest!.categories!.length; i++) {
-        map['categories[${i.toString()}]'] = addProductRequest!.categories![i].id;
+        map['categories[${i.toString()}]'] =
+            addProductRequest!.categories![i].id;
       }
     }
 

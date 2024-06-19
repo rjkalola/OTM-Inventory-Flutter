@@ -461,7 +461,9 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
           stockEditQuantityController.editProductClick();
         },
       ),
-      const SizedBox(width: 4,),
+      const SizedBox(
+        width: 4,
+      ),
       IconButton(
         icon: SvgPicture.asset(
           width: 26,
@@ -477,7 +479,9 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
               arguments: arguments);
         },
       ),
-      const SizedBox(width: 20,)
+      const SizedBox(
+        width: 20,
+      )
       // IconButton(
       //   icon: SvgPicture.asset(
       //     width: 26,
