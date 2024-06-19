@@ -77,6 +77,7 @@ class AddStockProductController extends GetxController
         addProductRequest = ProductInfo();
         addProductRequest?.id = 0;
         addProductRequest?.local_id = 0;
+        addProductRequest?.qty = 0;
         title.value = 'add_product'.tr;
         if (!StringHelper.isEmptyString(mBarCode))
           productBarcodeController.value.text = mBarCode;
@@ -87,6 +88,7 @@ class AddStockProductController extends GetxController
       addProductRequest?.id = 0;
       addProductRequest?.local_id = 0;
       title.value = 'add_product'.tr;
+      addProductRequest?.qty = 0;
       addProductRequest?.categories = [];
     }
 

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_quantity_update_note.dart';
@@ -32,6 +34,36 @@ class RowReferenceUsers extends StatelessWidget {
                         visible: stockEditQuantityController
                             .isUserDropdownVisible.value,
                         child: TextFieldSelectUser()),
+                    Visibility(
+                      visible:
+                          stockEditQuantityController.isReferenceVisible.value,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          onPressed: () {
+                            stockEditQuantityController.noteController.value
+                                .clear();
+                          },
+                          icon: const Icon(Icons.cancel),
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: stockEditQuantityController
+                          .isUserDropdownVisible.value,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 30),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                            onPressed: () {
+                              stockEditQuantityController.clearUser();
+                            },
+                            icon: const Icon(Icons.cancel),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

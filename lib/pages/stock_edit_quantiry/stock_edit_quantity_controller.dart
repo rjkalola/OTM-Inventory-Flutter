@@ -157,6 +157,12 @@ class StockEditQuantityController extends GetxController
     }
   }
 
+  void clearUser(){
+    userController.value.text = "";
+    userId = 0;
+    userName = "";
+  }
+
   void onClickQrCode() {
     if (!StringHelper.isEmptyString(productInfo.value.barcode_text)) {
       showUpdateBarcodeDialog();

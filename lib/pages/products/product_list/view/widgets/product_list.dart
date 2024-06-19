@@ -53,7 +53,9 @@ class ProductListView extends StatelessWidget {
                                   child: Text(
                                       softWrap: true,
                                       productListController
-                                          .productList[position].shortName??"",
+                                              .productList[position]
+                                              .shortName ??
+                                          "",
                                       style: const TextStyle(
                                         color: primaryTextColor,
                                         fontWeight: FontWeight.w500,
