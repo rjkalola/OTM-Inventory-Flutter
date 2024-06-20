@@ -9,6 +9,7 @@ import device_info_plus
 import file_selector_macos
 import modal_progress_hud_nsn
 import path_provider_foundation
+import printing
 import sqflite
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
@@ -16,5 +17,6 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FileSelectorPlugin.register(with: registry.registrar(forPlugin: "FileSelectorPlugin"))
   ModalProgressHudNsnPlugin.register(with: registry.registrar(forPlugin: "ModalProgressHudNsnPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
+  PrintingPlugin.register(with: registry.registrar(forPlugin: "PrintingPlugin"))
   SqflitePlugin.register(with: registry.registrar(forPlugin: "SqflitePlugin"))
 }
