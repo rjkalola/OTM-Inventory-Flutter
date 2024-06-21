@@ -3,17 +3,20 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/common/widgets/common_bottom_navigation_bar_widget.dart';
+import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/product_empty_view.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/product_list.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/search_product.dart';
+import 'package:otm_inventory/utils/permission_handler.dart';
+import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../res/colors.dart';
-import '../../../../res/drawable.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../widgets/CustomProgressbar.dart';
 import '../../../../widgets/appbar/base_appbar.dart';
@@ -48,77 +51,114 @@ class _ProductListScreenState extends State<ProductListScreen> {
           }
         }
       },
-      child: SafeArea(
-          child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-            appBar: AppBar(),
-            title: 'products'.tr,
-            isBack: true,
-            widgets: actionButtons()),
-        drawer: MainDrawer(),
-        bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-        body: Obx(
-          () => ModalProgressHUD(
-            inAsyncCall: productListController.isLoading.value,
-            opacity: 0,
-            progressIndicator: const CustomProgressbar(),
-            child: Column(children: [
-              const Divider(
-                thickness: 1,
-                height: 1,
-                color: dividerColor,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Expanded(child: SearchProductWidget()),
-                  QrCodeIcon()
-                ],
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-              productListController.productList.isNotEmpty
-                  ? ProductListView()
-                  : ProductListEmptyView(),
-              const SizedBox(
-                height: 6,
-              ),
-              Visibility(
-                visible: productListController.isLoadMore.value,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+      child: Obx(() => SafeArea(
+              child: Scaffold(
+            backgroundColor: backgroundColor,
+            appBar: BaseAppBar(
+                appBar: AppBar(),
+                title: 'products'.tr,
+                isBack: true,
+                widgets: actionButtons()),
+            drawer: MainDrawer(),
+            bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+            body: ModalProgressHUD(
+              inAsyncCall: productListController.isLoading.value,
+              opacity: 0,
+              progressIndicator: const CustomProgressbar(),
+              child: Column(children: [
+                const Divider(
+                  thickness: 1,
+                  height: 1,
+                  color: dividerColor,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Expanded(child: SearchProductWidget()),
+                    QrCodeIcon()
+                  ],
+                ),
+                // Align(
+                //     alignment: Alignment.centerLeft,
+                //     child: Icon(
+                //       Icons.keyboard_double_arrow_down_outlined,
+                //       size: 30,
+                //     )),
+                Visibility(
+                  visible: productListController.isPrintEnable.value,
                   child: Row(
-                    children: [
-                      const SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator()),
-                      const SizedBox(
-                        width: 14,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      PrimaryTextView(
+                        text: productListController.isCheckAllPrint.value
+                            ? 'unselect_all'.tr
+                            : 'select_all'.tr,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        softWrap: true,
                       ),
-                      Text(
-                        'loading_more_'.tr,
-                        style: const TextStyle(fontSize: 17),
-                      )
+                      Checkbox(
+                          activeColor: defaultAccentColor,
+                          value: productListController.isCheckAllPrint.value,
+                          onChanged: (isCheck) {
+                            productListController.isCheckAllPrint.value =
+                                isCheck!;
+                            if (isCheck) {
+                              productListController.checkAllProducts();
+                            } else {
+                              productListController.unCheckAllProducts();
+                            }
+                          })
                     ],
                   ),
                 ),
-              )
-            ]),
-            // child: RefreshIndicator(
-            //   onRefresh: () async {
-            //     await productListController.getProductListApi(false, "0", true);
-            //   },
-            // ),
-          ),
-        ),
-      )),
+                Visibility(
+                  visible: !productListController.isPrintEnable.value,
+                  child: const SizedBox(
+                    height: 6,
+                  ),
+                ),
+                productListController.productList.isNotEmpty
+                    ? ProductListView()
+                    : ProductListEmptyView(),
+                const SizedBox(
+                  height: 6,
+                ),
+                Visibility(
+                  visible: productListController.isLoadMore.value,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator()),
+                        const SizedBox(
+                          width: 14,
+                        ),
+                        Text(
+                          'loading_more_'.tr,
+                          style: const TextStyle(fontSize: 17),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ]),
+              // child: RefreshIndicator(
+              //   onRefresh: () async {
+              //     await productListController.getProductListApi(false, "0", true);
+              //   },
+              // ),
+            ),
+          ))),
     );
   }
 
@@ -134,30 +174,87 @@ class _ProductListScreenState extends State<ProductListScreen> {
       //     onPressed: () {},
       //   ),
       // ),
-      // InkWell(
-      //     onTap: () {
-      //       print("tap qr code");
-      //       productListController.openQrCodeScanner();
-      //     },
-      //     child: Text(
-      //       'qr_code'.tr,
-      //       style: const TextStyle(
-      //           fontSize: 16,
-      //           color: defaultAccentColor,
-      //           fontWeight: FontWeight.w500),
-      //     )),
-      IconButton(
-        icon: SvgPicture.asset(
-          width: 22,
-          Drawable.filterIcon,
-        ),
-        onPressed: () {},
+      Visibility(
+        visible: productListController.isPrintEnable.value,
+        child: InkWell(
+            onTap: () {
+              productListController.isPrintEnable.value = false;
+              productListController.selectedPrintProduct.clear();
+              productListController.unCheckAllProducts();
+              productListController.isCheckAllPrint.value = false;
+            },
+            child: Text(
+              'cancel'.tr,
+              style: const TextStyle(
+                  fontSize: 16, color: Colors.red, fontWeight: FontWeight.w400),
+            )),
       ),
-      IconButton(
-        icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
-        onPressed: () {
-          productListController.addProductClick(null);
-        },
+      Visibility(
+          visible: productListController.isPrintEnable.value,
+          child: const SizedBox(
+            width: 10,
+          )),
+      Visibility(
+        visible: productListController.isPrintEnable.value,
+        child: InkWell(
+            onTap: () async {
+              bool permission = await PermissionHandler.isStoragePermission();
+              if (permission) {
+                productListController.selectedPrintProduct.clear();
+                for (var info in productListController.productList) {
+                  if (info.checkPrint ?? false) {
+                    productListController.selectedPrintProduct.add(info);
+                  }
+                }
+                if (productListController.selectedPrintProduct.isNotEmpty) {
+                  productListController.onClickPrintButton();
+                } else {
+                  AppUtils.showSnackBarMessage('empty_products_selected'.tr);
+                }
+              }
+            },
+            child: Text(
+              'print'.tr,
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: defaultAccentColor,
+                  fontWeight: FontWeight.w500),
+            )),
+      ),
+      Visibility(
+        visible: !productListController.isPrintEnable.value,
+        child: InkWell(
+            onTap: () {
+              productListController.isPrintEnable.value = true;
+            },
+            child: Text(
+              'select'.tr,
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: defaultAccentColor,
+                  fontWeight: FontWeight.w500),
+            )),
+      ),
+      Visibility(
+          visible: productListController.isPrintEnable.value,
+          child: const SizedBox(
+            width: 16,
+          )),
+      // IconButton(
+      //   icon: SvgPicture.asset(
+      //     width: 22,
+      //     Drawable.filterIcon,
+      //   ),
+      //   onPressed: () {},
+      // ),
+      Visibility(
+        visible: !productListController.isPrintEnable.value,
+        child: IconButton(
+          icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
+          onPressed: () {
+            productListController.addProductClick(null);
+          },
+        ),
       ),
     ];
   }

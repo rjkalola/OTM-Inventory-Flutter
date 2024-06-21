@@ -15,6 +15,7 @@ import 'package:otm_inventory/pages/store_list/view/store_list_screen.dart';
 import 'package:otm_inventory/pages/supplier_list/view/supplier_list_screen.dart';
 
 import '../pages/category_list/category_list_screen.dart';
+import '../pages/product_pdf/view/view_pdf_screen.dart';
 import '../pages/products/add_product/view/add_product_screen.dart';
 import '../pages/products/product_list/view/product_list_screen.dart';
 import '../pages/stock_filter/view/stock_filter_screen.dart';
@@ -98,6 +99,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.stockFilterScreen,
       page: () => StockFilterScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.viewPdfScreen,
+      page: () => ViewPdfScreen(),
     ),
   ];
 }

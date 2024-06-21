@@ -35,8 +35,8 @@ class _PdfPageState extends State<PdfPage> {
                       final dueDate = date.add(
                         const Duration(days: 7),
                       );
-                      final pdfFile =
-                          await productPdfController.generateA4SizeWithPicturePdf();
+                      final pdfFile = await productPdfController
+                          .generateA4SizeMobilePdf("test pdf");
                       print("pdfFile:" + pdfFile.path);
                       productPdfController.openFile(pdfFile);
                     })

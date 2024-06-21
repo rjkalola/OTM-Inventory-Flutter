@@ -157,6 +157,14 @@ class Strings extends Translations {
           'app_up_to_Date': "App is up to date",
           'msg_barcode_already_exist': "This barcode already exist",
           'pull_down_to_refresh': "Pull down to refresh",
+          'print': "Print",
+          'choose_type': "Choose Type",
+          'empty_products_selected': "Please select product",
+          'view_pdf': "View Pdf",
+          'download_pdf': "Download Pdf",
+          'msg_file_downloaded': "File downloaded, Check download folder.",
+          'select_all': "Select All",
+          'unselect_all': "Unselect All",
         },
         'hi_IN': {'login': 'Login'}
       };

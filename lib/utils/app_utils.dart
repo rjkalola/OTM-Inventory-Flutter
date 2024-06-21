@@ -80,4 +80,5 @@ class AppUtils {
       return false;
     }
   }
+
 }

@@ -29,6 +29,7 @@ class IntentKey {
   final String dashboardTabIndex = 'DASHBOARD_TAB_INDEX';
   final String barCode = 'BAR_CODE';
   final String stockCountType = 'STOCK_COUNT_TYPE';
+  final String pdfUrl = 'PDF_URL';
 }
 
 class DialogIdentifier {
@@ -86,6 +87,11 @@ class Action {
   final String manufacturer = "MANUFACTURER";
   final String selectImageFromCamera = 'SELECT_IMAGE_FROM_CAMERA';
   final String selectImageFromGallery = 'SELECT_IMAGE_FROM_GALLERY';
+  final String a4Print = "A4Print";
+  final String a4WithPicturesPrint = "A4WithPicturesPrint";
+  final String mobilePrint = "MobilePrint";
+  final String viewPdf = "VIEW_PDF";
+  final String downloadPdf = "DOWNLOAD_PDF";
 }
 
 class FromScreens {

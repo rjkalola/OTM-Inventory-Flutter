@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/products/product_list/controller/product_list_repository.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
@@ -13,27 +15,36 @@ import '../../../../utils/app_utils.dart';
 import '../../../../web_services/api_constants.dart';
 import '../../../../web_services/response/module_info.dart';
 import '../../../../web_services/response/response_model.dart';
+import '../../../common/listener/select_item_listener.dart';
+import '../../../common/select_Item_list_dialog.dart';
+import '../../../product_pdf/controller/product_pdf_controller.dart';
 import '../models/product_info.dart';
 import '../models/product_list_response.dart';
 
-class ProductListController extends GetxController {
+class ProductListController extends GetxController
+    implements SelectItemListener {
   final _api = ProductListRepository();
   final searchController = TextEditingController().obs;
+  final productPdfController = Get.put(ProductPdfController());
 
   final productListResponse = ProductListResponse().obs;
-  List<ProductInfo> tempList = [];
+  List<ProductInfo> tempList = [], selectedPrintProduct = [];
   final productList = <ProductInfo>[].obs;
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isLoadMore = false.obs;
+      isLoadMore = false.obs,
+      isPrintEnable = false.obs,
+      isCheckAllPrint = false.obs;
 
   final filters = ''.obs, search = ''.obs;
 
   var offset = 0;
   var mIsLastPage = false;
   late ScrollController controller;
+  File? mPrintFile;
+  String mPrintFileName = "";
 
   @override
   void onInit() {
@@ -216,5 +227,119 @@ class ProductListController extends GetxController {
         }
       },
     );
+  }
+
+  onClickPrintButton() {
+    productPdfController.setProductsList(selectedPrintProduct);
+
+    var listOptions = <ModuleInfo>[].obs;
+    ModuleInfo? info;
+
+    info = ModuleInfo();
+    info.name = 'A4'.tr;
+    info.action = AppConstants.action.a4Print;
+    listOptions.add(info);
+
+    info = ModuleInfo();
+    info.name = 'A4 with Pictures'.tr;
+    info.action = AppConstants.action.a4WithPicturesPrint;
+    listOptions.add(info);
+
+    info = ModuleInfo();
+    info.name = 'Mobile Printer'.tr;
+    info.action = AppConstants.action.mobilePrint;
+    listOptions.add(info);
+
+    // showAttachmentOptionsDialog(
+    //     AppConstants.dialogIdentifier.attachmentOptionsList,
+    //     'select_photo'.tr,
+    //     listOptions,
+    //     this);
+
+    showPrintOptionsDialog(AppConstants.dialogIdentifier.attachmentOptionsList,
+        'choose_type'.tr, listOptions, this);
+  }
+
+  dialogViewDownloadOptions() {
+    var listOptions = <ModuleInfo>[].obs;
+    ModuleInfo? info;
+
+    info = ModuleInfo();
+    info.name = 'view_pdf'.tr;
+    info.action = AppConstants.action.viewPdf;
+    listOptions.add(info);
+
+    info = ModuleInfo();
+    info.name = 'download_pdf'.tr;
+    info.action = AppConstants.action.downloadPdf;
+    listOptions.add(info);
+
+    showPrintOptionsDialog(AppConstants.dialogIdentifier.attachmentOptionsList,
+        'choose_type'.tr, listOptions, this);
+  }
+
+  void showPrintOptionsDialog(String dialogType, String title,
+      List<ModuleInfo> list, SelectItemListener listener) {
+    Get.bottomSheet(
+        SelectItemListDialog(
+            title: title,
+            dialogType: dialogType,
+            list: list,
+            listener: listener),
+        backgroundColor: Colors.transparent,
+        enableDrag: false,
+        isScrollControlled: false);
+  }
+
+  @override
+  Future<void> onSelectItem(
+      int position, int id, String name, String action) async {
+    if (action == AppConstants.action.a4Print) {
+      mPrintFile = await productPdfController.generateA4SizePdf('A4'.tr);
+      mPrintFileName = 'A4'.tr;
+      if (mPrintFile != null) dialogViewDownloadOptions();
+      // productPdfController.writeFileToDownloadFolder(pdfFile, "PDF Test");
+      // productPdfController.openFile(pdfFile);
+    } else if (action == AppConstants.action.a4WithPicturesPrint) {
+      mPrintFile = await productPdfController
+          .generateA4SizeWithPicturePdf('A4 with Pictures'.tr);
+      mPrintFileName = 'A4 with Pictures'.tr;
+      if (mPrintFile != null) dialogViewDownloadOptions();
+      // viewPdf(pdfFile.path);
+      // productPdfController.openFile(pdfFile);
+    } else if (action == AppConstants.action.mobilePrint) {
+      mPrintFile = await productPdfController
+          .generateA4SizeMobilePdf('Mobile Printer'.tr);
+      mPrintFileName = 'Mobile Printer'.tr;
+      if (mPrintFile != null) dialogViewDownloadOptions();
+      // viewPdf(pdfFile.path);
+      // productPdfController.openFile(pdfFile);
+    } else if (action == AppConstants.action.viewPdf) {
+      viewPdf();
+    } else if (action == AppConstants.action.downloadPdf) {
+      if (mPrintFile != null)
+        productPdfController.writeFileToDownloadFolder(
+            mPrintFile!, mPrintFileName);
+    }
+  }
+
+  void viewPdf() {
+    if (mPrintFile != null) productPdfController.openFile(mPrintFile!);
+    // var arguments = {
+    //   AppConstants.intentKey.pdfUrl: url,
+    // };
+    // Get.toNamed(AppRoutes.viewPdfScreen, arguments: arguments);
+  }
+
+  void checkAllProducts() {
+    for (var info in productList) {
+      info.checkPrint = true;
+    }
+  }
+
+  void unCheckAllProducts() {
+    for (var info in productList) {
+      info.checkPrint = false;
+    }
   }
 }

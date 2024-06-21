@@ -8,6 +8,7 @@ import '../../controller/product_list_controller.dart';
 
 class QrCodeIcon extends StatelessWidget {
   QrCodeIcon({super.key});
+
   final productListController = Get.put(ProductListController());
 
   @override
@@ -16,7 +17,9 @@ class QrCodeIcon extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 9, 12, 9),
       child: InkWell(
         onTap: () {
-          productListController.openQrCodeScanner();
+          if (!productListController.isPrintEnable.value) {
+            productListController.openQrCodeScanner();
+          }
         },
         child: Container(
           width: 90,
@@ -30,11 +33,13 @@ class QrCodeIcon extends StatelessWidget {
               width: 24,
               height: 24,
               Drawable.barCodeIcon,
-              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              colorFilter:
+                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
           ),
         ),
       ),
-    );;
+    );
+    ;
   }
 }

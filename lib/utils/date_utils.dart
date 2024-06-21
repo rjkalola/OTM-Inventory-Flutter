@@ -92,6 +92,8 @@ class DateUtil {
 
   static String YYYY_MM_DD_TIME_24_DASH2 = "yyyy-MM-dd HH:mm:ss";
 
+  static String YYYY_MM_DD_TIME_24_WITHOUT_QUOTE = "yyyyMMddHHmmss";
+
   static String YYYY_MM_DD_SLASH = "yyyy/MM/dd";
 
   static String YYYY_MM_DD_TIME_12_SLASH = "yyyy/MM/dd hh:mm a";

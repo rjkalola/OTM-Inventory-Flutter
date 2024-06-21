@@ -20,4 +20,5 @@ class AppRoutes {
   static const String stockMultipleQuantityUpdateScreen =
       '/stock_multiple_quantity_update_screen';
   static const String stockFilterScreen = '/stock_filter_screen';
+  static const String viewPdfScreen = '/view_pdf_screen';
 }
