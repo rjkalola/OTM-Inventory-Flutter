@@ -158,14 +158,14 @@ class ProductPdfController extends GetxController {
 
   Future<File> generateA4SizeMobilePdf(String name) {
     final pdf = Document();
-
+    final customPageSize = PdfPageFormat(230, 230, marginAll: 0);
     pdf.addPage(MultiPage(
-      pageFormat: PdfPageFormat.a4,
+      pageFormat: customPageSize,
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
       build: (context) => [
         GridView(
             crossAxisCount: 1,
-            childAspectRatio: 0.28,
+            childAspectRatio: 0.9,
             children: List.generate(
               productList.length,
               (position) {
@@ -200,7 +200,8 @@ class ProductPdfController extends GetxController {
             )),
       ],
       footer: (context) => Center(
-          child: Text('Page ${context.pageNumber}/${context.pagesCount}')),
+          child: Text('Page ${context.pageNumber}/${context.pagesCount}',
+              style: TextStyle(fontSize: 8))),
     ));
 
     return saveDocument(name: '$name.pdf', pdf: pdf);
@@ -382,7 +383,8 @@ class ProductPdfController extends GetxController {
     String tempDir = await _localPath;
 
     var now = DateTime.now();
-    String randomString = DateUtil.dateToString(now, DateUtil.YYYY_MM_DD_TIME_24_WITHOUT_QUOTE);
+    String randomString =
+        DateUtil.dateToString(now, DateUtil.YYYY_MM_DD_TIME_24_WITHOUT_QUOTE);
     print(randomString);
     var filePath = '$tempDir/$name $randomString.pdf';
     var bytes = ByteData.view(data.buffer);
