@@ -44,20 +44,22 @@ class StoreListView extends StatelessWidget {
                                   .storeList[position].storeName),
                               InkWell(
                                   onTap: () {
-                                    AppStorage.storeId = storeListController
-                                        .storeList[position].id!;
-                                    AppStorage.storeName = storeListController
-                                        .storeList[position].storeName!;
-
-                                    Get.find<AppStorage>()
-                                        .setStoreId(AppStorage.storeId);
-                                    Get.find<AppStorage>()
-                                        .setStoreName(AppStorage.storeName);
-
-                                    storeListController.activeStoreId.value =
-                                        AppStorage.storeId;
-                                    AppUtils.showSnackBarMessage(
-                                        "${storeListController.storeList[position].storeName} Activated");
+                                    storeListController.onCLickStoreChange(
+                                       position);
+                                    // AppStorage.storeId = storeListController
+                                    //     .storeList[position].id!;
+                                    // AppStorage.storeName = storeListController
+                                    //     .storeList[position].storeName!;
+                                    //
+                                    // Get.find<AppStorage>()
+                                    //     .setStoreId(AppStorage.storeId);
+                                    // Get.find<AppStorage>()
+                                    //     .setStoreName(AppStorage.storeName);
+                                    //
+                                    // storeListController.activeStoreId.value =
+                                    //     AppStorage.storeId;
+                                    // AppUtils.showSnackBarMessage(
+                                    //     "${storeListController.storeList[position].storeName} Activated");
                                   },
                                   child:
                                       const Icon(Icons.remove_red_eye_outlined))

@@ -2,15 +2,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_repository.dart';
-import 'package:otm_inventory/pages/stock_multiple_quantity_update/model/add_quantity_request.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
-
 import 'package:otm_inventory/web_services/response/base_response.dart';
 
 import '../../../utils/app_utils.dart';
@@ -20,6 +17,7 @@ import '../../web_services/response/module_info.dart';
 import '../products/product_list/models/product_info.dart';
 import '../products/product_list/models/product_list_response.dart';
 import '../stock_edit_quantiry/model/store_stock_request.dart';
+import 'model/add_quantity_request.dart';
 
 class StockMultipleQuantityUpdateController extends GetxController {
   final _api = StockListRepository();
@@ -96,7 +94,7 @@ class StockMultipleQuantityUpdateController extends GetxController {
     productList.value = results;
   }
 
-  void onClickAddQuantityButton() {
+  Future<void> onClickAddQuantityButton() async {
     // List<AddQuantityRequest> listQty = [];
     // for (int i = 0; i < productList.length; i++) {
     //   AddQuantityRequest info = AddQuantityRequest();
@@ -112,31 +110,50 @@ class StockMultipleQuantityUpdateController extends GetxController {
     // if (kDebugMode) print(jsonEncode(listQty));
     // addStockApi(true, jsonEncode(listQty));
 
+    bool isInternet = await AppUtils.interNetCheck();
     ProductListResponse response = ProductListResponse();
+    List<AddQuantityRequest> listQty = [];
     for (int i = 0; i < productList.length; i++) {
       int qty = 0, newQty = 0;
       if (productList[i].qty != null) qty = productList[i].qty!;
       if (productList[i].newQty != null) newQty = productList[i].newQty!;
       productList[i].qty = qty + newQty;
       if (newQty != 0) {
-        addStock(productList[i].id!, newQty);
+        if (isInternet) {
+          AddQuantityRequest info = AddQuantityRequest();
+          int qty = newQty < 0 ? (newQty * -1) : newQty;
+          info.qty = qty;
+          info.store_id = AppStorage.storeId.toString();
+          info.product_id = productList[i].id;
+          info.mode = newQty < 0 ? "remove" : "add";
+          listQty.add(info);
+        } else {
+          addStock(productList[i].id!, newQty);
+        }
       }
       productList[i].newQty = 0;
     }
     response.info = productList;
     AppStorage().setStockData(response);
-    Get.back(result: true);
+    if (isInternet) {
+      addStockApi(true, jsonEncode(listQty));
+    } else {
+      Get.back(result: true);
+    }
   }
 
   void addStock(int productId, int qty) {
     print("-----------Record Added-----------");
     print("qty:" + qty.toString());
     print("----------------------------------");
+    String strQty = qty < 0
+        ? qty.toString().substring(1, qty.toString().length)
+        : qty.toString();
     List<StockStoreRequest> list = AppStorage().getStoredStockList();
     StockStoreRequest request = StockStoreRequest();
     request.product_id = productId.toString();
     request.store_id = AppStorage.storeId.toString();
-    request.qty = qty.toString();
+    request.qty = strQty;
     request.mode = qty < 0 ? "remove" : "add";
     list.add(request);
     AppStorage().setStoredStockList(list);
@@ -238,9 +255,9 @@ class StockMultipleQuantityUpdateController extends GetxController {
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            Get.back(result: true);
             if (!StringHelper.isEmptyString(response.Message))
-              AppUtils.showSnackBarMessage(response.Message ?? "");
+              AppUtils.showToastMessage(response.Message ?? "");
+            Get.back(result: true);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }

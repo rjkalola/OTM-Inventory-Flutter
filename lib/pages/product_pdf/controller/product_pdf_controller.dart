@@ -9,13 +9,10 @@ import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-import '../../../utils/app_constants.dart';
-import '../../../utils/app_storage.dart';
 import '../../../utils/date_utils.dart';
+import '../../../utils/permission_handler.dart';
 import '../../products/product_list/models/product_info.dart';
-import '../../products/product_list/models/product_list_response.dart';
 
 class ProductPdfController extends GetxController {
   List<String> widgetList = ['A', 'B', 'C'];
@@ -92,6 +89,7 @@ class ProductPdfController extends GetxController {
   // }
 
   void setProductsList(List<ProductInfo> listProducts) {
+    print("List Size:" + listProducts.length.toString());
     tempList.clear();
     tempList.addAll(listProducts);
     productList.value = tempList;
@@ -108,6 +106,8 @@ class ProductPdfController extends GetxController {
 
   void loadAttachments() {
     attachments.clear;
+    imageIndex = 0;
+    print("productList lenth:" + productList.length.toString());
     if (productList.isNotEmpty) {
       for (int i = 0; i < productList.length; i++) {
         attachments.add(null);
@@ -156,16 +156,102 @@ class ProductPdfController extends GetxController {
     return image;
   }
 
+  // Future<File> generateA4SizeMobilePdf(String name) {
+  //   final pdf = Document();
+  //   final customPageSize = PdfPageFormat(230, 230, marginAll: 0);
+  //   pdf.addPage(MultiPage(
+  //     maxPages: 200,
+  //     pageFormat: customPageSize,
+  //     // pageFormat: PdfPageFormat.a4,
+  //     margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+  //     build: (context) => [
+  //       ListView.builder(
+  //           itemCount: productList.length,
+  //           itemBuilder: (context, position) => Container(
+  //               margin: const EdgeInsets.all(6),
+  //               decoration: BoxDecoration(
+  //                   border:
+  //                       Border.all(color: const PdfColor.fromInt(0xffc6c6c6)),
+  //                   borderRadius: BorderRadius.circular(0)),
+  //               child: Padding(
+  //                   padding: EdgeInsets.all(10),
+  //                   child: Column(children: [
+  //                     Container(
+  //                       height: 100,
+  //                       width: 100,
+  //                       child: BarcodeWidget(
+  //                         barcode: Barcode.qrCode(),
+  //                         data: productList[position].id != null
+  //                             ? productList[position].id!.toString()
+  //                             : productList[position].local_id!.toString(),
+  //                       ),
+  //                     ),
+  //                     SizedBox(height: 8),
+  //                     Text(productList[position].shortName ?? "",
+  //                         textAlign: TextAlign.center,
+  //                         maxLines: 3,
+  //                         style: const TextStyle(
+  //                             color: PdfColors.black, fontSize: 9)),
+  //                     // SizedBox(height: 0.8 * PdfPageFormat.cm),
+  //                   ])))),
+  //       // GridView(
+  //       //     crossAxisCount: 1,
+  //       //     // childAspectRatio: 0.9,
+  //       //     childAspectRatio: 0.30,
+  //       //     children: List.generate(
+  //       //       productList.length,
+  //       //           (position) {
+  //       //         return Container(
+  //       //             margin: const EdgeInsets.all(6),
+  //       //             decoration: BoxDecoration(
+  //       //                 border: Border.all(
+  //       //                     color: const PdfColor.fromInt(0xffc6c6c6)),
+  //       //                 borderRadius: BorderRadius.circular(0)),
+  //       //             child: Padding(
+  //       //                 padding: EdgeInsets.all(10),
+  //       //                 child: Column(children: [
+  //       //                   Container(
+  //       //                     height: 100,
+  //       //                     width: 100,
+  //       //                     child: BarcodeWidget(
+  //       //                       barcode: Barcode.qrCode(),
+  //       //                       data: productList[position].id != null
+  //       //                           ? productList[position].id!.toString()
+  //       //                           : productList[position].local_id!.toString(),
+  //       //                     ),
+  //       //                   ),
+  //       //                   SizedBox(height: 8),
+  //       //                   Text(productList[position].shortName ?? "",
+  //       //                       textAlign: TextAlign.center,
+  //       //                       maxLines: 3,
+  //       //                       style: const TextStyle(
+  //       //                           color: PdfColors.black, fontSize: 9)),
+  //       //                   // SizedBox(height: 0.8 * PdfPageFormat.cm),
+  //       //                 ])));
+  //       //       },
+  //       //     ))
+  //     ],
+  //     footer: (context) => Center(
+  //         child: Text('Page ${context.pageNumber}/${context.pagesCount}',
+  //             style: TextStyle(fontSize: 8))),
+  //   ));
+  //
+  //   return saveDocument(name: '$name.pdf', pdf: pdf);
+  // }
+
   Future<File> generateA4SizeMobilePdf(String name) {
     final pdf = Document();
-    final customPageSize = PdfPageFormat(230, 230, marginAll: 0);
+    final customPageSize = PdfPageFormat(300, 300, marginAll: 0);
     pdf.addPage(MultiPage(
+      maxPages: 500,
       pageFormat: customPageSize,
-      margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+      // pageFormat: PdfPageFormat.a4,
+      margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
       build: (context) => [
         GridView(
             crossAxisCount: 1,
             childAspectRatio: 0.9,
+            // childAspectRatio: 0.30,
             children: List.generate(
               productList.length,
               (position) {
@@ -179,8 +265,8 @@ class ProductPdfController extends GetxController {
                         padding: EdgeInsets.all(10),
                         child: Column(children: [
                           Container(
-                            height: 100,
-                            width: 100,
+                            height: 180,
+                            width: 180,
                             child: BarcodeWidget(
                               barcode: Barcode.qrCode(),
                               data: productList[position].id != null
@@ -188,20 +274,20 @@ class ProductPdfController extends GetxController {
                                   : productList[position].local_id!.toString(),
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 12),
                           Text(productList[position].shortName ?? "",
                               textAlign: TextAlign.center,
                               maxLines: 3,
                               style: const TextStyle(
-                                  color: PdfColors.black, fontSize: 9)),
+                                  color: PdfColors.black, fontSize: 12)),
                           // SizedBox(height: 0.8 * PdfPageFormat.cm),
                         ])));
               },
-            )),
+            ))
       ],
       footer: (context) => Center(
           child: Text('Page ${context.pageNumber}/${context.pagesCount}',
-              style: TextStyle(fontSize: 8))),
+              style: TextStyle(fontSize: 7))),
     ));
 
     return saveDocument(name: '$name.pdf', pdf: pdf);
@@ -212,6 +298,7 @@ class ProductPdfController extends GetxController {
 
     pdf.addPage(MultiPage(
       pageFormat: PdfPageFormat.a4,
+      maxPages: 500,
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
       build: (context) => [
         GridView(
@@ -262,6 +349,7 @@ class ProductPdfController extends GetxController {
 
     pdf.addPage(MultiPage(
       pageFormat: PdfPageFormat.a4,
+      maxPages: 500,
       margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
       build: (context) => [
         GridView(
@@ -271,7 +359,7 @@ class ProductPdfController extends GetxController {
               productList.length,
               (position) {
                 return Container(
-                    margin: EdgeInsets.all(6),
+                    margin: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: const PdfColor.fromInt(0xffc6c6c6)),
@@ -351,23 +439,32 @@ class ProductPdfController extends GetxController {
 
   static Future<String> getExternalDocumentPath() async {
     // To check whether permission is given for this app or not.
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      // If not we will ask for permission first
-      await Permission.storage.request();
-    }
-    Directory _directory = Directory("");
-    if (Platform.isAndroid) {
-      // Redirects it to download folder in android
-      _directory = Directory("/storage/emulated/0/Download");
-    } else {
-      _directory = await getApplicationDocumentsDirectory();
-    }
+    // var status = await Permission.storage.status;
+    // print("status:"+status.toString());
+    // if (!status.isGranted) {
+    //   // If not we will ask for permission first
+    //   await Permission.storage.request();
+    // }
+    bool permission = await PermissionHandler.isStoragePermission();
+    print("permission:" + permission.toString());
 
-    final exPath = _directory.path;
-    print("Saved Path: $exPath");
-    await Directory(exPath).create(recursive: true);
-    return exPath;
+    if (permission) {
+      Directory? _directory = Directory("");
+      if (Platform.isAndroid) {
+        // Redirects it to download folder in android
+        _directory = Directory("/storage/emulated/0/Download");
+      } else {
+        _directory = await getApplicationDocumentsDirectory();
+        // _directory = await getDownloadsDirectory();
+      }
+
+      final exPath = _directory.path;
+      print("Saved Path: $exPath");
+      await Directory(exPath).create(recursive: true);
+      return exPath;
+    } else {
+      return "";
+    }
   }
 
   static Future<String> get _localPath async {
@@ -387,6 +484,7 @@ class ProductPdfController extends GetxController {
         DateUtil.dateToString(now, DateUtil.YYYY_MM_DD_TIME_24_WITHOUT_QUOTE);
     print(randomString);
     var filePath = '$tempDir/$name $randomString.pdf';
+    print("File Path:" + filePath);
     var bytes = ByteData.view(data.buffer);
     final buffer = bytes.buffer;
     // return File(filePath).writeAsBytes(
