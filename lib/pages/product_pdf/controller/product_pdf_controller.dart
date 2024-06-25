@@ -365,7 +365,7 @@ class ProductPdfController extends GetxController {
                             color: const PdfColor.fromInt(0xffc6c6c6)),
                         borderRadius: BorderRadius.circular(0)),
                     child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Row(children: [
                           Stack(children: [
                             Container(width: 70, height: 70),
