@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:otm_inventory/pages/dashboard/models/permission_response.dart';
 import 'package:otm_inventory/pages/products/add_product/model/add_product_request.dart';
 import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
@@ -122,6 +123,24 @@ class AppStorage extends GetxController {
       return StockFilterResponse.fromJson(jsonMap);
     } else {
       return null;
+    }
+  }
+
+  void setPermissions(PermissionResponse stockData) {
+    storage.write(AppConstants.sharedPreferenceKey.permissionSettings,
+        jsonEncode(stockData));
+  }
+
+  PermissionResponse getPermissions() {
+    final stockData =
+        storage.read(AppConstants.sharedPreferenceKey.permissionSettings) ?? "";
+    PermissionResponse data = PermissionResponse();
+    if (!StringHelper.isEmptyString(stockData)) {
+      final jsonMap = json.decode(stockData);
+      data = PermissionResponse.fromJson(jsonMap);
+      return data;
+    } else {
+      return data;
     }
   }
 

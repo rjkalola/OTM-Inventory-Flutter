@@ -81,4 +81,7 @@ class AppUtils {
     }
   }
 
+  static bool isPermission(bool? value) {
+    return value != null && value;
+  }
 }

@@ -45,8 +45,20 @@ class DashboardRepository {
     Function(ResponseModel error)? onError,
   }) {
     ApiRequest(
-        url: ApiConstants.logoutUrl, formData: formData, isFormData: true)
+            url: ApiConstants.logoutUrl, formData: formData, isFormData: true)
         .postRequest(
+      onSuccess: (data) {
+        onSuccess!(data);
+      },
+      onError: (error) => {if (onError != null) onError(error)},
+    );
+  }
+
+  void getSettingsAPI({
+    Function(ResponseModel responseModel)? onSuccess,
+    Function(ResponseModel error)? onError,
+  }) {
+    ApiRequest(url: ApiConstants.getSettingsUrl).getRequest(
       onSuccess: (data) {
         onSuccess!(data);
       },

@@ -20,7 +20,7 @@ class _SearchStoreWidgetState extends State<SearchStoreWidget> {
       child: SizedBox(
         height: 40,
         child: SearchTextField(
-          controller: storeListController.searchController.value,
+          controller: storeListController.searchController,
           onValueChange: (value) {
             storeListController.searchItem(value.toString());
           },

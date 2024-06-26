@@ -36,7 +36,8 @@ class ProductListController extends GetxController
       isMainViewVisible = false.obs,
       isLoadMore = false.obs,
       isPrintEnable = false.obs,
-      isCheckAllPrint = false.obs;
+      isCheckAllPrint = false.obs,
+      isClearVisible = false.obs;
 
   final filters = ''.obs, search = ''.obs;
 

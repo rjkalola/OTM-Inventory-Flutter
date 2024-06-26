@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -9,6 +8,8 @@ import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_cont
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/row_reference_users.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quantity_button.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_quantity.dart';
+import 'package:otm_inventory/utils/app_storage.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../res/colors.dart';
@@ -451,15 +452,19 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
       //     stockEditQuantityController.onClickRemove();
       //   },
       // ),
-      IconButton(
-        icon: SvgPicture.asset(
-          width: 26,
-          Drawable.editIcon,
-          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+      Visibility(
+        visible:
+            AppUtils.isPermission(AppStorage().getPermissions().updateProduct),
+        child: IconButton(
+          icon: SvgPicture.asset(
+            width: 26,
+            Drawable.editIcon,
+            colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+          ),
+          onPressed: () {
+            stockEditQuantityController.editProductClick();
+          },
         ),
-        onPressed: () {
-          stockEditQuantityController.editProductClick();
-        },
       ),
       const SizedBox(
         width: 4,

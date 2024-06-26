@@ -6,6 +6,7 @@ import 'package:otm_inventory/pages/otp_verification/model/user_response.dart';
 import 'package:otm_inventory/pages/otp_verification/verify_otp_repository.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../routes/app_routes.dart';
 import '../../utils/app_utils.dart';
@@ -21,21 +22,41 @@ class VerifyOtpController extends GetxController {
   final box2 = TextEditingController().obs;
   final box3 = TextEditingController().obs;
   final box4 = TextEditingController().obs;
-  final mExtension = "+91".obs;
-  final mPhoneNumber = "8866270586".obs;
+  final mExtension = "+91".obs,
+      mPhoneNumber = "8866270586".obs,
+      mOtpCode = "".obs;
   RxBool isLoading = false.obs, isInternetNotAvailable = false.obs;
   final _api = VerifyOtpRepository();
 
+  listenSmsCode() async {
+    print("regiestered");
+    await SmsAutoFill().listenForCode();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    listenSmsCode();
+  }
+
+  @override
+  void dispose() {
+    print("unregisterListener");
+    SmsAutoFill().unregisterListener();
+    super.dispose();
+  }
+
   void onSubmitOtpClick() {
-    if (box1.value.text.toString().isNotEmpty &&
-        box2.value.text.toString().isNotEmpty &&
-        box3.value.text.toString().isNotEmpty &&
-        box4.value.text.toString().isNotEmpty) {
-      String otp = box1.value.text.toString() +
-          box2.value.text.toString() +
-          box3.value.text.toString() +
-          box4.value.text.toString();
-      verifyOtpApi(otp);
+    // if (box1.value.text.toString().isNotEmpty &&
+    //     box2.value.text.toString().isNotEmpty &&
+    //     box3.value.text.toString().isNotEmpty &&
+    //     box4.value.text.toString().isNotEmpty) {
+    if (mOtpCode.value.length == 4) {
+      // String otp = box1.value.text.toString() +
+      //     box2.value.text.toString() +
+      //     box3.value.text.toString() +
+      //     box4.value.text.toString();
+      verifyOtpApi(mOtpCode.value);
     } else {
       showSnackBar('enter_otp'.tr);
     }
@@ -121,10 +142,10 @@ class VerifyOtpController extends GetxController {
 
   saveLoginUser(UserInfo user) {
     List<UserInfo> list = Get.find<AppStorage>().getLoginUsers();
-    print("before length:"+list.length.toString());
+    print("before length:" + list.length.toString());
     bool isUserFound = false;
     if (list.isNotEmpty) {
-      for (int i = 0;i<list.length;i++) {
+      for (int i = 0; i < list.length; i++) {
         if (list[i].id == user.id) {
           isUserFound = true;
           break;
@@ -134,7 +155,8 @@ class VerifyOtpController extends GetxController {
     if (!isUserFound) {
       list.add(user);
       Get.find<AppStorage>().setLoginUsers(list);
-      print("after length:"+Get.find<AppStorage>().getLoginUsers().length.toString());
+      print("after length:" +
+          Get.find<AppStorage>().getLoginUsers().length.toString());
     }
   }
 }

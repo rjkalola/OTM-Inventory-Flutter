@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/widgets/search_text_field.dart';
 
+import '../../../../../res/colors.dart';
+import '../../../../../utils/string_helper.dart';
 import '../../controller/product_list_controller.dart';
 
 class SearchProductWidget extends StatefulWidget {
@@ -21,12 +25,11 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
       child: SizedBox(
         height: 40,
         child: SearchTextField(
-          controller: productListController.searchController.value,
+          controller: productListController.searchController,
           onValueChange: (value) {
             productListController.searchItem(value.toString());
-            // setModalState(() {
-            //   filterSearchResults(value, list);
-            // });
+            productListController.isClearVisible.value =
+            !StringHelper.isEmptyString(value.toString());
           },
           onPressedClear: () {
             productListController.searchController.value.clear();

@@ -12,6 +12,7 @@ import 'package:otm_inventory/pages/products/product_list/view/widgets/product_e
 import 'package:otm_inventory/pages/products/product_list/view/widgets/product_list.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/search_product.dart';
+import 'package:otm_inventory/utils/app_storage.dart';
 import 'package:otm_inventory/utils/permission_handler.dart';
 import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -196,30 +197,33 @@ class _ProductListScreenState extends State<ProductListScreen> {
           )),
       Visibility(
         visible: productListController.isPrintEnable.value,
-        child: InkWell(
-            onTap: () async {
-              bool permission = await PermissionHandler.isStoragePermission();
-              if (permission) {
-                productListController.selectedPrintProduct.clear();
-                for (var info in productListController.productList) {
-                  if (info.checkPrint ?? false) {
-                    productListController.selectedPrintProduct.add(info);
+        child: Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: InkWell(
+              onTap: () async {
+                bool permission = await PermissionHandler.isStoragePermission();
+                if (permission) {
+                  productListController.selectedPrintProduct.clear();
+                  for (var info in productListController.productList) {
+                    if (info.checkPrint ?? false) {
+                      productListController.selectedPrintProduct.add(info);
+                    }
+                  }
+                  if (productListController.selectedPrintProduct.isNotEmpty) {
+                    productListController.onClickPrintButton();
+                  } else {
+                    AppUtils.showSnackBarMessage('empty_products_selected'.tr);
                   }
                 }
-                if (productListController.selectedPrintProduct.isNotEmpty) {
-                  productListController.onClickPrintButton();
-                } else {
-                  AppUtils.showSnackBarMessage('empty_products_selected'.tr);
-                }
-              }
-            },
-            child: Text(
-              'print'.tr,
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: defaultAccentColor,
-                  fontWeight: FontWeight.w500),
-            )),
+              },
+              child: Text(
+                'print'.tr,
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: defaultAccentColor,
+                    fontWeight: FontWeight.w500),
+              )),
+        ),
       ),
       Visibility(
         visible: !productListController.isPrintEnable.value,
@@ -236,10 +240,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
             )),
       ),
       Visibility(
-          visible: productListController.isPrintEnable.value,
+          visible:
+              !AppUtils.isPermission(AppStorage().getPermissions().addProduct),
           child: const SizedBox(
-            width: 16,
+            width: 14,
           )),
+      // Visibility(
+      //     visible: productListController.isPrintEnable.value,
+      //     child: const SizedBox(
+      //       width: 16,
+      //     )),
       // IconButton(
       //   icon: SvgPicture.asset(
       //     width: 22,
@@ -248,7 +258,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
       //   onPressed: () {},
       // ),
       Visibility(
-        visible: !productListController.isPrintEnable.value,
+        visible: !productListController.isPrintEnable.value &&
+            AppUtils.isPermission(AppStorage().getPermissions().addProduct),
         child: IconButton(
           icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
           onPressed: () {

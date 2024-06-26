@@ -24,7 +24,7 @@ class _SearchCategoryState extends State<SearchCategory> {
       child: SizedBox(
         height: 40,
         child: SearchTextField(
-          controller: categoryListController.searchController.value,
+          controller: categoryListController.searchController,
           onValueChange: (value) {
             categoryListController.searchItem(value.toString());
           },

@@ -5,6 +5,8 @@ import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 
 import '../../../../../res/colors.dart';
+import '../../../../../utils/app_storage.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../../../widgets/image/cached_image.dart';
 import '../../controller/product_list_controller.dart';
 
@@ -29,8 +31,11 @@ class ProductListView extends StatelessWidget {
                 (position) => InkWell(
                   onTap: () {
                     if (!productListController.isPrintEnable.value) {
-                      productListController.addProductClick(
-                          productListController.productList[position]);
+                      if (AppUtils.isPermission(
+                          AppStorage().getPermissions().updateProduct)) {
+                        productListController.addProductClick(
+                            productListController.productList[position]);
+                      }
                     } else {
                       bool check = productListController
                               .productList[position].checkPrint ??

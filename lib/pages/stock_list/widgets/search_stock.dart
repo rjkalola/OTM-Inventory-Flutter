@@ -21,7 +21,7 @@ class _SearchStockWidgetWidgetState extends State<SearchStockWidget> {
       child: SizedBox(
         height: 40,
         child: SearchTextField(
-          controller: stockListController.searchController.value,
+          controller: stockListController.searchController,
           onValueChange: (value) {
             stockListController.searchItem(value.toString());
           },

@@ -74,6 +74,7 @@ class SharedPreferenceKey {
   final String lastUpdateTime = "LAST_UPDATE_TIME";
   final String editStockUserName = "EDIT_STOCK_USER_NAME";
   final String editStockUserId = "EDIT_STOCK_USER_ID";
+  final String permissionSettings = "PERMISSION_SETTINGS";
 }
 
 class Action {

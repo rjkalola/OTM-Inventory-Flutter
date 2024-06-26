@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:otm_inventory/otp_autofill/verify_otp.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 // ignore: must_be_immutable
@@ -12,6 +13,7 @@ class SendOTPScreen extends StatelessWidget {
     if (mobileNumber.text == "") return;
 
     var appSignatureID = await SmsAutoFill().getAppSignature;
+    AppUtils.showSnackBarMessage(appSignatureID);
     print("appSignatureID:" + appSignatureID);
     Map sendOtpData = {
       "mobile_number": mobileNumber.text,

@@ -403,7 +403,9 @@ class StockListController extends GetxController
         'empty_qr_code_scan_msg'.tr,
         'attach_product'.tr,
         'cancel'.tr,
-        "add_new_product".tr,
+        AppUtils.isPermission(AppStorage().getPermissions().addProduct)
+            ? "add_new_product".tr
+            : "",
         true,
         this,
         AppConstants.dialogIdentifier.stockOptionsDialog);

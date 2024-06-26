@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

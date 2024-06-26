@@ -6,6 +6,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
 import 'package:otm_inventory/pages/dashboard/models/dashboard_stock_count_response.dart';
+import 'package:otm_inventory/pages/dashboard/models/permission_response.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
 import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
@@ -92,6 +93,7 @@ class DashboardController extends GetxController
 
     // isMainViewVisible.value = true;
     // setHeaderListArray();
+    getSettingApi();
   }
 
   Future<void> setDashboardData() async {
@@ -674,6 +676,34 @@ class DashboardController extends GetxController
         } else if (error.statusMessage!.isNotEmpty) {
           AppUtils.showSnackBarMessage(error.statusMessage!);
         }
+      },
+    );
+  }
+
+  void getSettingApi() {
+    _api.getSettingsAPI(
+      onSuccess: (ResponseModel responseModel) {
+        if (responseModel.statusCode == 200) {
+          PermissionResponse response =
+              PermissionResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.isSuccess!) {
+            AppStorage().setPermissions(response);
+          } else {
+            // AppUtils.showSnackBarMessage(response.message!);
+          }
+        } else {
+          // AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+        // isLoading.value = false;
+      },
+      onError: (ResponseModel error) {
+        // isLoading.value = false;
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   isInternetNotAvailable.value = true;
+        //   // Utils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
       },
     );
   }

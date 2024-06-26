@@ -18,7 +18,7 @@ class _SearchStockWidgetWidgetState extends State<SearchStockMultipleQuantityUpd
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       child: SearchTextField(
-        controller: stockListController.searchController.value,
+        controller: stockListController.searchController,
           onValueChange: (value) {
             stockListController.searchItem(value.toString());
             // setModalState(() {

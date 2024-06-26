@@ -121,7 +121,6 @@ class ApiRequest {
     ResponseModel responseModel;
     try {
       bool isInternet = await interNetCheck();
-      print("0000000000");
       // AppUtils.showToastMessage("Internet Connection:"+isInternet.toString());
       if (isInternet) {
         if (kDebugMode) print("accessToken:::" + ApiConstants.accessToken);
