@@ -41,7 +41,9 @@ class StockListController extends GetxController
   final productList = <ProductInfo>[].obs;
   var storeList = <ModuleInfo>[].obs;
   final storeNameController = TextEditingController().obs;
-  final isPendingDataCount = false.obs, isUpToDateData = false.obs;
+  final isPendingDataCount = false.obs,
+      isUpToDateData = false.obs,
+      isClearVisible = false.obs;
   final totalPendingCount = 0.obs;
   final pendingDataCountButtonTitle = "".obs, pullToRefreshTime = "".obs;
 
@@ -237,6 +239,7 @@ class StockListController extends GetxController
         if (AppStorage().getStockData() != null) {
           ProductListResponse response = AppStorage().getStockData()!;
           // ProductInfo? updatedInfo;
+          print("List Size:" + response.info!.length.toString());
           tempList.clear();
           tempList.addAll(response.info!);
           productList.value = tempList;
@@ -607,7 +610,7 @@ class StockListController extends GetxController
     map["limit"] = AppConstants.productListLimit.toString();
     map["search"] = search;
     map["product_id"] = "0";
-    map["is_stock"] = 1;
+    map["is_stock"] = 0;
     map["store_id"] = AppStorage.storeId.toString();
     map["allData"] = "true";
 

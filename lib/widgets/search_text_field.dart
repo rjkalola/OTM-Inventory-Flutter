@@ -9,11 +9,13 @@ class SearchTextField extends StatelessWidget {
       {super.key,
       this.onValueChange,
       this.onPressedClear,
-      required this.controller,});
+      required this.controller,
+      required this.isClearVisible});
 
   final ValueChanged<String>? onValueChange;
   final VoidCallback? onPressedClear;
   final Rx<TextEditingController> controller;
+  final Rx<bool> isClearVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class SearchTextField extends StatelessWidget {
                 fontWeight: FontWeight.w400, fontSize: 15, color: Colors.grey),
             hintStyle: const TextStyle(
                 fontWeight: FontWeight.w400, fontSize: 15, color: Colors.grey),
-            suffixIcon: !StringHelper.isEmptyString(controller.value.text)
+            suffixIcon: isClearVisible.value
                 ? IconButton(
                     onPressed: onPressedClear,
                     icon: const Icon(Icons.cancel),

@@ -22,7 +22,6 @@ class ProductListView extends StatelessWidget {
           child: Expanded(
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
-              //
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               controller: productListController.controller,

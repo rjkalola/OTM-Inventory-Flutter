@@ -6,6 +6,7 @@ import 'package:otm_inventory/widgets/search_text_field.dart';
 import 'package:otm_inventory/widgets/text_field_border.dart';
 
 import '../../../../res/colors.dart';
+import '../../../utils/string_helper.dart';
 
 class SearchCategory extends StatefulWidget {
   const SearchCategory({super.key});
@@ -25,12 +26,16 @@ class _SearchCategoryState extends State<SearchCategory> {
         height: 40,
         child: SearchTextField(
           controller: categoryListController.searchController,
+          isClearVisible: categoryListController.isClearVisible,
           onValueChange: (value) {
             categoryListController.searchItem(value.toString());
+            categoryListController.isClearVisible.value =
+                !StringHelper.isEmptyString(value.toString());
           },
           onPressedClear: () {
             categoryListController.searchController.value.clear();
             categoryListController.searchItem("");
+            categoryListController.isClearVisible.value = false;
           },
         ),
       ),

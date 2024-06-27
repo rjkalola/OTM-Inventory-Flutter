@@ -4,14 +4,7 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/add_supplier/add_supplier_controller.dart';
 import 'package:otm_inventory/pages/add_supplier/widgets/add_supplier_button.dart';
-import 'package:otm_inventory/pages/add_supplier/widgets/text_field_supplier_phone_extension.dart';
-import 'package:otm_inventory/pages/add_supplier/widgets/textfield_supplier_address.dart';
-import 'package:otm_inventory/pages/add_supplier/widgets/textfield_supplier_company_name.dart';
 import 'package:otm_inventory/pages/add_supplier/widgets/textfield_supplier_contact_name.dart';
-import 'package:otm_inventory/pages/add_supplier/widgets/textfield_supplier_email.dart';
-import 'package:otm_inventory/pages/add_supplier/widgets/textfield_supplier_phone_number.dart';
-import 'package:otm_inventory/pages/add_supplier/widgets/textfield_supplier_weight.dart';
-import 'package:otm_inventory/pages/add_supplier/widgets/textfield_supplier_weight_unit.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';

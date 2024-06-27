@@ -156,7 +156,7 @@ class StockEditQuantityController extends GetxController
     }
   }
 
-  void clearUser(){
+  void clearUser() {
     userController.value.text = "";
     userId = 0;
     userName = "";
@@ -581,14 +581,16 @@ class StockEditQuantityController extends GetxController
   void updateQtyInLocalList(int qty) {
     if (AppStorage().getStockData() != null) {
       ProductListResponse response = AppStorage().getStockData()!;
+      print("Before list size:" + response.info!.length.toString());
       if (!StringHelper.isEmptyList(response.info)) {
         for (int i = 0; i < response.info!.length; i++) {
           if (response.info![i].id.toString() == productId) {
             response.info![i].qty = productInfo.value.qty;
-            break;
+            response.info![i].temp_store_id = AppStorage.storeId;
           }
         }
       }
+      print("after list size:" + response.info!.length.toString());
       AppStorage().setStockData(response);
     }
   }

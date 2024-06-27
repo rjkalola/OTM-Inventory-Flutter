@@ -28,8 +28,11 @@ class StoreListView extends StatelessWidget {
                 storeListController.storeList.length,
                 (position) => InkWell(
                   onTap: () {
-                    storeListController
-                        .addStoreClick(storeListController.storeList[position]);
+                    if (AppUtils.isPermission(
+                        AppStorage().getPermissions().updateStore)) {
+                      storeListController.addStoreClick(
+                          storeListController.storeList[position]);
+                    }
                   },
                   child: CardView(
                     child: Padding(
@@ -44,8 +47,8 @@ class StoreListView extends StatelessWidget {
                                   .storeList[position].storeName),
                               InkWell(
                                   onTap: () {
-                                    storeListController.onCLickStoreChange(
-                                       position);
+                                    storeListController
+                                        .onCLickStoreChange(position);
                                     // AppStorage.storeId = storeListController
                                     //     .storeList[position].id!;
                                     // AppStorage.storeName = storeListController

@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/add_category/widgets/add_category_button.dart';
 import 'package:otm_inventory/pages/add_category/widgets/textfield_category_name.dart';
+
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
 import '../../../widgets/appbar/base_appbar.dart';
-import '../../utils/app_utils.dart';
 import 'add_category_controller.dart';
 
 class AddCategoryScreen extends StatelessWidget {

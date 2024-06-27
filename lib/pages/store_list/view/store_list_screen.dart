@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/store_list/controller/store_list_controller.dart';
@@ -12,7 +12,7 @@ import 'package:otm_inventory/pages/store_list/view/widgets/store_list_view.dart
 import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
-import '../../../res/drawable.dart';
+import '../../../utils/app_storage.dart';
 import '../../../utils/app_utils.dart';
 import '../../../widgets/CustomProgressbar.dart';
 import '../../common/widgets/common_bottom_navigation_bar_widget.dart';
@@ -102,11 +102,14 @@ class _StoreListScreenState extends State<StoreListScreen> {
       //     storeListController.stockFilter();
       //   },
       // ),
-      IconButton(
-        icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
-        onPressed: () {
-          storeListController.addStoreClick(null);
-        },
+      Visibility(
+        visible: AppUtils.isPermission(AppStorage().getPermissions().addStore),
+        child: IconButton(
+          icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
+          onPressed: () {
+            storeListController.addStoreClick(null);
+          },
+        ),
       ),
     ];
   }

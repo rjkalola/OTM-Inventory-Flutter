@@ -4,6 +4,8 @@ import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 
 import '../../../../res/colors.dart';
+import '../../../../utils/app_storage.dart';
+import '../../../../utils/app_utils.dart';
 import '../../controller/supplier_list_controller.dart';
 
 class SupplierListView extends StatelessWidget {
@@ -24,7 +26,11 @@ class SupplierListView extends StatelessWidget {
                 supplierListController.itemList.length,
                 (position) => InkWell(
                   onTap: () {
-                    supplierListController.addSupplierClick(supplierListController.itemList[position]);
+                    if (AppUtils.isPermission(
+                        AppStorage().getPermissions().updateSupplier)) {
+                      supplierListController.addSupplierClick(
+                          supplierListController.itemList[position]);
+                    }
                   },
                   child: CardView(
                     child: Padding(

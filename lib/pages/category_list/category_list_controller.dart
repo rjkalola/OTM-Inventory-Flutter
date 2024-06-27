@@ -20,7 +20,8 @@ class CategoryListController extends GetxController {
   final searchController = TextEditingController().obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs;
+      isMainViewVisible = false.obs,
+      isClearVisible = false.obs;
 
   final filters = ''.obs, search = ''.obs;
   final offset = 0.obs;
@@ -40,7 +41,8 @@ class CategoryListController extends GetxController {
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          CategoryListResponse response = CategoryListResponse.fromJson(jsonDecode(responseModel.result!));
+          CategoryListResponse response =
+              CategoryListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             tempList.clear();
             tempList.addAll(response.info!);
@@ -82,13 +84,16 @@ class CategoryListController extends GetxController {
     }
   }
 
-  Future<void> searchItem(String value) async{
-    print("Search item:"+value);
+  Future<void> searchItem(String value) async {
+    print("Search item:" + value);
     List<CategoryInfo> results = [];
     if (value.isEmpty) {
       results = tempList;
-    }else{
-      results = tempList.where((element) => element.name!.toLowerCase().contains(value.toLowerCase())).toList();
+    } else {
+      results = tempList
+          .where((element) =>
+              element.name!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
     }
     categoryList.value = results;
   }

@@ -22,7 +22,8 @@ class SupplierListController extends GetxController {
 
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs;
+      isMainViewVisible = false.obs,
+      isClearVisible = false.obs;
 
   final filters = ''.obs, search = ''.obs;
   final offset = 0.obs;
@@ -87,13 +88,16 @@ class SupplierListController extends GetxController {
     }
   }
 
-  Future<void> searchItem(String value) async{
-    print("Search item:"+value);
+  Future<void> searchItem(String value) async {
+    print("Search item:" + value);
     List<SupplierInfo> results = [];
     if (value.isEmpty) {
       results = tempList;
-    }else{
-      results = tempList.where((element) => element.contactName!.toLowerCase().contains(value.toLowerCase())).toList();
+    } else {
+      results = tempList
+          .where((element) =>
+              element.contactName!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
     }
     itemList.value = results;
   }

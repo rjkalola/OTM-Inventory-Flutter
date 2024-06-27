@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
+import '../../utils/app_storage.dart';
 import '../../utils/app_utils.dart';
 import '../common/widgets/common_bottom_navigation_bar_widget.dart';
 import '../dashboard/widgets/main_drawer.dart';
@@ -34,7 +36,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
         statusBarIconBrightness: Brightness.dark));
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async{
+      onPopInvoked: (didPop) async {
         final backNavigationAllowed = await onBackPress();
         if (backNavigationAllowed) {
           if (Platform.isIOS) {
@@ -100,11 +102,15 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
       //   ),
       //   onPressed: () {},
       // ),
-      IconButton(
-        icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
-        onPressed: () {
-          categoryListController.addCategoryClick(null);
-        },
+      Visibility(
+        visible: AppUtils.isPermission(
+            AppStorage().getPermissions().addProductCategory),
+        child: IconButton(
+          icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
+          onPressed: () {
+            categoryListController.addCategoryClick(null);
+          },
+        ),
       ),
     ];
   }

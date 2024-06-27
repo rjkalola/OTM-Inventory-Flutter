@@ -29,7 +29,8 @@ class StoreListController extends GetxController {
   final searchController = TextEditingController().obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs;
+      isMainViewVisible = false.obs,
+      isClearVisible = false.obs;
 
   final filters = ''.obs, search = ''.obs;
   final offset = 0.obs, activeStoreId = 0.obs;

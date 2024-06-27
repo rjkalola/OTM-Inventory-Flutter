@@ -4,12 +4,14 @@ import 'package:otm_inventory/pages/category_list/category_list_controller.dart'
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 import '../../../../res/colors.dart';
+import '../../../utils/app_storage.dart';
+import '../../../utils/app_utils.dart';
 
 class CategoryListView extends StatelessWidget {
   CategoryListView({super.key});
 
   final categoryListController = Get.put(CategoryListController());
-  
+
   @override
   Widget build(BuildContext context) {
     return Obx(() => Visibility(
@@ -23,17 +25,21 @@ class CategoryListView extends StatelessWidget {
                 categoryListController.categoryList.length,
                 (position) => InkWell(
                   onTap: () {
-                    categoryListController.addCategoryClick(
-                        categoryListController.categoryList[position]);
+                    if (AppUtils.isPermission(
+                        AppStorage().getPermissions().updateProductCategory)) {
+                      categoryListController.addCategoryClick(
+                          categoryListController.categoryList[position]);
+                    }
                   },
                   child: CardView(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
-                      child:  Column(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           titleTextView(categoryListController
-                              .categoryList[position].name??""),
+                                  .categoryList[position].name ??
+                              ""),
                         ],
                       ),
                     ),
@@ -46,27 +52,24 @@ class CategoryListView extends StatelessWidget {
   }
 
   Widget titleTextView(String? text) => Visibility(
-    visible: !StringHelper.isEmptyString(text),
-    child: Text(
-        text??"",
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
-          color: primaryTextColor,
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-        )),
-  );
+        visible: !StringHelper.isEmptyString(text),
+        child: Text(text ?? "",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: primaryTextColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            )),
+      );
 
-  Widget itemTextView(String title,
-      String? text) => Visibility(
-    visible: !StringHelper.isEmptyString(text),
-    child: Text(
-        "$title: ${text??"-"}",
-        style: const TextStyle(
-          color: secondaryLightTextColor,
-          fontWeight: FontWeight.w400,
-          fontSize: 13,
-        )),
-  );
+  Widget itemTextView(String title, String? text) => Visibility(
+        visible: !StringHelper.isEmptyString(text),
+        child: Text("$title: ${text ?? "-"}",
+            style: const TextStyle(
+              color: secondaryLightTextColor,
+              fontWeight: FontWeight.w400,
+              fontSize: 13,
+            )),
+      );
 }

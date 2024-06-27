@@ -15,7 +15,8 @@ class ProductInfo {
       qty,
       newQty = 0,
       mode_type,
-      stock_status_id;
+      stock_status_id,
+      temp_store_id;
 
   String? shortName,
       name,
@@ -49,6 +50,7 @@ class ProductInfo {
   List<StockQtyHistoryInfo>? stock_histories;
   List<ProductImageInfo>? product_images;
   List<FilesInfo>? temp_images;
+  List<ProductStockInfo>? product_stocks;
 
   ProductInfo(
       {this.id,
@@ -95,7 +97,9 @@ class ProductInfo {
       this.localStored,
       this.stock_status_id,
       this.stock_status,
-      this.checkPrint});
+      this.checkPrint,
+      this.product_stocks,
+      this.temp_store_id});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -158,10 +162,17 @@ class ProductInfo {
         temp_images!.add(FilesInfo.fromJson(v));
       });
     }
+    if (json['product_stocks'] != null) {
+      product_stocks = <ProductStockInfo>[];
+      json['product_stocks'].forEach((v) {
+        product_stocks!.add(ProductStockInfo.fromJson(v));
+      });
+    }
     localStored = json['local_stored'];
     stock_status_id = json['stock_status_id'];
     stock_status = json['stock_status'];
     checkPrint = json['checkPrint'];
+    temp_store_id = json['temp_store_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -215,11 +226,38 @@ class ProductInfo {
     if (temp_images != null) {
       data['temp_images'] = temp_images!.map((v) => v.toJson()).toList();
     }
+    if (product_stocks != null) {
+      data['product_stocks'] = product_stocks!.map((v) => v.toJson()).toList();
+    }
     data['local_stored'] = localStored;
     data['stock_status_id'] = stock_status_id;
     data['stock_status'] = stock_status;
     data['checkPrint'] = checkPrint;
+    data['temp_store_id'] = temp_store_id;
+    return data;
+  }
+}
 
+class ProductStockInfo {
+  int? id, store_id, product_id;
+
+  ProductStockInfo({
+    this.id,
+    this.store_id,
+    this.product_id,
+  });
+
+  ProductStockInfo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    store_id = json['store_id'];
+    product_id = json['product_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['store_id'] = store_id;
+    data['product_id'] = product_id;
     return data;
   }
 }
