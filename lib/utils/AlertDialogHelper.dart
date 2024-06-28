@@ -79,4 +79,55 @@ class AlertDialogHelper {
 
     Get.dialog(barrierDismissible: isCancelable, alert);
   }
+
+  static showImagePreviewAlertDialog(
+    String imageUrl,
+    bool isCancelable,
+  ) {
+    // set up the AlertDialog
+    CupertinoAlertDialog alert = CupertinoAlertDialog(
+      title: Align(
+        alignment: Alignment.topRight,
+        child: GestureDetector(
+          child: const Icon(
+            Icons.cancel_outlined,
+            color: Colors.white,
+          ),
+          onTap: () {
+            Get.back();
+          },
+        ),
+      ),
+      content: Container(
+        width: Get.width,
+        height: Get.height,
+        color: Colors.red,
+        child: SizedBox(
+          width: Get.width,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 12),
+              Text(
+                'Hello Flutter s sf sf fsf sf sf sf',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+      // shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(8.0))),
+      // backgroundColor: backgroundColor,
+    );
+    // show the dialog
+
+    Get.dialog(barrierDismissible: isCancelable, alert);
+  }
 }

@@ -35,14 +35,18 @@ class RowReferenceUsers extends StatelessWidget {
                             .isUserDropdownVisible.value,
                         child: TextFieldSelectUser()),
                     Visibility(
-                      visible:
-                          stockEditQuantityController.isReferenceVisible.value,
+                      visible: stockEditQuantityController
+                              .isReferenceVisible.value &&
+                          stockEditQuantityController
+                              .isClearReferenceVisible.value,
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: IconButton(
                           onPressed: () {
                             stockEditQuantityController.noteController.value
                                 .clear();
+                            stockEditQuantityController
+                                .isClearReferenceVisible.value = false;
                           },
                           icon: const Icon(Icons.cancel),
                         ),
@@ -50,7 +54,8 @@ class RowReferenceUsers extends StatelessWidget {
                     ),
                     Visibility(
                       visible: stockEditQuantityController
-                          .isUserDropdownVisible.value,
+                              .isUserDropdownVisible.value &&
+                          stockEditQuantityController.isClearUserVisible.value,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 30),
                         child: Align(

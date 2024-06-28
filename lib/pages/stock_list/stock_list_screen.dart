@@ -41,41 +41,43 @@ class _StockListScreenState extends State<StockListScreen> {
                   title: 'stocks'.tr,
                   isBack: true,
                   widgets: actionButtons()),
-              floatingActionButton:
-                  (stockListController.totalPendingCount.value == 0)
-                      ? FloatingActionButton(
-                          mini: true,
-                          backgroundColor: Colors.green,
-                          tooltip: '',
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(45)),
-                          onPressed: () {},
-                          child: const Icon(Icons.check,
-                              color: Colors.white, size: 25),
-                        )
-                      : SizedBox(
-                          height: 40,
-                          child: FloatingActionButton.extended(
-                            backgroundColor: defaultAccentColor,
-                            onPressed: () {
-                              stockListController.onCLickUploadData(
-                                  true,
-                                  false,
-                                  stockListController.localStockCount(),
-                                  stockListController.localProductCount());
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6)),
-                            label: Text(
-                              stockListController.totalPendingCount.value
-                                  .toString(),
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
-                            ),
-                            icon: const Icon(Icons.autorenew_outlined,
-                                color: Colors.white, size: 24),
-                          ),
+              floatingActionButton: (stockListController
+                          .totalPendingCount.value ==
+                      0)
+                  ? FloatingActionButton(
+                      mini: true,
+                      backgroundColor: Colors.green,
+                      tooltip: '',
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(45)),
+                      onPressed: () {
+                        AppUtils.showSnackBarMessage('data_is_up_to_date'.tr);
+                      },
+                      child: const Icon(Icons.check,
+                          color: Colors.white, size: 25),
+                    )
+                  : SizedBox(
+                      height: 40,
+                      child: FloatingActionButton.extended(
+                        backgroundColor: defaultAccentColor,
+                        onPressed: () {
+                          stockListController.onCLickUploadData(
+                              true,
+                              false,
+                              stockListController.localStockCount(),
+                              stockListController.localProductCount());
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        label: Text(
+                          stockListController.totalPendingCount.value
+                              .toString(),
+                          style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
+                        icon: const Icon(Icons.autorenew_outlined,
+                            color: Colors.white, size: 24),
+                      ),
+                    ),
               drawer: MainDrawer(),
               // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
               body: Column(

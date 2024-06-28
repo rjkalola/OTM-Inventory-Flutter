@@ -427,6 +427,7 @@ class AddProductController extends GetxController
     map["status"] = true;
     map["mode_type"] = addProductRequest.mode_type;
     map["barcode_text"] = addProductRequest.barcode_text ?? "";
+    // map["uuid"] = addProductRequest.barcode_text ?? "";
 
     if (addProductRequest.categories != null &&
         addProductRequest.categories!.isNotEmpty) {

@@ -23,6 +23,7 @@ import '../../web_services/response/module_info.dart';
 import '../../web_services/response/response_model.dart';
 import '../add_store/model/store_resources_response.dart';
 import '../common/drop_down_list_dialog.dart';
+import '../common/drop_down_tile_list_dialog.dart';
 import '../common/listener/select_item_listener.dart';
 import '../common/model/file_info.dart';
 import '../products/add_product/controller/add_product_repository.dart';
@@ -168,8 +169,8 @@ class DashboardController extends GetxController
 
   void selectStore() {
     if (storeList.isNotEmpty) {
-      showStoreListDialog(AppConstants.dialogIdentifier.storeList, 'stores'.tr,
-          storeList, true, true, true, true, this);
+      showStoreListDialog(AppConstants.dialogIdentifier.storeList,
+          'select_the_store'.tr, storeList, true, true, true, true, this);
     } else {
       AppUtils.showSnackBarMessage('empty_store_message'.tr);
     }
@@ -189,7 +190,7 @@ class DashboardController extends GetxController
         isDismissible: isDismiss,
         PopScope(
           canPop: canPop,
-          child: DropDownListDialog(
+          child: DropDownTileListDialog(
             title: title,
             dialogType: dialogType,
             list: list,
@@ -254,8 +255,15 @@ class DashboardController extends GetxController
               }
             }
             if (AppStorage.storeId == 0 && storeList.isNotEmpty) {
-              showStoreListDialog(AppConstants.dialogIdentifier.storeList,
-                  'stores'.tr, storeList, false, false, false, false, this);
+              showStoreListDialog(
+                  AppConstants.dialogIdentifier.storeList,
+                  'select_the_store'.tr,
+                  storeList,
+                  false,
+                  false,
+                  false,
+                  false,
+                  this);
             } else if (AppStorage.storeId == 0 && storeList.isEmpty) {
               Get.offNamed(AppRoutes.storeListScreen);
             } else {

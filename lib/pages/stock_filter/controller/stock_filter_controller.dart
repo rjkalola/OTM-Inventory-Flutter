@@ -19,7 +19,9 @@ class StockFilterController extends GetxController {
   final formKey = GlobalKey<FormState>();
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = false.obs;
+      isMainViewVisible = false.obs,
+      isAllVisible = false.obs;
+
   var supplierList = <FilterInfo>[].obs;
   var categoriesList = <FilterInfo>[].obs;
   var selectedSupplierIndex = 0.obs;
@@ -36,6 +38,7 @@ class StockFilterController extends GetxController {
           categoriesList.value = supplierList[0].data!;
         }
       }
+      setAllButtonVisibility();
       isMainViewVisible.value = true;
     }
 
@@ -52,12 +55,22 @@ class StockFilterController extends GetxController {
 
   void onSelectSupplier(int index) {
     selectedSupplierIndex.value = index;
+    setAllButtonVisibility();
     categoriesList.value = supplierList[index].data!;
     for (int j = 0; j < categoriesList.length; j++) {
       FilterInfo categoryInfo = categoriesList[j];
       print(categoryInfo.name);
     }
     categoriesList.refresh();
+  }
+
+  void setAllButtonVisibility() {
+    if (supplierList[selectedSupplierIndex.value].key == 'all_category') {
+      isAllVisible.value = false;
+    } else {
+      isAllVisible.value = true;
+    }
+    print("isAllVisible:" + isAllVisible.value.toString());
   }
 
   void onSelectCategory(index) {

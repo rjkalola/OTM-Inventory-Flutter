@@ -165,6 +165,9 @@ class Strings extends Translations {
           'msg_file_downloaded': "File downloaded, Check download folder.",
           'select_all': "Select All",
           'unselect_all': "Unselect All",
+          'select_the_store': "Select the store",
+          'data_is_up_to_date': "Data is up to date",
+          'id_': "ID",
         },
         'hi_IN': {'login': 'Login'}
       };

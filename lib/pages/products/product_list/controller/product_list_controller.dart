@@ -270,10 +270,10 @@ class ProductListController extends GetxController
     info.action = AppConstants.action.viewPdf;
     listOptions.add(info);
 
-    info = ModuleInfo();
-    info.name = 'download_pdf'.tr;
-    info.action = AppConstants.action.downloadPdf;
-    listOptions.add(info);
+    // info = ModuleInfo();
+    // info.name = 'download_pdf'.tr;
+    // info.action = AppConstants.action.downloadPdf;
+    // listOptions.add(info);
 
     showPrintOptionsDialog(AppConstants.dialogIdentifier.attachmentOptionsList,
         'choose_type'.tr, listOptions, this);

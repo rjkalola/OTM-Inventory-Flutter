@@ -59,6 +59,7 @@ dependencies:
   #  double_tap_to_exit: ^1.0.1
   sms_autofill: ^2.4.0
   change_app_package_name: ^1.2.0
+  photo_view: ^0.15.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

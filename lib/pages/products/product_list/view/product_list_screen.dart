@@ -1,13 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/common/widgets/common_bottom_navigation_bar_widget.dart';
-import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/product_empty_view.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/product_list.dart';
 import 'package:otm_inventory/pages/products/product_list/view/widgets/qr_code_icon.dart';
@@ -15,7 +12,6 @@ import 'package:otm_inventory/pages/products/product_list/view/widgets/search_pr
 import 'package:otm_inventory/utils/app_storage.dart';
 import 'package:otm_inventory/utils/permission_handler.dart';
 import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../res/colors.dart';
 import '../../../../utils/app_utils.dart';

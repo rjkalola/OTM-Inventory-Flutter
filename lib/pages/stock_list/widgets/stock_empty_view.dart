@@ -22,24 +22,24 @@ class StockListEmptyView extends StatelessWidget {
                 Text('empty_data_message'.tr,
                     style: const TextStyle(
                         fontSize: 16, color: secondaryTextColor)),
-                const SizedBox(
-                  height: 16,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 18, right: 18),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: PrimaryBorderButton(
-                      buttonText: stockListController.downloadTitle.value,
-                      textColor: Colors.green,
-                      borderColor: Colors.green,
-                      fontSize: 14,
-                      onPressed: () {
-                        stockListController.getAllStockListApi(true,true);
-                      },
-                    ),
-                  ),
-                )
+                // const SizedBox(
+                //   height: 16,
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 18, right: 18),
+                //   child: SizedBox(
+                //     width: double.infinity,
+                //     child: PrimaryBorderButton(
+                //       buttonText: stockListController.downloadTitle.value,
+                //       textColor: Colors.green,
+                //       borderColor: Colors.green,
+                //       fontSize: 14,
+                //       onPressed: () {
+                //         stockListController.getAllStockListApi(true,true);
+                //       },
+                //     ),
+                //   ),
+                // )
               ],
             ),
           )),

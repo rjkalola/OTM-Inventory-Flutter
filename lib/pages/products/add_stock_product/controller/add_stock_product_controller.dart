@@ -49,6 +49,7 @@ class AddStockProductController extends GetxController
   final productDescriptionController = TextEditingController().obs;
   final productBarcodeController = TextEditingController().obs;
   final productCategoryController = TextEditingController().obs;
+  final productUuidController = TextEditingController().obs;
 
   final ImagePicker _picker = ImagePicker();
   String thumbImage = "";
@@ -124,8 +125,10 @@ class AddStockProductController extends GetxController
     productDescriptionController.value.text = info.description ?? "";
     productSupplierController.value.text = info.supplier_name ?? "";
     productBarcodeController.value.text = info.barcode_text ?? "";
+    productUuidController.value.text = info.uuid ?? "";
     mBarCode = info.barcode_text ?? "";
     isStatus.value = info.status ?? false;
+    print("UUID:"+info.uuid!);
 
     if (!StringHelper.isEmptyList(info.categories)) {
       List<String> ids = [];
@@ -185,6 +188,8 @@ class AddStockProductController extends GetxController
           productDescriptionController.value.text.toString().trim();
       addProductRequest?.barcode_text =
           productBarcodeController.value.text.toString().trim();
+      addProductRequest?.uuid =
+          productUuidController.value.text.toString().trim();
       if (addProductRequest?.id != null && addProductRequest?.id != 0) {
         addProductRequest?.mode_type = 2;
       } else {
@@ -527,6 +532,7 @@ class AddStockProductController extends GetxController
     map["status"] = true;
     map["mode_type"] = addProductRequest?.mode_type;
     map["barcode_text"] = addProductRequest?.barcode_text ?? "";
+    map["uuid"] = addProductRequest?.uuid ?? "";
 
     if (!StringHelper.isEmptyList(addProductRequest?.categories)) {
       for (int i = 0; i < addProductRequest!.categories!.length; i++) {

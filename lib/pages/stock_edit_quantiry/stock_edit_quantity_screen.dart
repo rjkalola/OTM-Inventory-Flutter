@@ -93,7 +93,9 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(6),
                                       child: CachedImage(
-                                        size: 68,
+                                        width: 60,
+                                        height: 60,
+                                        placeHolderSize: 60,
                                         url: stockEditQuantityController
                                                 .productInfo
                                                 .value

@@ -15,6 +15,7 @@ import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/text
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_price.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_supplier.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_title.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_uuid.dart';
 
 import '../../../../res/colors.dart';
 import '../../../../widgets/CustomProgressbar.dart';
@@ -61,6 +62,7 @@ class AddStockProductScreen extends StatelessWidget {
                             AddStockProductPhotosList(),
                             TextFieldStockProductName(),
                             TextFieldStockProductTitle(),
+                            TextFieldStockProductUuid(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

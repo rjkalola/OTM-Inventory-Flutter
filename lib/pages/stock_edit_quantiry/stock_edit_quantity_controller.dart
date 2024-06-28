@@ -50,7 +50,9 @@ class StockEditQuantityController extends GetxController
       isDeductQtyVisible = false.obs,
       isAddQtyVisible = true.obs,
       isUserDropdownVisible = false.obs,
-      isReferenceVisible = true.obs;
+      isReferenceVisible = true.obs,
+      isClearReferenceVisible = false.obs,
+      isClearUserVisible = false.obs;
   int initialQuantity = 0, finalQuantity = 0, userId = 0;
   bool isUpdated = false;
   List<ModuleInfo> listUsers = [];
@@ -153,6 +155,7 @@ class StockEditQuantityController extends GetxController
       userController.value.text = name;
       userId = id;
       userName = name;
+      isClearUserVisible.value = true;
     }
   }
 
@@ -160,6 +163,7 @@ class StockEditQuantityController extends GetxController
     userController.value.text = "";
     userId = 0;
     userName = "";
+    isClearUserVisible.value = false;
   }
 
   void onClickQrCode() {
@@ -581,7 +585,6 @@ class StockEditQuantityController extends GetxController
   void updateQtyInLocalList(int qty) {
     if (AppStorage().getStockData() != null) {
       ProductListResponse response = AppStorage().getStockData()!;
-      print("Before list size:" + response.info!.length.toString());
       if (!StringHelper.isEmptyList(response.info)) {
         for (int i = 0; i < response.info!.length; i++) {
           if (response.info![i].id.toString() == productId) {
@@ -590,7 +593,6 @@ class StockEditQuantityController extends GetxController
           }
         }
       }
-      print("after list size:" + response.info!.length.toString());
       AppStorage().setStockData(response);
     }
   }

@@ -17,6 +17,7 @@ import '../../utils/date_utils.dart';
 import '../../web_services/response/base_response.dart';
 import '../../web_services/response/module_info.dart';
 import '../common/drop_down_list_dialog.dart';
+import '../common/drop_down_tile_list_dialog.dart';
 import '../common/listener/DialogButtonClickListener.dart';
 import '../common/listener/select_item_listener.dart';
 import '../common/model/file_info.dart';
@@ -688,7 +689,7 @@ class StockListController extends GetxController
   //For Select Store Dropdown
   void selectStore() {
     if (storeList.isNotEmpty) {
-      showStoreListDialog(AppConstants.dialogIdentifier.storeList, 'stores'.tr,
+      showStoreListDialog(AppConstants.dialogIdentifier.storeList, 'select_the_store'.tr,
           storeList, true, true, true, true, this);
     } else {
       AppUtils.showSnackBarMessage('empty_store_message'.tr);
@@ -709,7 +710,7 @@ class StockListController extends GetxController
         isDismissible: isDismiss,
         PopScope(
           canPop: canPop,
-          child: DropDownListDialog(
+          child: DropDownTileListDialog(
             title: title,
             dialogType: dialogType,
             list: list,
@@ -757,7 +758,7 @@ class StockListController extends GetxController
             }
             if (AppStorage.storeId == 0 && storeList.isNotEmpty) {
               showStoreListDialog(AppConstants.dialogIdentifier.storeList,
-                  'stores'.tr, storeList, false, false, false, false, this);
+                  'select_the_store'.tr, storeList, false, false, false, false, this);
             } else {
               getStockListApi(true, false, "", true, true);
             }

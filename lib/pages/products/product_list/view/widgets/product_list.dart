@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/common/widgets/image_preview_dialog.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 
 import '../../../../../res/colors.dart';
+import '../../../../../utils/AlertDialogHelper.dart';
 import '../../../../../utils/app_storage.dart';
 import '../../../../../utils/app_utils.dart';
+import '../../../../../utils/image_utils.dart';
 import '../../../../../widgets/image/cached_image.dart';
 import '../../controller/product_list_controller.dart';
 
@@ -50,10 +53,19 @@ class ProductListView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                         child: Row(children: [
-                          CachedImage(
-                            size: 60,
-                            url: productListController
-                                .productList[position].imageThumbUrl,
+                          InkWell(
+                            onTap: () {
+                              ImageUtils.showImagePreviewDialog(
+                                  productListController
+                                      .productList[position].imageUrl);
+                            },
+                            child: CachedImage(
+                              url: productListController
+                                  .productList[position].imageThumbUrl,
+                              width: 60,
+                              height: 60,
+                              placeHolderSize: 60,
+                            ),
                           ),
                           Expanded(
                               child: Padding(

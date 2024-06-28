@@ -44,7 +44,8 @@ class ProductInfo {
       supplier_code,
       dimension,
       barcode_text,
-      stock_status;
+      stock_status,
+      uuid;
   List<ModuleInfo>? categories;
   bool? status, localStored, checkPrint;
   List<StockQtyHistoryInfo>? stock_histories;
@@ -99,10 +100,12 @@ class ProductInfo {
       this.stock_status,
       this.checkPrint,
       this.product_stocks,
-      this.temp_store_id});
+      this.temp_store_id,
+      this.uuid});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    uuid = json['uuid'];
     local_id = json['local_id'];
     supplierId = json['supplier_id'];
     shortName = json['short_name'];
@@ -178,6 +181,7 @@ class ProductInfo {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['uuid'] = uuid;
     data['local_id'] = local_id;
     data['supplier_id'] = supplierId;
     data['short_name'] = shortName;

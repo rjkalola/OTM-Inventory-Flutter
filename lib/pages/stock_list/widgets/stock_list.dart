@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
+import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 import 'package:otm_inventory/widgets/image/cached_image.dart';
 
 import '../../../../res/colors.dart';
 import '../../../widgets/PrimaryBorderButton.dart';
+import '../../common/widgets/image_preview_dialog.dart';
 import '../../products/product_list/models/product_info.dart';
 
 class StockListView extends StatelessWidget {
@@ -43,10 +46,21 @@ class StockListView extends StatelessWidget {
                         child: Padding(
                       padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                       child: Row(children: [
-                        CachedImage(
-                          size: 60,
-                          url: stockListController
-                              .productList[position].imageThumbUrl,
+                        InkWell(
+                          onTap: () {
+                            ImageUtils.showImagePreviewDialog(
+                                stockListController
+                                    .productList[position].imageUrl);
+                            // AlertDialogHelper.showImagePreviewAlertDialog(
+                            //     "", true);
+                          },
+                          child: CachedImage(
+                            width: 60,
+                            height: 60,
+                            placeHolderSize: 60,
+                            url: stockListController
+                                .productList[position].imageThumbUrl,
+                          ),
                         ),
                         Expanded(
                             child: Padding(

@@ -12,7 +12,7 @@ class StockFilterCategoriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Expanded(
-      child: ListView(
+          child: ListView(
             physics: const AlwaysScrollableScrollPhysics(), //
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
@@ -67,6 +67,6 @@ class StockFilterCategoriesList extends StatelessWidget {
               ),
             ),
           ),
-    ));
+        ));
   }
 }

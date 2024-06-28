@@ -21,6 +21,7 @@ class AppStorage extends GetxController {
   final storage = GetStorage();
   static int storeId = 0;
   static String storeName = "";
+  static String uniqueId = "";
 
   Future<void> initStorage() async {
     await GetStorage.init();
