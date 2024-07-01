@@ -176,14 +176,18 @@ class StockListView extends StatelessWidget {
     return Visibility(
       visible: !StringHelper.isEmptyString(
           stockListController.productList[position].qty.toString()),
-      child: Text(stockListController.productList[position].qty.toString(),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            color: defaultAccentColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-          )),
+      child: SizedBox(
+        width: 70,
+        child: Text(stockListController.productList[position].qty.toString(),
+            maxLines: 1,
+            textAlign: TextAlign.end,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: defaultAccentColor,
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
+            )),
+      ),
     );
   }
 
