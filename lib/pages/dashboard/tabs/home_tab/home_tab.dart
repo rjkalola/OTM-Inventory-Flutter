@@ -47,6 +47,7 @@ class _HomeTabState extends State<HomeTab> {
         opacity: 0,
         progressIndicator: const CustomProgressbar(),
         child: Obx(() => Scaffold(
+              backgroundColor: Colors.white,
               // backgroundColor: const Color(0xfff4f5f7),
               body: Visibility(
                 visible: dashboardController.isMainViewVisible.value,
@@ -139,16 +140,14 @@ class _HomeTabState extends State<HomeTab> {
                       // ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child:  SizedBox(
+                        child: SizedBox(
                           width: double.infinity,
                           child: PrimaryBorderButton(
-                            buttonText:
-                            'sync'.tr,
+                            buttonText: 'sync'.tr,
                             textColor: defaultAccentColor,
                             borderColor: defaultAccentColor,
                             onPressed: () {
-                              dashboardController
-                                  .onClickDownloadStockButton();
+                              dashboardController.onClickDownloadStockButton();
                             },
                           ),
                         ),
