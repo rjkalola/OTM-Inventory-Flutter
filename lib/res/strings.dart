@@ -168,6 +168,8 @@ class Strings extends Translations {
           'select_the_store': "Select the store",
           'data_is_up_to_date': "Data is up to date",
           'id_': "ID",
+          'purchase_order': "Purchase Order",
+          'scan_items': "Scan Items",
         },
         'hi_IN': {'login': 'Login'}
       };

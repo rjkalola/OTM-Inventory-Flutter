@@ -217,10 +217,12 @@ class StockListView extends StatelessWidget {
         int storeId = info.store_id ?? 0;
         if (storeId == AppStorage.storeId) {
           match = true;
+          print("Match:" + match.toString());
           break;
         }
       }
     }
+
     return match;
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/purchase_order_details_screen.dart';
+import 'package:otm_inventory/pages/purchase_order/purchase_order_list/view/purchase_order_list_screen.dart';
 import 'package:otm_inventory/pages/splash/splash_screen.dart';
 import 'package:otm_inventory/res/colors.dart';
 import 'package:otm_inventory/res/strings.dart';
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: defaultAccentColor),
           useMaterial3: true,
           dialogBackgroundColor: Colors.white),
-      home: const SplashScreen(),
+      home: const PurchaseOrderDetailsScreen(),
     );
   }
 }

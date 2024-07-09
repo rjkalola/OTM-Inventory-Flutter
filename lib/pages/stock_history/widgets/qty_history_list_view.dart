@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:otm_inventory/pages/stock_history/widgets/user_info.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../../../res/colors.dart';

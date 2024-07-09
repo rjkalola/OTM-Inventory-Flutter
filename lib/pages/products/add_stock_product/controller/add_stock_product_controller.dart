@@ -63,14 +63,13 @@ class AddStockProductController extends GetxController
       isMainViewVisible.value = true;
     }
 
-    FilesInfo info = FilesInfo();
-    filesList.add(info);
-
     var arguments = Get.arguments;
     if (arguments != null) {
       mBarCode = arguments[AppConstants.intentKey.barCode] ?? "";
       addProductRequest = arguments[AppConstants.intentKey.productInfo];
       if (addProductRequest != null) {
+        FilesInfo info = FilesInfo();
+        filesList.add(info);
         // print("localId-----:${addProductRequest?.local_id!}");
         title.value = 'edit_product'.tr;
         setProductDetails(addProductRequest!);
@@ -83,6 +82,9 @@ class AddStockProductController extends GetxController
         if (!StringHelper.isEmptyString(mBarCode))
           productBarcodeController.value.text = mBarCode;
         addProductRequest?.categories = [];
+
+        FilesInfo info = FilesInfo();
+        filesList.add(info);
       }
     } else {
       addProductRequest = ProductInfo();
@@ -91,6 +93,9 @@ class AddStockProductController extends GetxController
       title.value = 'add_product'.tr;
       addProductRequest?.qty = 0;
       addProductRequest?.categories = [];
+
+      FilesInfo info = FilesInfo();
+      filesList.add(info);
     }
 
     // FileInfo info1 = FileInfo();
@@ -128,7 +133,8 @@ class AddStockProductController extends GetxController
     productUuidController.value.text = info.uuid ?? "";
     mBarCode = info.barcode_text ?? "";
     isStatus.value = info.status ?? false;
-    print("UUID:"+info.uuid!);
+    print("UUID:" + info.uuid!);
+    print("QTY:${addProductRequest?.qty!}");
 
     if (!StringHelper.isEmptyList(info.categories)) {
       List<String> ids = [];
@@ -156,6 +162,11 @@ class AddStockProductController extends GetxController
     if (!StringHelper.isEmptyString(info.imageThumbUrl) &&
         info.imageThumbUrl!.startsWith("http")) {
       thumbImage = info.imageThumbUrl ?? "";
+      FilesInfo fileInfo = FilesInfo();
+      fileInfo.id = 0;
+      fileInfo.file = info.imageThumbUrl ?? "";
+      fileInfo.fileThumb = info.imageThumbUrl ?? "";
+      filesList.add(fileInfo);
     }
     print("thumbImage:" + thumbImage);
 
@@ -268,6 +279,7 @@ class AddStockProductController extends GetxController
       print("index:" + index.toString());
       if (index != -1) {
         AppUtils.showToastMessage('product_updated_successfully'.tr);
+        print("QTY final:${addProductRequest!.qty!}");
         listStoredProducts[index] = addProductRequest!;
       } else {
         AppUtils.showToastMessage('product_added_successfully'.tr);
@@ -552,7 +564,10 @@ class AddStockProductController extends GetxController
     }
 
     if (list.isNotEmpty) {
-      for (var info in list) {
+      int startIndex = 0;
+      if (StringHelper.isEmptyString(thumbImage)) startIndex = 1;
+      for (int i = startIndex; i < list.length; i++) {
+        var info = list[i];
         print("File:" + info.file!);
         formData.files.addAll([
           MapEntry(

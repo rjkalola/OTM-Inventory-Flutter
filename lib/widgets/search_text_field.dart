@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../res/colors.dart';
 

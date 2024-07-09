@@ -21,4 +21,8 @@ class AppRoutes {
       '/stock_multiple_quantity_update_screen';
   static const String stockFilterScreen = '/stock_filter_screen';
   static const String viewPdfScreen = '/view_pdf_screen';
+  static const String purchaseOrderListScreen = '/purchase_order_list_screen';
+  static const String purchaseOrderDetailsScreen = '/purchase_order_details_screen';
+
+
 }

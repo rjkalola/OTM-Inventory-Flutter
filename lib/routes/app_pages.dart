@@ -6,6 +6,7 @@ import 'package:otm_inventory/pages/dashboard/dashboard_screen.dart';
 import 'package:otm_inventory/pages/login/login_screen.dart';
 import 'package:otm_inventory/pages/otp_verification/verify_otp_screen.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/add_stock_product_screen.dart';
+import 'package:otm_inventory/pages/purchase_order/purchase_order_list/view/purchase_order_list_screen.dart';
 import 'package:otm_inventory/pages/qr_code_scanner/view/qr_code_scanner.dart';
 import 'package:otm_inventory/pages/splash/splash_screen.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/stock_edit_quantity_screen.dart';
@@ -18,6 +19,7 @@ import '../pages/category_list/category_list_screen.dart';
 import '../pages/product_pdf/view/view_pdf_screen.dart';
 import '../pages/products/add_product/view/add_product_screen.dart';
 import '../pages/products/product_list/view/product_list_screen.dart';
+import '../pages/purchase_order/purchase_order_details/view/purchase_order_details_screen.dart';
 import '../pages/stock_filter/view/stock_filter_screen.dart';
 import '../pages/stock_history/stock_quantity_history_screen.dart';
 import 'app_routes.dart';
@@ -103,6 +105,14 @@ class AppPages {
     GetPage(
       name: AppRoutes.viewPdfScreen,
       page: () => ViewPdfScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.purchaseOrderListScreen,
+      page: () => PurchaseOrderListScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.purchaseOrderDetailsScreen,
+      page: () => PurchaseOrderDetailsScreen(),
     ),
   ];
 }

@@ -689,8 +689,8 @@ class StockListController extends GetxController
   //For Select Store Dropdown
   void selectStore() {
     if (storeList.isNotEmpty) {
-      showStoreListDialog(AppConstants.dialogIdentifier.storeList, 'select_the_store'.tr,
-          storeList, true, true, true, true, this);
+      showStoreListDialog(AppConstants.dialogIdentifier.storeList,
+          'select_the_store'.tr, storeList, true, true, true, true, this);
     } else {
       AppUtils.showSnackBarMessage('empty_store_message'.tr);
     }
@@ -757,8 +757,15 @@ class StockListController extends GetxController
               }
             }
             if (AppStorage.storeId == 0 && storeList.isNotEmpty) {
-              showStoreListDialog(AppConstants.dialogIdentifier.storeList,
-                  'select_the_store'.tr, storeList, false, false, false, false, this);
+              showStoreListDialog(
+                  AppConstants.dialogIdentifier.storeList,
+                  'select_the_store'.tr,
+                  storeList,
+                  false,
+                  false,
+                  false,
+                  false,
+                  this);
             } else {
               getStockListApi(true, false, "", true, true);
             }
