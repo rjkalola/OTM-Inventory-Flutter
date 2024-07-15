@@ -1,19 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_details/controller/purchase_order_details_repository.dart';
+import 'package:otm_inventory/pages/purchase_order/purchase_order_list/model/purchase_order_info.dart';
+
+import '../../../../utils/app_constants.dart';
 
 class PurchaseOrderDetailsController extends GetxController {
   final _api = PurchaseOrderDetailsRepository();
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
-      isMainViewVisible = true.obs;
+      isMainViewVisible = true.obs,
+      switchScanItem = false.obs;
   final searchController = TextEditingController().obs;
   final noteController = TextEditingController().obs;
+  final productItemsQty = <TextEditingController>[].obs;
+  PurchaseOrderInfo? info;
 
   @override
   void onInit() {
     super.onInit();
+    var arguments = Get.arguments;
+    if (arguments != null) {
+      info = arguments[AppConstants.intentKey.purchaseOrderInfo];
+      setDetails(info);
+    }
+
     // getPurchaseOrderListApi(true);
+    for (int i = 0; i < 3; i++) {
+      productItemsQty.add(TextEditingController());
+    }
+  }
+
+  void setDetails(PurchaseOrderInfo? info) {
+    if (info != null) {
+
+    }
+  }
+
+  void onChangeScanSwitch(bool value) {
+    switchScanItem.value = value;
   }
 
 // void getPurchaseOrderListApi(bool isProgress) async {

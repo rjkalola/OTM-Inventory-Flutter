@@ -12,12 +12,12 @@ class ProductItem extends StatelessWidget {
   ProductItem({super.key, this.onValueChange, required this.controller});
 
   final ValueChanged<String>? onValueChange;
-  final Rx<TextEditingController> controller;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+      padding: const EdgeInsets.fromLTRB(16, 9, 16, 9),
       child: Column(
         children: [
           Row(
@@ -77,8 +77,9 @@ class ProductItem extends StatelessWidget {
                 height: 50,
                 width: 70,
                 child: TextFieldBorder(
+                  isDense: true,
                   textAlign: TextAlign.center,
-                  textEditingController: controller.value,
+                  textEditingController: controller,
                   hintText: "",
                   labelText: "",
                   keyboardType: TextInputType.number,

@@ -22,14 +22,10 @@ class PurchaseOrderListView extends StatelessWidget {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               children: List.generate(
-                10,
+                controller.orderList.length,
                 (position) => InkWell(
                   onTap: () {
-                    // if (AppUtils.isPermission(
-                    //     AppStorage().getPermissions().updateStore)) {
-                    //   storeListController.addStoreClick(
-                    //       storeListController.storeList[position]);
-                    // }
+                    controller.viewOrderDetails(controller.orderList[position]);
                   },
                   child: CardView(
                     child: Padding(
@@ -42,7 +38,9 @@ class PurchaseOrderListView extends StatelessWidget {
                               Expanded(
                                   flex: 3,
                                   child: PrimaryTextView(
-                                    text: "PO-232323",
+                                    text: controller
+                                            .orderList[position].orderId ??
+                                        "",
                                     color: primaryTextColor,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
@@ -60,18 +58,20 @@ class PurchaseOrderListView extends StatelessWidget {
                                   flex: 3,
                                   child: PrimaryTextView(
                                     textAlign: TextAlign.end,
-                                    text: "Issued",
+                                    text:
+                                        controller.orderList[position].status ??
+                                            "",
                                     color: primaryTextColor,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   )),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 6,
                           ),
                           PrimaryTextView(
-                            text: "07/05/24",
+                            text: controller.orderList[position].date ?? "",
                             color: secondaryLightTextColor,
                           )
                         ],

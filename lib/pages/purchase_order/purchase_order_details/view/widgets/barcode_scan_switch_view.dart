@@ -5,13 +5,16 @@ import 'package:get/get.dart';
 import '../../../../../res/colors.dart';
 import '../../../../../res/drawable.dart';
 import '../../../../../widgets/text/PrimaryTextView.dart';
+import '../../controller/purchase_order_details_controller.dart';
 
 class BarcodeScanSwitchView extends StatelessWidget {
-  const BarcodeScanSwitchView({super.key});
+  BarcodeScanSwitchView({super.key});
+
+  final controller = Get.put(PurchaseOrderDetailsController());
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Obx(() => Padding(
       padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -27,7 +30,7 @@ class BarcodeScanSwitchView extends StatelessWidget {
                     height: 26,
                     Drawable.barCodeIcon,
                     colorFilter:
-                        const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                    const ColorFilter.mode(Colors.black, BlendMode.srcIn),
                   ),
                 ),
               ),
@@ -42,9 +45,12 @@ class BarcodeScanSwitchView extends StatelessWidget {
               )
             ],
           ),
-          Switch(value: false, onChanged: (value) {})
+          Switch(value: controller.switchScanItem.value, onChanged: (value) {
+            print("value:"+value.toString());
+            controller.onChangeScanSwitch(value);
+          })
         ],
       ),
-    );
+    ));
   }
 }

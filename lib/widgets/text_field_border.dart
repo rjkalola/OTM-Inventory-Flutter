@@ -22,7 +22,8 @@ class TextFieldBorder extends StatelessWidget {
       this.autofocus,
       this.textAlign,
       this.onPressed,
-      this.onValueChange});
+      this.onValueChange,
+      this.isDense});
 
   final TextEditingController? textEditingController;
   final String? hintText, labelText;
@@ -38,7 +39,7 @@ class TextFieldBorder extends StatelessWidget {
   final TextAlign? textAlign;
   final VoidCallback? onPressed;
   final ValueChanged<String>? onValueChange;
-  final bool? autofocus;
+  final bool? autofocus, isDense;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +60,7 @@ class TextFieldBorder extends StatelessWidget {
       readOnly: isReadOnly ?? false,
       inputFormatters: inputFormatters,
       decoration: InputDecoration(
+        isDense: isDense ?? false,
         suffixIcon: suffixIcon,
         counterText: "",
         contentPadding: const EdgeInsets.fromLTRB(16, 14, 16, 14),

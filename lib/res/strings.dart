@@ -170,6 +170,7 @@ class Strings extends Translations {
           'id_': "ID",
           'purchase_order': "Purchase Order",
           'scan_items': "Scan Items",
+          'receive': "Receive",
         },
         'hi_IN': {'login': 'Login'}
       };

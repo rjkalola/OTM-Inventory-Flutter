@@ -7,7 +7,6 @@ import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 
 import '../../../../res/colors.dart';
-import '../../../widgets/text_field_border.dart';
 
 class StockMultipleQuantityUpdateListView extends StatelessWidget {
   StockMultipleQuantityUpdateListView({super.key});
@@ -20,7 +19,8 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
           visible: stockListController.isMainViewVisible.value,
           child: Expanded(
             child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(), //
+              physics: const AlwaysScrollableScrollPhysics(),
+              //
               shrinkWrap: true,
               controller: stockListController.controller,
               scrollDirection: Axis.vertical,
@@ -135,9 +135,8 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            if (!StringHelper.isEmptyString(stockListController
-                    .productList[position].newQty
-                    .toString())) {
+            if (!StringHelper.isEmptyString(
+                stockListController.productList[position].newQty.toString())) {
               stockListController.productList[position].newQty =
                   stockListController.productList[position].newQty! - 1;
               stockListController.controllers[position].text =
@@ -187,10 +186,11 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
                 }
                 String updatedText =
                     stockListController.controllers[position].value.text;
-                if(!StringHelper.isEmptyString(updatedText)){
-                  stockListController.productList[position].newQty = int.parse(updatedText);
-                }else{
-                  stockListController.productList[position].newQty =0;
+                if (!StringHelper.isEmptyString(updatedText)) {
+                  stockListController.productList[position].newQty =
+                      int.parse(updatedText);
+                } else {
+                  stockListController.productList[position].newQty = 0;
                 }
               },
             ),

@@ -51,6 +51,15 @@ class MainDrawer extends StatelessWidget {
             },
           ),
           drawerItem(
+            text: 'purchase_order'.tr,
+            iconPath: Drawable.homeDrawerIcon,
+            textIconColor: getItemColor(AppRoutes.purchaseOrderListScreen),
+            tileColor: getItemBgColor(AppRoutes.purchaseOrderListScreen),
+            onTap: () {
+              navigate(AppRoutes.purchaseOrderListScreen);
+            },
+          ),
+          drawerItem(
             text: 'stores'.tr,
             iconPath: Drawable.homeDrawerIcon,
             textIconColor: getItemColor(AppRoutes.storeListScreen),

@@ -1,11 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/widgets/action_buttons.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/widgets/barcode_scan_switch_view.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/widgets/header_view.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/widgets/order_date.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/widgets/product_item.dart';
+import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/widgets/product_item_list.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/widgets/reference.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/widgets/supplier_name.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_details/view/widgets/textfield_note.dart';
@@ -49,25 +52,32 @@ class _PurchaseOrderDetailsScreenState
           inAsyncCall: controller.isLoading.value,
           opacity: 0,
           progressIndicator: const CustomProgressbar(),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            CustomDivider(thickness: 1, height: 1),
-            HeaderView(),
-            SupplierName(),
-            Reference(),
-            OrderDate(),
-            CustomDivider(thickness: 9, height: 9),
-            BarcodeScanSwitchView(),
-            ProductItem(
-              onValueChange: (value) {},
-              controller: controller.searchController,
-            ),
-            SizedBox(
-              height: 9,
-            ),
-            CustomDivider(thickness: 9, height: 9),
-            TextFieldNote()
-          ]),
+          child: SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              CustomDivider(thickness: 1, height: 1),
+              HeaderView(),
+              SupplierName(),
+              Reference(),
+              OrderDate(),
+              CustomDivider(thickness: 9, height: 9),
+              BarcodeScanSwitchView(),
+              Visibility(
+                visible: controller.switchScanItem.value,
+                child: ProductItem(
+                  onValueChange: (value) {},
+                  controller: controller.searchController.value,
+                ),
+              ),
+              ProductItemsList(),
+              SizedBox(
+                height: 9,
+              ),
+              CustomDivider(thickness: 9, height: 9),
+              TextFieldNote(),
+              ActionButtons()
+            ]),
+          ),
         ),
       ),
     ));

@@ -30,6 +30,7 @@ class IntentKey {
   final String barCode = 'BAR_CODE';
   final String stockCountType = 'STOCK_COUNT_TYPE';
   final String pdfUrl = 'PDF_URL';
+  final String purchaseOrderInfo = 'PURCHASE_ORDER_INFO';
 }
 
 class DialogIdentifier {

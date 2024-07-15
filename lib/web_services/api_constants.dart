@@ -1,7 +1,7 @@
 class ApiConstants {
-  // static String appUrl = "https://dev.otmsystem.com/api/v1";
+  static String appUrl = "https://dev.otmsystem.com/api/v1";
 
-  static String appUrl = "https://otmsystem.com/api/v1";
+  // static String appUrl = "https://otmsystem.com/api/v1";
 
   static String accessToken = "";
   static const CODE_NO_INTERNET_CONNECTION = 10000;
@@ -44,4 +44,6 @@ class ApiConstants {
   static String storeMultipleProductUrl = '$appUrl/products/add-products';
   static String getLastProductUpdateTime = '$appUrl/products/latest-product';
   static String getSettingsUrl = '$appUrl/get-setting';
+  static String getPurchaseOrders = '$appUrl/purchase-orders/get';
+
 }
