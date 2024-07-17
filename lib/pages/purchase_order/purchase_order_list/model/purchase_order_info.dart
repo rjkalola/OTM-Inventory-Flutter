@@ -1,8 +1,8 @@
 import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 
 class PurchaseOrderInfo {
-  int? id,companyId,supplierId;
-  String? orderId,supplierName,date,ref,status,expectedDeliveryDate,createdAt,updatedAt;
+  int? id,companyId,supplierId,status;
+  String? orderId,supplierName,date,ref,statusText,expectedDeliveryDate,createdAt,updatedAt;
   List<ProductInfo>? products;
   PurchaseOrderInfo(
       {this.id,
@@ -13,6 +13,7 @@ class PurchaseOrderInfo {
         this.date,
         this.ref,
         this.status,
+        this.statusText,
         this.expectedDeliveryDate,
         this.createdAt,
         this.updatedAt,
@@ -27,6 +28,7 @@ class PurchaseOrderInfo {
     date = json['date'];
     ref = json['ref'];
     status = json['status'];
+    statusText = json['status_text'];
     expectedDeliveryDate = json['expected_delivery_date'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -48,6 +50,7 @@ class PurchaseOrderInfo {
     data['date'] = date;
     data['ref'] = ref;
     data['status'] = status;
+    data['status_text'] = statusText;
     data['expected_delivery_date'] = expectedDeliveryDate;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;

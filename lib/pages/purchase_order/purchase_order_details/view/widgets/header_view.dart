@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../res/colors.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../../../widgets/text/PrimaryTextView.dart';
 import '../../controller/purchase_order_details_controller.dart';
 
@@ -24,8 +25,10 @@ class HeaderView extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
           PrimaryTextView(
-            text: controller.info?.status ?? "",
-            color: defaultAccentColor,
+            text: controller.info?.statusText ?? "",
+            color: AppUtils.getPurchaseOrderStatusColor(
+                controller.info?.status ??
+                    0),
             fontSize: 18,
             fontWeight: FontWeight.w500,
           ),

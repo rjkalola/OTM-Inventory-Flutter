@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 
 import '../../../../../res/colors.dart';
 import '../../../../../widgets/image/cached_image.dart';
@@ -9,10 +10,12 @@ import '../../../../../widgets/text/PrimaryTextView.dart';
 import '../../../../../widgets/text_field_border.dart';
 
 class ProductItem extends StatelessWidget {
-  ProductItem({super.key, this.onValueChange, required this.controller});
+  ProductItem(
+      {super.key, this.info, this.onValueChange, required this.controller});
 
   final ValueChanged<String>? onValueChange;
   final TextEditingController controller;
+  final ProductInfo? info;
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +26,12 @@ class ProductItem extends StatelessWidget {
           Row(
             children: [
               CachedImage(
-                url: "",
+                url: info?.imageThumbUrl ?? "",
                 width: 50,
                 height: 50,
                 placeHolderSize: 50,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               Expanded(
@@ -36,14 +39,14 @@ class ProductItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PrimaryTextView(
-                      text: "Product title short name",
+                      text: info?.shortName ?? "",
                       color: primaryTextColor,
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       softWrap: true,
                     ),
                     PrimaryTextView(
-                      text: "Code: 3534543",
+                      text: "Code: ${info?.supplier_code ?? ""}",
                       color: primaryTextColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -52,17 +55,17 @@ class ProductItem extends StatelessWidget {
                     Row(
                       children: [
                         PrimaryTextView(
-                          text: "Ordered: 60",
+                          text: "Ordered: ${info?.qty ?? 0}",
                           color: secondaryLightTextColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           softWrap: true,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         PrimaryTextView(
-                          text: "Ordered: 60",
+                          text: "Received: ${info?.product_receive_qty ?? 0}",
                           color: secondaryLightTextColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

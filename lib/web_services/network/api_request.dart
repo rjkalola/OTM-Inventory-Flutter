@@ -174,13 +174,9 @@ class ApiRequest {
         if (onError != null) onError(responseModel);
       }
     } on DioException catch (e) {
-      print("222222222222222");
       final ApiException apiException = ApiException.fromDioError(e);
-      print("......");
       if (kDebugMode) print("Error in api call $apiException.message");
-      print("///////");
       responseModel = returnResponse(null, 0, apiException.message);
-      print("*****");
       if (onError != null) onError(responseModel);
     }
     return responseModel;

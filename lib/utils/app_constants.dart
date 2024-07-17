@@ -6,6 +6,8 @@ class AppConstants {
   static const Action action = Action();
   static const StockFilterType stockFilterType = StockFilterType();
   static const StockCountType stockCountType = StockCountType();
+  static const PurchaseOrderStatus purchaseOrderStatus = PurchaseOrderStatus();
+
   static const String deviceType = "1";
   static const int productListLimit = 20;
   static const int defaultPhoneExtensionId = 1;
@@ -114,4 +116,13 @@ class StockCountType {
   final int lowStock = 2;
   final int outOfStock = 3;
   final int minusStock = 4;
+}
+
+class PurchaseOrderStatus {
+  const PurchaseOrderStatus(); //
+  final int ISSUED = 0;
+  final int PARTIALLY_RECEIVED = 1;
+  final int RECEIVED = 2;
+  final int UNLOCKED = 3;
+  final int CANCELLED = 4;
 }

@@ -13,6 +13,7 @@ class ProductInfo {
       length_unit_id,
       model_id,
       qty,
+      product_receive_qty,
       newQty = 0,
       mode_type,
       stock_status_id,
@@ -88,6 +89,7 @@ class ProductInfo {
       this.supplier_name,
       this.supplier_code,
       this.qty,
+      this.product_receive_qty,
       this.dimension,
       this.barcode_text,
       this.stock_histories,
@@ -138,6 +140,7 @@ class ProductInfo {
     supplier_name = json['supplier_name'];
     supplier_code = json['supplier_code'];
     qty = json['qty'];
+    product_receive_qty = json['product_receive_qty'];
     mode_type = json['mode_type'];
     dimension = json['dimension'];
     if (json['categories'] != null) {
@@ -215,6 +218,7 @@ class ProductInfo {
     data['supplier_name'] = supplier_name;
     data['supplier_code'] = supplier_code;
     data['qty'] = qty;
+    data['product_receive_qty'] = product_receive_qty;
     data['mode_type'] = mode_type;
     data['dimension'] = dimension;
     if (categories != null) {

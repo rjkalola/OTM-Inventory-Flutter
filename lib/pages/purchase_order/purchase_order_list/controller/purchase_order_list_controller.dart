@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_list/controller/purchase_order_list_repository.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_list/model/purchase_order_info.dart';
-import 'package:otm_inventory/pages/store_list/model/store_info.dart';
 
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_constants.dart';
 import '../../../../utils/app_utils.dart';
+import '../../../../utils/string_helper.dart';
 import '../../../../web_services/api_constants.dart';
 import '../../../../web_services/response/response_model.dart';
 import '../model/purchase_order_response.dart';
@@ -79,19 +79,28 @@ class PurchaseOrderListController extends GetxController {
       result = await Get.toNamed(AppRoutes.purchaseOrderDetailsScreen);
     }
 
-    if (result != null && result) {}
+    if (result != null && result) {
+      getPurchaseOrderListApi(true);
+    }
   }
 
   Future<void> searchItem(String value) async {
+    print("value:"+value);
     List<PurchaseOrderInfo> results = [];
     if (value.isEmpty) {
       results = tempList;
     } else {
       results = tempList
           .where((element) =>
-              element.supplierName!.toLowerCase().contains(value.toLowerCase()))
+              (!StringHelper.isEmptyString(element.supplierName) &&
+                  element.supplierName!
+                      .toLowerCase()
+                      .contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.orderId) &&
+                  element.orderId!.toLowerCase().contains(value.toLowerCase())))
           .toList();
     }
+    print("results length:"+results.length.toString());
     orderList.value = results;
   }
 }

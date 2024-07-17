@@ -21,7 +21,9 @@ import '../../../common/widgets/common_bottom_navigation_bar_widget.dart';
 import '../controller/purchase_order_details_controller.dart';
 
 class PurchaseOrderDetailsScreen extends StatefulWidget {
-  const PurchaseOrderDetailsScreen({super.key});
+  PurchaseOrderDetailsScreen({super.key});
+
+  final controllers = <TextEditingController>[].obs;
 
   @override
   State<PurchaseOrderDetailsScreen> createState() =>
@@ -61,6 +63,9 @@ class _PurchaseOrderDetailsScreenState
               Reference(),
               OrderDate(),
               CustomDivider(thickness: 9, height: 9),
+              const SizedBox(
+                height: 9,
+              ),
               BarcodeScanSwitchView(),
               Visibility(
                 visible: controller.switchScanItem.value,
@@ -70,7 +75,7 @@ class _PurchaseOrderDetailsScreenState
                 ),
               ),
               ProductItemsList(),
-              SizedBox(
+              const SizedBox(
                 height: 9,
               ),
               CustomDivider(thickness: 9, height: 9),

@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+
+import 'app_constants.dart';
 
 class AppUtils {
   static var mTime;
@@ -83,5 +87,21 @@ class AppUtils {
 
   static bool isPermission(bool? value) {
     return value != null && value;
+  }
+
+  static Color getPurchaseOrderStatusColor(int status) {
+    if (status == AppConstants.purchaseOrderStatus.ISSUED) {
+      return Colors.blue;
+    } else if (status == AppConstants.purchaseOrderStatus.PARTIALLY_RECEIVED) {
+      return Colors.orange;
+    } else if (status == AppConstants.purchaseOrderStatus.RECEIVED) {
+      return Colors.green;
+    } else if (status == AppConstants.purchaseOrderStatus.UNLOCKED) {
+      return Colors.red;
+    } else if (status == AppConstants.purchaseOrderStatus.CANCELLED) {
+      return Colors.red;
+    } else {
+      return Colors.black;
+    }
   }
 }

@@ -17,9 +17,15 @@ class ProductItemsList extends StatelessWidget {
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             children: List.generate(
-              3,
+              controller.orderProductList.length,
               (position) => ProductItem(
+                info: controller.orderProductList[position],
                 controller: controller.productItemsQty[position],
+                onValueChange: (value) {
+                  print("Position:" + position.toString());
+                  print("value:" + value);
+                  // controller.productItemsQty[position].text = "4";
+                },
               ),
             ),
           ),

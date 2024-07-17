@@ -4,8 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_list/controller/purchase_order_list_controller.dart';
 import 'package:otm_inventory/res/colors.dart';
+import 'package:otm_inventory/utils/app_constants.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
+
+import '../../../../../widgets/text/html_textview.dart';
 
 class PurchaseOrderListView extends StatelessWidget {
   PurchaseOrderListView({super.key});
@@ -48,7 +52,9 @@ class PurchaseOrderListView extends StatelessWidget {
                               Expanded(
                                   flex: 4,
                                   child: PrimaryTextView(
-                                    text: "Ravi Kalola Ravi Kalola",
+                                    text: controller
+                                            .orderList[position].supplierName ??
+                                        "",
                                     textAlign: TextAlign.center,
                                     color: primaryTextColor,
                                     fontSize: 18,
@@ -58,10 +64,12 @@ class PurchaseOrderListView extends StatelessWidget {
                                   flex: 3,
                                   child: PrimaryTextView(
                                     textAlign: TextAlign.end,
-                                    text:
+                                    text: controller
+                                            .orderList[position].statusText ??
+                                        "",
+                                    color: AppUtils.getPurchaseOrderStatusColor(
                                         controller.orderList[position].status ??
-                                            "",
-                                    color: primaryTextColor,
+                                            0),
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   )),
@@ -84,4 +92,5 @@ class PurchaseOrderListView extends StatelessWidget {
           ),
         ));
   }
+
 }

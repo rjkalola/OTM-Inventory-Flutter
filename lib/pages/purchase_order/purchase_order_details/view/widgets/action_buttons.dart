@@ -1,11 +1,18 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../res/colors.dart';
 import '../../../../../widgets/PrimaryBorderButton.dart';
+import '../../controller/purchase_order_details_controller.dart';
+import '../../model/purchase_order_qty_info.dart';
 
 class ActionButtons extends StatelessWidget {
-  const ActionButtons({super.key});
+  ActionButtons({super.key});
+
+  final controller = Get.put(PurchaseOrderDetailsController());
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +42,9 @@ class ActionButtons extends StatelessWidget {
                 buttonText: 'receive'.tr,
                 textColor: defaultAccentColor,
                 borderColor: defaultAccentColor,
-                onPressed: () {},
+                onPressed: () {
+                  controller.receiveOrder();
+                },
               )),
         ],
       ),
