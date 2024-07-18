@@ -26,4 +26,12 @@ class Drawable {
   static const String editIcon = 'assets/images/ic_edit.svg';
   static const String checkIcon = 'assets/images/ic_check.svg';
   static const String closeIcon = 'assets/images/ic_close.svg';
+  static const String dashboardIssuedIcon =
+      'assets/images/ic_dashboard_issued.svg';
+  static const String dashboardPartiallyReceivedIcon =
+      'assets/images/ic_dashboard_partially_received.svg';
+  static const String dashboardReceivedIcon =
+      'assets/images/ic_dashboard_received.svg';
+  static const String dashboardCancelledIcon =
+      'assets/images/ic_dashboard_cancelled.svg';
 }

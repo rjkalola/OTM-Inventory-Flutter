@@ -171,6 +171,10 @@ class Strings extends Translations {
           'purchase_order': "Purchase Order",
           'scan_items': "Scan Items",
           'receive': "Receive",
+          'issued': "Issued",
+          'received': "Received",
+          'partially_received': "Partially Received",
+          'cancelled': "Cancelled",
         },
         'hi_IN': {'login': 'Login'}
       };

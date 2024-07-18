@@ -57,7 +57,11 @@ class DashboardController extends GetxController
       mInStockCount = 0.obs,
       mLowStockCount = 0.obs,
       mOutOfStockCount = 0.obs,
-      mMinusStockCount = 0.obs;
+      mMinusStockCount = 0.obs,
+      mIssuedCount = 0.obs,
+      mReceivedCount = 0.obs,
+      mPartiallyReceivedCount = 0.obs,
+      mCancelledCount = 0.obs;
 
   // final pageController = PageController();
   late final PageController pageController;
@@ -369,7 +373,10 @@ class DashboardController extends GetxController
       mLowStockCount.value = response.lowStockCount ?? 0;
       mOutOfStockCount.value = response.outOfStockCount ?? 0;
       mMinusStockCount.value = response.minusStockCount ?? 0;
-
+      mIssuedCount.value = response.issuedCount ?? 0;
+      mReceivedCount.value = response.receivedCount ?? 0;
+      mPartiallyReceivedCount.value = response.partiallyReceived ?? 0;
+      mCancelledCount.value = response.cancelledCount ?? 0;
       if (!StringHelper.isEmptyString(response.data_size)) {
         downloadTitle.value = "${'download'.tr} (${response.data_size!})";
       } else {

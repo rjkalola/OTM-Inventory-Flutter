@@ -63,6 +63,7 @@ class PurchaseOrderListView extends StatelessWidget {
                               Expanded(
                                   flex: 3,
                                   child: PrimaryTextView(
+                                    softWrap: true,
                                     textAlign: TextAlign.end,
                                     text: controller
                                             .orderList[position].statusText ??
@@ -92,5 +93,4 @@ class PurchaseOrderListView extends StatelessWidget {
           ),
         ));
   }
-
 }

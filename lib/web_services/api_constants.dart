@@ -40,7 +40,7 @@ class ApiConstants {
   static String deleteProductImage = '$appUrl/products/delete-attachment';
   static String stockFilterUrl = '$appUrl/products/category-filter';
   static String storeLocalStockUrl = '$appUrl/stocks/app-add-stock';
-  static String getDashboardStockCount = '$appUrl/dashboard/product-stocks';
+  static String getDashboardStockCount = '$appUrl/dashboard/get-count';
   static String storeMultipleProductUrl = '$appUrl/products/add-products';
   static String getLastProductUpdateTime = '$appUrl/products/latest-product';
   static String getSettingsUrl = '$appUrl/get-setting';
