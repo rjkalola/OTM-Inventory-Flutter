@@ -41,14 +41,14 @@ class ProductItem extends StatelessWidget {
                     PrimaryTextView(
                       text: info?.shortName ?? "",
                       color: primaryTextColor,
-                      fontSize: 18,
+                      fontSize: 17,
                       fontWeight: FontWeight.w500,
                       softWrap: true,
                     ),
                     PrimaryTextView(
                       text: "Code: ${info?.supplier_code ?? ""}",
                       color: primaryTextColor,
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                       softWrap: true,
                     ),
@@ -57,7 +57,7 @@ class ProductItem extends StatelessWidget {
                         PrimaryTextView(
                           text: "Ordered: ${info?.qty ?? 0}",
                           color: secondaryLightTextColor,
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.w500,
                           softWrap: true,
                         ),

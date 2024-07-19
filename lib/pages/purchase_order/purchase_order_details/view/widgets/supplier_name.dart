@@ -15,7 +15,7 @@ class SupplierName extends StatelessWidget {
       child: PrimaryTextView(
         text: controller.info?.supplierName ?? "",
         color: primaryTextColor,
-        fontSize: 20,
+        fontSize: 19,
         fontWeight: FontWeight.w500,
       ),
     );

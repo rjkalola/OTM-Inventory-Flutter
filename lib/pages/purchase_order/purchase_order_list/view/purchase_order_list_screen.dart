@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_list/controller/purchase_order_list_controller.dart';
+import 'package:otm_inventory/pages/purchase_order/purchase_order_list/view/widgets/purchase_order_list_empty_view.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_list/view/widgets/purchase_order_list_view.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_list/view/widgets/search_purchase_order_widget.dart';
 import 'package:otm_inventory/pages/store_list/view/widgets/search_store_widget.dart';
@@ -53,10 +54,9 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
               color: dividerColor,
             ),
             const SearchPurchaseOrderWidget(),
-            PurchaseOrderListView(),
-            // controller.orderList.isNotEmpty
-            //     ? PurchaseOrderListView()
-            //     : PurchaseOrderListEmptyView(),
+            controller.orderList.isNotEmpty
+                ? PurchaseOrderListView()
+                : PurchaseOrderListEmptyView(),
             const SizedBox(
               height: 12,
             ),

@@ -78,6 +78,9 @@ class SharedPreferenceKey {
   final String editStockUserName = "EDIT_STOCK_USER_NAME";
   final String editStockUserId = "EDIT_STOCK_USER_ID";
   final String permissionSettings = "PERMISSION_SETTINGS";
+  final String purchaseOrderList = "PURCHASE_ORDER_LIST";
+  final String localReceivedPurchaseOrderList =
+      "LOCAL_RECEIVED_PURCHASE_ORDER_LIST";
 }
 
 class Action {

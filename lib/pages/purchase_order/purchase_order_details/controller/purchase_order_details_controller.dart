@@ -13,7 +13,9 @@ import '../../../../utils/string_helper.dart';
 import '../../../../web_services/api_constants.dart';
 import '../../../../web_services/response/response_model.dart';
 import '../../../products/product_list/models/product_info.dart';
+import '../../purchase_order_list/model/purchase_order_response.dart';
 import '../model/purchase_order_qty_info.dart';
+import '../model/purchase_order_receive_request.dart';
 
 class PurchaseOrderDetailsController extends GetxController {
   final _api = PurchaseOrderDetailsRepository();
@@ -43,9 +45,9 @@ class PurchaseOrderDetailsController extends GetxController {
       productItemsQty.clear();
       for (int i = 0; i < orderProductList.length; i++) {
         var textEditController = TextEditingController();
-        int qty = (orderProductList[i].qty ?? 0) -
+        int newQty = (orderProductList[i].qty ?? 0) -
             (orderProductList[i].product_receive_qty ?? 0);
-        textEditController.text = qty.toString();
+        textEditController.text = newQty.toString();
         productItemsQty.add(textEditController);
       }
     }
@@ -55,18 +57,102 @@ class PurchaseOrderDetailsController extends GetxController {
     switchScanItem.value = value;
   }
 
-  void receiveOrder() {
+  Future<void> receiveOrder() async {
     final list = <PurchaseOrderQtyInfo>[];
     for (int i = 0; i < productItemsQty.length; i++) {
-      print("value:" + productItemsQty[i].text);
       var info = PurchaseOrderQtyInfo();
       info.product_id = orderProductList[i].id;
       info.received_qty = productItemsQty[i].text;
       list.add(info);
     }
 
-    String productData = jsonEncode(list);
-    receivedPurchaseOrder(true, productData);
+    bool isInternet = await AppUtils.interNetCheck();
+    print("isInternet:$isInternet");
+    if (isInternet) {
+      String productData = jsonEncode(list);
+      receivedPurchaseOrder(true, productData);
+    } else {
+      AppUtils.showSnackBarMessage('no_internet'.tr);
+    }
+
+    /*final list = <PurchaseOrderQtyInfo>[];
+    bool isOverQty = false;
+    for (int i = 0; i < productItemsQty.length; i++) {
+      print("value:" + productItemsQty[i].text);
+      var info = PurchaseOrderQtyInfo();
+      int newQty = 0;
+      int receivedQty = orderProductList[i].product_receive_qty ?? 0;
+      int totalQty = orderProductList[i].qty ?? 0;
+      if (!StringHelper.isEmptyString(productItemsQty[i].text)) {
+        newQty = int.parse(productItemsQty[i].text);
+      }
+      print("newQty:" + newQty.toString());
+      print("receivedQty:" + receivedQty.toString());
+      print("totalQty:" + totalQty.toString());
+
+      if ((receivedQty + newQty) > totalQty) {
+        isOverQty = true;
+        break;
+      } else {
+        info.product_id = orderProductList[i].id;
+        info.received_qty = productItemsQty[i].text;
+        list.add(info);
+      }
+    }
+
+    if (!isOverQty) {
+      String productData = jsonEncode(list);
+      // receivedPurchaseOrder(true, productData);
+      PurchaseOrderReceiveRequest request = PurchaseOrderReceiveRequest();
+      request.productData = productData;
+      request.supplierId = info?.supplierId ?? 0;
+      request.storeId = AppStorage.storeId;
+      request.note = noteController.value.text;
+      request.receiveId = "";
+      request.receiveDate = info?.date ?? "";
+      request.orderId = info?.id ?? 0;
+      List<PurchaseOrderReceiveRequest> listRequest =
+          AppStorage().getStoredReceivedPurchaseOrderList();
+      listRequest.add(request);
+      AppStorage().setStoredReceivedPurchaseOrderList(listRequest);
+      updateQuantityInLocal();
+    } else {
+      AppUtils.showSnackBarMessage('purchase_order_received_qty_msg'.tr);
+    }*/
+  }
+
+  void updateQuantityInLocal() {
+    if (AppStorage().getPurchaseOrderList() != null) {
+      PurchaseOrderResponse response = AppStorage().getPurchaseOrderList()!;
+      var orderList = <PurchaseOrderInfo>[];
+      orderList.addAll(response.info ?? []);
+      int index = 0;
+      for (int i = 0; i < orderList.length; i++) {
+        if (info?.id! == orderList[i].id!) {
+          index = i;
+          break;
+        }
+      }
+
+      PurchaseOrderInfo purchaseOrderInfo = orderList[index];
+      List<ProductInfo>? products = purchaseOrderInfo.products ?? [];
+      for (int i = 0; i < products.length; i++) {
+        ProductInfo productInfo = products[i];
+        int newQty = 0;
+        int receivedQty = orderProductList[i].product_receive_qty ?? 0;
+        int totalQty = orderProductList[i].qty ?? 0;
+        if (!StringHelper.isEmptyString(productItemsQty[i].text)) {
+          newQty = int.parse(productItemsQty[i].text);
+        }
+        productInfo.product_receive_qty = (receivedQty - newQty);
+      }
+      purchaseOrderInfo.products = products;
+
+      orderList[index] = purchaseOrderInfo;
+      response.info = orderList;
+      AppStorage().setPurchaseOrderList(response);
+      Get.back(result: true);
+    }
   }
 
   void receivedPurchaseOrder(bool isProgress, String productData) async {

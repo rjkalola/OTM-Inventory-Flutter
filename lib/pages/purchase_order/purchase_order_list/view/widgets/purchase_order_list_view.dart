@@ -46,7 +46,7 @@ class PurchaseOrderListView extends StatelessWidget {
                                             .orderList[position].orderId ??
                                         "",
                                     color: primaryTextColor,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                   )),
                               Expanded(
@@ -57,7 +57,7 @@ class PurchaseOrderListView extends StatelessWidget {
                                         "",
                                     textAlign: TextAlign.center,
                                     color: primaryTextColor,
-                                    fontSize: 18,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.w500,
                                   )),
                               Expanded(
@@ -71,7 +71,7 @@ class PurchaseOrderListView extends StatelessWidget {
                                     color: AppUtils.getPurchaseOrderStatusColor(
                                         controller.orderList[position].status ??
                                             0),
-                                    fontSize: 18,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.w500,
                                   )),
                             ],
@@ -82,6 +82,7 @@ class PurchaseOrderListView extends StatelessWidget {
                           PrimaryTextView(
                             text: controller.orderList[position].date ?? "",
                             color: secondaryLightTextColor,
+                            fontSize: 15,
                           )
                         ],
                       ),

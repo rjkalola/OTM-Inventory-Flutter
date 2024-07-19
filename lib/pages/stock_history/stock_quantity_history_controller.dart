@@ -108,7 +108,7 @@ class StockQuantityHistoryController extends GetxController
 
   @override
   void onPositiveButtonClicked(String dialogIdentifier) {
-    if(dialogIdentifier == AppConstants.dialogIdentifier.quantityNote){
+    if (dialogIdentifier == AppConstants.dialogIdentifier.quantityNote) {
       Get.back();
     }
   }

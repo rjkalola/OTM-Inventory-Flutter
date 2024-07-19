@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:otm_inventory/pages/dashboard/models/permission_response.dart';
-import 'package:otm_inventory/pages/products/add_product/model/add_product_request.dart';
-import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
+import 'package:otm_inventory/pages/purchase_order/purchase_order_details/model/purchase_order_receive_request.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
@@ -14,6 +12,7 @@ import '../pages/dashboard/models/dashboard_stock_count_response.dart';
 import '../pages/otp_verification/model/user_info.dart';
 import '../pages/products/add_product/model/product_resources_response.dart';
 import '../pages/products/product_list/models/product_list_response.dart';
+import '../pages/purchase_order/purchase_order_list/model/purchase_order_response.dart';
 import '../pages/stock_edit_quantiry/model/store_stock_request.dart';
 import '../pages/stock_filter/model/stock_filter_response.dart';
 
@@ -191,6 +190,27 @@ class AppStorage extends GetxController {
     }
   }
 
+  void setStoredReceivedPurchaseOrderList(List<PurchaseOrderReceiveRequest> list) {
+    storage.write(
+        AppConstants.sharedPreferenceKey.localReceivedPurchaseOrderList,
+        jsonEncode(list));
+  }
+
+  List<PurchaseOrderReceiveRequest> getStoredReceivedPurchaseOrderList() {
+    final jsonString = storage.read(
+            AppConstants.sharedPreferenceKey.localReceivedPurchaseOrderList) ??
+        "";
+    if (!StringHelper.isEmptyString(jsonString)) {
+      final jsonMap = json.decode(jsonString);
+      List<PurchaseOrderReceiveRequest> list = (jsonMap as List)
+          .map((itemWord) => PurchaseOrderReceiveRequest.fromJson(itemWord))
+          .toList();
+      return list;
+    } else {
+      return [];
+    }
+  }
+
   // void setStoredProductList(List<ProductInfo> list) {
   //   storage.write(AppConstants.sharedPreferenceKey.localStoredProductList,
   //       jsonEncode(list));
@@ -285,6 +305,22 @@ class AppStorage extends GetxController {
     return id;
   }
 
+  void setPurchaseOrderList(PurchaseOrderResponse data) {
+    storage.write(
+        AppConstants.sharedPreferenceKey.purchaseOrderList, jsonEncode(data));
+  }
+
+  PurchaseOrderResponse? getPurchaseOrderList() {
+    final data =
+        storage.read(AppConstants.sharedPreferenceKey.purchaseOrderList) ?? "";
+    if (!StringHelper.isEmptyString(data)) {
+      final jsonMap = json.decode(data);
+      return PurchaseOrderResponse.fromJson(jsonMap);
+    } else {
+      return null;
+    }
+  }
+
   void clearStoredStockList() {
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
     if (getStockData() != null) {
@@ -318,6 +354,7 @@ class AppStorage extends GetxController {
     removeData(AppConstants.sharedPreferenceKey.stockSize);
     removeData(AppConstants.sharedPreferenceKey.stockFilterData);
     removeData(AppConstants.sharedPreferenceKey.tempIds);
+    removeData(AppConstants.sharedPreferenceKey.localReceivedPurchaseOrderList);
   }
 
   void removeData(String key) {

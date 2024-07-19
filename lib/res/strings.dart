@@ -175,6 +175,8 @@ class Strings extends Translations {
           'received': "Received",
           'partially_received': "Partially Received",
           'cancelled': "Cancelled",
+          'purchase_order_received_qty_msg':
+              "Receive quantity must be less than total quantity.",
         },
         'hi_IN': {'login': 'Login'}
       };

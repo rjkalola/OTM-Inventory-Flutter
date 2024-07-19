@@ -21,7 +21,7 @@ class HeaderView extends StatelessWidget {
           PrimaryTextView(
             text: controller.info?.orderId ?? "",
             color: primaryTextColor,
-            fontSize: 18,
+            fontSize: 17,
             fontWeight: FontWeight.w500,
           ),
           PrimaryTextView(
@@ -29,7 +29,7 @@ class HeaderView extends StatelessWidget {
             color: AppUtils.getPurchaseOrderStatusColor(
                 controller.info?.status ??
                     0),
-            fontSize: 18,
+            fontSize: 17,
             fontWeight: FontWeight.w500,
           ),
         ],

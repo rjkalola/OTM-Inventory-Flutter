@@ -19,7 +19,7 @@ class Reference extends StatelessWidget {
             child: PrimaryTextView(
               text: "Ref: ${controller.info!.ref}",
               color: primaryTextColor,
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.w400,
               softWrap: true,
             ),

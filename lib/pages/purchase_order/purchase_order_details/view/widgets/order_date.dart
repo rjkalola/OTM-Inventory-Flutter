@@ -19,7 +19,7 @@ class OrderDate extends StatelessWidget {
             child: PrimaryTextView(
               text: "Order Date: ${controller.info!.date}",
               color: primaryTextColor,
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.w400,
               softWrap: true,
             ),

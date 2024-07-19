@@ -8,6 +8,7 @@ import 'package:otm_inventory/pages/purchase_order/purchase_order_list/model/pur
 
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_constants.dart';
+import '../../../../utils/app_storage.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../utils/string_helper.dart';
 import '../../../../web_services/api_constants.dart';
@@ -26,9 +27,23 @@ class PurchaseOrderListController extends GetxController {
   final offset = 0.obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    getPurchaseOrderListApi(true);
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    bool isInternet = await AppUtils.interNetCheck();
+    if (isInternet) {
+      if (AppStorage().getPurchaseOrderList() != null) {
+        setOfflineData();
+        getPurchaseOrderListApi(false);
+      } else {
+        getPurchaseOrderListApi(true);
+      }
+    } else {
+      setOfflineData();
+    }
   }
 
   void getPurchaseOrderListApi(bool isProgress) async {
@@ -44,10 +59,8 @@ class PurchaseOrderListController extends GetxController {
           PurchaseOrderResponse response =
               PurchaseOrderResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
-            tempList.clear();
-            tempList.addAll(response.info!);
-            orderList.value = tempList;
-            isMainViewVisible.value = true;
+            AppStorage().setPurchaseOrderList(response);
+            setOfflineData();
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
           }
@@ -67,6 +80,17 @@ class PurchaseOrderListController extends GetxController {
     );
   }
 
+  void setOfflineData() {
+    isMainViewVisible.value = true;
+    if (AppStorage().getPurchaseOrderList() != null) {
+      PurchaseOrderResponse response = AppStorage().getPurchaseOrderList()!;
+      tempList.clear();
+      tempList.addAll(response.info!);
+      orderList.value = tempList;
+      orderList.refresh();
+    }
+  }
+
   Future<void> viewOrderDetails(PurchaseOrderInfo? info) async {
     var result;
     if (info != null) {
@@ -80,12 +104,12 @@ class PurchaseOrderListController extends GetxController {
     }
 
     if (result != null && result) {
-      getPurchaseOrderListApi(true);
+      loadData();
     }
   }
 
   Future<void> searchItem(String value) async {
-    print("value:"+value);
+    print("value:" + value);
     List<PurchaseOrderInfo> results = [];
     if (value.isEmpty) {
       results = tempList;
@@ -100,7 +124,7 @@ class PurchaseOrderListController extends GetxController {
                   element.orderId!.toLowerCase().contains(value.toLowerCase())))
           .toList();
     }
-    print("results length:"+results.length.toString());
+    print("results length:" + results.length.toString());
     orderList.value = results;
   }
 }
