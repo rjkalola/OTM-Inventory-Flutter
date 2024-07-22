@@ -20,7 +20,7 @@ class PurchaseOrderReceiveRequest {
     //     productData!.add(PurchaseOrderQtyInfo.fromJson(v));
     //   });
     // }
-    productData = json['productData'];
+    productData = json['product_data'];
     supplierId = json['supplier_id'];
     storeId = json['store_id'];
     note = json['note'];

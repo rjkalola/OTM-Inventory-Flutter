@@ -150,6 +150,7 @@ class Strings extends Translations {
           'sync': "Sync",
           'msg_stock_data_downloaded': "Stock Data Downloaded!",
           'msg_stock_data_uploaded': "Stock Data Uploaded!",
+          'msg_data_uploaded': "Data Uploaded!",
           'msg_press_upload_button_before_download':
               "Note: Press upload button before downloading the data.",
           'product_added_successfully': "Product added successfully",

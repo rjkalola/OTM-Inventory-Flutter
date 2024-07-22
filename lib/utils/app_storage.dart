@@ -190,7 +190,8 @@ class AppStorage extends GetxController {
     }
   }
 
-  void setStoredReceivedPurchaseOrderList(List<PurchaseOrderReceiveRequest> list) {
+  void setStoredReceivedPurchaseOrderList(
+      List<PurchaseOrderReceiveRequest> list) {
     storage.write(
         AppConstants.sharedPreferenceKey.localReceivedPurchaseOrderList,
         jsonEncode(list));
@@ -336,6 +337,10 @@ class AppStorage extends GetxController {
     }
   }
 
+  void clearStoredPurchaseOrderList() {
+    removeData(AppConstants.sharedPreferenceKey.localReceivedPurchaseOrderList);
+  }
+
   // void clearAllData(){
   //   box.erase();
   // }
@@ -354,6 +359,7 @@ class AppStorage extends GetxController {
     removeData(AppConstants.sharedPreferenceKey.stockSize);
     removeData(AppConstants.sharedPreferenceKey.stockFilterData);
     removeData(AppConstants.sharedPreferenceKey.tempIds);
+    removeData(AppConstants.sharedPreferenceKey.purchaseOrderList);
     removeData(AppConstants.sharedPreferenceKey.localReceivedPurchaseOrderList);
   }
 

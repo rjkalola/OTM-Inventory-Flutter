@@ -32,38 +32,65 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-        child: Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: 'purchase_order'.tr,
-          isBack: true,
-          widgets: actionButtons()),
-      drawer: MainDrawer(),
-      bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-      body: Obx(
-        () => ModalProgressHUD(
-          inAsyncCall: controller.isLoading.value,
-          opacity: 0,
-          progressIndicator: const CustomProgressbar(),
-          child: Column(children: [
-            const Divider(
-              thickness: 1,
-              height: 1,
-              color: dividerColor,
-            ),
-            const SearchPurchaseOrderWidget(),
-            controller.orderList.isNotEmpty
-                ? PurchaseOrderListView()
-                : PurchaseOrderListEmptyView(),
-            const SizedBox(
-              height: 12,
-            ),
-          ]),
-        ),
-      ),
-    ));
+    return Obx(() => SafeArea(
+            child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+              appBar: AppBar(),
+              title: 'purchase_order'.tr,
+              isBack: true,
+              widgets: actionButtons()),
+          drawer: MainDrawer(),
+          floatingActionButton: (controller.totalPendingCount.value == 0)
+              ? FloatingActionButton(
+                  mini: true,
+                  backgroundColor: Colors.green,
+                  tooltip: '',
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(45)),
+                  onPressed: () {
+                    AppUtils.showSnackBarMessage('data_is_up_to_date'.tr);
+                  },
+                  child: const Icon(Icons.check, color: Colors.white, size: 25),
+                )
+              : SizedBox(
+                  height: 40,
+                  child: FloatingActionButton.extended(
+                    backgroundColor: defaultAccentColor,
+                    onPressed: () {
+                      controller.onCLickSyncData(true);
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6)),
+                    label: Text(
+                      controller.totalPendingCount.value.toString(),
+                      style: const TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                    icon: const Icon(Icons.autorenew_outlined,
+                        color: Colors.white, size: 24),
+                  ),
+                ),
+          bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+          body: ModalProgressHUD(
+            inAsyncCall: controller.isLoading.value,
+            opacity: 0,
+            progressIndicator: const CustomProgressbar(),
+            child: Column(children: [
+              const Divider(
+                thickness: 1,
+                height: 1,
+                color: dividerColor,
+              ),
+              const SearchPurchaseOrderWidget(),
+              controller.orderList.isNotEmpty
+                  ? PurchaseOrderListView()
+                  : PurchaseOrderListEmptyView(),
+              const SizedBox(
+                height: 12,
+              ),
+            ]),
+          ),
+        )));
   }
 
   List<Widget>? actionButtons() {

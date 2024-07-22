@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/purchase_order/purchase_order_details/model/purchase_order_receive_request.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_list/controller/purchase_order_list_repository.dart';
 import 'package:otm_inventory/pages/purchase_order/purchase_order_list/model/purchase_order_info.dart';
 
@@ -12,7 +13,9 @@ import '../../../../utils/app_storage.dart';
 import '../../../../utils/app_utils.dart';
 import '../../../../utils/string_helper.dart';
 import '../../../../web_services/api_constants.dart';
+import '../../../../web_services/response/base_response.dart';
 import '../../../../web_services/response/response_model.dart';
+import '../../../stock_edit_quantiry/model/store_stock_request.dart';
 import '../model/purchase_order_response.dart';
 
 class PurchaseOrderListController extends GetxController {
@@ -24,11 +27,12 @@ class PurchaseOrderListController extends GetxController {
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
       isClearVisible = false.obs;
-  final offset = 0.obs;
+  final offset = 0.obs, totalPendingCount = 0.obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
+    // setTotalCountButtons();
     loadData();
   }
 
@@ -37,9 +41,11 @@ class PurchaseOrderListController extends GetxController {
     if (isInternet) {
       if (AppStorage().getPurchaseOrderList() != null) {
         setOfflineData();
-        getPurchaseOrderListApi(false);
+        onCLickSyncData(false);
+        // getPurchaseOrderListApi(false);
       } else {
-        getPurchaseOrderListApi(true);
+        // getPurchaseOrderListApi(true);
+        onCLickSyncData(true);
       }
     } else {
       setOfflineData();
@@ -80,6 +86,44 @@ class PurchaseOrderListController extends GetxController {
     );
   }
 
+  Future<void> storeLocalPurchaseOrderAPI(bool isProgress, String data) async {
+    Map<String, dynamic> map = {};
+    map["app_data"] = data;
+    map["store_id"] = AppStorage.storeId.toString();
+    multi.FormData formData = multi.FormData.fromMap(map);
+    print(map.toString());
+    if (isProgress) isLoading.value = true;
+    _api.storeLocalPurchaseOrderUrl(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        // isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          BaseResponse response =
+              BaseResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            if (isProgress)
+              AppUtils.showSnackBarMessage('msg_data_uploaded'.tr);
+            AppStorage().clearStoredPurchaseOrderList();
+            getPurchaseOrderListApi(isProgress);
+          } else {
+            // AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          // AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        isMainViewVisible.value = true;
+        // if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+        //   AppUtils.showSnackBarMessage('no_internet'.tr);
+        // } else if (error.statusMessage!.isNotEmpty) {
+        //   AppUtils.showSnackBarMessage(error.statusMessage!);
+        // }
+      },
+    );
+  }
+
   void setOfflineData() {
     isMainViewVisible.value = true;
     if (AppStorage().getPurchaseOrderList() != null) {
@@ -89,6 +133,7 @@ class PurchaseOrderListController extends GetxController {
       orderList.value = tempList;
       orderList.refresh();
     }
+    setTotalCountButtons();
   }
 
   Future<void> viewOrderDetails(PurchaseOrderInfo? info) async {
@@ -126,5 +171,33 @@ class PurchaseOrderListController extends GetxController {
     }
     print("results length:" + results.length.toString());
     orderList.value = results;
+  }
+
+  Future<void> onCLickSyncData(bool isProgress) async {
+    bool isInternet = await AppUtils.interNetCheck();
+    if (isInternet) {
+      List<PurchaseOrderReceiveRequest> list =
+          AppStorage().getStoredReceivedPurchaseOrderList();
+      if (list.isNotEmpty) {
+        storeLocalPurchaseOrderAPI(isProgress, jsonEncode(list));
+      } else {
+        getPurchaseOrderListApi(isProgress);
+      }
+    } else {
+      if (isProgress) AppUtils.showSnackBarMessage('no_internet'.tr);
+    }
+  }
+
+  // void uploadDataInAPI() {}
+
+  void setTotalCountButtons() {
+    totalPendingCount.value = localOrderCount();
+    print("Pending Count:" + totalPendingCount.value.toString());
+  }
+
+  int localOrderCount() {
+    List<PurchaseOrderReceiveRequest> list =
+        AppStorage().getStoredReceivedPurchaseOrderList();
+    return list.length;
   }
 }

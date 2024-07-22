@@ -72,53 +72,59 @@ class PurchaseOrderDetailsController extends GetxController {
       String productData = jsonEncode(list);
       receivedPurchaseOrder(true, productData);
     } else {
-      AppUtils.showSnackBarMessage('no_internet'.tr);
-    }
+      final listQty = <PurchaseOrderQtyInfo>[];
+      bool isOverQty = false;
+      for (int i = 0; i < productItemsQty.length; i++) {
+        print("value:" + productItemsQty[i].text);
+        var info = PurchaseOrderQtyInfo();
+        int newQty = 0;
+        int receivedQty = orderProductList[i].product_receive_qty ?? 0;
+        int totalQty = orderProductList[i].qty ?? 0;
+        if (!StringHelper.isEmptyString(productItemsQty[i].text)) {
+          newQty = int.parse(productItemsQty[i].text);
+        }
+        print("newQty:" + newQty.toString());
+        print("receivedQty:" + receivedQty.toString());
+        print("totalQty:" + totalQty.toString());
 
-    /*final list = <PurchaseOrderQtyInfo>[];
-    bool isOverQty = false;
-    for (int i = 0; i < productItemsQty.length; i++) {
-      print("value:" + productItemsQty[i].text);
-      var info = PurchaseOrderQtyInfo();
-      int newQty = 0;
-      int receivedQty = orderProductList[i].product_receive_qty ?? 0;
-      int totalQty = orderProductList[i].qty ?? 0;
-      if (!StringHelper.isEmptyString(productItemsQty[i].text)) {
-        newQty = int.parse(productItemsQty[i].text);
+        if ((receivedQty + newQty) > totalQty) {
+          isOverQty = true;
+          break;
+        } else {
+          info.product_id = orderProductList[i].id;
+          info.received_qty = productItemsQty[i].text;
+          listQty.add(info);
+        }
       }
-      print("newQty:" + newQty.toString());
-      print("receivedQty:" + receivedQty.toString());
-      print("totalQty:" + totalQty.toString());
 
-      if ((receivedQty + newQty) > totalQty) {
-        isOverQty = true;
-        break;
+      print("isOverQty:" + isOverQty.toString());
+      print("listQty size:" + listQty.length.toString());
+      String productData = jsonEncode(listQty);
+      print("productData:" + productData);
+
+      if (!isOverQty) {
+        String productData = jsonEncode(listQty);
+        // receivedPurchaseOrder(true, productData);
+        PurchaseOrderReceiveRequest request = PurchaseOrderReceiveRequest();
+        request.productData = productData;
+        request.supplierId = info?.supplierId ?? 0;
+        request.storeId = AppStorage.storeId;
+        request.note = noteController.value.text;
+        request.receiveId = "";
+        request.receiveDate = info?.date ?? "";
+        request.orderId = info?.id ?? 0;
+        List<PurchaseOrderReceiveRequest> listRequest =
+            AppStorage().getStoredReceivedPurchaseOrderList();
+        listRequest.add(request);
+        AppStorage().setStoredReceivedPurchaseOrderList(listRequest);
+
+        print("Data" + jsonEncode(listRequest));
+
+        updateQuantityInLocal();
       } else {
-        info.product_id = orderProductList[i].id;
-        info.received_qty = productItemsQty[i].text;
-        list.add(info);
+        AppUtils.showSnackBarMessage('purchase_order_received_qty_msg'.tr);
       }
     }
-
-    if (!isOverQty) {
-      String productData = jsonEncode(list);
-      // receivedPurchaseOrder(true, productData);
-      PurchaseOrderReceiveRequest request = PurchaseOrderReceiveRequest();
-      request.productData = productData;
-      request.supplierId = info?.supplierId ?? 0;
-      request.storeId = AppStorage.storeId;
-      request.note = noteController.value.text;
-      request.receiveId = "";
-      request.receiveDate = info?.date ?? "";
-      request.orderId = info?.id ?? 0;
-      List<PurchaseOrderReceiveRequest> listRequest =
-          AppStorage().getStoredReceivedPurchaseOrderList();
-      listRequest.add(request);
-      AppStorage().setStoredReceivedPurchaseOrderList(listRequest);
-      updateQuantityInLocal();
-    } else {
-      AppUtils.showSnackBarMessage('purchase_order_received_qty_msg'.tr);
-    }*/
   }
 
   void updateQuantityInLocal() {
@@ -144,7 +150,7 @@ class PurchaseOrderDetailsController extends GetxController {
         if (!StringHelper.isEmptyString(productItemsQty[i].text)) {
           newQty = int.parse(productItemsQty[i].text);
         }
-        productInfo.product_receive_qty = (receivedQty - newQty);
+        productInfo.product_receive_qty = (receivedQty + newQty);
       }
       purchaseOrderInfo.products = products;
 
