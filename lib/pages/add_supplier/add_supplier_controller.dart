@@ -41,6 +41,7 @@ class AddSupplierController extends GetxController
   final companyNameController = TextEditingController().obs;
   final weightController = TextEditingController().obs;
   final weightUnitController = TextEditingController().obs;
+  final accountNumberController = TextEditingController().obs;
 
   @override
   void onInit() {
@@ -50,14 +51,18 @@ class AddSupplierController extends GetxController
       title.value = 'edit_supplier'.tr;
       SupplierInfo info = arguments[AppConstants.intentKey.supplierInfo];
       addRequest.id = info.id ?? 0;
-      addRequest.phone_extension_id = info.phoneExtensionId ?? AppConstants.defaultPhoneExtensionId;
-      addRequest.phone_extension = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
+      addRequest.phone_extension_id =
+          info.phoneExtensionId ?? AppConstants.defaultPhoneExtensionId;
+      addRequest.phone_extension =
+          info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       addRequest.weight_unit_id = info.weightUnitId ?? 0;
 
-      mExtension.value = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
+      mExtension.value =
+          info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       mFlag.value = info.flagName ?? AppConstants.defaultFlagUrl;
 
-      phoneExtensionController.value.text = info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
+      phoneExtensionController.value.text =
+          info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       phoneNumberController.value.text = info.phone ?? "";
       addressController.value.text = info.address ?? "";
       contactNameController.value.text = info.contactName ?? "";
@@ -65,14 +70,14 @@ class AddSupplierController extends GetxController
       weightController.value.text = info.weight ?? "";
       weightUnitController.value.text = info.weightUnitName ?? "";
       companyNameController.value.text = info.companyName ?? "";
-
+      accountNumberController.value.text = info.account_number ?? "";
       isStatus.value = info.status ?? false;
     } else {
       title.value = 'add_supplier'.tr;
       mExtension.value = AppConstants.defaultPhoneExtension;
       mFlag.value = AppConstants.defaultFlagUrl;
 
-      addRequest.phone_extension_id =AppConstants.defaultPhoneExtensionId;
+      addRequest.phone_extension_id = AppConstants.defaultPhoneExtensionId;
       addRequest.phone_extension = AppConstants.defaultPhoneExtension;
     }
     getSupplierResourcesApi();
@@ -88,6 +93,8 @@ class AddSupplierController extends GetxController
           companyNameController.value.text.toString().trim();
       addRequest.address = addressController.value.text.toString().trim();
       addRequest.weight = weightController.value.text.toString().trim();
+      addRequest.account_number =
+          accountNumberController.value.text.toString().trim();
 
       if (addRequest.id != null && addRequest.id != 0) {
         addRequest.mode_type = 2;
@@ -113,12 +120,13 @@ class AddSupplierController extends GetxController
       List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(
         DropDownListDialog(
-            title: title,
-            dialogType: dialogType,
-            list: list,
-            listener: listener,
-            isCloseEnable: true,
-          isSearchEnable: true,),
+          title: title,
+          dialogType: dialogType,
+          list: list,
+          listener: listener,
+          isCloseEnable: true,
+          isSearchEnable: true,
+        ),
         backgroundColor: Colors.transparent,
         isScrollControlled: true);
   }
@@ -215,6 +223,7 @@ class AddSupplierController extends GetxController
     map["company_name"] = addRequest.company_name;
     map["weight"] = addRequest.weight;
     map["weight_unit_id"] = addRequest.weight_unit_id;
+    map["account_number"] = addRequest.account_number;
     // map["status"] = addRequest.status;
     map["status"] = true;
     map["mode_type"] = addRequest.mode_type;

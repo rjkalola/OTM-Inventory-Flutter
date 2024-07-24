@@ -1,24 +1,36 @@
 class SupplierInfo {
-  int? id,phoneExtensionId,weightUnitId;
-  String? contactName,email,phone,phoneWithExtension,phoneExtensionName,flagName,companyName,address,weight,supplierWeight,weightUnitName;
+  int? id, phoneExtensionId, weightUnitId;
+  String? contactName,
+      email,
+      phone,
+      phoneWithExtension,
+      phoneExtensionName,
+      flagName,
+      companyName,
+      address,
+      weight,
+      supplierWeight,
+      weightUnitName,
+      account_number;
   bool? status;
 
   SupplierInfo(
       {this.id,
-        this.phoneExtensionId,
-        this.contactName,
-        this.email,
-        this.phone,
-        this.phoneWithExtension,
-        this.phoneExtensionName,
-        this.flagName,
-        this.companyName,
-        this.address,
-        this.weight,
-        this.supplierWeight,
-        this.weightUnitId,
-        this.weightUnitName,
-        this.status,});
+      this.phoneExtensionId,
+      this.contactName,
+      this.email,
+      this.phone,
+      this.phoneWithExtension,
+      this.phoneExtensionName,
+      this.flagName,
+      this.companyName,
+      this.address,
+      this.weight,
+      this.supplierWeight,
+      this.weightUnitId,
+      this.weightUnitName,
+      this.status,
+      this.account_number});
 
   SupplierInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -36,10 +48,11 @@ class SupplierInfo {
     weightUnitId = json['weight_unit_id'];
     weightUnitName = json['weight_unit_name'];
     status = json['status'];
+    account_number = json['account_number'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['phone_extension_id'] = phoneExtensionId;
     data['contact_name'] = contactName;
@@ -55,6 +68,7 @@ class SupplierInfo {
     data['weight_unit_id'] = weightUnitId;
     data['weight_unit_name'] = weightUnitName;
     data['status'] = status;
+    data['account_number'] = account_number;
     return data;
   }
 }

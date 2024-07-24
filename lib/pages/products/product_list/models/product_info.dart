@@ -17,7 +17,8 @@ class ProductInfo {
       newQty = 0,
       mode_type,
       stock_status_id,
-      temp_store_id;
+      temp_store_id,
+      sort_id;
 
   String? shortName,
       name,
@@ -103,7 +104,8 @@ class ProductInfo {
       this.checkPrint,
       this.product_stocks,
       this.temp_store_id,
-      this.uuid});
+      this.uuid,
+      this.sort_id});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -179,6 +181,7 @@ class ProductInfo {
     stock_status = json['stock_status'];
     checkPrint = json['checkPrint'];
     temp_store_id = json['temp_store_id'];
+    sort_id = json['sort_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -242,6 +245,7 @@ class ProductInfo {
     data['stock_status'] = stock_status;
     data['checkPrint'] = checkPrint;
     data['temp_store_id'] = temp_store_id;
+    data['sort_id'] = sort_id;
     return data;
   }
 }

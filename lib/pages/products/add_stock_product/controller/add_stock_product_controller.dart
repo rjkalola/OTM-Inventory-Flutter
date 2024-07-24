@@ -545,6 +545,7 @@ class AddStockProductController extends GetxController
     map["mode_type"] = addProductRequest?.mode_type;
     map["barcode_text"] = addProductRequest?.barcode_text ?? "";
     map["uuid"] = addProductRequest?.uuid ?? "";
+    map["sort_id"] = addProductRequest?.sort_id ?? "";
 
     if (!StringHelper.isEmptyList(addProductRequest?.categories)) {
       for (int i = 0; i < addProductRequest!.categories!.length; i++) {

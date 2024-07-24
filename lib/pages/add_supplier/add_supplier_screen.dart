@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/add_supplier/add_supplier_controller.dart';
 import 'package:otm_inventory/pages/add_supplier/widgets/add_supplier_button.dart';
+import 'package:otm_inventory/pages/add_supplier/widgets/textfield_supplier_account_number.dart';
 import 'package:otm_inventory/pages/add_supplier/widgets/textfield_supplier_contact_name.dart';
 
 import '../../../res/colors.dart';
@@ -47,6 +48,7 @@ class AddSupplierScreen extends StatelessWidget {
                           children: [
                             const Divider(),
                             TextFieldSupplierContactName(),
+                            TextFieldSupplierAccountNumber(),
                             // TextFieldSupplierEmail(),
                             // Row(
                             //   crossAxisAlignment: CrossAxisAlignment.start,

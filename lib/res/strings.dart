@@ -178,6 +178,9 @@ class Strings extends Translations {
           'cancelled': "Cancelled",
           'purchase_order_received_qty_msg':
               "Receive quantity must be less than total quantity.",
+          'account_number': "Account Number",
+
+
         },
         'hi_IN': {'login': 'Login'}
       };
