@@ -42,6 +42,9 @@ class AddSupplierController extends GetxController
   final weightController = TextEditingController().obs;
   final weightUnitController = TextEditingController().obs;
   final accountNumberController = TextEditingController().obs;
+  final streetController = TextEditingController().obs;
+  final townController = TextEditingController().obs;
+  final postcodeController = TextEditingController().obs;
 
   @override
   void onInit() {
@@ -91,10 +94,14 @@ class AddSupplierController extends GetxController
       addRequest.phone = phoneNumberController.value.text.toString().trim();
       addRequest.company_name =
           companyNameController.value.text.toString().trim();
-      addRequest.address = addressController.value.text.toString().trim();
-      addRequest.weight = weightController.value.text.toString().trim();
+      // addRequest.address = addressController.value.text.toString().trim();
+      // addRequest.weight = weightController.value.text.toString().trim();
       addRequest.account_number =
           accountNumberController.value.text.toString().trim();
+      addRequest.street = streetController.value.text.toString().trim();
+      addRequest.location = addressController.value.text.toString().trim();
+      addRequest.town = townController.value.text.toString().trim();
+      addRequest.postcode = postcodeController.value.text.toString().trim();
 
       if (addRequest.id != null && addRequest.id != 0) {
         addRequest.mode_type = 2;
@@ -219,10 +226,14 @@ class AddSupplierController extends GetxController
     map["phone"] = addRequest.phone;
     map["phone_extension_id"] = addRequest.phone_extension_id.toString();
     map["phone_extension"] = addRequest.phone_extension;
+    map["street"] = addRequest.street;
     map["address"] = addRequest.address;
+    map["location"] = addRequest.location;
+    map["town"] = addRequest.town;
+    map["postcode"] = addRequest.postcode;
     map["company_name"] = addRequest.company_name;
-    map["weight"] = addRequest.weight;
-    map["weight_unit_id"] = addRequest.weight_unit_id;
+    // map["weight"] = addRequest.weight;
+    // map["weight_unit_id"] = addRequest.weight_unit_id;
     map["account_number"] = addRequest.account_number;
     // map["status"] = addRequest.status;
     map["status"] = true;

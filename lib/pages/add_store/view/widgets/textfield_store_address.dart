@@ -15,8 +15,8 @@ class TextFieldStoreAddress extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(14, 0, 14, 20),
       child: TextFieldBorder(
         textEditingController: addStoreController.addressController.value,
-        hintText: 'address'.tr,
-        labelText: 'address'.tr,
+        hintText: 'location'.tr,
+        labelText: 'location'.tr,
         keyboardType: TextInputType.streetAddress,
         textInputAction: TextInputAction.newline,
         validator: MultiValidator([]),

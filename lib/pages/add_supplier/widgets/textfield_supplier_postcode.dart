@@ -5,8 +5,8 @@ import 'package:otm_inventory/widgets/text_field_border.dart';
 
 import '../add_supplier_controller.dart';
 
-class TextFieldSupplierAddress extends StatelessWidget {
-  TextFieldSupplierAddress({super.key});
+class TextFieldSupplierPostCode extends StatelessWidget {
+  TextFieldSupplierPostCode({super.key});
 
   final addSupplierController = Get.put(AddSupplierController());
 
@@ -15,13 +15,12 @@ class TextFieldSupplierAddress extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
       child: TextFieldBorder(
-        textEditingController: addSupplierController.addressController.value,
-        hintText: 'location'.tr,
-        labelText: 'location'.tr,
-        keyboardType: TextInputType.streetAddress,
-        textInputAction: TextInputAction.newline,
+        textEditingController: addSupplierController.postcodeController.value,
+        hintText: 'postcode'.tr,
+        labelText: 'postcode'.tr,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.done,
         validator: MultiValidator([]),
-        textAlignVertical: TextAlignVertical.top,
       ),
     );
   }

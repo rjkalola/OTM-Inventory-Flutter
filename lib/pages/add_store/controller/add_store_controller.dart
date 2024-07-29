@@ -38,6 +38,10 @@ class AddStoreController extends GetxController
   final phoneNumberController = TextEditingController().obs;
   final addressController = TextEditingController().obs;
   final storeManagerController = TextEditingController().obs;
+  final emailController = TextEditingController().obs;
+  final streetController = TextEditingController().obs;
+  final townController = TextEditingController().obs;
+  final postcodeController = TextEditingController().obs;
 
   @override
   void onInit() {

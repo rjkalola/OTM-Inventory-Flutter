@@ -9,7 +9,11 @@ class AddSupplierRequest {
       email,
       phone,
       phone_extension,
+      street,
       address,
+      location,
+      town,
+      postcode,
       weight,
       company_name,
       account_number;

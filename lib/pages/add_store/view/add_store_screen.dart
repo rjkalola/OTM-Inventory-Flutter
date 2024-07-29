@@ -5,9 +5,13 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/add_store/view/widgets/add_store_button.dart';
 import 'package:otm_inventory/pages/add_store/view/widgets/text_field_store_phone_extension.dart';
 import 'package:otm_inventory/pages/add_store/view/widgets/textfield_store_address.dart';
+import 'package:otm_inventory/pages/add_store/view/widgets/textfield_store_email.dart';
 import 'package:otm_inventory/pages/add_store/view/widgets/textfield_store_manager.dart';
 import 'package:otm_inventory/pages/add_store/view/widgets/textfield_store_name.dart';
 import 'package:otm_inventory/pages/add_store/view/widgets/textfield_store_phone_number.dart';
+import 'package:otm_inventory/pages/add_store/view/widgets/textfield_store_postcode.dart';
+import 'package:otm_inventory/pages/add_store/view/widgets/textfield_store_street.dart';
+import 'package:otm_inventory/pages/add_store/view/widgets/textfield_store_town.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
@@ -51,15 +55,23 @@ class AddStoreScreen extends StatelessWidget {
                           children: [
                             const Divider(),
                             TextFieldStoreName(),
-                            // Row(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   mainAxisAlignment: MainAxisAlignment.start,
-                            //   children: [
-                            //     Flexible(flex: 3,child: TextFieldStorePhoneExtension(),),
-                            //     Flexible(flex: 4, child: TextFieldPhoneNumber()),
-                            //   ],
-                            // ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  flex: 3,
+                                  child: TextFieldStorePhoneExtension(),
+                                ),
+                                Flexible(
+                                    flex: 4, child: TextFieldPhoneNumber()),
+                              ],
+                            ),
+                            TextFieldStoreEmail(),
+                            TextFieldStoreStreet(),
                             TextFieldStoreAddress(),
+                            TextFieldStoreTown(),
+                            TextFieldStorePostCode(),
                             TextFieldStoreManager(),
                             // Padding(
                             //   padding: const EdgeInsets.only(left: 14,bottom: 18),

@@ -64,6 +64,10 @@ class Strings extends Translations {
           'status': "Status",
           'upload_pictures': "Upload Pictures",
           'address': "Address",
+          'location': "Location",
+          'street': "Street",
+          'town': "Town",
+          'postcode': "Postcode",
           'company_name': "Company Name",
           'save': "Save",
           'qr_code': "Qr Code",
@@ -179,8 +183,6 @@ class Strings extends Translations {
           'purchase_order_received_qty_msg':
               "Receive quantity must be less than total quantity.",
           'account_number': "Account Number",
-
-
         },
         'hi_IN': {'login': 'Login'}
       };
