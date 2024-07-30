@@ -15,20 +15,19 @@ class TextFieldPhoneNumber extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(7, 0, 14, 20),
       child: TextFieldBorder(
-        textEditingController: addStoreController.phoneNumberController.value,
-        hintText: 'phone'.tr,
-        labelText: 'phone'.tr,
-        keyboardType: TextInputType.phone,
-        textInputAction: TextInputAction.next,
+          textEditingController: addStoreController.phoneNumberController.value,
+          hintText: 'phone'.tr,
+          labelText: 'phone'.tr,
+          keyboardType: TextInputType.phone,
+          textInputAction: TextInputAction.next,
           validator: MultiValidator([
-            RequiredValidator(errorText: 'required_field'.tr),
+            // RequiredValidator(errorText: 'required_field'.tr),
           ]),
           inputFormatters: <TextInputFormatter>[
             // for below version 2 use this
             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
             LengthLimitingTextInputFormatter(10),
-          ]
-      ),
+          ]),
     );
   }
 }

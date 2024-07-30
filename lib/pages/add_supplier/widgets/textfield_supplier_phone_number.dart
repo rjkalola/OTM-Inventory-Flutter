@@ -22,7 +22,7 @@ class TextFieldSupplierPhoneNumber extends StatelessWidget {
         keyboardType: TextInputType.phone,
         textInputAction: TextInputAction.next,
           validator: MultiValidator([
-            RequiredValidator(errorText: 'required_field'.tr),
+            // RequiredValidator(errorText: 'required_field'.tr),
           ]),
           inputFormatters: <TextInputFormatter>[
             // for below version 2 use this
