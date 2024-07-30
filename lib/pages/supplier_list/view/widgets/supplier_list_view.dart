@@ -56,7 +56,7 @@ class SupplierListView extends StatelessWidget {
                           itemTextView(
                               'address'.tr,
                               supplierListController
-                                  .itemList[position].address),
+                                  .itemList[position].location),
                           itemTextView(
                               'weight'.tr,
                               supplierListController

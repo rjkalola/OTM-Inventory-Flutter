@@ -61,6 +61,11 @@ class AddStoreController extends GetxController
           info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       addRequest.phone = info.phone ?? "";
       addRequest.address = info.address ?? "";
+      addRequest.location = info.location ?? "";
+      addRequest.street = info.street ?? "";
+      addRequest.town = info.town ?? "";
+      addRequest.postcode = info.postcode ?? "";
+      addRequest.email = info.email ?? "";
 
       storeNameController.value.text = info.storeName ?? "";
       mExtension.value =
@@ -70,7 +75,11 @@ class AddStoreController extends GetxController
       phoneExtensionController.value.text =
           info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       phoneNumberController.value.text = info.phone ?? "";
-      addressController.value.text = info.address ?? "";
+      addressController.value.text = info.location ?? "";
+      streetController.value.text = info.street ?? "";
+      townController.value.text = info.town ?? "";
+      postcodeController.value.text = info.postcode ?? "";
+      emailController.value.text = info.email ?? "";
 
       if (info.user != null && info.user!.isNotEmpty) {
         addRequest.store_managers =
@@ -96,7 +105,12 @@ class AddStoreController extends GetxController
     if (formKey.currentState!.validate()) {
       addRequest.store_name = storeNameController.value.text.toString().trim();
       addRequest.phone = phoneNumberController.value.text.toString().trim();
+      addRequest.email = emailController.value.text.toString().trim();
       addRequest.address = addressController.value.text.toString().trim();
+      addRequest.location = addressController.value.text.toString().trim();
+      addRequest.street = streetController.value.text.toString().trim();
+      addRequest.town = townController.value.text.toString().trim();
+      addRequest.postcode = postcodeController.value.text.toString().trim();
 
       if (addRequest.id != null && addRequest.id != 0) {
         addRequest.mode_type = 2;
@@ -227,10 +241,15 @@ class AddStoreController extends GetxController
     Map<String, dynamic> map = {};
     map["id"] = addRequest.id;
     map["store_name"] = addRequest.store_name;
+    map["email"] = addRequest.email;
     map["phone"] = addRequest.phone;
     map["phone_extension_id"] = addRequest.phone_extension_id.toString();
     map["phone_extension"] = addRequest.phone_extension;
     map["address"] = addRequest.address;
+    map["street"] = addRequest.street;
+    map["location"] = addRequest.location;
+    map["town"] = addRequest.town;
+    map["postcode"] = addRequest.postcode;
     map["store_managers"] = addRequest.store_managers;
     // map["status"] = addRequest.status;
     map["status"] = true;

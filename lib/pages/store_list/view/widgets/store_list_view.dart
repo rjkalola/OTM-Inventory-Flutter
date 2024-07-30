@@ -80,7 +80,7 @@ class StoreListView extends StatelessWidget {
                               child: itemTextView(
                                   'address'.tr,
                                   storeListController
-                                      .storeList[position].address),
+                                      .storeList[position].location),
                             ),
                             Visibility(
                               visible:

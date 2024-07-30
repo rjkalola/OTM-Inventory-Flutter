@@ -67,7 +67,10 @@ class AddSupplierController extends GetxController
       phoneExtensionController.value.text =
           info.phoneExtensionName ?? AppConstants.defaultPhoneExtension;
       phoneNumberController.value.text = info.phone ?? "";
-      addressController.value.text = info.address ?? "";
+      addressController.value.text = info.location ?? "";
+      streetController.value.text = info.street ?? "";
+      townController.value.text = info.town ?? "";
+      postcodeController.value.text = info.postcode ?? "";
       contactNameController.value.text = info.contactName ?? "";
       emailController.value.text = info.email ?? "";
       weightController.value.text = info.weight ?? "";

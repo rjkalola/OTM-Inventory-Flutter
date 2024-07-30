@@ -8,6 +8,10 @@ class SupplierInfo {
       flagName,
       companyName,
       address,
+      street,
+      location,
+      town,
+      postcode,
       weight,
       supplierWeight,
       weightUnitName,
@@ -25,6 +29,10 @@ class SupplierInfo {
       this.flagName,
       this.companyName,
       this.address,
+      this.street,
+      this.location,
+      this.town,
+      this.postcode,
       this.weight,
       this.supplierWeight,
       this.weightUnitId,
@@ -43,6 +51,10 @@ class SupplierInfo {
     phoneWithExtension = json['phone_with_extension'];
     companyName = json['company_name'];
     address = json['address'];
+    street = json['street'];
+    location = json['location'];
+    town = json['town'];
+    postcode = json['postcode'];
     weight = json['weight'];
     supplierWeight = json['supplierWeight'];
     weightUnitId = json['weight_unit_id'];
@@ -63,6 +75,10 @@ class SupplierInfo {
     data['phone_with_extension'] = phoneWithExtension;
     data['company_name'] = companyName;
     data['address'] = address;
+    data['street'] = street;
+    data['location'] = location;
+    data['town'] = town;
+    data['postcode'] = postcode;
     data['weight'] = weight;
     data['supplierWeight'] = supplierWeight;
     data['weight_unit_id'] = weightUnitId;

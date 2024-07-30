@@ -21,7 +21,7 @@ class TextFieldStoreEmail extends StatelessWidget {
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         validator: MultiValidator([
-          RequiredValidator(errorText: 'required_field'.tr),
+          // RequiredValidator(errorText: 'required_field'.tr),
           EmailValidator(errorText: 'email_valid_error'.tr)
         ]),
       ),
