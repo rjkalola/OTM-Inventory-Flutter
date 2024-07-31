@@ -233,7 +233,7 @@ class DashboardController extends GetxController
     var arguments = {
       AppConstants.intentKey.stockCountType: stockCountType,
     };
-    Get.toNamed(AppRoutes.stockListScreen, arguments: arguments);
+    Get.offNamed(AppRoutes.stockListScreen, arguments: arguments);
   }
 
   void getStoreListApi() async {

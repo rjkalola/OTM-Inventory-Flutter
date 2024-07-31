@@ -46,6 +46,6 @@ class ApiConstants {
   static String getSettingsUrl = '$appUrl/get-setting';
   static String getPurchaseOrders = '$appUrl/purchase-orders/get';
   static String receivePurchaseOrder = '$appUrl/purchase-orders/receive';
-  static String storeLocalPurchaseOrderUrl = '$appUrl/purchase-orders/multiple-orders-receive';
-
+  static String storeLocalPurchaseOrderUrl =
+      '$appUrl/purchase-orders/multiple-orders-receive';
 }

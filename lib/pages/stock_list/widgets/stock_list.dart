@@ -34,6 +34,8 @@ class StockListView extends StatelessWidget {
                   visible: isStoreMatch(
                       stockListController.productList[position].product_stocks,
                       stockListController.productList[position].temp_store_id ??
+                          0,
+                      stockListController.productList[position].qty ??
                           0),
                   child: InkWell(
                     onTap: () {
@@ -208,8 +210,9 @@ class StockListView extends StatelessWidget {
     );
   }
 
-  bool isStoreMatch(List<ProductStockInfo>? list, int tempStoreId) {
+  bool isStoreMatch(List<ProductStockInfo>? list, int tempStoreId,int qty) {
     bool match = false;
+
     if (tempStoreId == AppStorage.storeId) {
       match = true;
     } else if (list != null && list.isNotEmpty) {
@@ -217,12 +220,10 @@ class StockListView extends StatelessWidget {
         int storeId = info.store_id ?? 0;
         if (storeId == AppStorage.storeId) {
           match = true;
-          print("Match:" + match.toString());
           break;
         }
       }
     }
-
     return match;
   }
 }

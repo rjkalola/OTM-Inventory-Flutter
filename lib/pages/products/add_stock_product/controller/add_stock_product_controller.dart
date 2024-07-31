@@ -245,6 +245,7 @@ class AddStockProductController extends GetxController
   }
 
   void storeProductInList(bool isOffline, ProductInfo? addProductRequest) {
+    print("addProductRequest?.qty${addProductRequest?.qty}");
     List<ProductInfo> listStoredProducts = [];
     if (AppStorage().getStockData() != null) {
       ProductListResponse response = AppStorage().getStockData()!;
@@ -537,6 +538,7 @@ class AddStockProductController extends GetxController
     map["short_name"] = addProductRequest?.shortName;
     map["name"] = addProductRequest?.name;
     map["supplier_id"] = addProductRequest?.supplierId;
+    map["supplier_code"] = addProductRequest?.supplier_code;
     map["manufacturer_id"] = addProductRequest?.manufacturer_id;
     map["price"] = addProductRequest?.price;
     map["description"] = addProductRequest?.description;
