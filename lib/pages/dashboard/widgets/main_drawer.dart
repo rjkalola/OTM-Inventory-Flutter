@@ -8,6 +8,7 @@ import 'package:otm_inventory/utils/app_storage.dart';
 
 import '../../../res/colors.dart';
 import '../../../utils/image_utils.dart';
+import '../../stock_list/stock_list_controller.dart';
 
 class MainDrawer extends StatelessWidget {
   MainDrawer({super.key});
@@ -185,7 +186,14 @@ class MainDrawer extends StatelessWidget {
     if (AppStorage.storeId == 0) {
       if (routPath == AppRoutes.dashboardScreen) Get.offNamed(routPath);
     } else {
-      Get.offNamed(routPath);
+      if (Get.currentRoute == AppRoutes.stockListScreen &&
+          routPath == AppRoutes.stockListScreen) {
+        Get.put(StockListController()).initialDataSet(0);
+        Get.back();
+        // StockListController().getStockListApi(true, false, "", true, true);
+      } else {
+        Get.offNamed(routPath);
+      }
     }
   }
 }

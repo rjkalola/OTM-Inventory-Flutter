@@ -76,21 +76,24 @@ class StockListController extends GetxController
       storeNameController.value.text = AppStorage.storeName;
     }
     controller = ScrollController();
-    // controller.addListener(_scrollListener);
-
-    /*  bool isInternet = await AppUtils.interNetCheck();
-    if (isInternet) {
-      getStoreListApi();
-    } else {
-      setOfflineData();
-    }*/
 
     var arguments = Get.arguments;
     if (arguments != null) {
       stockCountType = arguments[AppConstants.intentKey.stockCountType];
       if (stockCountType != 0) mSupplierCategoryFilter.value = "-";
     }
+    initialDataSet(stockCountType);
+  }
 
+  initialDataSet(int stockCountType) {
+    searchController.value.clear();
+    isClearVisible.value = false;
+    this.stockCountType = stockCountType;
+    if (stockCountType != 0) {
+      mSupplierCategoryFilter.value = "-";
+    } else {
+      mSupplierCategoryFilter.value = "";
+    }
     setDownloadTitle();
     setOfflineData();
     onCLickUploadData(false, false, localStockCount(), localProductCount());
@@ -239,7 +242,6 @@ class StockListController extends GetxController
         if (AppStorage().getStockData() != null) {
           ProductListResponse response = AppStorage().getStockData()!;
           // ProductInfo? updatedInfo;
-          print("List Size:" + response.info!.length.toString());
           tempList.clear();
           tempList.addAll(response.info!);
           productList.value = tempList;
@@ -456,7 +458,12 @@ class StockListController extends GetxController
       mSupplierCategoryFilter.value = "";
       stockCountType = 0;
     }
+    print("clearOffset:" + clearOffset.toString());
+    print("clearFilter:" + clearFilter.toString());
+    print("stockCountType:" + stockCountType.toString());
+    print("mSupplierCategoryFilter.value:" + mSupplierCategoryFilter.value);
     setOfflineData();
+
     /* isLoadMore.value = offset > 0;
     Map<String, dynamic> map = {};
     map["filters"] = filters.value;
@@ -880,8 +887,13 @@ class StockListController extends GetxController
           }
         }
       }
+      print("stockCountType:" + stockCountType.toString());
+      print("mSupplierCategoryFilter.value:" + mSupplierCategoryFilter.value);
+
       productList.value = tempList;
       productList.refresh();
+      print("tempList size:" + tempList.length.toString());
+      print("productList size:" + productList.length.toString());
     }
     // onCLickUploadData(false, localStockCount(), localProductCount());
     setTotalCountButtons();
