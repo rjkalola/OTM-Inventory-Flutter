@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_internet_speed_test/flutter_internet_speed_test.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
 import 'package:otm_inventory/pages/dashboard/models/dashboard_stock_count_response.dart';
@@ -12,6 +13,8 @@ import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
 import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
+import 'package:speed_test_dart/classes/server.dart';
+import 'package:speed_test_dart/speed_test_dart.dart';
 
 import '../../utils/app_constants.dart';
 import '../../utils/app_storage.dart';
@@ -22,7 +25,6 @@ import '../../web_services/response/base_response.dart';
 import '../../web_services/response/module_info.dart';
 import '../../web_services/response/response_model.dart';
 import '../add_store/model/store_resources_response.dart';
-import '../common/drop_down_list_dialog.dart';
 import '../common/drop_down_tile_list_dialog.dart';
 import '../common/listener/select_item_listener.dart';
 import '../common/model/file_info.dart';
@@ -63,6 +65,16 @@ class DashboardController extends GetxController
       mPartiallyReceivedCount = 0.obs,
       mCancelledCount = 0.obs;
 
+  SpeedTestDart tester = SpeedTestDart();
+  final RxList<Server> bestServersList = <Server>[].obs;
+
+  double downloadRate = 0;
+  double uploadRate = 0;
+
+  bool readyToTest = false;
+  bool loadingDownload = false;
+  bool loadingUpload = false;
+
   // final pageController = PageController();
   late final PageController pageController;
   final tabs = <Widget>[
@@ -75,7 +87,10 @@ class DashboardController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setBestServers();
+    });
+    // checkInternetSpeed();
     var arguments = Get.arguments;
     if (arguments != null) {
       selectedIndex.value = arguments[AppConstants.intentKey.dashboardTabIndex];
@@ -856,5 +871,85 @@ class DashboardController extends GetxController
       }
     }
     return listProducts;
+  }
+
+  void checkInternetSpeed() {
+    print("onStarted");
+    final speedTest = FlutterInternetSpeedTest();
+    speedTest.startTesting(
+      useFastApi: true,
+      //true(default)
+      onStarted: () {
+        print("onStarted");
+      },
+      onCompleted: (TestResult download, TestResult upload) {
+        print("onCompleted");
+      },
+      onProgress: (double percent, TestResult data) {
+        print("onProgress");
+        print("percent:" + percent.toString());
+        print("transferRate:" + data.transferRate.toString());
+        print("unit:" + data.unit.toString());
+        print("data:" + data.toString());
+      },
+      onError: (String errorMessage, String speedTestError) {
+        print("onError");
+      },
+      onDefaultServerSelectionInProgress: () {
+        // TODO
+        //Only when you use useFastApi parameter as true(default)
+      },
+      onDefaultServerSelectionDone: (Client? client) {
+        // TODO
+        //Only when you use useFastApi parameter as true(default)
+      },
+      onDownloadComplete: (TestResult data) {
+        // TODO
+      },
+      onUploadComplete: (TestResult data) {
+        // TODO
+      },
+      onCancel: () {
+        // TODO Request cancelled callback
+      },
+    );
+  }
+
+  Future<void> _testDownloadSpeed() async {
+    // setState(() {
+    //   loadingDownload = true;
+    // });
+    final _downloadRate =
+        await tester.testDownloadSpeed(servers: bestServersList);
+    print("_downloadRate:" + _downloadRate.toString());
+    // setState(() {
+    //   downloadRate = _downloadRate;
+    //   loadingDownload = false;
+    // });
+  }
+
+  Future<void> testUploadSpeed() async {
+    // setState(() {
+    //   loadingUpload = true;
+    // });
+    print("testUploadSpeed");
+    final _uploadRate = await tester.testUploadSpeed(servers: bestServersList);
+    print("_uploadRate:" + _uploadRate.toString());
+    // setState(() {
+    //   uploadRate = _uploadRate;
+    //   loadingUpload = false;
+    // });
+  }
+
+  Future<void> setBestServers() async {
+    final settings = await tester.getSettings();
+    final servers = settings.servers;
+
+    final _bestServersList = await tester.getBestServers(
+      servers: servers,
+    );
+
+    bestServersList.value = _bestServersList;
+    readyToTest = true;
   }
 }

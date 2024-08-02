@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_internet_speed_test/flutter_internet_speed_test.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/model/stock_quantity_response.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/model/store_stock_request.dart';
@@ -57,10 +59,15 @@ class StockEditQuantityController extends GetxController
   bool isUpdated = false;
   List<ModuleInfo> listUsers = [];
   DateTime selectedDate = DateTime.now();
+  late Timer timer;
+  final start = 10.obs;
+  final speedTest = FlutterInternetSpeedTest();
+  late double transferRate = 0;
 
   @override
   Future<void> onInit() async {
     super.onInit();
+    checkInternetSpeed();
     var arguments = Get.arguments;
     // quantityController.value.text = "1";
     if (!StringHelper.isEmptyString(Get.find<AppStorage>().getQuantityNote())) {
@@ -539,47 +546,51 @@ class StockEditQuantityController extends GetxController
       String date = dateController.value.text.toString().trim();
 
       bool isInternet = await AppUtils.interNetCheck();
-      if (isInternet) {
+      if (isInternet && transferRate > 1) {
         storeStockQuantityApi(true, productId.toString(), finalQty, note, price,
             date, isDeduct ? "remove" : "add");
       } else {
-        // Add stock in local storage
-        List<StockStoreRequest> list = AppStorage().getStoredStockList();
-        StockStoreRequest request = StockStoreRequest();
-        request.product_id = productId.toString();
-        request.store_id = AppStorage.storeId.toString();
-        request.qty = finalQty.toString();
-        if (isUserDropdownVisible.value) {
-          request.user_id = userId.toString();
-          AppStorage().setEditStockUserId(userId);
-          AppStorage().setEditStockUserName(userName);
-        }
-        if (isReferenceVisible.value) {
-          request.note = note;
-          Get.find<AppStorage>().setQuantityNote(note);
-        }
-        request.mode = isDeduct ? "remove" : "add";
-        list.add(request);
-        AppStorage().setStoredStockList(list);
-
-        if (isDeduct) {
-          productInfo.value.qty = productInfo.value.qty != null
-              ? (productInfo.value.qty! - finalQty)
-              : finalQty;
-        } else {
-          productInfo.value.qty = productInfo.value.qty != null
-              ? (productInfo.value.qty! + finalQty)
-              : finalQty;
-        }
-
-        productInfo.refresh();
-
-        updateQtyInLocalList(productInfo.value.qty ?? 0);
-        AppUtils.showToastMessage('msg_product_stock_update'.tr);
-        Get.back(result: true);
-        // isUpdated = true;
+        storeDataOffline(isDeduct, finalQty, note);
       }
     }
+  }
+
+  void storeDataOffline(bool isDeduct, int finalQty, String note) {
+    // Add stock in local storage
+    List<StockStoreRequest> list = AppStorage().getStoredStockList();
+    StockStoreRequest request = StockStoreRequest();
+    request.product_id = productId.toString();
+    request.store_id = AppStorage.storeId.toString();
+    request.qty = finalQty.toString();
+    if (isUserDropdownVisible.value) {
+      request.user_id = userId.toString();
+      AppStorage().setEditStockUserId(userId);
+      AppStorage().setEditStockUserName(userName);
+    }
+    if (isReferenceVisible.value) {
+      request.note = note;
+      Get.find<AppStorage>().setQuantityNote(note);
+    }
+    request.mode = isDeduct ? "remove" : "add";
+    list.add(request);
+    AppStorage().setStoredStockList(list);
+
+    if (isDeduct) {
+      productInfo.value.qty = productInfo.value.qty != null
+          ? (productInfo.value.qty! - finalQty)
+          : finalQty;
+    } else {
+      productInfo.value.qty = productInfo.value.qty != null
+          ? (productInfo.value.qty! + finalQty)
+          : finalQty;
+    }
+
+    productInfo.refresh();
+
+    updateQtyInLocalList(productInfo.value.qty ?? 0);
+    AppUtils.showToastMessage('msg_product_stock_update'.tr);
+    Get.back(result: true);
+    // isUpdated = true;
   }
 
   void updateQtyInLocalList(int qty) {
@@ -692,5 +703,70 @@ class StockEditQuantityController extends GetxController
         DateUtil.dateToString(date, DateUtil.YYYY_MM_DD_DASH);
     print("Output Date::" +
         DateUtil.dateToString(date, DateUtil.YYYY_MM_DD_DASH));
+  }
+
+  void checkInternetSpeed() {
+    print("onStarted");
+    speedTest.startTesting(
+      useFastApi: true,
+      //true(default)
+      onStarted: () {
+        print("onStarted");
+      },
+      onCompleted: (TestResult download, TestResult upload) {
+        print("onCompleted");
+        checkInternetSpeed();
+      },
+      onProgress: (double percent, TestResult data) {
+        transferRate = data.transferRate;
+        print("percent:" + percent.toString());
+        print("transferRate:" + transferRate.toString());
+        print("unit:" + data.unit.toString());
+      },
+      onError: (String errorMessage, String speedTestError) {
+        print("onError");
+        checkInternetSpeed();
+      },
+      onDefaultServerSelectionInProgress: () {
+        // TODO
+        //Only when you use useFastApi parameter as true(default)
+      },
+      onDefaultServerSelectionDone: (Client? client) {
+        // TODO
+        //Only when you use useFastApi parameter as true(default)
+      },
+      onDownloadComplete: (TestResult data) {
+        // TODO
+      },
+      onUploadComplete: (TestResult data) {
+        // TODO
+      },
+      onCancel: () {
+        // TODO Request cancelled callback
+      },
+    );
+  }
+
+  @override
+  void onClose() {
+    speedTest.cancelTest();
+    // timer.cancel();
+    super.onClose();
+  }
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (start == 0) {
+          timer.cancel();
+          print("complete");
+        } else {
+          start.value--;
+          print("count:" + start.value.toString());
+        }
+      },
+    );
   }
 }

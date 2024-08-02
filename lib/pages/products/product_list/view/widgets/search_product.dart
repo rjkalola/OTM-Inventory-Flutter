@@ -18,7 +18,7 @@ class _SearchProductWidgetState extends State<SearchProductWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 0, 6, 0),
+      padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
       child: SizedBox(
         height: 40,
         child: SearchTextField(

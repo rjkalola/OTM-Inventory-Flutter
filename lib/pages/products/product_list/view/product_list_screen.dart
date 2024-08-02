@@ -76,7 +76,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Expanded(child: SearchProductWidget()),
-                    QrCodeIcon()
+                    // QrCodeIcon()
                   ],
                 ),
                 // Align(

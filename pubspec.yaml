@@ -62,6 +62,8 @@ dependencies:
   photo_view: ^0.15.0
   flutter_html: ^3.0.0-beta.2
   mobile_scanner: ^5.1.1
+  flutter_internet_speed_test: ^1.5.0
+  speed_test_dart: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

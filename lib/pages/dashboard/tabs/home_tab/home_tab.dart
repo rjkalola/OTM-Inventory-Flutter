@@ -70,6 +70,13 @@ class _HomeTabState extends State<HomeTab> {
                                 const SizedBox(
                                   height: 20,
                                 ),
+                                // PrimaryBorderButton(
+                                //     buttonText: "Test Speed",
+                                //     onPressed: () {
+                                //       dashboardController.checkInternetSpeed();
+                                //     },
+                                //     textColor: defaultAccentColor,
+                                //     borderColor: defaultAccentColor),
                                 // TextFieldSelectStoreHomeTab(),
                                 // HomeTabActionButtonsList(),
                                 // HomeTabActionButtonsDotsList(),
@@ -153,7 +160,7 @@ class _HomeTabState extends State<HomeTab> {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             PurchaseOrderCountItem(
                                               title: 'issued'.tr,
@@ -161,9 +168,9 @@ class _HomeTabState extends State<HomeTab> {
                                                   .mIssuedCount.value,
                                               color: const Color(0xffe0eaf9),
                                               iconPath:
-                                              Drawable.dashboardIssuedIcon,
+                                                  Drawable.dashboardIssuedIcon,
                                               iconColor:
-                                              const Color(0xff0052cc),
+                                                  const Color(0xff0052cc),
                                             ),
                                             PurchaseOrderCountItem(
                                               title: 'partially_received'.tr,
@@ -174,7 +181,7 @@ class _HomeTabState extends State<HomeTab> {
                                               iconPath: Drawable
                                                   .dashboardPartiallyReceivedIcon,
                                               iconColor:
-                                              const Color(0xff09d0e8),
+                                                  const Color(0xff09d0e8),
                                             )
                                           ],
                                         ),
