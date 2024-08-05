@@ -17,8 +17,8 @@ class TextFieldProductBarCode extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
         child: TextFieldBorder(
           textEditingController: addProductController.productBarcodeController.value,
-          hintText: 'barcode'.tr,
-          labelText: 'barcode'.tr,
+          hintText: 'barcode_list'.tr,
+          labelText: 'barcode_list'.tr,
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.next,
           validator: MultiValidator([]),

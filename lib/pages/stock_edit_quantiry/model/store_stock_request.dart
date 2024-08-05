@@ -1,7 +1,7 @@
 
 
 class StockStoreRequest {
-  String? store_id, product_id, qty, user_id, note, mode;
+  String? store_id, product_id, qty, user_id, note,date_time, mode;
 
   StockStoreRequest({
     this.store_id,
@@ -9,6 +9,7 @@ class StockStoreRequest {
     this.qty,
     this.user_id,
     this.note,
+    this.date_time,
     this.mode,
   });
 
@@ -18,6 +19,7 @@ class StockStoreRequest {
     qty = json['qty'];
     user_id = json['user_id'];
     note = json['note'];
+    date_time = json['date_time'];
     mode = json['mode'];
   }
 
@@ -28,6 +30,7 @@ class StockStoreRequest {
     data['qty'] = qty;
     data['user_id'] = user_id;
     data['note'] = note;
+    data['date_time'] = date_time;
     data['mode'] = mode;
     return data;
   }

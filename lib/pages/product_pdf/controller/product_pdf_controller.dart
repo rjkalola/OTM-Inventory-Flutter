@@ -180,7 +180,7 @@ class ProductPdfController extends GetxController {
   //                       height: 100,
   //                       width: 100,
   //                       child: BarcodeWidget(
-  //                         barcode: Barcode.qrCode(),
+  //                         barcode_list: Barcode.qrCode(),
   //                         data: productList[position].id != null
   //                             ? productList[position].id!.toString()
   //                             : productList[position].local_id!.toString(),
@@ -214,7 +214,7 @@ class ProductPdfController extends GetxController {
   //       //                     height: 100,
   //       //                     width: 100,
   //       //                     child: BarcodeWidget(
-  //       //                       barcode: Barcode.qrCode(),
+  //       //                       barcode_list: Barcode.qrCode(),
   //       //                       data: productList[position].id != null
   //       //                           ? productList[position].id!.toString()
   //       //                           : productList[position].local_id!.toString(),

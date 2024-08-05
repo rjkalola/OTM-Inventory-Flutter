@@ -670,4 +670,15 @@ class AddStockProductController extends GetxController
       productBarcodeController.value.text = mBarCode;
     }
   }
+
+  Future<void> moveToBarCodeListScreen() async {
+    var arguments = {
+      AppConstants.intentKey.barCode: mBarCode,
+    };
+    var result =
+        await Get.toNamed(AppRoutes.barcodeListScreen, arguments: arguments);
+    if (!StringHelper.isEmptyString(result)) {
+      print("result" + result);
+    }
+  }
 }

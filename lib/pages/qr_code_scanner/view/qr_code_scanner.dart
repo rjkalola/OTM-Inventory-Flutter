@@ -152,10 +152,10 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
           String code = "";
           if (barcodes.isNotEmpty) {
             code = barcodes[0].rawValue ?? "";
-            print("barcode:${barcodes[0].rawValue ?? ""}");
+            print("barcode_list:${barcodes[0].rawValue ?? ""}");
           }
           // controller.dispose();
-          // this.barcode = barcode;
+          // this.barcode_list = barcode_list;
           Get.back(result: code);
         });
       },

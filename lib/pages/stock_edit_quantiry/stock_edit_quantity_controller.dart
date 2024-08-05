@@ -54,7 +54,8 @@ class StockEditQuantityController extends GetxController
       isUserDropdownVisible = false.obs,
       isReferenceVisible = true.obs,
       isClearReferenceVisible = false.obs,
-      isClearUserVisible = false.obs;
+      isClearUserVisible = false.obs,
+      isApiRunning = false.obs;
   int initialQuantity = 0, finalQuantity = 0, userId = 0;
   bool isUpdated = false;
   List<ModuleInfo> listUsers = [];
@@ -67,6 +68,7 @@ class StockEditQuantityController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
+    print("getCurrentTime():"+getCurrentTime());
     checkInternetSpeed();
     var arguments = Get.arguments;
     // quantityController.value.text = "1";
@@ -310,6 +312,7 @@ class StockEditQuantityController extends GetxController
       AppStorage().setEditStockUserId(userId);
       AppStorage().setEditStockUserName(userName);
     }
+    map["date_time"] = getCurrentTime();
     if (isReferenceVisible.value) {
       map["reference"] = note;
       Get.find<AppStorage>().setQuantityNote(note);
@@ -324,6 +327,7 @@ class StockEditQuantityController extends GetxController
     _api.storeStockQuantity(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
+        isApiRunning.value = false;
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           BaseResponse response =
@@ -350,6 +354,7 @@ class StockEditQuantityController extends GetxController
         }
       },
       onError: (ResponseModel error) {
+        isApiRunning.value = false;
         isLoading.value = false;
         isMainViewVisible.value = true;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
@@ -546,12 +551,15 @@ class StockEditQuantityController extends GetxController
       String date = dateController.value.text.toString().trim();
 
       bool isInternet = await AppUtils.interNetCheck();
-      if (isInternet && transferRate > 1) {
-        storeStockQuantityApi(true, productId.toString(), finalQty, note, price,
-            date, isDeduct ? "remove" : "add");
-      } else {
-        storeDataOffline(isDeduct, finalQty, note);
-      }
+      if (!isApiRunning.value) {
+        isApiRunning.value = true;
+        if (isInternet && transferRate > 1) {
+          storeStockQuantityApi(true, productId.toString(), finalQty, note,
+              price, date, isDeduct ? "remove" : "add");
+        } else {
+          storeDataOffline(isDeduct, finalQty, note);
+        }
+      } else {}
     }
   }
 
@@ -562,6 +570,7 @@ class StockEditQuantityController extends GetxController
     request.product_id = productId.toString();
     request.store_id = AppStorage.storeId.toString();
     request.qty = finalQty.toString();
+    request.date_time = getCurrentTime();
     if (isUserDropdownVisible.value) {
       request.user_id = userId.toString();
       AppStorage().setEditStockUserId(userId);
@@ -586,7 +595,7 @@ class StockEditQuantityController extends GetxController
     }
 
     productInfo.refresh();
-
+    isApiRunning.value = false;
     updateQtyInLocalList(productInfo.value.qty ?? 0);
     AppUtils.showToastMessage('msg_product_stock_update'.tr);
     Get.back(result: true);
@@ -655,8 +664,8 @@ class StockEditQuantityController extends GetxController
           onChanged: (value) {},
           controller: barcodeController,
           decoration: InputDecoration(
-              hintText: 'barcode'.tr,
-              labelText: 'barcode'.tr,
+              hintText: 'barcode_list'.tr,
+              labelText: 'barcode_list'.tr,
               labelStyle: const TextStyle(fontWeight: FontWeight.normal),
               hintStyle: const TextStyle(fontWeight: FontWeight.normal))),
       actions: listButtons,
@@ -768,5 +777,10 @@ class StockEditQuantityController extends GetxController
         }
       },
     );
+  }
+
+  String getCurrentTime() {
+    return DateUtil.dateToString(
+        DateTime.now(), DateUtil.YYYY_MM_DD_TIME_24_DASH2);
   }
 }

@@ -22,7 +22,8 @@ class PurchaseOrderDetailsController extends GetxController {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = true.obs,
-      switchScanItem = false.obs;
+      switchScanItem = false.obs,
+      isApiRunning = false.obs;
   final searchController = TextEditingController().obs;
   final noteController = TextEditingController().obs;
   final productItemsQty = <TextEditingController>[].obs;
@@ -66,6 +67,7 @@ class PurchaseOrderDetailsController extends GetxController {
       list.add(info);
     }
 
+    isApiRunning.value = true;
     bool isInternet = await AppUtils.interNetCheck();
     print("isInternet:$isInternet");
     if (isInternet) {
@@ -157,6 +159,7 @@ class PurchaseOrderDetailsController extends GetxController {
       orderList[index] = purchaseOrderInfo;
       response.info = orderList;
       AppStorage().setPurchaseOrderList(response);
+      isApiRunning.value = false;
       Get.back(result: true);
     }
   }
@@ -176,6 +179,7 @@ class PurchaseOrderDetailsController extends GetxController {
     _api.receivedPurchaseOrder(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
+        isApiRunning.value = false;
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
           BaseResponse response =
@@ -193,6 +197,7 @@ class PurchaseOrderDetailsController extends GetxController {
         }
       },
       onError: (ResponseModel error) {
+        isApiRunning.value = false;
         isLoading.value = false;
         isMainViewVisible.value = true;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
