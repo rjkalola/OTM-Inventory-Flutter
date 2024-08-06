@@ -23,9 +23,9 @@ class TextFieldStockProductBarCode extends StatelessWidget {
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.next,
           validator: MultiValidator([]),
-          isReadOnly: false,
+          isReadOnly: true,
           onPressed: () {
-            // addProductController.moveToBarCodeListScreen();
+            addProductController.moveToBarCodeListScreen();
           },
         ),
       ),
