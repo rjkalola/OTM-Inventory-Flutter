@@ -678,7 +678,9 @@ class AddStockProductController extends GetxController
     var result =
         await Get.toNamed(AppRoutes.barcodeListScreen, arguments: arguments);
     if (!StringHelper.isEmptyString(result)) {
-      print("result" + result);
+      mBarCode = result;
+      productBarcodeController.value.text = result;
+      print("result" + mBarCode);
     }
   }
 }

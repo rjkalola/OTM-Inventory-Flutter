@@ -70,19 +70,40 @@ class EditBarcodeDialogState extends State<EditBarcodeDialog> {
                       ),
                     )),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
-                      child: PrimaryBorderButton(
-                        buttonText: 'save'.tr,
-                        textColor: defaultAccentColor,
-                        borderColor: defaultAccentColor,
-                        onPressed: () {
-                          if (!StringHelper.isEmptyString(
-                              barcodeController.text)) {
-                            listener?.onBarcodeSave(barcodeController.text,
-                                isAdd ?? false, position ?? 0);
-                            Get.back();
-                          }
-                        },
+                      padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),                      child: Row(
+                        children: [
+                          Flexible(
+                            fit: FlexFit.tight,
+                            flex: 1,
+                            child: PrimaryBorderButton(
+                              buttonText: 'cancel'.tr,
+                              textColor: Colors.red,
+                              borderColor: Colors.red,
+                              onPressed: () {
+                                Get.back();
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Flexible(
+                              fit: FlexFit.tight,
+                              flex: 1,
+                              child: PrimaryBorderButton(
+                                buttonText: 'save'.tr,
+                                textColor: defaultAccentColor,
+                                borderColor: defaultAccentColor,
+                                onPressed: () {
+                                  if (!StringHelper.isEmptyString(
+                                      barcodeController.text)) {
+                                    listener?.onBarcodeSave(barcodeController.text,
+                                        isAdd ?? false, position ?? 0);
+                                    Get.back();
+                                  }
+                                },
+                              )),
+                        ],
                       ),
                     ),
                   ],

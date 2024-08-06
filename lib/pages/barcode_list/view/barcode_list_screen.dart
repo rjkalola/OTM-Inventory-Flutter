@@ -5,6 +5,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/barcode_list/controller/barcode_list_controller.dart';
 import 'package:otm_inventory/pages/barcode_list/view/widgets/barcode_list_empty_view.dart';
 import 'package:otm_inventory/pages/barcode_list/view/widgets/barcode_list_view.dart';
+import 'package:otm_inventory/pages/barcode_list/view/widgets/save_barcode_button.dart';
 import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
@@ -56,6 +57,7 @@ class _BarcodeListScreenState extends State<BarcodeListScreen> {
             const SizedBox(
               height: 12,
             ),
+            SaveBarcodeButton()
           ]),
         ),
       ),
@@ -69,7 +71,7 @@ class _BarcodeListScreenState extends State<BarcodeListScreen> {
         child: IconButton(
           icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
           onPressed: () {
-            controller.showEditBarcodeDialog("123", true, 0);
+            controller.showEditBarcodeDialog("", true, 0);
           },
         ),
       ),

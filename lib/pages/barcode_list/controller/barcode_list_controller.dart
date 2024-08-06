@@ -11,11 +11,13 @@ import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
 
 import '../../../routes/app_routes.dart';
+import '../../../utils/AlertDialogHelper.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/string_helper.dart';
 import '../../../web_services/api_constants.dart';
 import '../../../web_services/response/base_response.dart';
 import '../../../web_services/response/response_model.dart';
+import '../../common/listener/DialogButtonClickListener.dart';
 import '../../common/model/file_info.dart';
 import '../../products/add_product/controller/add_product_repository.dart';
 import '../../products/product_list/models/product_info.dart';
@@ -26,7 +28,7 @@ import '../listener/barcode_save_listener.dart';
 import '../view/edit_barcode_dialog.dart';
 
 class BarcodeListController extends GetxController
-    implements BarcodeSaveListener {
+    implements BarcodeSaveListener, DialogButtonClickListener {
   var barcodeList = <String>[].obs;
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
@@ -62,12 +64,40 @@ class BarcodeListController extends GetxController
         isScrollControlled: false);
   }
 
+  void deleteBarcodeDialog(int position) {
+    selectedPosition = position;
+    AlertDialogHelper.showAlertDialog("", 'delete_item_msg'.tr, 'yes'.tr,
+        'no'.tr, "", true, this, AppConstants.dialogIdentifier.deleteBarcode);
+  }
+
   @override
   void onBarcodeSave(String barcode, bool add, int position) {
     if (add) {
       barcodeList.add(barcode);
     } else {
       barcodeList[position] = barcode;
+    }
+  }
+
+  void onSubmitClick() {
+    String mBarcodes = StringHelper.getCommaSeparatedStringIds(barcodeList);
+    print("mBarcodes:" + mBarcodes);
+    Get.back(result: mBarcodes);
+  }
+
+  @override
+  void onNegativeButtonClicked(String dialogIdentifier) {
+    Get.back();
+  }
+
+  @override
+  void onOtherButtonClicked(String dialogIdentifier) {}
+
+  @override
+  void onPositiveButtonClicked(String dialogIdentifier) {
+    if (dialogIdentifier == AppConstants.dialogIdentifier.deleteBarcode) {
+      barcodeList.removeAt(selectedPosition);
+      Get.back();
     }
   }
 }
