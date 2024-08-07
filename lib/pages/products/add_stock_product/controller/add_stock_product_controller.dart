@@ -129,9 +129,9 @@ class AddStockProductController extends GetxController
     productPriceController.value.text = info.price ?? "";
     productDescriptionController.value.text = info.description ?? "";
     productSupplierController.value.text = info.supplier_name ?? "";
-    productBarcodeController.value.text = info.barcode_text ?? "";
     productUuidController.value.text = info.uuid ?? "";
     mBarCode = info.barcode_text ?? "";
+    productBarcodeController.value.text = info.barcode_text ?? "";
     isStatus.value = info.status ?? false;
     print("UUID:" + info.uuid!);
     print("QTY:${addProductRequest?.qty!}");
@@ -550,6 +550,7 @@ class AddStockProductController extends GetxController
     map["status"] = true;
     map["mode_type"] = addProductRequest?.mode_type;
     map["barcode_text"] = addProductRequest?.barcode_text ?? "";
+    map["barcodes"] = addProductRequest?.barcode_text ?? "";
     map["uuid"] = addProductRequest?.uuid ?? "";
     map["sort_id"] = addProductRequest?.sort_id ?? "";
 

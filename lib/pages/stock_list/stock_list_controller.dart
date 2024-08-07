@@ -165,11 +165,17 @@ class StockListController extends GetxController
       int index = -1;
       for (int i = 0; i < productList.length; i++) {
         String mBarcodeText = "";
+        var listBarcodes = [];
+
         if (!StringHelper.isEmptyString(productList[i].barcode_text)) {
           mBarcodeText = productList[i].barcode_text!;
+          listBarcodes.addAll(
+              StringHelper.getListFromCommaSeparateString(mBarcodeText));
         }
+        /*  // if (productList[i].id.toString() == mBarCode ||
+        //     mBarcodeText == mBarCode) {*/
         if (productList[i].id.toString() == mBarCode ||
-            mBarcodeText == mBarCode) {
+            listBarcodes.contains(mBarCode)) {
           index = i;
           break;
         }
@@ -385,8 +391,12 @@ class StockListController extends GetxController
       ProductListResponse response = AppStorage().getStockData()!;
       for (int i = 0; i < response.info!.length; i++) {
         ProductInfo item = response.info![i];
+        var list = StringHelper.getListFromCommaSeparateString(
+            item.barcode_text ?? "");
+        list.add(mBarCode);
+        String newBarcode = StringHelper.getCommaSeparatedStringIds(list);
         if (item.id == info.id) {
-          item.barcode_text = mBarCode;
+          item.barcode_text = newBarcode;
           if (isInternet) {
             AppStorage().setStockData(response);
             storeProductApi(item);
@@ -873,13 +883,6 @@ class StockListController extends GetxController
         } else {
           tempList.addAll(response.info!);
         }
-        // int supplierId = getSupplierId();
-        // int categoryId = getCategoryId();
-        // if (supplierId != 0 || categoryId != 0) {
-        //   setFilterList(supplierId, categoryId, response.info!);
-        // } else {
-        //   tempList.addAll(response.info!);
-        // }
       } else {
         for (var info in response.info!) {
           if (info.stock_status_id == stockCountType) {

@@ -162,12 +162,13 @@ class StockListView extends StatelessWidget {
   Widget setTopRightWidget(int position) {
     if (!stockListController.isLoading.value &
         stockListController.isScanQrCode.value) {
-      if (!StringHelper.isEmptyString(
-          stockListController.productList[position].barcode_text)) {
-        return quantityWidget(position);
-      } else {
-        return selectButtonWidget(position);
-      }
+      // if (!StringHelper.isEmptyString(
+      //     stockListController.productList[position].barcode_text)) {
+      //   return quantityWidget(position);
+      // } else {
+      //   return selectButtonWidget(position);
+      // }
+      return selectButtonWidget(position);
     } else {
       return quantityWidget(position);
     }
