@@ -56,97 +56,95 @@ class EditBarcodeDialogState extends State<EditBarcodeDialog> {
                   color: backgroundColor,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(0))),
               child: SizedBox(
-                height: 160,
-                child: Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                                child: Padding(
-                              padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
-                              child: TextFieldBorder(
-                                textEditingController: barcodeController,
-                                hintText: 'enter_barcode'.tr,
-                                labelText: 'enter_barcode'.tr,
-                                keyboardType: TextInputType.name,
-                                textInputAction: TextInputAction.done,
-                                validator: MultiValidator([]),
-                              ),
-                            )),
-                            InkWell(
-                              onTap: () {
-                                openQrCodeScanner();
-                              },
-                              child: Container(
-                                width: 35,
-                                height: 35,
-                                decoration: const BoxDecoration(
-                                    color: defaultAccentColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(6))),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(7.0),
-                                  child: SvgPicture.asset(
-                                    width: 24,
-                                    height: 24,
-                                    Drawable.barCodeIcon,
-                                    colorFilter: const ColorFilter.mode(
-                                        Colors.white, BlendMode.srcIn),
-                                  ),
+                height: 180,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+                                child: TextFieldBorder(
+                                  textEditingController: barcodeController,
+                                  hintText: 'enter_barcode'.tr,
+                                  labelText: 'enter_barcode'.tr,
+                                  keyboardType: TextInputType.name,
+                                  textInputAction: TextInputAction.done,
+                                  validator: MultiValidator([]),
+                                ),
+                              )),
+                          InkWell(
+                            onTap: () {
+                              openQrCodeScanner();
+                            },
+                            child: Container(
+                              width: 35,
+                              height: 35,
+                              decoration: const BoxDecoration(
+                                  color: defaultAccentColor,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(6))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(7.0),
+                                child: SvgPicture.asset(
+                                  width: 24,
+                                  height: 24,
+                                  Drawable.barCodeIcon,
+                                  colorFilter: const ColorFilter.mode(
+                                      Colors.white, BlendMode.srcIn),
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 14,
-                            )
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            width: 14,
+                          )
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
-                        child: Row(
-                          children: [
-                            Flexible(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            fit: FlexFit.tight,
+                            flex: 1,
+                            child: PrimaryBorderButton(
+                              buttonText: 'cancel'.tr,
+                              textColor: Colors.red,
+                              borderColor: Colors.red,
+                              onPressed: () {
+                                Get.back();
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Flexible(
                               fit: FlexFit.tight,
                               flex: 1,
                               child: PrimaryBorderButton(
-                                buttonText: 'cancel'.tr,
-                                textColor: Colors.red,
-                                borderColor: Colors.red,
+                                buttonText: 'save'.tr,
+                                textColor: defaultAccentColor,
+                                borderColor: defaultAccentColor,
                                 onPressed: () {
+                                  if (!StringHelper.isEmptyString(
+                                      barcodeController.text)) {
+                                    listener?.onBarcodeSave(
+                                        barcodeController.text,
+                                        isAdd ?? false,
+                                        position ?? 0);
+                                  }
                                   Get.back();
                                 },
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 12,
-                            ),
-                            Flexible(
-                                fit: FlexFit.tight,
-                                flex: 1,
-                                child: PrimaryBorderButton(
-                                  buttonText: 'save'.tr,
-                                  textColor: defaultAccentColor,
-                                  borderColor: defaultAccentColor,
-                                  onPressed: () {
-                                    if (!StringHelper.isEmptyString(
-                                        barcodeController.text)) {
-                                      listener?.onBarcodeSave(
-                                          barcodeController.text,
-                                          isAdd ?? false,
-                                          position ?? 0);
-                                    }
-                                    Get.back();
-                                  },
-                                )),
-                          ],
-                        ),
+                              )),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ));

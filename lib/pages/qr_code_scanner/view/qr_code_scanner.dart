@@ -31,7 +31,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
   void initState() {
     super.initState();
     controller = MobileScannerController(
-      torchEnabled: true,
+      torchEnabled: false,
       // formats: [BarcodeFormat.qrCode]
       // facing: CameraFacing.front,
       // detectionSpeed: DetectionSpeed.normal
