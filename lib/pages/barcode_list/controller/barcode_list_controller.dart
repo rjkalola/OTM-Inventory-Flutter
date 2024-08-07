@@ -34,7 +34,8 @@ class BarcodeListController extends GetxController
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
   var mBarCode = "".obs;
-  var selectedPosition = 0;
+  var selectedPosition = 0, productId = 0, localProductId = 0;
+  EditBarcodeDialog? editBarcodeDialog;
 
   @override
   void onInit() {
@@ -43,6 +44,11 @@ class BarcodeListController extends GetxController
     var arguments = Get.arguments;
     if (arguments != null) {
       mBarCode.value = arguments[AppConstants.intentKey.barCode] ?? "";
+      productId = arguments[AppConstants.intentKey.productId] ?? 0;
+      localProductId = arguments[AppConstants.intentKey.localProductId] ?? 0;
+      print("productId:" + productId.toString());
+      print("localProductId:" + localProductId.toString());
+
       if (!StringHelper.isEmptyString(mBarCode.value)) {
         barcodeList.value =
             StringHelper.getListFromCommaSeparateString(mBarCode.value);
@@ -52,13 +58,14 @@ class BarcodeListController extends GetxController
   }
 
   void showEditBarcodeDialog(String mBarcode, bool isAdd, int position) {
-    Get.bottomSheet(
-        EditBarcodeDialog(
-          barcode: mBarcode,
-          isAdd: isAdd,
-          position: position,
-          listener: this,
-        ),
+    editBarcodeDialog = EditBarcodeDialog(
+      barcode: mBarcode,
+      isAdd: isAdd,
+      position: position,
+      listener: this,
+    );
+
+    Get.bottomSheet(editBarcodeDialog!,
         backgroundColor: Colors.transparent,
         enableDrag: false,
         isScrollControlled: false);
@@ -72,10 +79,47 @@ class BarcodeListController extends GetxController
 
   @override
   void onBarcodeSave(String barcode, bool add, int position) {
-    if (add) {
-      barcodeList.add(barcode);
+    var listBarcode = [];
+    if(add){
+      listBarcode.addAll(barcodeList);
+    }else{
+      for (int i = 0; i < barcodeList.length; i++) {
+        if (i != position) {
+          listBarcode.add(barcodeList[i]);
+        }
+      }
+    }
+
+    if (!listBarcode.contains(barcode)) {
+      bool isBarcodeAvailable = false;
+      if (AppStorage().getStockData() != null) {
+        ProductListResponse response = AppStorage().getStockData()!;
+        for (int i = 0; i < response.info!.length; i++) {
+          ProductInfo item = response.info![i];
+          int itemId = item.id ?? 0;
+          String mBarCode = item.barcode_text ?? "";
+          bool currentProduct = itemId == productId || itemId == localProductId;
+          if (!currentProduct) {
+            String enteredBarCode = barcode;
+            if (!StringHelper.isEmptyString(enteredBarCode) &&
+                mBarCode == enteredBarCode) {
+              isBarcodeAvailable = true;
+              break;
+            }
+          }
+        }
+      }
+      if (isBarcodeAvailable) {
+        AppUtils.showToastMessage('msg_barcode_already_exist'.tr);
+      } else {
+        if (add) {
+          barcodeList.add(barcode);
+        } else {
+          barcodeList[position] = barcode;
+        }
+      }
     } else {
-      barcodeList[position] = barcode;
+      AppUtils.showToastMessage('msg_barcode_already_exist'.tr);
     }
   }
 
@@ -100,4 +144,6 @@ class BarcodeListController extends GetxController
       Get.back();
     }
   }
+
+  void checkBarcodeAvailability(String newBarcode) {}
 }

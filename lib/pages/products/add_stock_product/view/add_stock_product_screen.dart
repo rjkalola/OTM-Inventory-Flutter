@@ -68,7 +68,7 @@ class AddStockProductScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(child: TextFieldStockProductBarCode()),
-                                QrCodeIconAddStockProduct()
+                                // QrCodeIconAddStockProduct()
                               ],
                             ),
                             const SizedBox(

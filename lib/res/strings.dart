@@ -109,7 +109,7 @@ class Strings extends Translations {
           'add_new_product': "Add New Product",
           'attach_product': "Attach Product",
           'empty_qr_code_scan_msg':
-              "We do not find this product in our records, Click buttons below if you want to attach any product with the barcode_list or add new product with this barcode_list",
+              "We do not find this product in our records, Click buttons below if you want to attach any product with the barcode or add new product with this barcode",
           'reference': "Reference",
           'select_user': "Select User",
           'add_stock': "Add Stock",
@@ -118,9 +118,9 @@ class Strings extends Translations {
           'out': "Out",
           'login_with_otp': "Login with OTP",
           'msg_attach_barcode':
-              "Do you want to attach this product with barcode_list?",
+              "Do you want to attach this product with barcode?",
           'msg_update_barcode':
-              "Do you want to edit/update barcode_list?, By pressing Yes you need to scan a new barcode_list.",
+              "Do you want to edit/update barcode?, By pressing Yes you need to scan a new barcode.",
           'barcode_list': "Barcode",
           'product_id': "Product ID",
           'barcode_attached_success_msg':
@@ -160,7 +160,7 @@ class Strings extends Translations {
           'product_added_successfully': "Product added successfully",
           'product_updated_successfully': "Product updated successfully",
           'app_up_to_Date': "App is up to date",
-          'msg_barcode_already_exist': "This barcode_list already exist",
+          'msg_barcode_already_exist': "This barcode already exist",
           'pull_down_to_refresh': "Pull down to refresh",
           'print': "Print",
           'choose_type': "Choose Type",

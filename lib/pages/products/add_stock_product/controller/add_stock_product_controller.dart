@@ -222,8 +222,12 @@ class AddStockProductController extends GetxController
           bool currentProduct = itemId == id_ || itemId == localId_;
           if (!currentProduct) {
             String enteredBarCode = addProductRequest?.barcode_text ?? "";
+            var listBarcode =
+                StringHelper.getListFromCommaSeparateString(enteredBarCode);
+            // if (!StringHelper.isEmptyString(enteredBarCode) &&
+            //     mBarCode == enteredBarCode) {
             if (!StringHelper.isEmptyString(enteredBarCode) &&
-                mBarCode == enteredBarCode) {
+                listBarcode.contains(mBarCode)) {
               isBarcodeAvailable = true;
               break;
             }
@@ -672,8 +676,13 @@ class AddStockProductController extends GetxController
   }
 
   Future<void> moveToBarCodeListScreen() async {
+    int id_ = addProductRequest?.id ?? 0;
+    int localId_ = addProductRequest?.local_id ?? 0;
+
     var arguments = {
       AppConstants.intentKey.barCode: mBarCode,
+      AppConstants.intentKey.productId: id_,
+      AppConstants.intentKey.localProductId: localId_,
     };
     var result =
         await Get.toNamed(AppRoutes.barcodeListScreen, arguments: arguments);

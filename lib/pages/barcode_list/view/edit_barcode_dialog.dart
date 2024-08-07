@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import '../../../res/colors.dart';
+import '../../../res/drawable.dart';
+import '../../../routes/app_routes.dart';
 import '../../../widgets/PrimaryBorderButton.dart';
 import '../../../widgets/text_field_border.dart';
 import '../listener/barcode_save_listener.dart';
@@ -54,61 +57,106 @@ class EditBarcodeDialogState extends State<EditBarcodeDialog> {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(0))),
               child: SizedBox(
                 height: 160,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.fromLTRB(14, 20, 14, 0),
-                      child: TextFieldBorder(
-                        textEditingController: barcodeController,
-                        hintText: 'enter_barcode'.tr,
-                        labelText: 'enter_barcode'.tr,
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.done,
-                        validator: MultiValidator([]),
-                      ),
-                    )),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),                      child: Row(
-                        children: [
-                          Flexible(
-                            fit: FlexFit.tight,
-                            flex: 1,
-                            child: PrimaryBorderButton(
-                              buttonText: 'cancel'.tr,
-                              textColor: Colors.red,
-                              borderColor: Colors.red,
-                              onPressed: () {
-                                Get.back();
+                child: Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                                child: Padding(
+                              padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+                              child: TextFieldBorder(
+                                textEditingController: barcodeController,
+                                hintText: 'enter_barcode'.tr,
+                                labelText: 'enter_barcode'.tr,
+                                keyboardType: TextInputType.name,
+                                textInputAction: TextInputAction.done,
+                                validator: MultiValidator([]),
+                              ),
+                            )),
+                            InkWell(
+                              onTap: () {
+                                openQrCodeScanner();
                               },
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                decoration: const BoxDecoration(
+                                    color: defaultAccentColor,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(6))),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(7.0),
+                                  child: SvgPicture.asset(
+                                    width: 24,
+                                    height: 24,
+                                    Drawable.barCodeIcon,
+                                    colorFilter: const ColorFilter.mode(
+                                        Colors.white, BlendMode.srcIn),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Flexible(
+                            const SizedBox(
+                              width: 14,
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+                        child: Row(
+                          children: [
+                            Flexible(
                               fit: FlexFit.tight,
                               flex: 1,
                               child: PrimaryBorderButton(
-                                buttonText: 'save'.tr,
-                                textColor: defaultAccentColor,
-                                borderColor: defaultAccentColor,
+                                buttonText: 'cancel'.tr,
+                                textColor: Colors.red,
+                                borderColor: Colors.red,
                                 onPressed: () {
-                                  if (!StringHelper.isEmptyString(
-                                      barcodeController.text)) {
-                                    listener?.onBarcodeSave(barcodeController.text,
-                                        isAdd ?? false, position ?? 0);
-                                    Get.back();
-                                  }
+                                  Get.back();
                                 },
-                              )),
-                        ],
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Flexible(
+                                fit: FlexFit.tight,
+                                flex: 1,
+                                child: PrimaryBorderButton(
+                                  buttonText: 'save'.tr,
+                                  textColor: defaultAccentColor,
+                                  borderColor: defaultAccentColor,
+                                  onPressed: () {
+                                    if (!StringHelper.isEmptyString(
+                                        barcodeController.text)) {
+                                      listener?.onBarcodeSave(
+                                          barcodeController.text,
+                                          isAdd ?? false,
+                                          position ?? 0);
+                                    }
+                                    Get.back();
+                                  },
+                                )),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ));
+  }
+
+  Future<void> openQrCodeScanner() async {
+    var code = await Get.toNamed(AppRoutes.qrCodeScannerScreen);
+    if (!StringHelper.isEmptyString(code)) {
+      print("mBarCode:" + code);
+      barcodeController.text = code;
+    }
   }
 }

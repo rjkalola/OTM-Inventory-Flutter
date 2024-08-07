@@ -229,7 +229,12 @@ class QtyHistoryListView extends StatelessWidget {
               "0");
       int qty = int.parse(
           stockQuantityHistoryController.stockHistoryList[position].qty ?? "0");
-      result += "(${oldQty + qty})";
+      if(oldQty > 0){
+        result += "(${oldQty + qty})";
+      }else{
+        result += "(${0})";
+      }
+
     }
     return result;
   }

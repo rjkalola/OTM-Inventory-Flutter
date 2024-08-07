@@ -27,6 +27,7 @@ class IntentKey {
   final String categoryInfo = 'CATEGORY_INFO';
   final String stockInfo = 'STOCK_INFO';
   final String productId = 'PRODUCT_ID';
+  final String localProductId = 'LOCAL_PRODUCT_ID';
   final String storeId = 'STORE_ID';
   final String dashboardTabIndex = 'DASHBOARD_TAB_INDEX';
   final String barCode = 'BAR_CODE';

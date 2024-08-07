@@ -530,7 +530,9 @@ class StockEditQuantityController extends GetxController
   }
 
   Future<void> onUpdateQuantityClick(bool isDeduct) async {
-    if (formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate() && !isApiRunning.value) {
+      print("if call");
+      isApiRunning.value = true;
       String note = noteController.value.text.toString().trim();
       String qtyString = quantityController.value.text.toString().trim();
       if (qtyString.startsWith("+") || qtyString.startsWith("-")) {
@@ -551,15 +553,16 @@ class StockEditQuantityController extends GetxController
       String date = dateController.value.text.toString().trim();
 
       bool isInternet = await AppUtils.interNetCheck();
-      if (!isApiRunning.value) {
-        isApiRunning.value = true;
+      // if (!isApiRunning.value) {
         if (isInternet && transferRate > 1) {
           storeStockQuantityApi(true, productId.toString(), finalQty, note,
               price, date, isDeduct ? "remove" : "add");
         } else {
           storeDataOffline(isDeduct, finalQty, note);
         }
-      } else {}
+      // }
+    }else{
+      print("else call");
     }
   }
 
