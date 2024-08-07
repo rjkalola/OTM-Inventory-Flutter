@@ -28,7 +28,7 @@ packages:
   barcode:
     dependency: transitive
     description:
-      name: barcode_list
+      name: barcode
       sha256: ab180ce22c6555d77d45f0178a523669db67f95856e3378259ef2ffeb43e6003
       url: "https://pub.dev"
     source: hosted
