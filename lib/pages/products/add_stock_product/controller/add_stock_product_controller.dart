@@ -11,6 +11,7 @@ import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_constants.dart';
 import '../../../../utils/app_storage.dart';
 import '../../../../utils/app_utils.dart';
+import '../../../../utils/image_utils.dart';
 import '../../../../web_services/api_constants.dart';
 import '../../../../web_services/response/response_model.dart';
 import '../../../common/drop_down_list_dialog.dart';
@@ -46,6 +47,7 @@ class AddStockProductController extends GetxController
   final productSupplierController = TextEditingController().obs;
   final productManufacturerController = TextEditingController().obs;
   final productPriceController = TextEditingController().obs;
+  final productCutoffController = TextEditingController().obs;
   final productDescriptionController = TextEditingController().obs;
   final productBarcodeController = TextEditingController().obs;
   final productCategoryController = TextEditingController().obs;
@@ -127,6 +129,7 @@ class AddStockProductController extends GetxController
     productNameController.value.text = info.name ?? "";
     productManufacturerController.value.text = info.manufacturer_name ?? "";
     productPriceController.value.text = info.price ?? "";
+    productCutoffController.value.text = info.cutoff ?? "";
     productDescriptionController.value.text = info.description ?? "";
     productSupplierController.value.text = info.supplier_name ?? "";
     productUuidController.value.text = info.uuid ?? "";
@@ -195,6 +198,8 @@ class AddStockProductController extends GetxController
           productNameController.value.text.toString().trim();
       addProductRequest?.price =
           productPriceController.value.text.toString().trim();
+      addProductRequest?.cutoff =
+          productCutoffController.value.text.toString().trim();
       addProductRequest?.description =
           productDescriptionController.value.text.toString().trim();
       addProductRequest?.barcode_text =
@@ -473,7 +478,11 @@ class AddStockProductController extends GetxController
           'select_photo_from_'.tr,
           listOptions,
           this);
-    } else {}
+    } else {
+      ImageUtils.showImagePreviewDialog(
+          filesList[index].file ??
+              "");
+    }
   }
 
   addPhotoToList(String? path) {
@@ -545,6 +554,7 @@ class AddStockProductController extends GetxController
     map["supplier_code"] = addProductRequest?.supplier_code;
     map["manufacturer_id"] = addProductRequest?.manufacturer_id;
     map["price"] = addProductRequest?.price;
+    map["cutoff"] = addProductRequest?.cutoff;
     map["description"] = addProductRequest?.description;
     // map["status"] = addProductRequest?.status;
     map["status"] = true;

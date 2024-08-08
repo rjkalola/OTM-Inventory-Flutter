@@ -96,6 +96,15 @@ class _HomeTabState extends State<HomeTab> {
                                       )
                                     : Container(),
                                 DashboardStockCountItem(
+                                  title: 'all'.tr,
+                                  value: dashboardController.mAllStockCount
+                                      .toString(),
+                                  valueColor: Colors.green,
+                                  onPressed: () {
+                                    dashboardController.onClickAllStockItem();
+                                  },
+                                ),
+                                DashboardStockCountItem(
                                   title: 'in_stock'.tr,
                                   value: dashboardController.mInStockCount
                                       .toString(),
@@ -222,54 +231,19 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                       ),
                       // Padding(
-                      //   padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-                      //   child: PrimaryTextView(
-                      //     text: 'msg_press_upload_button_before_download'.tr,
-                      //     color: primaryTextColor,
-                      //     fontSize: 13,
-                      //     softWrap: true,
+                      //   padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                      //   child: SizedBox(
+                      //     width: double.infinity,
+                      //     child: PrimaryBorderButton(
+                      //       buttonText: 'sync'.tr,
+                      //       textColor: defaultAccentColor,
+                      //       borderColor: defaultAccentColor,
+                      //       onPressed: () {
+                      //         dashboardController.onClickDownloadStockButton();
+                      //       },
+                      //     ),
                       //   ),
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: PrimaryBorderButton(
-                            buttonText: 'sync'.tr,
-                            textColor: defaultAccentColor,
-                            borderColor: defaultAccentColor,
-                            onPressed: () {
-                              dashboardController.onClickDownloadStockButton();
-                            },
-                          ),
-                        ),
-                        // child: Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.stretch,
-                        //   children: [
-                        //     PrimaryBorderButton(
-                        //       buttonText:
-                        //           dashboardController.downloadTitle.value,
-                        //       textColor: Colors.green,
-                        //       borderColor: Colors.green,
-                        //       onPressed: () {
-                        //         dashboardController
-                        //             .onClickDownloadStockButton();
-                        //       },
-                        //     ),
-                        //     const SizedBox(
-                        //       height: 16,
-                        //     ),
-                        //     PrimaryBorderButton(
-                        //       buttonText: 'upload'.tr,
-                        //       textColor: defaultAccentColor,
-                        //       borderColor: defaultAccentColor,
-                        //       onPressed: () {
-                        //         dashboardController.onClickUploadStockButton();
-                        //       },
-                        //     )
-                        //   ],
-                        // ),
-                      )
+                      // )
                     ]),
               ),
             )),

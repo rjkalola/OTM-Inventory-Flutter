@@ -47,7 +47,7 @@ class ProductInfo {
       dimension,
       barcode_text,
       stock_status,
-      uuid;
+      uuid,cutoff;
   List<ModuleInfo>? categories;
   bool? status, localStored, checkPrint;
   List<StockQtyHistoryInfo>? stock_histories;
@@ -105,7 +105,8 @@ class ProductInfo {
       this.product_stocks,
       this.temp_store_id,
       this.uuid,
-      this.sort_id});
+      this.sort_id,
+      this.cutoff});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -182,6 +183,7 @@ class ProductInfo {
     checkPrint = json['checkPrint'];
     temp_store_id = json['temp_store_id'];
     sort_id = json['sort_id'];
+    cutoff = json['cutoff'];
   }
 
   Map<String, dynamic> toJson() {
@@ -246,6 +248,8 @@ class ProductInfo {
     data['checkPrint'] = checkPrint;
     data['temp_store_id'] = temp_store_id;
     data['sort_id'] = sort_id;
+    data['cutoff'] = cutoff;
+
     return data;
   }
 }

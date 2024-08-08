@@ -16,6 +16,7 @@ import '../../res/colors.dart';
 import '../../res/drawable.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/app_constants.dart';
+import '../../utils/image_utils.dart';
 import '../../widgets/CustomProgressbar.dart';
 import '../../widgets/appbar/base_appbar.dart';
 import '../../widgets/image/cached_image.dart';
@@ -92,15 +93,25 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                         borderRadius: BorderRadius.circular(0)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(6),
-                                      child: CachedImage(
-                                        width: 60,
-                                        height: 60,
-                                        placeHolderSize: 60,
-                                        url: stockEditQuantityController
-                                                .productInfo
-                                                .value
-                                                .imageThumbUrl ??
-                                            "",
+                                      child: InkWell(
+                                        onTap: () {
+                                          ImageUtils.showImagePreviewDialog(
+                                              stockEditQuantityController
+                                                      .productInfo
+                                                      .value
+                                                      .imageThumbUrl ??
+                                                  "");
+                                        },
+                                        child: CachedImage(
+                                          width: 60,
+                                          height: 60,
+                                          placeHolderSize: 60,
+                                          url: stockEditQuantityController
+                                                  .productInfo
+                                                  .value
+                                                  .imageThumbUrl ??
+                                              "",
+                                        ),
                                       ),
                                     ),
                                   ),

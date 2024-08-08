@@ -32,8 +32,11 @@ class IntentKey {
   final String dashboardTabIndex = 'DASHBOARD_TAB_INDEX';
   final String barCode = 'BAR_CODE';
   final String stockCountType = 'STOCK_COUNT_TYPE';
+  final String allStockType = 'ALL_STOCK_TYPE';
   final String pdfUrl = 'PDF_URL';
   final String purchaseOrderInfo = 'PURCHASE_ORDER_INFO';
+  final String title = 'TITLE';
+  final String count = 'COUNT';
 }
 
 class DialogIdentifier {

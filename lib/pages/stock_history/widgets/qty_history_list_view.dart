@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -34,86 +35,106 @@ class QtyHistoryListView extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
                           children: [
+                            PrimaryTextView(
+                              text: stockQuantityHistoryController
+                                      .stockHistoryList[position]
+                                      .created_at_formatted ??
+                                  "",
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              color: primaryTextColor,
+                            ),
                             Expanded(
                               child: Row(
                                 children: [
-                                  PrimaryTextView(
-                                    text: stockQuantityHistoryController
-                                            .stockHistoryList[position]
-                                            .created_at_formatted ??
-                                        "",
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                    color: primaryTextColor,
-                                  ),
-                                  !StringHelper.isEmptyObject(
+                                  Visibility(
+                                      visible: !StringHelper.isEmptyObject(
                                           stockQuantityHistoryController
-                                              .stockHistoryList[position].user)
-                                      ? Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: PrimaryTextView(
-                                            text: stockQuantityHistoryController
-                                                    .stockHistoryList[position]
-                                                    .user!
-                                                    .name ??
-                                                "",
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        )
-                                      : Container(),
-                                  !StringHelper.isEmptyString(
-                                          stockQuantityHistoryController
+                                              .stockHistoryList[position].user),
+                                      child: !StringHelper.isEmptyObject(
+                                              stockQuantityHistoryController
                                                   .stockHistoryList[position]
-                                                  .reference ??
-                                              "")
-                                      ? InkWell(
-                                          onTap: () {
-                                            stockQuantityHistoryController
-                                                .showNote(
+                                                  .user)
+                                          ? Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10, right: 10),
+                                                child: Text(
+                                                  stockQuantityHistoryController
+                                                          .stockHistoryList[
+                                                              position]
+                                                          .user!
+                                                          .name ??
+                                                      "",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  softWrap: false,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            )
+                                          : Expanded(child: Container())),
+                                  Visibility(
+                                      visible: !StringHelper.isEmptyString(
+                                              stockQuantityHistoryController
+                                                      .stockHistoryList[
+                                                          position]
+                                                      .reference ??
+                                                  "") &&
+                                          (stockQuantityHistoryController
+                                                      .stockHistoryList[
+                                                          position]
+                                                      .reference ??
+                                                  "") !=
+                                              "-",
+                                      child: !StringHelper.isEmptyString(
+                                                  stockQuantityHistoryController
+                                                          .stockHistoryList[
+                                                              position]
+                                                          .reference ??
+                                                      "") &&
+                                              (stockQuantityHistoryController
+                                                          .stockHistoryList[position]
+                                                          .reference ??
+                                                      "") !=
+                                                  "-"
+                                          ? Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  stockQuantityHistoryController
+                                                      .showNote(stockQuantityHistoryController
+                                                      .stockHistoryList[position]
+                                                      .reference ??
+                                                      "");
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          10, 0, 10, 0),
+                                                  child: Text(
                                                     stockQuantityHistoryController
-                                                            .stockHistoryList[
-                                                                position]
-                                                            .reference ??
-                                                        "");
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                9, 3, 4, 3),
-                                            child: SvgPicture.asset(
-                                              width: 24,
-                                              Drawable.descriptionIcon,
-                                              colorFilter:
-                                                  const ColorFilter.mode(
-                                                      Colors.black,
-                                                      BlendMode.srcIn),
-                                            ),
-                                          ),
-                                        )
-                                      : Container(),
-                                  !StringHelper.isEmptyString(
-                                          stockQuantityHistoryController
-                                                  .stockHistoryList[position]
-                                                  .reference ??
-                                              "")
-                                      ? Flexible(
-                                          child: Text(
-                                            stockQuantityHistoryController
-                                                .stockHistoryList[position]
-                                                .reference!,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                            softWrap: false,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        )
-                                      : Container(),
-                                  const SizedBox(
-                                    width: 10,
-                                  )
+                                                        .stockHistoryList[
+                                                            position]
+                                                        .reference!,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    softWrap: false,
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : Expanded(child: Container())),
                                   // QtyHistoryUserInfo(
                                   //   user: stockQuantityHistoryController
                                   //       .stockHistoryList[position].user,
@@ -121,69 +142,47 @@ class QtyHistoryListView extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              width: 90,
-                              child: Row(
-                                children: [
-                                  customTextView(
-                                      stockQuantityHistoryController
-                                          .stockHistoryList[position].qty,
-                                      18,
-                                      FontWeight.w500,
-                                      (!StringHelper.isEmptyString(
-                                                  stockQuantityHistoryController
-                                                          .stockHistoryList[
-                                                              position]
-                                                          .qty ??
-                                                      "") &&
-                                              int.parse(
-                                                      stockQuantityHistoryController
-                                                              .stockHistoryList[
-                                                                  position]
-                                                              .qty ??
-                                                          "0") >
-                                                  0)
-                                          ? Colors.green
-                                          : Colors.red,
-                                      const EdgeInsets.all(0)),
-                                  const SizedBox(
-                                    width: 6,
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      getUpdatedQuantity(position),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      softWrap: false,
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          color: primaryTextColor,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  )
-                                ],
-                              ),
+                            Row(
+                              children: [
+                                customTextView(
+                                    stockQuantityHistoryController
+                                        .stockHistoryList[position].qty,
+                                    20,
+                                    FontWeight.w500,
+                                    (!StringHelper.isEmptyString(
+                                                stockQuantityHistoryController
+                                                        .stockHistoryList[
+                                                            position]
+                                                        .qty ??
+                                                    "") &&
+                                            int.parse(
+                                                    stockQuantityHistoryController
+                                                            .stockHistoryList[
+                                                                position]
+                                                            .qty ??
+                                                        "0") >
+                                                0)
+                                        ? Colors.green
+                                        : Colors.red,
+                                    const EdgeInsets.all(0)),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                Text(
+                                  getUpdatedQuantity(position),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      color: primaryTextColor,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      // Row(
-                      //   children: [
-                      //     Expanded(
-                      //       child: QtyHistoryNoteInfo(
-                      //         note: stockQuantityHistoryController
-                      //             .stockHistoryList[position].reference,
-                      //       ),
-                      //     ),
-                      //     QtyHistoryPriceInfo(
-                      //       price: stockQuantityHistoryController
-                      //           .stockHistoryList[position].currencyPrice,
-                      //     )
-                      //   ],
-                      // ),
-                      // const SizedBox(
-                      //   height: 14,
-                      // ),
                       const SizedBox(
                         height: 8,
                       ),
@@ -229,12 +228,15 @@ class QtyHistoryListView extends StatelessWidget {
               "0");
       int qty = int.parse(
           stockQuantityHistoryController.stockHistoryList[position].qty ?? "0");
-      if(oldQty > 0){
-        result += "(${oldQty + qty})";
-      }else{
-        result += "(${0})";
-      }
+      // if (oldQty > 0) {
+      //   result += "(${oldQty + qty})";
+      // } else {
+      //   result += "(${0})";
+      // }
 
+      // result += "(${oldQty + qty})";
+
+      result += "${oldQty + qty}";
     }
     return result;
   }

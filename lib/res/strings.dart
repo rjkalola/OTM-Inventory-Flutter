@@ -185,6 +185,7 @@ class Strings extends Translations {
           'account_number': "Account Number",
           'manage_barcode': "Manage Barcode",
           'enter_barcode': "Enter Barcode",
+          'cutoff': "Cutoff",
         },
         'hi_IN': {'login': 'Login'}
       };

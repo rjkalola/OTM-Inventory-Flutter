@@ -47,21 +47,12 @@ class StockListView extends StatelessWidget {
                         child: Padding(
                       padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                       child: Row(children: [
-                        InkWell(
-                          onTap: () {
-                            ImageUtils.showImagePreviewDialog(
-                                stockListController
-                                    .productList[position].imageUrl);
-                            // AlertDialogHelper.showImagePreviewAlertDialog(
-                            //     "", true);
-                          },
-                          child: CachedImage(
-                            width: 60,
-                            height: 60,
-                            placeHolderSize: 60,
-                            url: stockListController
-                                .productList[position].imageThumbUrl,
-                          ),
+                        CachedImage(
+                          width: 60,
+                          height: 60,
+                          placeHolderSize: 60,
+                          url: stockListController
+                              .productList[position].imageThumbUrl,
                         ),
                         Expanded(
                             child: Padding(

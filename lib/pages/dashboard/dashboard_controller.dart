@@ -53,6 +53,7 @@ class DashboardController extends GetxController
       isMainViewVisible = false.obs;
   final title = 'dashboard'.tr.obs, downloadTitle = 'download'.tr.obs;
   final selectedIndex = 0.obs,
+      mAllStockCount = 0.obs,
       mInStockCount = 0.obs,
       mLowStockCount = 0.obs,
       mOutOfStockCount = 0.obs,
@@ -236,8 +237,34 @@ class DashboardController extends GetxController
   }
 
   Future<void> onClickStockItem(int stockCountType) async {
+    String title = 'stocks'.tr;
+    int count = 0;
+    if (stockCountType == 1) {
+      title = 'in_stock'.tr;
+      count = mInStockCount.value;
+    } else if (stockCountType == 2) {
+      title = 'low_stock'.tr;
+      count = mLowStockCount.value;
+    } else if (stockCountType == 3) {
+      title = 'out_of_stock'.tr;
+      count = mOutOfStockCount.value;
+    } else if (stockCountType == 4) {
+      title = 'minus_stock'.tr;
+      count = mMinusStockCount.value;
+    }
     var arguments = {
       AppConstants.intentKey.stockCountType: stockCountType,
+      AppConstants.intentKey.title: title,
+      AppConstants.intentKey.count: count
+    };
+    Get.offNamed(AppRoutes.stockListScreen, arguments: arguments);
+  }
+
+  Future<void> onClickAllStockItem() async {
+    var arguments = {
+      AppConstants.intentKey.allStockType: true,
+      AppConstants.intentKey.title: 'all'.tr,
+      AppConstants.intentKey.count: mAllStockCount.value
     };
     Get.offNamed(AppRoutes.stockListScreen, arguments: arguments);
   }
@@ -376,6 +403,8 @@ class DashboardController extends GetxController
   void setItemCount(DashboardStockCountResponse? response) {
     if (response != null) {
       mInStockCount.value = response.inStockCount ?? 0;
+      mAllStockCount.value =
+          (response.inStockCount ?? 0) + (response.lowStockCount ?? 0);
       mLowStockCount.value = response.lowStockCount ?? 0;
       mOutOfStockCount.value = response.outOfStockCount ?? 0;
       mMinusStockCount.value = response.minusStockCount ?? 0;
@@ -863,5 +892,4 @@ class DashboardController extends GetxController
     }
     return listProducts;
   }
-
 }
