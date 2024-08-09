@@ -254,39 +254,16 @@ class StockListController extends GetxController
       setOfflineData();
     } else {
       if (result != null && result) {
-        if (AppStorage().getStockData() != null) {
+        /*if (AppStorage().getStockData() != null) {
           ProductListResponse response = AppStorage().getStockData()!;
-          // ProductInfo? updatedInfo;
           tempList.clear();
           tempList.addAll(response.info!);
           productList.value = tempList;
           if (!StringHelper.isEmptyString(searchController.value.text))
             searchItem(searchController.value.text);
           productList.refresh();
-          /*  for (var info in response.info!) {
-            int infoId = info.id ?? 0;
-            int infoLocalId = info.local_id ?? 0;
-            if (infoId == mSelectedProductId ||
-                infoLocalId == mSelectedLocalId) {
-              updatedInfo = info;
-            }
-          }
-
-          int index = -1;
-          for (int i = 0; i < productList.length; i++) {
-            int infoId = productList[i].id ?? 0;
-            int infoLocalId = productList[i].local_id ?? 0;
-            if (infoId == mSelectedProductId ||
-                infoLocalId == mSelectedLocalId) {
-              index = i;
-            }
-          }
-          if (index != -1 && updatedInfo != null) {
-            // productList.insert(index, updatedInfo);
-            productList[index] = updatedInfo;
-          }
-          productList.refresh();*/
-        }
+        }*/
+        setOfflineData();
         setTotalCountButtons();
         isUpdateStockButtonVisible.value =
             !StringHelper.isEmptyList(AppStorage().getStoredStockList());

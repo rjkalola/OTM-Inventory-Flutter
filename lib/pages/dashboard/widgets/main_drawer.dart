@@ -7,10 +7,14 @@ import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
 
 import '../../../res/colors.dart';
+import '../../../utils/AlertDialogHelper.dart';
+import '../../../utils/app_constants.dart';
 import '../../../utils/image_utils.dart';
+import '../../common/listener/DialogButtonClickListener.dart';
 import '../../stock_list/stock_list_controller.dart';
+import '../dashboard_controller.dart';
 
-class MainDrawer extends StatelessWidget {
+class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
   MainDrawer({super.key});
 
   var userInfo = Get.find<AppStorage>().getUserInfo();
@@ -117,6 +121,22 @@ class MainDrawer extends StatelessWidget {
               navigate(AppRoutes.supplierListScreen);
             },
           ),
+          drawerLogoutItem(
+            text: 'logout'.tr,
+            textIconColor: Colors.red,
+            tileColor: Colors.white,
+            onTap: () {
+              AlertDialogHelper.showAlertDialog(
+                  "",
+                  'logout_msg'.tr,
+                  'yes'.tr,
+                  'no'.tr,
+                  "",
+                  true,
+                  this,
+                  AppConstants.dialogIdentifier.logout);
+            },
+          ),
         ],
       ),
     );
@@ -172,6 +192,23 @@ class MainDrawer extends StatelessWidget {
     );
   }
 
+  Widget drawerLogoutItem(
+      {required String text,
+      required Color textIconColor,
+      required Color tileColor,
+      required VoidCallback onTap}) {
+    return ListTile(
+      title: Text(
+        text,
+        style: TextStyle(
+          color: textIconColor,
+        ),
+      ),
+      tileColor: tileColor,
+      onTap: onTap,
+    );
+  }
+
   Color getItemColor(String rout) {
     return Get.currentRoute == rout ? Colors.white : Colors.black;
   }
@@ -195,5 +232,18 @@ class MainDrawer extends StatelessWidget {
         Get.offNamed(routPath);
       }
     }
+  }
+
+  @override
+  void onNegativeButtonClicked(String dialogIdentifier) {
+    Get.back();
+  }
+
+  @override
+  void onOtherButtonClicked(String dialogIdentifier) {}
+
+  @override
+  void onPositiveButtonClicked(String dialogIdentifier) {
+    Get.put(DashboardController()).logoutAPI();
   }
 }

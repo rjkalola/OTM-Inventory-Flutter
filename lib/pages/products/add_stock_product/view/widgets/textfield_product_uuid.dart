@@ -22,7 +22,9 @@ class TextFieldStockProductUuid extends StatelessWidget {
           labelText: 'id_'.tr,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
-          validator: MultiValidator([]),
+          validator: MultiValidator([
+            RequiredValidator(errorText: 'required_field'.tr),
+          ]),
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
             LengthLimitingTextInputFormatter(10),
