@@ -23,6 +23,9 @@ class TextFieldStockProductCutoff extends StatelessWidget {
         keyboardType: const TextInputType.numberWithOptions(decimal: false),
         textInputAction: TextInputAction.next,
         validator: MultiValidator([]),
+        onValueChange: (value) {
+          addProductController.onValueChange();
+        },
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.digitsOnly
         ],

@@ -22,6 +22,9 @@ class TextFieldStockProductUuid extends StatelessWidget {
           labelText: 'id_'.tr,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
+          onValueChange: (value) {
+            addProductController.onValueChange();
+          },
           validator: MultiValidator([
             RequiredValidator(errorText: 'required_field'.tr),
           ]),

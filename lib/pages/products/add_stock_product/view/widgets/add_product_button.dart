@@ -14,7 +14,9 @@ class AddStockProductButton extends StatelessWidget {
     return FooterPrimaryButton(
       buttonText: 'save'.tr,
       onPressed: () {
+        // if (addProductController.isSaveEnable.value) {
         addProductController.onSubmitClick();
+        // }
       },
     );
   }

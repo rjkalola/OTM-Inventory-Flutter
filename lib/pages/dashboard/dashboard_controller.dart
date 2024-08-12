@@ -241,7 +241,7 @@ class DashboardController extends GetxController
     int count = 0;
     if (stockCountType == 1) {
       title = 'in_stock'.tr;
-      count = mInStockCount.value;
+      count = (mInStockCount.value + mLowStockCount.value);
     } else if (stockCountType == 2) {
       title = 'low_stock'.tr;
       count = mLowStockCount.value;
@@ -260,11 +260,18 @@ class DashboardController extends GetxController
     Get.offNamed(AppRoutes.stockListScreen, arguments: arguments);
   }
 
-  Future<void> onClickAllStockItem() async {
+  Future<void> onClickInStockItem() async {
     var arguments = {
       AppConstants.intentKey.allStockType: true,
-      AppConstants.intentKey.title: 'all'.tr,
-      AppConstants.intentKey.count: mAllStockCount.value
+      AppConstants.intentKey.title: 'in_stock'.tr,
+      AppConstants.intentKey.count: (mInStockCount.value + mLowStockCount.value)
+    };
+    Get.offNamed(AppRoutes.stockListScreen, arguments: arguments);
+  }
+
+  Future<void> onClickAllStockItem() async {
+    var arguments = {
+      AppConstants.intentKey.title: 'stocks'.tr,
     };
     Get.offNamed(AppRoutes.stockListScreen, arguments: arguments);
   }
@@ -403,8 +410,6 @@ class DashboardController extends GetxController
   void setItemCount(DashboardStockCountResponse? response) {
     if (response != null) {
       mInStockCount.value = response.inStockCount ?? 0;
-      mAllStockCount.value =
-          (response.inStockCount ?? 0) + (response.lowStockCount ?? 0);
       mLowStockCount.value = response.lowStockCount ?? 0;
       mOutOfStockCount.value = response.outOfStockCount ?? 0;
       mMinusStockCount.value = response.minusStockCount ?? 0;
@@ -412,6 +417,12 @@ class DashboardController extends GetxController
       mReceivedCount.value = response.receivedCount ?? 0;
       mPartiallyReceivedCount.value = response.partiallyReceived ?? 0;
       mCancelledCount.value = response.cancelledCount ?? 0;
+
+      if (AppStorage().getStockData() != null &&
+          !StringHelper.isEmptyList(AppStorage().getStockData()!.info)) {
+        mAllStockCount.value = AppStorage().getStockData()!.info!.length;
+      }
+
       if (!StringHelper.isEmptyString(response.data_size)) {
         downloadTitle.value = "${'download'.tr} (${response.data_size!})";
       } else {
@@ -477,6 +488,10 @@ class DashboardController extends GetxController
               ProductListResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             AppStorage().setStockData(response);
+            print("Total Items:${response.info!.length}");
+            if (response.info != null) {
+              mAllStockCount.value = response.info!.length;
+            }
             if (!AppConstants.isResourcesLoaded) {
               loadAllImages();
               getStoreResourcesApi();

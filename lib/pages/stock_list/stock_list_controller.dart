@@ -64,8 +64,10 @@ class StockListController extends GetxController
       stockCountType = 0,
       mSelectedProductId = 0,
       mSelectedLocalId = 0;
-  var mIsLastPage = false, allStockType = false;
-  var mBarCode = "";
+  var mIsLastPage = false;
+
+  // , allStockType = false;
+  var mBarCode = "", _title = "";
   late ScrollController controller;
 
   // var mTitle = 'stocks'.tr.obs;
@@ -83,29 +85,42 @@ class StockListController extends GetxController
     var arguments = Get.arguments;
     if (arguments != null) {
       stockCountType = arguments[AppConstants.intentKey.stockCountType] ?? 0;
-      allStockType = arguments[AppConstants.intentKey.allStockType] ?? false;
-      mTitle.value = arguments[AppConstants.intentKey.title] ?? 'stocks'.tr;
+      // allStockType = arguments[AppConstants.intentKey.allStockType] ?? false;
+      _title = arguments[AppConstants.intentKey.title] ?? 'stocks'.tr;
       mCount.value = arguments[AppConstants.intentKey.count] ?? 0;
+    } else {
+      mCount.value = 0;
+      _title = 'stocks'.tr;
     }
-    initialDataSet(stockCountType);
+    initialDataSet(stockCountType, false);
   }
 
-  initialDataSet(int stockCountType) {
+  initialDataSet(int stockCountType, bool isDrawerClick) {
     searchController.value.clear();
     isClearVisible.value = false;
+    if (isDrawerClick) {
+      mSupplierCategoryFilter.value = "";
+      stockCountType = 0;
+      // allStockType = false;
+      _title = 'stocks'.tr;
+    }
     this.stockCountType = stockCountType;
-    if (stockCountType != 0 || allStockType) {
+    if (stockCountType != 0) {
       mSupplierCategoryFilter.value = "-";
-      if (mCount > 0) {
-        mTitle.value = "${mTitle.value} ($mCount)";
-      }
+      // if (mCount > 0) {
+      //   mTitle.value = "${mTitle.value} ($mCount)";
+      // }
     } else {
       mSupplierCategoryFilter.value = "";
-      mTitle.value = 'stocks'.tr;
     }
+    setTitle();
     setDownloadTitle();
     setOfflineData();
     onCLickUploadData(false, false, localStockCount(), localProductCount());
+  }
+
+  setTitle() {
+    mTitle.value = "$_title ($mCount)";
   }
 
   _scrollListener() {
@@ -453,8 +468,9 @@ class StockListController extends GetxController
     if (clearFilter) {
       mSupplierCategoryFilter.value = "";
       stockCountType = 0;
-      allStockType = false;
-      mTitle.value = 'stocks'.tr;
+      // allStockType = false;
+      _title = 'stocks'.tr;
+      // mTitle.value = 'stocks'.tr;
     }
     print("clearOffset:" + clearOffset.toString());
     print("clearFilter:" + clearFilter.toString());
@@ -849,7 +865,7 @@ class StockListController extends GetxController
     if (AppStorage().getStockData() != null) {
       ProductListResponse response = AppStorage().getStockData()!;
       tempList.clear();
-      if (stockCountType == 0 && !allStockType) {
+      if (stockCountType == 0) {
         if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value) &&
             mSupplierCategoryFilter.value != "-") {
           final jsonMap = json.decode(mSupplierCategoryFilter.value);
@@ -872,18 +888,20 @@ class StockListController extends GetxController
           tempList.addAll(response.info!);
         }
       } else {
+        int count = 0;
         for (var info in response.info!) {
-          if (allStockType) {
+          count++;
+          if (stockCountType == 1 || stockCountType == 2) {
             if (info.stock_status_id == 1 || info.stock_status_id == 2) {
               tempList.add(info);
             }
-          } else {
-            if (info.stock_status_id == stockCountType) {
-              tempList.add(info);
-            }
+          } else if (info.stock_status_id == stockCountType) {
+            tempList.add(info);
           }
         }
+        print("Count:" + count.toString());
       }
+
       print("stockCountType:" + stockCountType.toString());
       print("mSupplierCategoryFilter.value:" + mSupplierCategoryFilter.value);
 
@@ -892,6 +910,8 @@ class StockListController extends GetxController
       print("tempList size:" + tempList.length.toString());
       print("productList size:" + productList.length.toString());
     }
+    mCount.value = productList.length;
+    setTitle();
     // onCLickUploadData(false, localStockCount(), localProductCount());
     setTotalCountButtons();
     isUpdateStockButtonVisible.value =

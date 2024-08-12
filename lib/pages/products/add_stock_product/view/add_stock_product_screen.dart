@@ -50,6 +50,7 @@ class AddStockProductScreen extends StatelessWidget {
             child: Visibility(
               visible: addStockProductController.isMainViewVisible.value,
               child: Column(children: [
+                const Divider(),
                 Form(
                   key: addStockProductController.formKey,
                   child: Expanded(
@@ -58,7 +59,6 @@ class AddStockProductScreen extends StatelessWidget {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Divider(),
                             AddStockProductPhotosTitleView(),
                             AddStockProductPhotosList(),
                             TextFieldStockProductName(),

@@ -33,7 +33,8 @@ class AddStockProductController extends GetxController
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isStatus = true.obs;
+      isStatus = true.obs,
+      isSaveEnable = false.obs;
   RxString title = ''.obs;
   String mBarCode = "";
   final formKey = GlobalKey<FormState>();
@@ -192,63 +193,67 @@ class AddStockProductController extends GetxController
 
   Future<void> onSubmitClick() async {
     if (formKey.currentState!.validate()) {
-      addProductRequest?.shortName =
-          productTitleController.value.text.toString().trim();
-      addProductRequest?.name =
-          productNameController.value.text.toString().trim();
-      addProductRequest?.price =
-          productPriceController.value.text.toString().trim();
-      addProductRequest?.cutoff =
-          productCutoffController.value.text.toString().trim();
-      addProductRequest?.description =
-          productDescriptionController.value.text.toString().trim();
-      addProductRequest?.barcode_text =
-          productBarcodeController.value.text.toString().trim();
-      addProductRequest?.uuid =
-          productUuidController.value.text.toString().trim();
-      if (addProductRequest?.id != null && addProductRequest?.id != 0) {
-        addProductRequest?.mode_type = 2;
-      } else {
-        addProductRequest?.mode_type = 1;
-      }
-      addProductRequest?.status = isStatus.value;
-      // filesList.removeAt(0);
-      addProductRequest?.temp_images = filesList;
+      if (isSaveEnable.value) {
+        addProductRequest?.shortName =
+            productTitleController.value.text.toString().trim();
+        addProductRequest?.name =
+            productNameController.value.text.toString().trim();
+        addProductRequest?.price =
+            productPriceController.value.text.toString().trim();
+        addProductRequest?.cutoff =
+            productCutoffController.value.text.toString().trim();
+        addProductRequest?.description =
+            productDescriptionController.value.text.toString().trim();
+        addProductRequest?.barcode_text =
+            productBarcodeController.value.text.toString().trim();
+        addProductRequest?.uuid =
+            productUuidController.value.text.toString().trim();
+        if (addProductRequest?.id != null && addProductRequest?.id != 0) {
+          addProductRequest?.mode_type = 2;
+        } else {
+          addProductRequest?.mode_type = 1;
+        }
+        addProductRequest?.status = isStatus.value;
+        // filesList.removeAt(0);
+        addProductRequest?.temp_images = filesList;
 
-      bool isBarcodeAvailable = false;
-      if (AppStorage().getStockData() != null) {
-        ProductListResponse response = AppStorage().getStockData()!;
-        for (int i = 0; i < response.info!.length; i++) {
-          ProductInfo item = response.info![i];
-          int itemId = item.id ?? 0;
-          int id_ = addProductRequest?.id ?? 0;
-          int localId_ = addProductRequest?.local_id ?? 0;
-          String mBarCode = item.barcode_text ?? "";
-          bool currentProduct = itemId == id_ || itemId == localId_;
-          if (!currentProduct) {
-            String enteredBarCode = addProductRequest?.barcode_text ?? "";
-            var listBarcode =
-                StringHelper.getListFromCommaSeparateString(enteredBarCode);
-            // if (!StringHelper.isEmptyString(enteredBarCode) &&
-            //     mBarCode == enteredBarCode) {
-            if (!StringHelper.isEmptyString(enteredBarCode) &&
-                listBarcode.contains(mBarCode)) {
-              isBarcodeAvailable = true;
-              break;
+        bool isBarcodeAvailable = false;
+        if (AppStorage().getStockData() != null) {
+          ProductListResponse response = AppStorage().getStockData()!;
+          for (int i = 0; i < response.info!.length; i++) {
+            ProductInfo item = response.info![i];
+            int itemId = item.id ?? 0;
+            int id_ = addProductRequest?.id ?? 0;
+            int localId_ = addProductRequest?.local_id ?? 0;
+            String mBarCode = item.barcode_text ?? "";
+            bool currentProduct = itemId == id_ || itemId == localId_;
+            if (!currentProduct) {
+              String enteredBarCode = addProductRequest?.barcode_text ?? "";
+              var listBarcode =
+                  StringHelper.getListFromCommaSeparateString(enteredBarCode);
+              // if (!StringHelper.isEmptyString(enteredBarCode) &&
+              //     mBarCode == enteredBarCode) {
+              if (!StringHelper.isEmptyString(enteredBarCode) &&
+                  listBarcode.contains(mBarCode)) {
+                isBarcodeAvailable = true;
+                break;
+              }
             }
           }
         }
-      }
 
-      if (!isBarcodeAvailable) {
-        bool isInternet = await AppUtils.interNetCheck();
-        if (isInternet) {
-          storeProductApi();
+        if (!isBarcodeAvailable) {
+          bool isInternet = await AppUtils.interNetCheck();
+          if (isInternet) {
+            storeProductApi();
+          } else {
+            storeProductInList(true, addProductRequest);
+          }
         } else {
-          storeProductInList(true, addProductRequest);
+          AppUtils.showSnackBarMessage('msg_barcode_already_exist'.tr);
         }
       } else {
-        AppUtils.showSnackBarMessage('msg_barcode_already_exist'.tr);
+        Get.back();
       }
     }
   }
@@ -365,9 +370,11 @@ class AddStockProductController extends GetxController
       productSupplierController.value.text = name;
       addProductRequest?.supplierId = id;
       addProductRequest?.supplier_name = name;
+      onValueChange();
     } else if (action == AppConstants.dialogIdentifier.manufacturerList) {
       productManufacturerController.value.text = name;
       addProductRequest?.manufacturer_id = id;
+      onValueChange();
     } else if (action == AppConstants.action.selectImageFromCamera ||
         action == AppConstants.action.selectImageFromGallery) {
       selectImage(action);
@@ -389,6 +396,7 @@ class AddStockProductController extends GetxController
   @override
   void onSelectMultiItem(List<ModuleInfo> tempList, String action) {
     if (action == AppConstants.dialogIdentifier.categoryList) {
+      onValueChange();
       productResourcesResponse.value.categories!.clear();
       productResourcesResponse.value.categories!.addAll(tempList);
 
@@ -479,14 +487,13 @@ class AddStockProductController extends GetxController
           listOptions,
           this);
     } else {
-      ImageUtils.showImagePreviewDialog(
-          filesList[index].file ??
-              "");
+      ImageUtils.showImagePreviewDialog(filesList[index].file ?? "");
     }
   }
 
   addPhotoToList(String? path) {
     if (!StringHelper.isEmptyString(path)) {
+      isSaveEnable.value = true;
       FilesInfo info = FilesInfo();
       info.file = path;
       filesList.add(info);
@@ -495,6 +502,7 @@ class AddStockProductController extends GetxController
   }
 
   removePhotoFromList(int index) {
+    isSaveEnable.value = true;
     filesList.removeAt(index);
   }
 
@@ -612,8 +620,10 @@ class AddStockProductController extends GetxController
               StoreProductResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             // getAllStockListApi();
+            int localId_ = addProductRequest?.local_id ?? 0;
             if (addProductRequest?.qty != null)
               response.info!.qty = addProductRequest?.qty;
+            response.info!.local_id = localId_;
             storeProductInList(false, response.info);
             // moveStockEditQuantityScreen(response.info!.id!.toString());
           } else {
@@ -702,5 +712,9 @@ class AddStockProductController extends GetxController
       productBarcodeController.value.text = result;
       print("result" + mBarCode);
     }
+  }
+
+  void onValueChange() {
+    isSaveEnable.value = true;
   }
 }

@@ -27,7 +27,7 @@ class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          drawerHeader(),
+          // drawerHeader(),
           drawerItem(
             text: 'dashboard'.tr,
             iconPath: Drawable.homeDrawerIcon,
@@ -225,7 +225,7 @@ class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
     } else {
       if (Get.currentRoute == AppRoutes.stockListScreen &&
           routPath == AppRoutes.stockListScreen) {
-        Get.put(StockListController()).initialDataSet(0);
+        Get.put(StockListController()).initialDataSet(0, true);
         Get.back();
         // StockListController().getStockListApi(true, false, "", true, true);
       } else {

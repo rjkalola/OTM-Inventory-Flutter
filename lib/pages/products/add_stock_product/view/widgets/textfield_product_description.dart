@@ -22,6 +22,9 @@ class TextFieldStockProductDescription extends StatelessWidget {
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.newline,
         validator: MultiValidator([]),
+        onValueChange: (value) {
+          addProductController.onValueChange();
+        },
         textAlignVertical: TextAlignVertical.top,
       ),
     );

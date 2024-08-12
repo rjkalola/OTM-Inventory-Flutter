@@ -22,6 +22,9 @@ class TextFieldStockProductName extends StatelessWidget {
         validator: MultiValidator([
           RequiredValidator(errorText: 'required_field'.tr),
         ]),
+        onValueChange: (value) {
+          addProductController.onValueChange();
+        },
       ),
     );
   }

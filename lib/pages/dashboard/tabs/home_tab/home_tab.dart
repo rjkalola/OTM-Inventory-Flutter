@@ -106,25 +106,29 @@ class _HomeTabState extends State<HomeTab> {
                                 ),
                                 DashboardStockCountItem(
                                   title: 'in_stock'.tr,
-                                  value: dashboardController.mInStockCount
-                                      .toString(),
+                                  value:
+                                      (dashboardController.mInStockCount.value +
+                                              dashboardController
+                                                  .mLowStockCount.value)
+                                          .toString(),
                                   valueColor: Colors.green,
                                   onPressed: () {
+                                    // dashboardController.onClickInStockItem();
                                     dashboardController.onClickStockItem(
                                         AppConstants.stockCountType.inStock);
                                   },
                                 ),
 
-                                DashboardStockCountItem(
-                                  title: 'low_stock'.tr,
-                                  value: dashboardController.mLowStockCount
-                                      .toString(),
-                                  valueColor: Colors.orange,
-                                  onPressed: () {
-                                    dashboardController.onClickStockItem(
-                                        AppConstants.stockCountType.lowStock);
-                                  },
-                                ),
+                                // DashboardStockCountItem(
+                                //   title: 'low_stock'.tr,
+                                //   value: dashboardController.mLowStockCount
+                                //       .toString(),
+                                //   valueColor: Colors.orange,
+                                //   onPressed: () {
+                                //     dashboardController.onClickStockItem(
+                                //         AppConstants.stockCountType.lowStock);
+                                //   },
+                                // ),
 
                                 DashboardStockCountItem(
                                   title: 'out_of_stock'.tr,

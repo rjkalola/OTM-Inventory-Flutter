@@ -20,6 +20,9 @@ class TextFieldStockProductPrice extends StatelessWidget {
         labelText: 'price'.tr,
         keyboardType: TextInputType.number,
         textInputAction: TextInputAction.next,
+        onValueChange: (value) {
+          addProductController.onValueChange();
+        },
         validator: MultiValidator([]),
       ),
     );
