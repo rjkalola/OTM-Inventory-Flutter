@@ -17,7 +17,8 @@ class AddCategoryController extends GetxController {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = true.obs,
-      isStatus = true.obs;
+      isStatus = true.obs,
+      isSaveEnable = false.obs;
   RxString title = ''.obs;
   final formKey = GlobalKey<FormState>();
   final _api = AddCategoryRepository();
@@ -45,9 +46,14 @@ class AddCategoryController extends GetxController {
 
   void onSubmitClick() {
     if (formKey.currentState!.validate()) {
-      addRequest.category_name = categoryNameController.value.text.toString().trim();
-      addRequest.status = isStatus.value;
-      storeCategoryApi();
+      if (isSaveEnable.value) {
+        addRequest.category_name =
+            categoryNameController.value.text.toString().trim();
+        addRequest.status = isStatus.value;
+        storeCategoryApi();
+      } else {
+        Get.back();
+      }
     }
   }
 
@@ -88,5 +94,9 @@ class AddCategoryController extends GetxController {
         }
       },
     );
+  }
+
+  void onValueChange() {
+    isSaveEnable.value = true;
   }
 }

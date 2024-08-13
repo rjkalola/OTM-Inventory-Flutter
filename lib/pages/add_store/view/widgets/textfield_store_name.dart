@@ -19,6 +19,9 @@ class TextFieldStoreName extends StatelessWidget {
         labelText: 'store_name'.tr,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
+        onValueChange: (value) {
+          addStoreController.onValueChange();
+        },
         validator: MultiValidator([
           RequiredValidator(errorText: 'required_field'.tr),
         ]),

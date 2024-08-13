@@ -24,7 +24,13 @@ class StockFilterCategoriesList extends StatelessWidget {
                   controller.applyFilter_(
                       controller.categoriesList[position].id != null
                           ? controller.categoriesList[position].id!
-                          : 0);
+                          : 0,
+                      controller.categoriesList[position].name != null
+                          ? controller.categoriesList[position].name!
+                          : "",
+                      controller.categoriesList[position].key != null
+                          ? controller.categoriesList[position].key!
+                          : "");
                 },
                 child: Column(
                   children: [

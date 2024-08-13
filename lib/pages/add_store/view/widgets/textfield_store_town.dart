@@ -22,6 +22,9 @@ class TextFieldStoreTown extends StatelessWidget {
         textInputAction: TextInputAction.newline,
         validator: MultiValidator([]),
         textAlignVertical: TextAlignVertical.top,
+        onValueChange: (value) {
+          addStoreController.onValueChange();
+        },
       ),
     );
   }

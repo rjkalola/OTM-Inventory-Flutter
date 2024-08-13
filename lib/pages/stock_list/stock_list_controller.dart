@@ -296,6 +296,7 @@ class StockListController extends GetxController
     //   print("supplier key:" + request.supplier_key.toString());
     // }
     if (!StringHelper.isEmptyString(result)) {
+      print("result:" + result);
       mSupplierCategoryFilter.value = result;
       setOfflineData();
       // getStockListApi(true, false, "", true, false);
@@ -870,27 +871,14 @@ class StockListController extends GetxController
             mSupplierCategoryFilter.value != "-") {
           final jsonMap = json.decode(mSupplierCategoryFilter.value);
           FilterRequest filterRequest = FilterRequest.fromJson(jsonMap);
-          int supplierId = !StringHelper.isEmptyString(filterRequest.supplier)
-              ? int.parse(filterRequest.supplier!)
-              : 0;
-          int categoryId = !StringHelper.isEmptyString(filterRequest.category)
-              ? int.parse(filterRequest.category!)
-              : 0;
-          String supplierKey =
-              !StringHelper.isEmptyString(filterRequest.supplier_key)
-                  ? filterRequest.supplier_key!
-                  : "";
-          print("supplier:" + supplierId.toString());
-          print("category:" + categoryId.toString());
-          print("supplier key:" + supplierKey.toString());
-          setFilterList(supplierId, categoryId, supplierKey, response.info!);
+          String categoryName = filterRequest.category_name ?? "";
+          _title = categoryName;
+          setFilterList(filterRequest, response.info!);
         } else {
           tempList.addAll(response.info!);
         }
       } else {
-        int count = 0;
         for (var info in response.info!) {
-          count++;
           if (stockCountType == 1 || stockCountType == 2) {
             if (info.stock_status_id == 1 || info.stock_status_id == 2) {
               tempList.add(info);
@@ -899,7 +887,6 @@ class StockListController extends GetxController
             tempList.add(info);
           }
         }
-        print("Count:" + count.toString());
       }
 
       print("stockCountType:" + stockCountType.toString());
@@ -918,8 +905,24 @@ class StockListController extends GetxController
         !StringHelper.isEmptyList(AppStorage().getStoredStockList());
   }
 
-  void setFilterList(int supplierId, int categoryId, String supplierKey,
-      List<ProductInfo>? list) {
+  void setFilterList(FilterRequest filterRequest, List<ProductInfo>? list) {
+    int supplierId = !StringHelper.isEmptyString(filterRequest.supplier)
+        ? int.parse(filterRequest.supplier!)
+        : 0;
+    String supplierKey = !StringHelper.isEmptyString(filterRequest.supplier_key)
+        ? filterRequest.supplier_key!
+        : "";
+    int categoryId = !StringHelper.isEmptyString(filterRequest.category)
+        ? int.parse(filterRequest.category!)
+        : 0;
+    String categoryName = filterRequest.category_name ?? "";
+    String categoryKey = filterRequest.category_key ?? "";
+
+    print("supplier:" + supplierId.toString());
+    print("supplier key:" + supplierKey.toString());
+    print("category:" + categoryId.toString());
+    print("categoryName:" + categoryName);
+    print("categoryKey:" + categoryKey);
     for (var element in list!) {
       print("-----------------------------");
       List<String> categoryIds = [];
@@ -945,6 +948,22 @@ class StockListController extends GetxController
           if ((element.supplierId == null || element.supplierId! == 0)) {
             tempList.add(element);
           }
+        }
+      } else if (supplierKey == 'status') {
+        if (categoryKey == 'in_stock') {
+          if (element.stock_status_id == 1 || element.stock_status_id == 2) {
+            tempList.add(element);
+          }
+        } else if (categoryKey == 'out_of_stock') {
+          if (element.stock_status_id == 3) {
+            tempList.add(element);
+          }
+        } else if (categoryKey == 'minus_stock') {
+          if (element.stock_status_id == 4) {
+            tempList.add(element);
+          }
+        } else {
+          tempList.add(element);
         }
       } else if (supplierId != 0 && categoryId != 0) {
         if ((element.supplierId != null && element.supplierId! == supplierId) &&

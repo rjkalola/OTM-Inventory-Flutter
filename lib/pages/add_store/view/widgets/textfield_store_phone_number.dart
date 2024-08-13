@@ -20,6 +20,9 @@ class TextFieldPhoneNumber extends StatelessWidget {
           labelText: 'phone'.tr,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
+          onValueChange: (value) {
+            addStoreController.onValueChange();
+          },
           validator: MultiValidator([
             // RequiredValidator(errorText: 'required_field'.tr),
           ]),

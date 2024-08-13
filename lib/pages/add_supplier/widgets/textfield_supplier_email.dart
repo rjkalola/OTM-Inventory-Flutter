@@ -19,6 +19,9 @@ class TextFieldSupplierEmail extends StatelessWidget {
         labelText: 'email'.tr,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
+        onValueChange: (value) {
+          addSupplierController.onValueChange();
+        },
         validator: MultiValidator([
           // RequiredValidator(errorText: 'required_field'.tr),
           EmailValidator(errorText: 'email_valid_error'.tr)

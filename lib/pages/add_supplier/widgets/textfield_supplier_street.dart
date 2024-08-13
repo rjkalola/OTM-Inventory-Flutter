@@ -21,6 +21,9 @@ class TextFieldSupplierStreet extends StatelessWidget {
         keyboardType: TextInputType.streetAddress,
         textInputAction: TextInputAction.newline,
         validator: MultiValidator([]),
+        onValueChange: (value) {
+          addSupplierController.onValueChange();
+        },
         textAlignVertical: TextAlignVertical.top,
       ),
     );

@@ -20,6 +20,9 @@ class TextFieldSupplierCompanyName extends StatelessWidget {
         labelText: 'company_name'.tr,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
+        onValueChange: (value) {
+          addSupplierController.onValueChange();
+        },
         validator: MultiValidator([
 
         ]),

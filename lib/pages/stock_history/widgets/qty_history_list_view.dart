@@ -35,14 +35,43 @@ class QtyHistoryListView extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
                           children: [
-                            PrimaryTextView(
-                              text: stockQuantityHistoryController
-                                      .stockHistoryList[position]
-                                      .created_at_formatted ??
-                                  "",
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              color: primaryTextColor,
+                            Row(
+                              children: [
+                                customTextView(
+                                    stockQuantityHistoryController
+                                        .stockHistoryList[position].qty,
+                                    20,
+                                    FontWeight.w500,
+                                    (!StringHelper.isEmptyString(
+                                        stockQuantityHistoryController
+                                            .stockHistoryList[
+                                        position]
+                                            .qty ??
+                                            "") &&
+                                        int.parse(
+                                            stockQuantityHistoryController
+                                                .stockHistoryList[
+                                            position]
+                                                .qty ??
+                                                "0") >
+                                            0)
+                                        ? Colors.green
+                                        : Colors.red,
+                                    const EdgeInsets.all(0)),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                Text(
+                                  getUpdatedQuantity(position),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      color: primaryTextColor,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
                             ),
                             Expanded(
                               child: Row(
@@ -142,43 +171,14 @@ class QtyHistoryListView extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Row(
-                              children: [
-                                customTextView(
-                                    stockQuantityHistoryController
-                                        .stockHistoryList[position].qty,
-                                    20,
-                                    FontWeight.w500,
-                                    (!StringHelper.isEmptyString(
-                                                stockQuantityHistoryController
-                                                        .stockHistoryList[
-                                                            position]
-                                                        .qty ??
-                                                    "") &&
-                                            int.parse(
-                                                    stockQuantityHistoryController
-                                                            .stockHistoryList[
-                                                                position]
-                                                            .qty ??
-                                                        "0") >
-                                                0)
-                                        ? Colors.green
-                                        : Colors.red,
-                                    const EdgeInsets.all(0)),
-                                const SizedBox(
-                                  width: 6,
-                                ),
-                                Text(
-                                  getUpdatedQuantity(position),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  softWrap: false,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      color: primaryTextColor,
-                                      fontWeight: FontWeight.w400),
-                                )
-                              ],
+                            PrimaryTextView(
+                              text: stockQuantityHistoryController
+                                  .stockHistoryList[position]
+                                  .created_at_formatted ??
+                                  "",
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: primaryTextColor,
                             ),
                           ],
                         ),

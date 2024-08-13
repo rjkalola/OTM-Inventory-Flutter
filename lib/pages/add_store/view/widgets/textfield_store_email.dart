@@ -20,6 +20,9 @@ class TextFieldStoreEmail extends StatelessWidget {
         labelText: 'email'.tr,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
+        onValueChange: (value) {
+          addStoreController.onValueChange();
+        },
         validator: MultiValidator([
           // RequiredValidator(errorText: 'required_field'.tr),
           EmailValidator(errorText: 'email_valid_error'.tr)

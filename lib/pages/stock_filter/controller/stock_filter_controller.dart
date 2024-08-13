@@ -82,14 +82,16 @@ class StockFilterController extends GetxController {
     applyFilter();
   }
 
-  void applyFilter_(int categoryId) {
+  void applyFilter_(int categoryId, String categoryName, String categoryKey) {
     FilterInfo supplierInfo = supplierList[selectedSupplierIndex.value];
     FilterRequest request = FilterRequest();
     request.supplier =
         supplierInfo.id != null ? supplierInfo.id!.toString() : "";
-    request.category = categoryId.toString();
     request.supplier_key = supplierInfo.key ?? "";
-    print("pass request");
+    request.category = categoryId.toString();
+    request.category_name = categoryName;
+    request.category_key = categoryKey;
+
     // Get.back(result: request);
     print(jsonEncode(request));
     Get.back(result: jsonEncode(request));

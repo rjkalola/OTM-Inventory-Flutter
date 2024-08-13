@@ -19,6 +19,9 @@ class TextFieldSupplierContactName extends StatelessWidget {
         labelText: 'contact_name'.tr,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
+        onValueChange: (value) {
+          addSupplierController.onValueChange();
+        },
         validator: MultiValidator([
           RequiredValidator(errorText: 'required_field'.tr),
         ]),

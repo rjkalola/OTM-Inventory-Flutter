@@ -19,6 +19,9 @@ class TextFieldCategoryName extends StatelessWidget {
         labelText: 'category_name'.tr,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
+        onValueChange: (value) {
+          addCategoryController.onValueChange();
+        },
         validator: MultiValidator([
           RequiredValidator(errorText: 'required_field'.tr),
         ]),

@@ -18,6 +18,9 @@ class TextFieldSupplierTown extends StatelessWidget {
         textEditingController: addSupplierController.townController.value,
         hintText: 'town'.tr,
         labelText: 'town'.tr,
+        onValueChange: (value) {
+          addSupplierController.onValueChange();
+        },
         keyboardType: TextInputType.streetAddress,
         textInputAction: TextInputAction.newline,
         validator: MultiValidator([]),

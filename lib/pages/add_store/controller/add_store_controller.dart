@@ -24,7 +24,8 @@ class AddStoreController extends GetxController
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isStatus = true.obs;
+      isStatus = true.obs,
+      isSaveEnable = false.obs;
   RxString title = ''.obs;
   final mExtension = "".obs;
   final mFlag = "".obs;
@@ -103,24 +104,29 @@ class AddStoreController extends GetxController
 
   void onSubmitClick() {
     if (formKey.currentState!.validate()) {
-      addRequest.store_name = storeNameController.value.text.toString().trim();
-      addRequest.phone = phoneNumberController.value.text.toString().trim();
-      addRequest.email = emailController.value.text.toString().trim();
-      addRequest.address = addressController.value.text.toString().trim();
-      addRequest.location = addressController.value.text.toString().trim();
-      addRequest.street = streetController.value.text.toString().trim();
-      addRequest.town = townController.value.text.toString().trim();
-      addRequest.postcode = postcodeController.value.text.toString().trim();
+      if (isSaveEnable.value) {
+        addRequest.store_name =
+            storeNameController.value.text.toString().trim();
+        addRequest.phone = phoneNumberController.value.text.toString().trim();
+        addRequest.email = emailController.value.text.toString().trim();
+        addRequest.address = addressController.value.text.toString().trim();
+        addRequest.location = addressController.value.text.toString().trim();
+        addRequest.street = streetController.value.text.toString().trim();
+        addRequest.town = townController.value.text.toString().trim();
+        addRequest.postcode = postcodeController.value.text.toString().trim();
 
-      if (addRequest.id != null && addRequest.id != 0) {
-        addRequest.mode_type = 2;
+        if (addRequest.id != null && addRequest.id != 0) {
+          addRequest.mode_type = 2;
+        } else {
+          addRequest.mode_type = 1;
+        }
+
+        addRequest.status = isStatus.value;
+
+        storeStoreApi();
       } else {
-        addRequest.mode_type = 1;
+        Get.back();
       }
-
-      addRequest.status = isStatus.value;
-
-      storeStoreApi();
     }
   }
 
@@ -156,6 +162,7 @@ class AddStoreController extends GetxController
   @override
   void onSelectMultiItem(List<ModuleInfo> tempList, String action) {
     if (action == AppConstants.dialogIdentifier.usersList) {
+      onValueChange();
       resourcesResponse.value.users!.clear();
       resourcesResponse.value.users!.addAll(tempList);
 
@@ -186,6 +193,7 @@ class AddStoreController extends GetxController
   @override
   void onSelectPhoneExtension(
       int id, String extension, String flag, String country) {
+    onValueChange();
     mFlag.value = flag;
     mExtension.value = extension;
     addRequest.phone_extension_id = id;
@@ -285,5 +293,9 @@ class AddStoreController extends GetxController
         }
       },
     );
+  }
+
+  void onValueChange() {
+    isSaveEnable.value = true;
   }
 }

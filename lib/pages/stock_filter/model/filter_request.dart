@@ -1,11 +1,12 @@
 class FilterRequest {
-  String? supplier, category, supplier_key, category_key;
+  String? supplier, supplier_key, category, category_key, category_name;
 
   FilterRequest({
     this.supplier,
-    this.category,
     this.supplier_key,
+    this.category,
     this.category_key,
+    this.category_name,
   });
 
   FilterRequest.fromJson(Map<String, dynamic> json) {
@@ -13,14 +14,16 @@ class FilterRequest {
     category = json['category'];
     supplier_key = json['supplier_key'];
     category_key = json['category_key'];
+    category_name = json['category_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['supplier'] = supplier;
-    data['category'] = category;
     data['supplier_key'] = supplier_key;
+    data['category'] = category;
     data['category_key'] = category_key;
+    data['category_name'] = category_name;
     return data;
   }
 }

@@ -21,6 +21,9 @@ class TextFieldStorePostCode extends StatelessWidget {
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.done,
         validator: MultiValidator([]),
+        onValueChange: (value) {
+          addStoreController.onValueChange();
+        },
       ),
     );
   }

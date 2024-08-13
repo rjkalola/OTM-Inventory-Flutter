@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,9 @@ class TextFieldSupplierPostCode extends StatelessWidget {
         hintText: 'postcode'.tr,
         labelText: 'postcode'.tr,
         keyboardType: TextInputType.name,
+        onValueChange: (value) {
+          addSupplierController.onValueChange();
+        },
         textInputAction: TextInputAction.done,
         validator: MultiValidator([]),
       ),

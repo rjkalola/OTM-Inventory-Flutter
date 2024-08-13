@@ -24,7 +24,8 @@ class AddSupplierController extends GetxController
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isStatus = true.obs;
+      isStatus = true.obs,
+      isSaveEnable = false.obs;
   RxString title = ''.obs;
   final mExtension = "".obs;
   final mFlag = "".obs;
@@ -91,30 +92,34 @@ class AddSupplierController extends GetxController
 
   void onSubmitClick() {
     if (formKey.currentState!.validate()) {
-      addRequest.contact_name =
-          contactNameController.value.text.toString().trim();
-      addRequest.email = emailController.value.text.toString().trim();
-      addRequest.phone = phoneNumberController.value.text.toString().trim();
-      addRequest.company_name =
-          companyNameController.value.text.toString().trim();
-      // addRequest.address = addressController.value.text.toString().trim();
-      // addRequest.weight = weightController.value.text.toString().trim();
-      addRequest.account_number =
-          accountNumberController.value.text.toString().trim();
-      addRequest.street = streetController.value.text.toString().trim();
-      addRequest.location = addressController.value.text.toString().trim();
-      addRequest.town = townController.value.text.toString().trim();
-      addRequest.postcode = postcodeController.value.text.toString().trim();
+      if (isSaveEnable.value) {
+        addRequest.contact_name =
+            contactNameController.value.text.toString().trim();
+        addRequest.email = emailController.value.text.toString().trim();
+        addRequest.phone = phoneNumberController.value.text.toString().trim();
+        addRequest.company_name =
+            companyNameController.value.text.toString().trim();
+        // addRequest.address = addressController.value.text.toString().trim();
+        // addRequest.weight = weightController.value.text.toString().trim();
+        addRequest.account_number =
+            accountNumberController.value.text.toString().trim();
+        addRequest.street = streetController.value.text.toString().trim();
+        addRequest.location = addressController.value.text.toString().trim();
+        addRequest.town = townController.value.text.toString().trim();
+        addRequest.postcode = postcodeController.value.text.toString().trim();
 
-      if (addRequest.id != null && addRequest.id != 0) {
-        addRequest.mode_type = 2;
+        if (addRequest.id != null && addRequest.id != 0) {
+          addRequest.mode_type = 2;
+        } else {
+          addRequest.mode_type = 1;
+        }
+
+        addRequest.status = isStatus.value;
+
+        storeSupplierApi();
       } else {
-        addRequest.mode_type = 1;
+        Get.back();
       }
-
-      addRequest.status = isStatus.value;
-
-      storeSupplierApi();
     }
   }
 
@@ -162,10 +167,8 @@ class AddSupplierController extends GetxController
   @override
   void onSelectPhoneExtension(
       int id, String extension, String flag, String country) {
+    onValueChange();
     mFlag.value = flag;
-    print(flag);
-    print(id.toString());
-    print(extension);
     mExtension.value = extension;
     addRequest.phone_extension_id = id;
     addRequest.phone_extension = extension;
@@ -272,5 +275,9 @@ class AddSupplierController extends GetxController
         }
       },
     );
+  }
+
+  void onValueChange() {
+    isSaveEnable.value = true;
   }
 }

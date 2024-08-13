@@ -21,6 +21,9 @@ class TextFieldSupplierAccountNumber extends StatelessWidget {
         labelText: 'account_number'.tr,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.done,
+        onValueChange: (value) {
+          addSupplierController.onValueChange();
+        },
         validator: MultiValidator([
           RequiredValidator(errorText: 'required_field'.tr),
         ]),
