@@ -519,7 +519,7 @@ class DashboardController extends GetxController
             AppStorage().setStockData(response);
             print("Total Items:${response.info!.length}");
             if (response.info != null) {
-              mAllStockCount.value = response.info!.length;
+              mAllStockCount.value = allCount(response.info!);
             }
             if (!AppConstants.isResourcesLoaded) {
               loadAllImages();
