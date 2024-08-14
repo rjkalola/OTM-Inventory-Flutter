@@ -420,7 +420,7 @@ class DashboardController extends GetxController
 
       if (AppStorage().getStockData() != null &&
           !StringHelper.isEmptyList(AppStorage().getStockData()!.info)) {
-        mAllStockCount.value = AppStorage().getStockData()!.info!.length;
+        mAllStockCount.value = allCount(AppStorage().getStockData()!.info!);
       }
 
       if (!StringHelper.isEmptyString(response.data_size)) {
@@ -429,6 +429,35 @@ class DashboardController extends GetxController
         downloadTitle.value = 'download'.tr;
       }
     }
+  }
+
+  bool isStoreMatch(List<ProductStockInfo>? list, int tempStoreId, int qty) {
+    bool match = false;
+
+    if (tempStoreId == AppStorage.storeId) {
+      match = true;
+    } else if (list != null && list.isNotEmpty) {
+      for (var info in list) {
+        int storeId = info.store_id ?? 0;
+        if (storeId == AppStorage.storeId) {
+          match = true;
+          break;
+        }
+      }
+    }
+    return match;
+  }
+
+  int allCount(List<ProductInfo> list) {
+    int count = 0;
+    for (int i = 0; i < list.length; i++) {
+      ProductInfo info = list[i];
+      if (isStoreMatch(
+          info.product_stocks, info.temp_store_id ?? 0, info.qty ?? 0)) {
+        count++;
+      }
+    }
+    return count;
   }
 
   void getStoreResourcesApi() async {

@@ -892,7 +892,17 @@ class StockListController extends GetxController
       print("stockCountType:" + stockCountType.toString());
       print("mSupplierCategoryFilter.value:" + mSupplierCategoryFilter.value);
 
-      productList.value = tempList;
+      List<ProductInfo> list = [];
+
+      for (int i = 0; i < tempList.length; i++) {
+        ProductInfo info = tempList[i];
+        if (isStoreMatch(
+            info.product_stocks, info.temp_store_id ?? 0, info.qty ?? 0)) {
+          list.add(info);
+        }
+      }
+
+      productList.value = list;
       productList.refresh();
       print("tempList size:" + tempList.length.toString());
       print("productList size:" + productList.length.toString());
@@ -903,6 +913,23 @@ class StockListController extends GetxController
     setTotalCountButtons();
     isUpdateStockButtonVisible.value =
         !StringHelper.isEmptyList(AppStorage().getStoredStockList());
+  }
+
+  bool isStoreMatch(List<ProductStockInfo>? list, int tempStoreId, int qty) {
+    bool match = false;
+
+    if (tempStoreId == AppStorage.storeId) {
+      match = true;
+    } else if (list != null && list.isNotEmpty) {
+      for (var info in list) {
+        int storeId = info.store_id ?? 0;
+        if (storeId == AppStorage.storeId) {
+          match = true;
+          break;
+        }
+      }
+    }
+    return match;
   }
 
   void setFilterList(FilterRequest filterRequest, List<ProductInfo>? list) {

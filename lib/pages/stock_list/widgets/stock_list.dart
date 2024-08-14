@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
-import 'package:otm_inventory/utils/app_utils.dart';
-import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 import 'package:otm_inventory/widgets/image/cached_image.dart';
 
 import '../../../../res/colors.dart';
 import '../../../widgets/PrimaryBorderButton.dart';
-import '../../common/widgets/image_preview_dialog.dart';
 import '../../products/product_list/models/product_info.dart';
 
 class StockListView extends StatelessWidget {
