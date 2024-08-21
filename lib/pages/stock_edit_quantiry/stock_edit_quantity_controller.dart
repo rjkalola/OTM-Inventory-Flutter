@@ -718,12 +718,10 @@ class StockEditQuantityController extends GetxController
   }
 
   void checkInternetSpeed() {
-    print("onStarted");
     speedTest.startTesting(
       useFastApi: true,
       //true(default)
       onStarted: () {
-        print("onStarted");
       },
       onCompleted: (TestResult download, TestResult upload) {
         print("onCompleted");
@@ -736,7 +734,6 @@ class StockEditQuantityController extends GetxController
         print("unit:" + data.unit.toString());
       },
       onError: (String errorMessage, String speedTestError) {
-        print("onError");
         checkInternetSpeed();
       },
       onDefaultServerSelectionInProgress: () {

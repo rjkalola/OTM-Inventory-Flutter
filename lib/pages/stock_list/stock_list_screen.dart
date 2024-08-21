@@ -39,6 +39,7 @@ class _StockListScreenState extends State<StockListScreen> {
           appBar: BaseAppBar(
               appBar: AppBar(),
               title: stockListController.mTitle.value,
+              isCenterTitle: false,
               isBack: true,
               widgets: actionButtons()),
           floatingActionButton: (stockListController.totalPendingCount.value ==

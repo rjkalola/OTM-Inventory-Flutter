@@ -54,6 +54,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             appBar: BaseAppBar(
                 appBar: AppBar(),
                 title: 'products'.tr,
+                isCenterTitle: false,
                 isBack: true,
                 widgets: actionButtons()),
             drawer: MainDrawer(),

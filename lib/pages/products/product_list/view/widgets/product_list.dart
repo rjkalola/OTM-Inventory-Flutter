@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:otm_inventory/pages/common/widgets/image_preview_dialog.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 
 import '../../../../../res/colors.dart';
-import '../../../../../utils/AlertDialogHelper.dart';
 import '../../../../../utils/app_storage.dart';
 import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/image_utils.dart';

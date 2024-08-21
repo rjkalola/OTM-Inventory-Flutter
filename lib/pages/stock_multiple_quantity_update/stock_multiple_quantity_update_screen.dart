@@ -35,6 +35,7 @@ class _StockListScreenState extends State<StockMultipleQuantityUpdateScreen> {
               appBar: BaseAppBar(
                 appBar: AppBar(),
                 title: 'add_stock'.tr,
+                isCenterTitle: false,
                 isBack: true,
               ),
               body: ModalProgressHUD(

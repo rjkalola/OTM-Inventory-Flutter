@@ -38,6 +38,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
           appBar: BaseAppBar(
               appBar: AppBar(),
               title: 'purchase_order'.tr,
+              isCenterTitle: false,
               isBack: true,
               widgets: actionButtons()),
           drawer: MainDrawer(),

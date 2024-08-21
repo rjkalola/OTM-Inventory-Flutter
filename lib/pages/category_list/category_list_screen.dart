@@ -52,6 +52,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
         appBar: BaseAppBar(
             appBar: AppBar(),
             title: 'categories'.tr,
+            isCenterTitle: false,
             isBack: true,
             widgets: actionButtons()),
         drawer: MainDrawer(),

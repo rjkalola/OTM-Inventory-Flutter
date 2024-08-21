@@ -52,6 +52,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
         appBar: BaseAppBar(
             appBar: AppBar(),
             title: 'stores'.tr,
+            isCenterTitle: false,
             isBack: true,
             widgets: actionButtons()),
         drawer: MainDrawer(),

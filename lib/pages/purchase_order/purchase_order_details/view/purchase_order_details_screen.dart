@@ -45,6 +45,7 @@ class _PurchaseOrderDetailsScreenState
       appBar: BaseAppBar(
           appBar: AppBar(),
           title: 'purchase_order'.tr,
+          isCenterTitle: false,
           isBack: true,
           widgets: actionButtons()),
       // drawer: MainDrawer(),

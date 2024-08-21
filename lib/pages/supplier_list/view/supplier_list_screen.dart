@@ -52,6 +52,7 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
         appBar: BaseAppBar(
             appBar: AppBar(),
             title: 'suppliers'.tr,
+            isCenterTitle: false,
             isBack: true,
             widgets: actionButtons()),
         drawer: MainDrawer(),

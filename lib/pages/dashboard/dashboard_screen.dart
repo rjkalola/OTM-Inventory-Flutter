@@ -38,6 +38,7 @@ class DashboardScreen extends StatelessWidget {
                 appBar: BaseAppBar(
                   appBar: AppBar(),
                   title: dashboardController.title.value,
+                  isCenterTitle: false,
                   isBack: true,
                   widgets: actionButtons(),
                 ),

@@ -33,6 +33,7 @@ class _BarcodeListScreenState extends State<BarcodeListScreen> {
       appBar: BaseAppBar(
           appBar: AppBar(),
           title: 'manage_barcode'.tr,
+          isCenterTitle: false,
           isBack: true,
           widgets: actionButtons()),
       // drawer: MainDrawer(),
