@@ -1,12 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/otp_verification/verify_otp_controller.dart';
-import 'package:otm_inventory/pages/otp_verification/widgets/otp_box_widget.dart';
 import 'package:otm_inventory/pages/otp_verification/widgets/otp_submit_button.dart';
 import 'package:otm_inventory/pages/otp_verification/widgets/resend_view_widget.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
+import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../res/colors.dart';
@@ -85,6 +86,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                           child: SizedBox(
                             width: 280,
                             child: PinFieldAutoFill(
+                              controller:
+                                  verifyOtpController.otpController.value,
                               currentCode: verifyOtpController.mOtpCode.value,
                               keyboardType: TextInputType.number,
                               codeLength: 4,
@@ -113,6 +116,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                               onCodeSubmitted: (val) {
                                 print("onCodeSubmitted $val");
                               },
+                              // enabled: !verifyOtpController.isOtpFilled.value,
                             ),
                           ),
                         ),
@@ -152,7 +156,26 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       ]),
                 ),
               ),
-              OtpSubmitButton()
+              Column(
+                children: [
+                  Visibility(
+                    visible: verifyOtpController.mOtpCode.value.length == 4,
+                    child: InkWell(
+                      onTap: () {
+                        verifyOtpController.resetOtpField();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: PrimaryTextView(
+                          text: "Clear Otp",
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  ),
+                  OtpSubmitButton()
+                ],
+              )
             ]),
           );
         }),

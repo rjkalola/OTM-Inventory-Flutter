@@ -25,8 +25,11 @@ class VerifyOtpController extends GetxController {
   final mExtension = "+91".obs,
       mPhoneNumber = "8866270586".obs,
       mOtpCode = "".obs;
-  RxBool isLoading = false.obs, isInternetNotAvailable = false.obs;
+  RxBool isLoading = false.obs,
+      isInternetNotAvailable = false.obs,
+      isOtpFilled = false.obs;
   final _api = VerifyOtpRepository();
+  final otpController = TextEditingController().obs;
 
   listenSmsCode() async {
     print("regiestered");
@@ -46,6 +49,12 @@ class VerifyOtpController extends GetxController {
     super.dispose();
   }
 
+  void resetOtpField() {
+    // verifyOtpController.otpController.value.clear();
+    isOtpFilled.value = false;
+    mOtpCode.value = "";
+  }
+
   void onSubmitOtpClick() {
     // if (box1.value.text.toString().isNotEmpty &&
     //     box2.value.text.toString().isNotEmpty &&
@@ -56,7 +65,9 @@ class VerifyOtpController extends GetxController {
       //     box2.value.text.toString() +
       //     box3.value.text.toString() +
       //     box4.value.text.toString();
-      verifyOtpApi(mOtpCode.value);
+
+      // verifyOtpApi(mOtpCode.value);
+      resetOtpField();
     } else {
       showSnackBar('enter_otp'.tr);
     }
@@ -82,7 +93,7 @@ class VerifyOtpController extends GetxController {
         onSuccess: (ResponseModel responseModel) {
           if (responseModel.statusCode == 200) {
             UserResponse response =
-                UserResponse.fromJson(jsonDecode(responseModel.result!));
+            UserResponse.fromJson(jsonDecode(responseModel.result!));
             if (response.isSuccess!) {
               Get.find<AppStorage>().setUserInfo(response.info!);
               Get.find<AppStorage>().setAccessToken(response.info!.apiToken!);
@@ -156,7 +167,11 @@ class VerifyOtpController extends GetxController {
       list.add(user);
       Get.find<AppStorage>().setLoginUsers(list);
       print("after length:" +
-          Get.find<AppStorage>().getLoginUsers().length.toString());
+          Get
+              .find<AppStorage>()
+              .getLoginUsers()
+              .length
+              .toString());
     }
   }
 }
