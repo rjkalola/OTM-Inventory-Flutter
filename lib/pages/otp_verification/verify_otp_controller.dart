@@ -66,8 +66,8 @@ class VerifyOtpController extends GetxController {
       //     box3.value.text.toString() +
       //     box4.value.text.toString();
 
-      // verifyOtpApi(mOtpCode.value);
-      resetOtpField();
+      verifyOtpApi(mOtpCode.value);
+      // resetOtpField();
     } else {
       showSnackBar('enter_otp'.tr);
     }

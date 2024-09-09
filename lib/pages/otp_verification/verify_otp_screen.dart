@@ -165,7 +165,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         verifyOtpController.resetOtpField();
                       },
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(6.0),
                         child: PrimaryTextView(
                           text: "Clear Otp",
                           color: Colors.red,
@@ -173,6 +173,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 12,),
                   OtpSubmitButton()
                 ],
               )
