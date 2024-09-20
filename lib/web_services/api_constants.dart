@@ -1,7 +1,6 @@
 class ApiConstants {
-
-
   static String appUrl = "https://api.otmsystem.com/v1";
+
   // static String appUrl = "https://apidev.otmsystem.com/v1";
 
   // static String appUrl = "https://dev.otmsystem.com/api/v1";

@@ -190,7 +190,6 @@ class StockListController extends GetxController
       for (int i = 0; i < productList.length; i++) {
         String mBarcodeText = "";
         var listBarcodes = [];
-
         if (!StringHelper.isEmptyString(productList[i].barcode_text)) {
           mBarcodeText = productList[i].barcode_text!;
           listBarcodes.addAll(
@@ -395,6 +394,10 @@ class StockListController extends GetxController
         ProductInfo item = response.info![i];
         var list = StringHelper.getListFromCommaSeparateString(
             item.barcode_text ?? "");
+        // if (!StringHelper.isEmptyString(mBarCode) &&
+        //     list.contains(mBarCode)) {
+        //
+        // }
         list.add(mBarCode);
         String newBarcode = StringHelper.getCommaSeparatedStringIds(list);
         if (item.id == info.id) {
@@ -879,11 +882,14 @@ class StockListController extends GetxController
         }
       } else {
         for (var info in response.info!) {
-          if (stockCountType == 1 || stockCountType == 2) {
-            if (info.stock_status_id == 1 || info.stock_status_id == 2) {
-              tempList.add(info);
-            }
-          } else if (info.stock_status_id == stockCountType) {
+          // if (stockCountType == 1 || stockCountType == 2) {
+          //   if (info.stock_status_id == 1 || info.stock_status_id == 2) {
+          //     tempList.add(info);
+          //   }
+          // } else if (info.stock_status_id == stockCountType) {
+          //   tempList.add(info);
+          // }
+          if (info.stock_status_id == stockCountType) {
             tempList.add(info);
           }
         }
@@ -1149,6 +1155,7 @@ class StockListController extends GetxController
     map["data"] = jsonEncode(listProducts);
     multi.FormData formData = multi.FormData.fromMap(map);
     for (int i = 0; i < listProducts.length; i++) {
+      print("Barcodes:::${listProducts[i].barcode_text}");
       var listFiles = <FilesInfo>[];
       if (!StringHelper.isEmptyList(listProducts[i].temp_images)) {
         for (int j = 0; j < listProducts[i].temp_images!.length; j++) {

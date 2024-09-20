@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
@@ -15,7 +14,6 @@ import 'package:otm_inventory/widgets/card_view.dart';
 import '../../../../res/colors.dart';
 import '../../../../utils/app_storage.dart';
 import '../../../../widgets/CustomProgressbar.dart';
-import '../../../../widgets/PrimaryBorderButton.dart';
 import '../../../../widgets/text/PrimaryTextView.dart';
 import '../../widgets/purchase_order_count_item.dart';
 
@@ -106,11 +104,8 @@ class _HomeTabState extends State<HomeTab> {
                                 ),
                                 DashboardStockCountItem(
                                   title: 'in_stock'.tr,
-                                  value:
-                                      (dashboardController.mInStockCount.value +
-                                              dashboardController
-                                                  .mLowStockCount.value)
-                                          .toString(),
+                                  value: dashboardController.mInStockCount.value
+                                      .toString(),
                                   valueColor: Colors.green,
                                   onPressed: () {
                                     // dashboardController.onClickInStockItem();
@@ -119,16 +114,16 @@ class _HomeTabState extends State<HomeTab> {
                                   },
                                 ),
 
-                                // DashboardStockCountItem(
-                                //   title: 'low_stock'.tr,
-                                //   value: dashboardController.mLowStockCount
-                                //       .toString(),
-                                //   valueColor: Colors.orange,
-                                //   onPressed: () {
-                                //     dashboardController.onClickStockItem(
-                                //         AppConstants.stockCountType.lowStock);
-                                //   },
-                                // ),
+                                DashboardStockCountItem(
+                                  title: 'low_stock'.tr,
+                                  value: dashboardController.mLowStockCount
+                                      .toString(),
+                                  valueColor: Colors.orange,
+                                  onPressed: () {
+                                    dashboardController.onClickStockItem(
+                                        AppConstants.stockCountType.lowStock);
+                                  },
+                                ),
 
                                 DashboardStockCountItem(
                                   title: 'out_of_stock'.tr,
@@ -141,15 +136,20 @@ class _HomeTabState extends State<HomeTab> {
                                   },
                                 ),
 
-                                DashboardStockCountItem(
-                                  title: 'minus_stock'.tr,
-                                  value: dashboardController.mMinusStockCount
-                                      .toString(),
-                                  valueColor: Colors.red,
-                                  onPressed: () {
-                                    dashboardController.onClickStockItem(
-                                        AppConstants.stockCountType.minusStock);
-                                  },
+                                Visibility(
+                                  visible:
+                                      dashboardController.mMinusStockCount > 0,
+                                  child: DashboardStockCountItem(
+                                    title: 'minus_stock'.tr,
+                                    value: dashboardController.mMinusStockCount
+                                        .toString(),
+                                    valueColor: Colors.red,
+                                    onPressed: () {
+                                      dashboardController.onClickStockItem(
+                                          AppConstants
+                                              .stockCountType.minusStock);
+                                    },
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 10,

@@ -68,7 +68,7 @@ class StockEditQuantityController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
-    print("getCurrentTime():"+getCurrentTime());
+    print("getCurrentTime():" + getCurrentTime());
     checkInternetSpeed();
     var arguments = Get.arguments;
     // quantityController.value.text = "1";
@@ -531,7 +531,6 @@ class StockEditQuantityController extends GetxController
 
   Future<void> onUpdateQuantityClick(bool isDeduct) async {
     if (formKey.currentState!.validate() && !isApiRunning.value) {
-      print("if call");
       isApiRunning.value = true;
       String note = noteController.value.text.toString().trim();
       String qtyString = quantityController.value.text.toString().trim();
@@ -554,14 +553,14 @@ class StockEditQuantityController extends GetxController
 
       bool isInternet = await AppUtils.interNetCheck();
       // if (!isApiRunning.value) {
-        if (isInternet && transferRate > 1) {
-          storeStockQuantityApi(true, productId.toString(), finalQty, note,
-              price, date, isDeduct ? "remove" : "add");
-        } else {
-          storeDataOffline(isDeduct, finalQty, note);
-        }
+      if (isInternet && transferRate > 1) {
+        storeStockQuantityApi(true, productId.toString(), finalQty, note, price,
+            date, isDeduct ? "remove" : "add");
+      } else {
+        storeDataOffline(isDeduct, finalQty, note);
+      }
       // }
-    }else{
+    } else {
       print("else call");
     }
   }
@@ -721,17 +720,16 @@ class StockEditQuantityController extends GetxController
     speedTest.startTesting(
       useFastApi: true,
       //true(default)
-      onStarted: () {
-      },
+      onStarted: () {},
       onCompleted: (TestResult download, TestResult upload) {
-        print("onCompleted");
+        // print("onCompleted");
         checkInternetSpeed();
       },
       onProgress: (double percent, TestResult data) {
         transferRate = data.transferRate;
-        print("percent:" + percent.toString());
-        print("transferRate:" + transferRate.toString());
-        print("unit:" + data.unit.toString());
+        // print("percent:" + percent.toString());
+        // print("transferRate:" + transferRate.toString());
+        // print("unit:" + data.unit.toString());
       },
       onError: (String errorMessage, String speedTestError) {
         checkInternetSpeed();
