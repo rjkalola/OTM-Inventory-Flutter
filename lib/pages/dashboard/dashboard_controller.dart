@@ -596,11 +596,13 @@ class DashboardController extends GetxController
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             if (isLocalProductsAvailable()) {
+              AppStorage().clearStoredStock();
               storeLocalProducts(isProgress, getLocalStoredProduct());
             } else {
               if (isProgress)
                 AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
-              AppStorage().clearStoredStockList();
+              AppStorage().clearStoredStock();
+              AppStorage().clearStoredProduct();
               getAllStockListApi(isProgress);
             }
           } else {
@@ -662,7 +664,8 @@ class DashboardController extends GetxController
           if (response.IsSuccess!) {
             if (isProgress)
               AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
-            AppStorage().clearStoredStockList();
+            AppStorage().clearStoredStock();
+            AppStorage().clearStoredProduct();
             getAllStockListApi(true);
           } else {
             // AppUtils.showSnackBarMessage(response.Message!);

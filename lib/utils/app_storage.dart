@@ -322,8 +322,11 @@ class AppStorage extends GetxController {
     }
   }
 
-  void clearStoredStockList() {
+  void clearStoredStock(){
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
+  }
+
+  void clearStoredProduct() {
     if (getStockData() != null) {
       ProductListResponse response = getStockData()!;
       if (!StringHelper.isEmptyList(response.info!)) {

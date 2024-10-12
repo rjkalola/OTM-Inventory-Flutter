@@ -1119,12 +1119,15 @@ class StockListController extends GetxController
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             if (productCount > 0) {
+              AppStorage().clearStoredStock();
+              setTotalCountButtons();
               storeLocalProducts(
                   isProgress, getLocalStoredProduct(), isInitial);
             } else {
               if (isProgress)
                 AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
-              AppStorage().clearStoredStockList();
+              AppStorage().clearStoredStock();
+              AppStorage().clearStoredProduct();
               setTotalCountButtons();
               getAllStockListApi(false, isInitial);
               // setOfflineData();
@@ -1188,7 +1191,8 @@ class StockListController extends GetxController
           if (response.IsSuccess!) {
             if (isProgress)
               AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
-            AppStorage().clearStoredStockList();
+            AppStorage().clearStoredStock();
+            AppStorage().clearStoredProduct();
             setTotalCountButtons();
             getAllStockListApi(false, false);
             // setOfflineData();
