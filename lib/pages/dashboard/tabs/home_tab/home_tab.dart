@@ -95,8 +95,13 @@ class _HomeTabState extends State<HomeTab> {
                                     : Container(),
                                 DashboardStockCountItem(
                                   title: 'all'.tr,
-                                  value: dashboardController.mAllStockCount
-                                      .toString(),
+                                  // value: dashboardController.mAllStockCount
+                                  //     .toString(),
+                                  value:
+                                      (dashboardController.mInStockCount.value +
+                                              dashboardController
+                                                  .mLowStockCount.value)
+                                          .toString(),
                                   valueColor: Colors.green,
                                   onPressed: () {
                                     dashboardController.onClickAllStockItem();

@@ -271,7 +271,9 @@ class DashboardController extends GetxController
 
   Future<void> onClickAllStockItem() async {
     var arguments = {
+      AppConstants.intentKey.allStockType: true,
       AppConstants.intentKey.title: 'stocks'.tr,
+      AppConstants.intentKey.count: (mInStockCount.value + mLowStockCount.value)
     };
     Get.offNamed(AppRoutes.stockListScreen, arguments: arguments);
   }

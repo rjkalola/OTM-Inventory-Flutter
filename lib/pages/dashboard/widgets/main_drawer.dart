@@ -225,7 +225,7 @@ class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
     } else {
       if (Get.currentRoute == AppRoutes.stockListScreen &&
           routPath == AppRoutes.stockListScreen) {
-        Get.put(StockListController()).initialDataSet(0, true);
+        Get.put(StockListController()).initialDataSet(0,false, true);
         Get.back();
         // StockListController().getStockListApi(true, false, "", true, true);
       } else {

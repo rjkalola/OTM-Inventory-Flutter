@@ -65,8 +65,7 @@ class StockListController extends GetxController
       mSelectedProductId = 0,
       mSelectedLocalId = 0;
   var mIsLastPage = false;
-
-  // , allStockType = false;
+  var allStockType = false;
   var mBarCode = "", _title = "";
   late ScrollController controller;
 
@@ -85,27 +84,28 @@ class StockListController extends GetxController
     var arguments = Get.arguments;
     if (arguments != null) {
       stockCountType = arguments[AppConstants.intentKey.stockCountType] ?? 0;
-      // allStockType = arguments[AppConstants.intentKey.allStockType] ?? false;
+      allStockType = arguments[AppConstants.intentKey.allStockType] ?? false;
       _title = arguments[AppConstants.intentKey.title] ?? 'stocks'.tr;
       mCount.value = arguments[AppConstants.intentKey.count] ?? 0;
     } else {
       mCount.value = 0;
       _title = 'stocks'.tr;
     }
-    initialDataSet(stockCountType, false);
+    initialDataSet(stockCountType, allStockType, false);
   }
 
-  initialDataSet(int stockCountType, bool isDrawerClick) {
+  initialDataSet(int stockCountType, bool allStockType, isDrawerClick) {
     searchController.value.clear();
     isClearVisible.value = false;
     if (isDrawerClick) {
       mSupplierCategoryFilter.value = "";
       stockCountType = 0;
-      // allStockType = false;
+      allStockType = false;
       _title = 'stocks'.tr;
     }
     this.stockCountType = stockCountType;
-    if (stockCountType != 0) {
+    this.allStockType = allStockType;
+    if (stockCountType != 0 || allStockType) {
       mSupplierCategoryFilter.value = "-";
       // if (mCount > 0) {
       //   mTitle.value = "${mTitle.value} ($mCount)";
@@ -472,7 +472,7 @@ class StockListController extends GetxController
     if (clearFilter) {
       mSupplierCategoryFilter.value = "";
       stockCountType = 0;
-      // allStockType = false;
+      allStockType = false;
       _title = 'stocks'.tr;
       // mTitle.value = 'stocks'.tr;
     }
@@ -869,7 +869,9 @@ class StockListController extends GetxController
     if (AppStorage().getStockData() != null) {
       ProductListResponse response = AppStorage().getStockData()!;
       tempList.clear();
-      if (stockCountType == 0) {
+      print("stockCountType:" + stockCountType.toString());
+      print("allStockType:" + allStockType.toString());
+      if (stockCountType == 0 && !allStockType) {
         if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value) &&
             mSupplierCategoryFilter.value != "-") {
           final jsonMap = json.decode(mSupplierCategoryFilter.value);
@@ -882,6 +884,13 @@ class StockListController extends GetxController
         }
       } else {
         for (var info in response.info!) {
+          if (allStockType) {
+            if (info.stock_status_id == 1 || info.stock_status_id == 2) {
+              tempList.add(info);
+            }
+          } else if (info.stock_status_id == stockCountType) {
+            tempList.add(info);
+          }
           // if (stockCountType == 1 || stockCountType == 2) {
           //   if (info.stock_status_id == 1 || info.stock_status_id == 2) {
           //     tempList.add(info);
@@ -889,9 +898,6 @@ class StockListController extends GetxController
           // } else if (info.stock_status_id == stockCountType) {
           //   tempList.add(info);
           // }
-          if (info.stock_status_id == stockCountType) {
-            tempList.add(info);
-          }
         }
       }
 
