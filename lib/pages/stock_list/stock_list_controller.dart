@@ -105,7 +105,7 @@ class StockListController extends GetxController
     }
     this.stockCountType = stockCountType;
     this.allStockType = allStockType;
-    if (stockCountType != 0 || allStockType) {
+    if (stockCountType != 0) {
       mSupplierCategoryFilter.value = "-";
       // if (mCount > 0) {
       //   mTitle.value = "${mTitle.value} ($mCount)";
@@ -871,7 +871,7 @@ class StockListController extends GetxController
       tempList.clear();
       print("stockCountType:" + stockCountType.toString());
       print("allStockType:" + allStockType.toString());
-      if (stockCountType == 0 && !allStockType) {
+      if (stockCountType == 0) {
         if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value) &&
             mSupplierCategoryFilter.value != "-") {
           final jsonMap = json.decode(mSupplierCategoryFilter.value);
@@ -884,7 +884,7 @@ class StockListController extends GetxController
         }
       } else {
         for (var info in response.info!) {
-          if (allStockType) {
+          if (stockCountType == 1) {
             if (info.stock_status_id == 1 || info.stock_status_id == 2) {
               tempList.add(info);
             }

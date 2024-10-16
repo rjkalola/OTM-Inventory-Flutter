@@ -241,7 +241,8 @@ class DashboardController extends GetxController
     int count = 0;
     if (stockCountType == 1) {
       title = 'in_stock'.tr;
-      count = (mInStockCount.value + mLowStockCount.value);
+      // count = (mInStockCount.value + mLowStockCount.value);
+      count = mInStockCount.value;
     } else if (stockCountType == 2) {
       title = 'low_stock'.tr;
       count = mLowStockCount.value;
@@ -273,7 +274,7 @@ class DashboardController extends GetxController
     var arguments = {
       AppConstants.intentKey.allStockType: true,
       AppConstants.intentKey.title: 'stocks'.tr,
-      AppConstants.intentKey.count: (mInStockCount.value + mLowStockCount.value)
+      AppConstants.intentKey.count: mAllStockCount.value
     };
     Get.offNamed(AppRoutes.stockListScreen, arguments: arguments);
   }
