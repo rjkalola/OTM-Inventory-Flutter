@@ -60,11 +60,16 @@ class _StockListScreenState extends State<StockListScreen> {
                   child: FloatingActionButton.extended(
                     backgroundColor: defaultAccentColor,
                     onPressed: () {
-                      stockListController.onCLickUploadData(
-                          true,
-                          false,
-                          stockListController.localStockCount(),
-                          stockListController.localProductCount());
+                      if(!stockListController.isUploadInProgress.value) {
+                        print("....Button Clicked.....");
+                        stockListController.isUploadInProgress.value = true;
+                        print("....stockListController.isUploadInProgress....."+stockListController.isUploadInProgress.value.toString());
+                        stockListController.onCLickUploadData(
+                            true,
+                            false,
+                            stockListController.localStockCount(),
+                            stockListController.localProductCount());
+                      }
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6)),

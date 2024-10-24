@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart' as multi;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
@@ -588,7 +589,7 @@ class DashboardController extends GetxController
     map["app_data"] = data;
     map["store_id"] = AppStorage.storeId.toString();
     multi.FormData formData = multi.FormData.fromMap(map);
-    print(map.toString());
+    if (kDebugMode)print(map.toString());
     if (isProgress) isLoading.value = true;
     StockListRepository().storeLocalStock(
       formData: formData,

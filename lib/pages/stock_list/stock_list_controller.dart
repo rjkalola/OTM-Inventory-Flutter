@@ -43,7 +43,8 @@ class StockListController extends GetxController
   final storeNameController = TextEditingController().obs;
   final isPendingDataCount = false.obs,
       isUpToDateData = false.obs,
-      isClearVisible = false.obs;
+      isClearVisible = false.obs,
+      isUploadInProgress = false.obs;
   final totalPendingCount = 0.obs, mCount = 0.obs;
   final pendingDataCountButtonTitle = "".obs, pullToRefreshTime = "".obs;
 
@@ -1091,6 +1092,7 @@ class StockListController extends GetxController
   Future<void> onCLickUploadData(
       bool isProgress, bool isInitial, int stockCount, int productCount) async {
     bool isInternet = await AppUtils.interNetCheck();
+    isUploadInProgress.value = true;
     if (isInternet) {
       getLastProductUpdateTimeAPI(false);
       getFiltersListApi();
@@ -1104,6 +1106,7 @@ class StockListController extends GetxController
         getAllStockListApi(isProgress, isInitial);
       }
     } else {
+      isUploadInProgress.value = false;
       if (isProgress) AppUtils.showSnackBarMessage('no_internet'.tr);
     }
   }
@@ -1130,6 +1133,7 @@ class StockListController extends GetxController
               storeLocalProducts(
                   isProgress, getLocalStoredProduct(), isInitial);
             } else {
+              isUploadInProgress.value = false;
               if (isProgress)
                 AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
               AppStorage().clearStoredStock();
@@ -1195,6 +1199,7 @@ class StockListController extends GetxController
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
+            isUploadInProgress.value = false;
             if (isProgress)
               AppUtils.showSnackBarMessage('msg_stock_data_uploaded'.tr);
             AppStorage().clearStoredStock();
