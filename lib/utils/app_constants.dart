@@ -124,6 +124,7 @@ class StockCountType {
   final int lowStock = 2;
   final int outOfStock = 3;
   final int minusStock = 4;
+  final int finishingStock = 5;
 }
 
 class PurchaseOrderStatus {

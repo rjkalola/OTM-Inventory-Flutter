@@ -889,6 +889,14 @@ class StockListController extends GetxController
             if (info.stock_status_id == 1 || info.stock_status_id == 2) {
               tempList.add(info);
             }
+          } else if (stockCountType == 5) {
+            int cutOff = !StringHelper.isEmptyString(info.cutoff)
+                ? int.parse(info.cutoff!)
+                : 0;
+            int qty = info.qty ?? 0;
+            if(cutOff != 0 && qty <= cutOff){
+              tempList.add(info);
+            }
           } else if (info.stock_status_id == stockCountType) {
             tempList.add(info);
           }

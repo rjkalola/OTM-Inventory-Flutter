@@ -52,17 +52,27 @@ class DashboardController extends GetxController
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs;
-  final title = 'dashboard'.tr.obs, downloadTitle = 'download'.tr.obs;
+  final title = 'dashboard'.tr.obs,
+      downloadTitle = 'download'.tr.obs,
+      allTotalAmount = "".obs,
+      inStockAmount = "".obs,
+      lowStockAmount = "".obs,
+      outOfStockAmount = "".obs,
+      minusStockAmount = "".obs,
+      finishingAmount = "".obs,
+      currencySymbol = "".obs;
+
   final selectedIndex = 0.obs,
       mAllStockCount = 0.obs,
       mInStockCount = 0.obs,
       mLowStockCount = 0.obs,
       mOutOfStockCount = 0.obs,
       mMinusStockCount = 0.obs,
+      mFinishingProductsCount = 0.obs,
+      mCancelledCount = 0.obs,
       mIssuedCount = 0.obs,
       mReceivedCount = 0.obs,
-      mPartiallyReceivedCount = 0.obs,
-      mCancelledCount = 0.obs;
+      mPartiallyReceivedCount = 0.obs;
 
   double downloadRate = 0;
   double uploadRate = 0;
@@ -253,6 +263,9 @@ class DashboardController extends GetxController
     } else if (stockCountType == 4) {
       title = 'minus_stock'.tr;
       count = mMinusStockCount.value;
+    } else if (stockCountType == 5) {
+      title = 'finishing_products'.tr;
+      count = mFinishingProductsCount.value;
     }
     var arguments = {
       AppConstants.intentKey.stockCountType: stockCountType,
@@ -417,10 +430,19 @@ class DashboardController extends GetxController
       mLowStockCount.value = response.lowStockCount ?? 0;
       mOutOfStockCount.value = response.outOfStockCount ?? 0;
       mMinusStockCount.value = response.minusStockCount ?? 0;
+      mFinishingProductsCount.value = response.finishing_products ?? 0;
       mIssuedCount.value = response.issuedCount ?? 0;
       mReceivedCount.value = response.receivedCount ?? 0;
       mPartiallyReceivedCount.value = response.partiallyReceived ?? 0;
       mCancelledCount.value = response.cancelledCount ?? 0;
+
+      currencySymbol.value = response.currency_symbol ?? "";
+      allTotalAmount.value = "${currencySymbol.value}${response.all_total_amount ?? ""}";
+      inStockAmount.value = "${currencySymbol.value}${response.in_stock_count_total_amount ?? ""}";
+      lowStockAmount.value = "${currencySymbol.value}${response.low_stock_count_total_amount ?? ""}";
+      outOfStockAmount.value = "${currencySymbol.value}${response.out_of_stock_count_total_amount ?? ""}";
+      minusStockAmount.value = "${currencySymbol.value}${response.minus_stock_count_total_amount ?? ""}";
+      finishingAmount.value = "${currencySymbol.value}${response.finishing_products_total_amount ?? ""}";
 
       if (AppStorage().getStockData() != null &&
           !StringHelper.isEmptyList(AppStorage().getStockData()!.info)) {
@@ -589,7 +611,7 @@ class DashboardController extends GetxController
     map["app_data"] = data;
     map["store_id"] = AppStorage.storeId.toString();
     multi.FormData formData = multi.FormData.fromMap(map);
-    if (kDebugMode)print(map.toString());
+    if (kDebugMode) print(map.toString());
     if (isProgress) isLoading.value = true;
     StockListRepository().storeLocalStock(
       formData: formData,
