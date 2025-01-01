@@ -248,7 +248,7 @@ class DashboardController extends GetxController
   }
 
   Future<void> onClickStockItem(int stockCountType) async {
-    String title = 'stocks'.tr;
+    String title = 'all_stocks'.tr;
     int count = 0;
     if (stockCountType == 1) {
       title = 'in_stock'.tr;
@@ -287,7 +287,7 @@ class DashboardController extends GetxController
   Future<void> onClickAllStockItem() async {
     var arguments = {
       AppConstants.intentKey.allStockType: true,
-      AppConstants.intentKey.title: 'stocks'.tr,
+      AppConstants.intentKey.title: 'all_stocks'.tr,
       AppConstants.intentKey.count: mAllStockCount.value
     };
     Get.offNamed(AppRoutes.stockListScreen, arguments: arguments);

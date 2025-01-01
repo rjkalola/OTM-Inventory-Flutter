@@ -60,7 +60,7 @@ class StockListController extends GetxController
       search = ''.obs,
       mSupplierCategoryFilter = ''.obs,
       downloadTitle = 'download'.tr.obs,
-      mTitle = 'stocks'.tr.obs;
+      mTitle = 'all_stocks'.tr.obs;
   var offset = 0,
       stockCountType = 0,
       mSelectedProductId = 0,
@@ -70,7 +70,7 @@ class StockListController extends GetxController
   var mBarCode = "", _title = "";
   late ScrollController controller;
 
-  // var mTitle = 'stocks'.tr.obs;
+  // var mTitle = 'all_stocks'.tr.obs;
 
   @override
   void onInit() async {
@@ -86,11 +86,11 @@ class StockListController extends GetxController
     if (arguments != null) {
       stockCountType = arguments[AppConstants.intentKey.stockCountType] ?? 0;
       allStockType = arguments[AppConstants.intentKey.allStockType] ?? false;
-      _title = arguments[AppConstants.intentKey.title] ?? 'stocks'.tr;
+      _title = arguments[AppConstants.intentKey.title] ?? 'all_stocks'.tr;
       mCount.value = arguments[AppConstants.intentKey.count] ?? 0;
     } else {
       mCount.value = 0;
-      _title = 'stocks'.tr;
+      _title = 'all_stocks'.tr;
     }
     initialDataSet(stockCountType, allStockType, false);
   }
@@ -102,7 +102,7 @@ class StockListController extends GetxController
       mSupplierCategoryFilter.value = "";
       stockCountType = 0;
       allStockType = false;
-      _title = 'stocks'.tr;
+      _title = 'all_stocks'.tr;
     }
     this.stockCountType = stockCountType;
     this.allStockType = allStockType;
@@ -161,6 +161,12 @@ class StockListController extends GetxController
                   element.barcode_text!
                       .toLowerCase()
                       .contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.supplier_code) &&
+                  element.supplier_code!
+                      .toLowerCase()
+                      .contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.uuid) &&
+                  element.uuid!.toLowerCase().contains(value.toLowerCase())) ||
               (listCategories(element.categories!)
                   .contains(value.toLowerCase())))
           .toList();
@@ -474,8 +480,8 @@ class StockListController extends GetxController
       mSupplierCategoryFilter.value = "";
       stockCountType = 0;
       allStockType = false;
-      _title = 'stocks'.tr;
-      // mTitle.value = 'stocks'.tr;
+      _title = 'all_stocks'.tr;
+      // mTitle.value = 'all_stocks'.tr;
     }
     print("clearOffset:" + clearOffset.toString());
     print("clearFilter:" + clearFilter.toString());
@@ -894,7 +900,7 @@ class StockListController extends GetxController
                 ? int.parse(info.cutoff!)
                 : 0;
             int qty = info.qty ?? 0;
-            if(cutOff != 0 && qty <= cutOff){
+            if (cutOff != 0 && qty <= cutOff) {
               tempList.add(info);
             }
           } else if (info.stock_status_id == stockCountType) {

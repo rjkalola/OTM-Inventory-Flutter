@@ -101,7 +101,7 @@ class StockListView extends StatelessWidget {
                                     stockListController
                                         .productList[position].supplier_code),
                                 child: Text(
-                                    "${'code'.tr}: ${stockListController.productList[position].supplier_code ?? ""}",
+                                    "${stockListController.productList[position].supplier_code ?? ""}, ${stockListController.productList[position].uuid ?? ""}",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -168,15 +168,29 @@ class StockListView extends StatelessWidget {
           stockListController.productList[position].qty.toString()),
       child: SizedBox(
         width: 70,
-        child: Text(stockListController.productList[position].qty.toString(),
-            maxLines: 1,
-            textAlign: TextAlign.end,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: defaultAccentColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 18,
-            )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(stockListController.productList[position].qty.toString(),
+                maxLines: 1,
+                textAlign: TextAlign.end,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: defaultAccentColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                )),
+            Text(stockListController.productList[position].price ?? "",
+                maxLines: 1,
+                textAlign: TextAlign.end,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: secondaryLightTextColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                )),
+          ],
+        ),
       ),
     );
   }
