@@ -136,7 +136,7 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                             const EdgeInsets.all(0),
                                             () => {}),
                                         customTextView(
-                                            "${'code'.tr}: ${stockEditQuantityController.productInfo.value.supplier_code ?? ""}",
+                                            "${stockEditQuantityController.productInfo.value.supplier_code ?? ""}, ${stockEditQuantityController.productInfo.value.uuid ?? ""}",
                                             14,
                                             FontWeight.w400,
                                             primaryTextColorLight,
