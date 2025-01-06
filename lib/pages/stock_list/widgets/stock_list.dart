@@ -96,19 +96,35 @@ class StockListView extends StatelessWidget {
                               //         fontSize: 13,
                               //       )),
                               // ),
-                              Visibility(
-                                visible: !StringHelper.isEmptyString(
-                                    stockListController
-                                        .productList[position].supplier_code),
-                                child: Text(
-                                    "${stockListController.productList[position].supplier_code ?? ""}, ${stockListController.productList[position].uuid ?? ""}",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: secondaryLightTextColor,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 13,
-                                    )),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Visibility(
+                                    visible: !StringHelper.isEmptyString(
+                                        stockListController
+                                            .productList[position].supplier_code),
+                                    child: Text(
+                                        "${stockListController.productList[position].supplier_code ?? ""}, ${stockListController.productList[position].uuid ?? ""}",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          color: secondaryLightTextColor,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 13,
+                                        )),
+                                  ),
+                                  Text(stockListController.productList[position].price ?? "",
+                                      maxLines: 1,
+                                      textAlign: TextAlign.end,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        color: secondaryLightTextColor,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 13,
+                                      ))
+                                ],
                               ),
                             ],
                           ),
@@ -168,29 +184,15 @@ class StockListView extends StatelessWidget {
           stockListController.productList[position].qty.toString()),
       child: SizedBox(
         width: 70,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(stockListController.productList[position].qty.toString(),
-                maxLines: 1,
-                textAlign: TextAlign.end,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: defaultAccentColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                )),
-            Text(stockListController.productList[position].price ?? "",
-                maxLines: 1,
-                textAlign: TextAlign.end,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: secondaryLightTextColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 13,
-                )),
-          ],
-        ),
+        child: Text(stockListController.productList[position].qty.toString(),
+            maxLines: 1,
+            textAlign: TextAlign.end,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: defaultAccentColor,
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
+            )),
       ),
     );
   }

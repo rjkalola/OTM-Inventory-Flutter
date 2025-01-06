@@ -1180,9 +1180,12 @@ class StockListController extends GetxController
     Map<String, dynamic> map = {};
     map["store_id"] = AppStorage.storeId.toString();
     map["data"] = jsonEncode(listProducts);
+    print("JSON:" + jsonEncode(listProducts));
+    longInfo(jsonEncode(listProducts));
     multi.FormData formData = multi.FormData.fromMap(map);
     for (int i = 0; i < listProducts.length; i++) {
       print("Barcodes:::${listProducts[i].barcode_text}");
+      print("Price:::${listProducts[i].price ?? ""}");
       var listFiles = <FilesInfo>[];
       if (!StringHelper.isEmptyList(listProducts[i].temp_images)) {
         for (int j = 0; j < listProducts[i].temp_images!.length; j++) {
@@ -1238,6 +1241,14 @@ class StockListController extends GetxController
         }
       },
     );
+  }
+
+  void longInfo(String str) {
+    if (str.length > 4000) {
+      print(str.substring(0, 4000));
+      longInfo(str.substring(4000));
+    } else
+      print(str);
   }
 
   Future<void> getLastProductUpdateTimeAPI(bool isProgress) async {

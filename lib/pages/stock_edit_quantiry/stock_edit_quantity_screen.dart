@@ -135,13 +135,58 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                             primaryTextColor,
                                             const EdgeInsets.all(0),
                                             () => {}),
-                                        customTextView(
-                                            "${stockEditQuantityController.productInfo.value.supplier_code ?? ""}, ${stockEditQuantityController.productInfo.value.uuid ?? ""}",
-                                            14,
-                                            FontWeight.w400,
-                                            primaryTextColorLight,
-                                            const EdgeInsets.all(0),
-                                            () => {}),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Visibility(
+                                              visible:
+                                                  !StringHelper.isEmptyString(
+                                                      stockEditQuantityController
+                                                          .productInfo
+                                                          .value
+                                                          .supplier_code),
+                                              child: Text(
+                                                  "${stockEditQuantityController.productInfo.value.supplier_code ?? ""}, ${stockEditQuantityController.productInfo.value.uuid ?? ""}",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color:
+                                                        secondaryLightTextColor,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 13,
+                                                  )),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(right: 14),
+                                              child: Text(
+                                                  stockEditQuantityController
+                                                          .productInfo
+                                                          .value
+                                                          .price ??
+                                                      "",
+                                                  maxLines: 1,
+                                                  textAlign: TextAlign.end,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color:
+                                                        secondaryLightTextColor,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 13,
+                                                  )),
+                                            )
+                                          ],
+                                        ),
+                                        // customTextView(
+                                        //     "${stockEditQuantityController.productInfo.value.supplier_code ?? ""}, ${stockEditQuantityController.productInfo.value.uuid ?? ""}",
+                                        //     14,
+                                        //     FontWeight.w400,
+                                        //     primaryTextColorLight,
+                                        //     const EdgeInsets.all(0),
+                                        //     () => {}),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
