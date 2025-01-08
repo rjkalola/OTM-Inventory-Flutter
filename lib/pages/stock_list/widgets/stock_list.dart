@@ -98,13 +98,14 @@ class StockListView extends StatelessWidget {
                               // ),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Visibility(
                                     visible: !StringHelper.isEmptyString(
                                         stockListController
-                                            .productList[position].supplier_code),
+                                            .productList[position]
+                                            .supplier_code),
                                     child: Text(
                                         "${stockListController.productList[position].supplier_code ?? ""}, ${stockListController.productList[position].uuid ?? ""}",
                                         maxLines: 1,
@@ -115,7 +116,8 @@ class StockListView extends StatelessWidget {
                                           fontSize: 13,
                                         )),
                                   ),
-                                  Text(stockListController.productList[position].price ?? "",
+                                  Text(
+                                      "${stockListController.productList[position].currency ?? ""}${stockListController.productList[position].price ?? ""}",
                                       maxLines: 1,
                                       textAlign: TextAlign.end,
                                       overflow: TextOverflow.ellipsis,

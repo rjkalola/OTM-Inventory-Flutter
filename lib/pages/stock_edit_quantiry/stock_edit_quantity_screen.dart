@@ -161,16 +161,14 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                                   )),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(right: 14),
+                                              padding: const EdgeInsets.only(
+                                                  right: 14),
                                               child: Text(
-                                                  stockEditQuantityController
-                                                          .productInfo
-                                                          .value
-                                                          .price ??
-                                                      "",
+                                                  "${stockEditQuantityController.productInfo.value.currency ?? ""}${stockEditQuantityController.productInfo.value.price ?? ""}",
                                                   maxLines: 1,
                                                   textAlign: TextAlign.end,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: const TextStyle(
                                                     color:
                                                         secondaryLightTextColor,
