@@ -27,57 +27,60 @@ class _LoginScreenState extends State<LoginScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: 'login'.tr,
-          isCenterTitle: true,
-          isBack: false,
-        ),
-        body: Obx(() {
-          return ModalProgressHUD(
-              inAsyncCall: loginController.isLoading.value,
-              opacity: 0,
-              progressIndicator: const CustomProgressbar(),
-              child: loginController.isInternetNotAvailable.value
-                  ? const Center(
-                      child: Text("No Internet"),
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                          const Divider(
-                            thickness: 1,
-                            height: 1,
-                            color: dividerColor,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 24, 0, 0),
-                            child: Text('phone_number'.tr,
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                  color: Colors.black45,
-                                  fontSize: 12,
-                                )),
-                          ),
-                          Form(
-                            key: loginController.formKey,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                PhoneExtensionFieldWidget(),
-                                PhoneTextFieldWidget(),
-                              ],
+    return Container(
+      color: backgroundColor,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: 'login'.tr,
+            isCenterTitle: true,
+            isBack: false,
+          ),
+          body: Obx(() {
+            return ModalProgressHUD(
+                inAsyncCall: loginController.isLoading.value,
+                opacity: 0,
+                progressIndicator: const CustomProgressbar(),
+                child: loginController.isInternetNotAvailable.value
+                    ? const Center(
+                        child: Text("No Internet"),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            const Divider(
+                              thickness: 1,
+                              height: 1,
+                              color: dividerColor,
                             ),
-                          ),
-                          LoginButtonWidget(),
-                          const SizedBox(height: 20,),
-                          LoginUsersList()
-                        ]));
-        }),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 24, 0, 0),
+                              child: Text('phone_number'.tr,
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 12,
+                                  )),
+                            ),
+                            Form(
+                              key: loginController.formKey,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  PhoneExtensionFieldWidget(),
+                                  PhoneTextFieldWidget(),
+                                ],
+                              ),
+                            ),
+                            LoginButtonWidget(),
+                            const SizedBox(height: 20,),
+                            LoginUsersList()
+                          ]));
+          }),
+        ),
       ),
     );
   }

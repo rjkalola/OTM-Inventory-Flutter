@@ -60,6 +60,7 @@ class DialogIdentifier {
   final String deleteProductImage = 'DELETE_PRODUCT_IMAGE';
   final String quantityNote = 'QUANTITY_NOTE';
   final String deleteBarcode = 'DELETE_BARCODE';
+  final String addProductOptionsDialog = 'addProductOptionsDialog';
 }
 
 class SharedPreferenceKey {
@@ -104,6 +105,8 @@ class Action {
   final String mobilePrint = "MobilePrint";
   final String viewPdf = "VIEW_PDF";
   final String downloadPdf = "DOWNLOAD_PDF";
+  final String importProducts = "IMPORT_PRODUCTS";
+  final String addProductManually = "ADD_PRODUCT_MANUALLY";
 }
 
 class FromScreens {

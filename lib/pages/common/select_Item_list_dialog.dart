@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/web_services/response/module_info.dart';
-import 'package:otm_inventory/widgets/PrimaryBorderButton.dart';
 
 import '../../res/colors.dart';
 import 'listener/select_item_listener.dart';
@@ -47,22 +46,26 @@ class SelectItemListDialogState extends State<SelectItemListDialog> {
                   color: backgroundColor,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(0))),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 18),
-                    ),
-                  ),
-                ),
-                const Divider(
-                  thickness: 1,
-                  height: 1,
-                  color: dividerColor,
-                ),
+                !StringHelper.isEmptyString(title)
+                    ? Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                          child: Text(
+                            title,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 18),
+                          ),
+                        ),
+                      )
+                    : Container(),
+                !StringHelper.isEmptyString(title)
+                    ? Divider(
+                        thickness: 1,
+                        height: 1,
+                        color: dividerColor,
+                      )
+                    : Container(),
                 setDropdownList(dialogType, listener),
               ]),
             ));
@@ -80,8 +83,9 @@ class SelectItemListDialogState extends State<SelectItemListDialog> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
               child: InkWell(
                 onTap: () {
-                  listener.onSelectItem(i, 0, list[i].name??"", list[i].action??"");
                   Get.back();
+                  listener.onSelectItem(
+                      i, 0, list[i].name ?? "", list[i].action ?? "");
                 },
                 child: SizedBox(
                   child: Text(

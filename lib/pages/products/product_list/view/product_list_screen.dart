@@ -48,115 +48,118 @@ class _ProductListScreenState extends State<ProductListScreen> {
           }
         }
       },
-      child: Obx(() => SafeArea(
-              child: Scaffold(
-            backgroundColor: backgroundColor,
-            appBar: BaseAppBar(
-                appBar: AppBar(),
-                title: 'products'.tr,
-                isCenterTitle: false,
-                isBack: true,
-                widgets: actionButtons()),
-            drawer: MainDrawer(),
-            bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-            body: ModalProgressHUD(
-              inAsyncCall: productListController.isLoading.value,
-              opacity: 0,
-              progressIndicator: const CustomProgressbar(),
-              child: Column(children: [
-                const Divider(
-                  thickness: 1,
-                  height: 1,
-                  color: dividerColor,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Expanded(child: SearchProductWidget()),
-                    // QrCodeIcon()
-                  ],
-                ),
-                // Align(
-                //     alignment: Alignment.centerLeft,
-                //     child: Icon(
-                //       Icons.keyboard_double_arrow_down_outlined,
-                //       size: 30,
-                //     )),
-                Visibility(
-                  visible: productListController.isPrintEnable.value,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+      child: Obx(() => Container(
+            color: backgroundColor,
+            child: SafeArea(
+                child: Scaffold(
+              backgroundColor: backgroundColor,
+              appBar: BaseAppBar(
+                  appBar: AppBar(),
+                  title: 'products'.tr,
+                  isCenterTitle: false,
+                  isBack: true,
+                  widgets: actionButtons()),
+              drawer: MainDrawer(),
+              bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+              body: ModalProgressHUD(
+                inAsyncCall: productListController.isLoading.value,
+                opacity: 0,
+                progressIndicator: const CustomProgressbar(),
+                child: Column(children: [
+                  const Divider(
+                    thickness: 1,
+                    height: 1,
+                    color: dividerColor,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      PrimaryTextView(
-                        text: productListController.isCheckAllPrint.value
-                            ? 'unselect_all'.tr
-                            : 'select_all'.tr,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        softWrap: true,
-                      ),
-                      Checkbox(
-                          activeColor: defaultAccentColor,
-                          value: productListController.isCheckAllPrint.value,
-                          onChanged: (isCheck) {
-                            productListController.isCheckAllPrint.value =
-                                isCheck!;
-                            if (isCheck) {
-                              productListController.checkAllProducts();
-                            } else {
-                              productListController.unCheckAllProducts();
-                            }
-                          })
+                    children: [
+                      const Expanded(child: SearchProductWidget()),
+                      // QrCodeIcon()
                     ],
                   ),
-                ),
-                Visibility(
-                  visible: !productListController.isPrintEnable.value,
-                  child: const SizedBox(
-                    height: 6,
-                  ),
-                ),
-                productListController.productList.isNotEmpty
-                    ? ProductListView()
-                    : ProductListEmptyView(),
-                const SizedBox(
-                  height: 6,
-                ),
-                Visibility(
-                  visible: productListController.isLoadMore.value,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  // Align(
+                  //     alignment: Alignment.centerLeft,
+                  //     child: Icon(
+                  //       Icons.keyboard_double_arrow_down_outlined,
+                  //       size: 30,
+                  //     )),
+                  Visibility(
+                    visible: productListController.isPrintEnable.value,
                     child: Row(
-                      children: [
-                        const SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator()),
-                        const SizedBox(
-                          width: 14,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        PrimaryTextView(
+                          text: productListController.isCheckAllPrint.value
+                              ? 'unselect_all'.tr
+                              : 'select_all'.tr,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          softWrap: true,
                         ),
-                        Text(
-                          'loading_more_'.tr,
-                          style: const TextStyle(fontSize: 17),
-                        )
+                        Checkbox(
+                            activeColor: defaultAccentColor,
+                            value: productListController.isCheckAllPrint.value,
+                            onChanged: (isCheck) {
+                              productListController.isCheckAllPrint.value =
+                                  isCheck!;
+                              if (isCheck) {
+                                productListController.checkAllProducts();
+                              } else {
+                                productListController.unCheckAllProducts();
+                              }
+                            })
                       ],
                     ),
                   ),
-                )
-              ]),
-              // child: RefreshIndicator(
-              //   onRefresh: () async {
-              //     await productListController.getProductListApi(false, "0", true);
-              //   },
-              // ),
-            ),
-          ))),
+                  Visibility(
+                    visible: !productListController.isPrintEnable.value,
+                    child: const SizedBox(
+                      height: 6,
+                    ),
+                  ),
+                  productListController.productList.isNotEmpty
+                      ? ProductListView()
+                      : ProductListEmptyView(),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  Visibility(
+                    visible: productListController.isLoadMore.value,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator()),
+                          const SizedBox(
+                            width: 14,
+                          ),
+                          Text(
+                            'loading_more_'.tr,
+                            style: const TextStyle(fontSize: 17),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ]),
+                // child: RefreshIndicator(
+                //   onRefresh: () async {
+                //     await productListController.getProductListApi(false, "0", true);
+                //   },
+                // ),
+              ),
+            )),
+          )),
     );
   }
 
@@ -260,7 +263,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         child: IconButton(
           icon: const Icon(Icons.add, size: 24, color: primaryTextColor),
           onPressed: () {
-            productListController.addProductClick(null);
+            productListController.onClickPlusButton();
           },
         ),
       ),

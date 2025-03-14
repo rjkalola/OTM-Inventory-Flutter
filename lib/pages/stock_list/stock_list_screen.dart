@@ -33,133 +33,142 @@ class _StockListScreenState extends State<StockListScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return Obx(() => SafeArea(
-            child: Scaffold(
-          backgroundColor: backgroundColor,
-          appBar: BaseAppBar(
-              appBar: AppBar(),
-              title: stockListController.mTitle.value,
-              isCenterTitle: false,
-              isBack: true,
-              widgets: actionButtons()),
-          floatingActionButton: (stockListController.totalPendingCount.value ==
-                  0)
-              ? FloatingActionButton(
-                  mini: true,
-                  backgroundColor: Colors.green,
-                  tooltip: '',
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(45)),
-                  onPressed: () {
-                    AppUtils.showSnackBarMessage('data_is_up_to_date'.tr);
-                  },
-                  child: const Icon(Icons.check, color: Colors.white, size: 25),
-                )
-              : SizedBox(
-                  height: 40,
-                  child: FloatingActionButton.extended(
-                    backgroundColor: defaultAccentColor,
-                    onPressed: () {
-                      if(!stockListController.isUploadInProgress.value) {
-                        print("....Button Clicked.....");
-                        stockListController.isUploadInProgress.value = true;
-                        print("....stockListController.isUploadInProgress....."+stockListController.isUploadInProgress.value.toString());
-                        stockListController.onCLickUploadData(
-                            true,
-                            false,
-                            stockListController.localStockCount(),
-                            stockListController.localProductCount());
-                      }
-                    },
+    return Obx(() => Container(
+          color: backgroundColor,
+          child: SafeArea(
+              child: Scaffold(
+            backgroundColor: backgroundColor,
+            appBar: BaseAppBar(
+                appBar: AppBar(),
+                title: stockListController.mTitle.value,
+                isCenterTitle: false,
+                isBack: true,
+                widgets: actionButtons()),
+            floatingActionButton: (stockListController
+                        .totalPendingCount.value ==
+                    0)
+                ? FloatingActionButton(
+                    mini: true,
+                    backgroundColor: Colors.green,
+                    tooltip: '',
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
-                    label: Text(
-                      stockListController.totalPendingCount.value.toString(),
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                    icon: const Icon(Icons.autorenew_outlined,
-                        color: Colors.white, size: 24),
-                  ),
-                ),
-          drawer: MainDrawer(),
-          // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-          body: Column(
-            children: [
-              Expanded(
-                child: ModalProgressHUD(
-                  inAsyncCall: stockListController.isLoading.value,
-                  opacity: 0,
-                  progressIndicator: const CustomProgressbar(),
-                  child: RefreshIndicator(
-                      onRefresh: () async {
-                        stockListController.pullToRefreshTime.value = "";
-                        stockListController.pullToRefreshVisible.value = false;
-                        await stockListController.onCLickUploadData(
-                            true,
-                            true,
-                            stockListController.localStockCount(),
-                            stockListController.localProductCount());
+                        borderRadius: BorderRadius.circular(45)),
+                    onPressed: () {
+                      AppUtils.showSnackBarMessage('data_is_up_to_date'.tr);
+                    },
+                    child:
+                        const Icon(Icons.check, color: Colors.white, size: 25),
+                  )
+                : SizedBox(
+                    height: 40,
+                    child: FloatingActionButton.extended(
+                      backgroundColor: defaultAccentColor,
+                      onPressed: () {
+                        if (!stockListController.isUploadInProgress.value) {
+                          print("....Button Clicked.....");
+                          stockListController.isUploadInProgress.value = true;
+                          print(
+                              "....stockListController.isUploadInProgress....." +
+                                  stockListController.isUploadInProgress.value
+                                      .toString());
+                          stockListController.onCLickUploadData(
+                              true,
+                              false,
+                              stockListController.localStockCount(),
+                              stockListController.localProductCount());
+                        }
                       },
-                      child: Column(children: [
-                        const Divider(
-                          thickness: 1,
-                          height: 1,
-                          color: dividerColor,
-                        ),
-                        // const SizedBox(height:20,),
-                        // TextFieldSelectStore(),
-                        PullToRefreshView(),
-                        const SizedBox(
-                          height: 9,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            StockFilterIcon(),
-                            // StockFilterClearIcon(),
-                            const Expanded(child: SearchStockWidget()),
-                            QrCodeIcon()
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        stockListController.productList.isNotEmpty
-                            ? StockListView()
-                            : StockListEmptyView(),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Visibility(
-                          visible: stockListController.isLoadMore.value,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              children: [
-                                const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator()),
-                                const SizedBox(
-                                  width: 14,
-                                ),
-                                Text(
-                                  'loading_more_'.tr,
-                                  style: const TextStyle(fontSize: 17),
-                                )
-                              ],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6)),
+                      label: Text(
+                        stockListController.totalPendingCount.value.toString(),
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                      icon: const Icon(Icons.autorenew_outlined,
+                          color: Colors.white, size: 24),
+                    ),
+                  ),
+            drawer: MainDrawer(),
+            // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+            body: Column(
+              children: [
+                Expanded(
+                  child: ModalProgressHUD(
+                    inAsyncCall: stockListController.isLoading.value,
+                    opacity: 0,
+                    progressIndicator: const CustomProgressbar(),
+                    child: RefreshIndicator(
+                        onRefresh: () async {
+                          stockListController.pullToRefreshTime.value = "";
+                          stockListController.pullToRefreshVisible.value =
+                              false;
+                          await stockListController.onCLickUploadData(
+                              true,
+                              true,
+                              stockListController.localStockCount(),
+                              stockListController.localProductCount());
+                        },
+                        child: Column(children: [
+                          const Divider(
+                            thickness: 1,
+                            height: 1,
+                            color: dividerColor,
+                          ),
+                          // const SizedBox(height:20,),
+                          // TextFieldSelectStore(),
+                          PullToRefreshView(),
+                          const SizedBox(
+                            height: 9,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              StockFilterIcon(),
+                              // StockFilterClearIcon(),
+                              const Expanded(child: SearchStockWidget()),
+                              QrCodeIcon()
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          stockListController.productList.isNotEmpty
+                              ? StockListView()
+                              : StockListEmptyView(),
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Visibility(
+                            visible: stockListController.isLoadMore.value,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                children: [
+                                  const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator()),
+                                  const SizedBox(
+                                    width: 14,
+                                  ),
+                                  Text(
+                                    'loading_more_'.tr,
+                                    style: const TextStyle(fontSize: 17),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        // UploadStockButtonWidget()
-                      ])),
+                          // UploadStockButtonWidget()
+                        ])),
+                  ),
                 ),
-              ),
-              // CountButtonsView()
-            ],
-          ),
-        )));
+                // CountButtonsView()
+              ],
+            ),
+          )),
+        ));
   }
 
   List<Widget>? actionButtons() {

@@ -188,6 +188,10 @@ class Strings extends Translations {
           'enter_barcode': "Enter Barcode",
           'cutoff': "Low Stock Indicator",
           'all_stocks': "All Stocks",
+          'import_products': "Import Products",
+          'add_manually': "Add Manually",
+          'upload_file': "Upload File",
+          'csv_xl_xls': "(csv,xl,xls)",
         },
         'hi_IN': {'login': 'Login'}
       };

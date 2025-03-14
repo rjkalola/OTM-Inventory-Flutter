@@ -40,112 +40,116 @@ class AddProductScreen extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return Obx(() => SafeArea(
-          child: Scaffold(
-            backgroundColor: backgroundColor,
-            appBar: BaseAppBar(
-              appBar: AppBar(),
-              title: addProductController.title.value,
-              isCenterTitle: false,
-              isBack: true,
-              widgets: actionButtons(),
-            ),
-            body: ModalProgressHUD(
-              inAsyncCall: addProductController.isLoading.value,
-              opacity: 0,
-              progressIndicator: const CustomProgressbar(),
-              child: Visibility(
-                visible: addProductController.isMainViewVisible.value,
-                child: Column(children: [
-                  Form(
-                    key: addProductController.formKey,
-                    child: Expanded(
-                      flex: 1,
-                      child: SingleChildScrollView(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Divider(),
-                              AddProductPhotosTitleView(),
-                              AddProductPhotosList(),
-                              TextFieldProductName(),
-                              TextFieldProductTitle(),
-                              TextFieldProductBarCode(),
-                              TextFieldProductCategory(),
-                              TextFieldProductSupplier(),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(14, 8, 14, 16),
-                                child: Text('dimensions_'.tr,
-                                    style: const TextStyle(
-                                        color: primaryTextColor, fontSize: 16)),
-                              ),
-                              Row(
-                                children: [
-                                  Flexible(
-                                    flex: 1,
-                                    child: TextFieldProductLength(),
-                                  ),
-                                  Flexible(
-                                    flex: 1,
-                                    child: TextFieldProductWidth(),
-                                  ),
-                                  Flexible(
-                                    flex: 1,
-                                    child: TextFieldProductHeight(),
-                                  ),
-                                ],
-                              ),
-                              TextFieldProductLengthUnit(),
-                              Row(
-                                children: [
-                                  Flexible(
-                                    flex: 1,
-                                    child: TextFieldProductWeight(),
-                                  ),
-                                  Flexible(
-                                    flex: 1,
-                                    child: TextFieldProductWeightUnit(),
-                                  ),
-                                ],
-                              ),
-                              TextFieldProductManufacturer(),
-                              TextFieldProductModel(),
-                              TextFieldProductSku(),
-                              TextFieldProductPrice(),
-                              TextFieldProductTax(),
-                              TextFieldProductDescription(),
-                              // Padding(
-                              //   padding:
-                              //       const EdgeInsets.only(left: 14, bottom: 18),
-                              //   child: Row(
-                              //     children: [
-                              //       Text(
-                              //         'status'.tr,
-                              //         style: const TextStyle(
-                              //             fontSize: 16,
-                              //             color: primaryTextColor),
-                              //       ),
-                              //       const SizedBox(
-                              //         width: 4,
-                              //       ),
-                              //       Switch(
-                              //           value:
-                              //               addProductController.isStatus.value,
-                              //           activeColor: defaultAccentColor,
-                              //           onChanged: (isVisible) {
-                              //             addProductController.isStatus.value =
-                              //                 isVisible;
-                              //           })
-                              //     ],
-                              //   ),
-                              // )
-                            ]),
+    return Obx(() => Container(
+          color: backgroundColor,
+          child: SafeArea(
+            child: Scaffold(
+              backgroundColor: backgroundColor,
+              appBar: BaseAppBar(
+                appBar: AppBar(),
+                title: addProductController.title.value,
+                isCenterTitle: false,
+                isBack: true,
+                widgets: actionButtons(),
+              ),
+              body: ModalProgressHUD(
+                inAsyncCall: addProductController.isLoading.value,
+                opacity: 0,
+                progressIndicator: const CustomProgressbar(),
+                child: Visibility(
+                  visible: addProductController.isMainViewVisible.value,
+                  child: Column(children: [
+                    Form(
+                      key: addProductController.formKey,
+                      child: Expanded(
+                        flex: 1,
+                        child: SingleChildScrollView(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Divider(),
+                                AddProductPhotosTitleView(),
+                                AddProductPhotosList(),
+                                TextFieldProductName(),
+                                TextFieldProductTitle(),
+                                TextFieldProductBarCode(),
+                                TextFieldProductCategory(),
+                                TextFieldProductSupplier(),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(14, 8, 14, 16),
+                                  child: Text('dimensions_'.tr,
+                                      style: const TextStyle(
+                                          color: primaryTextColor,
+                                          fontSize: 16)),
+                                ),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      flex: 1,
+                                      child: TextFieldProductLength(),
+                                    ),
+                                    Flexible(
+                                      flex: 1,
+                                      child: TextFieldProductWidth(),
+                                    ),
+                                    Flexible(
+                                      flex: 1,
+                                      child: TextFieldProductHeight(),
+                                    ),
+                                  ],
+                                ),
+                                TextFieldProductLengthUnit(),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      flex: 1,
+                                      child: TextFieldProductWeight(),
+                                    ),
+                                    Flexible(
+                                      flex: 1,
+                                      child: TextFieldProductWeightUnit(),
+                                    ),
+                                  ],
+                                ),
+                                TextFieldProductManufacturer(),
+                                TextFieldProductModel(),
+                                TextFieldProductSku(),
+                                TextFieldProductPrice(),
+                                TextFieldProductTax(),
+                                TextFieldProductDescription(),
+                                // Padding(
+                                //   padding:
+                                //       const EdgeInsets.only(left: 14, bottom: 18),
+                                //   child: Row(
+                                //     children: [
+                                //       Text(
+                                //         'status'.tr,
+                                //         style: const TextStyle(
+                                //             fontSize: 16,
+                                //             color: primaryTextColor),
+                                //       ),
+                                //       const SizedBox(
+                                //         width: 4,
+                                //       ),
+                                //       Switch(
+                                //           value:
+                                //               addProductController.isStatus.value,
+                                //           activeColor: defaultAccentColor,
+                                //           onChanged: (isVisible) {
+                                //             addProductController.isStatus.value =
+                                //                 isVisible;
+                                //           })
+                                //     ],
+                                //   ),
+                                // )
+                              ]),
+                        ),
                       ),
                     ),
-                  ),
-                  AddProductButton()
-                ]),
+                    AddProductButton()
+                  ]),
+                ),
               ),
             ),
           ),

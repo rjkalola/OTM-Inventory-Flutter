@@ -102,6 +102,11 @@ class ProductListController extends GetxController
     }
   }
 
+  Future<void> importProductClick() async {
+    var result = await Get.toNamed(AppRoutes.importProductsScreen);
+    if (result != null && result) {}
+  }
+
   // Future<void> searchItem(String value) async {
   //   print(value);
   //   List<ProductInfo> results = [];
@@ -257,7 +262,7 @@ class ProductListController extends GetxController
     //     listOptions,
     //     this);
 
-    showPrintOptionsDialog(AppConstants.dialogIdentifier.attachmentOptionsList,
+    showOptionsListDialog(AppConstants.dialogIdentifier.attachmentOptionsList,
         'choose_type'.tr, listOptions, this);
   }
 
@@ -275,11 +280,29 @@ class ProductListController extends GetxController
     // info.action = AppConstants.action.downloadPdf;
     // listOptions.add(info);
 
-    showPrintOptionsDialog(AppConstants.dialogIdentifier.attachmentOptionsList,
+    showOptionsListDialog(AppConstants.dialogIdentifier.attachmentOptionsList,
         'choose_type'.tr, listOptions, this);
   }
 
-  void showPrintOptionsDialog(String dialogType, String title,
+  onClickPlusButton() {
+    var listOptions = <ModuleInfo>[].obs;
+    ModuleInfo? info;
+
+    info = ModuleInfo();
+    info.name = 'import_products'.tr;
+    info.action = AppConstants.action.importProducts;
+    listOptions.add(info);
+
+    info = ModuleInfo();
+    info.name = 'add_manually'.tr;
+    info.action = AppConstants.action.addProductManually;
+    listOptions.add(info);
+
+    showOptionsListDialog(AppConstants.dialogIdentifier.addProductOptionsDialog,
+        "", listOptions, this);
+  }
+
+  void showOptionsListDialog(String dialogType, String title,
       List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(
         SelectItemListDialog(
@@ -321,6 +344,11 @@ class ProductListController extends GetxController
       if (mPrintFile != null)
         productPdfController.writeFileToDownloadFolder(
             mPrintFile!, mPrintFileName);
+    } else if (action == AppConstants.action.importProducts) {
+      print("action == AppConstants.action.importProducts");
+      importProductClick();
+    } else if (action == AppConstants.action.addProductManually) {
+      addProductClick(null);
     }
   }
 

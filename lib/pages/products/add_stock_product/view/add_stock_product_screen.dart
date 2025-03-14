@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -6,7 +5,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_button.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_list.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_title_view.dart';
-import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/qr_code_icon.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_barcode.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_category.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_cutoff.dart';
@@ -33,89 +31,93 @@ class AddStockProductScreen extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: addStockProductController.title.value,
-          isCenterTitle: false,
-          isBack: true,
-        ),
-        body: Obx(() {
-          return ModalProgressHUD(
-            inAsyncCall: addStockProductController.isLoading.value,
-            opacity: 0,
-            progressIndicator: const CustomProgressbar(),
-            child: Visibility(
-              visible: addStockProductController.isMainViewVisible.value,
-              child: Column(children: [
-                const Divider(),
-                Form(
-                  key: addStockProductController.formKey,
-                  child: Expanded(
-                    flex: 1,
-                    child: SingleChildScrollView(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AddStockProductPhotosTitleView(),
-                            AddStockProductPhotosList(),
-                            TextFieldStockProductName(),
-                            TextFieldStockProductTitle(),
-                            TextFieldStockProductUuid(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(child: TextFieldStockProductBarCode()),
-                                // QrCodeIconAddStockProduct()
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 18,
-                            ),
-                            TextFieldStockProductCategory(),
-                            TextFieldStockProductSupplier(),
-                            TextFieldStockProductManufacturer(),
-                            TextFieldStockProductCutoff(),
-                            TextFieldStockProductPrice(),
-                            TextFieldStockProductDescription(),
-                            // AddProductPhotosTitleView(),
-                            // AddProductPhotosList(),
-                            // Padding(
-                            //   padding:
-                            //       const EdgeInsets.only(left: 14, bottom: 18),
-                            //   child: Row(
-                            //     children: [
-                            //       Text(
-                            //         'status'.tr,
-                            //         style: const TextStyle(
-                            //             fontSize: 16, color: primaryTextColor),
-                            //       ),
-                            //       const SizedBox(
-                            //         width: 4,
-                            //       ),
-                            //       Switch(
-                            //           value: addStockProductController
-                            //               .isStatus.value,
-                            //           activeColor: defaultAccentColor,
-                            //           onChanged: (isVisible) {
-                            //             addStockProductController
-                            //                 .isStatus.value = isVisible;
-                            //           })
-                            //     ],
-                            //   ),
-                            // )
-                          ]),
+    return Container(
+      color: backgroundColor,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: addStockProductController.title.value,
+            isCenterTitle: false,
+            isBack: true,
+          ),
+          body: Obx(() {
+            return ModalProgressHUD(
+              inAsyncCall: addStockProductController.isLoading.value,
+              opacity: 0,
+              progressIndicator: const CustomProgressbar(),
+              child: Visibility(
+                visible: addStockProductController.isMainViewVisible.value,
+                child: Column(children: [
+                  const Divider(),
+                  Form(
+                    key: addStockProductController.formKey,
+                    child: Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AddStockProductPhotosTitleView(),
+                              AddStockProductPhotosList(),
+                              TextFieldStockProductName(),
+                              TextFieldStockProductTitle(),
+                              TextFieldStockProductUuid(),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                      child: TextFieldStockProductBarCode()),
+                                  // QrCodeIconAddStockProduct()
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 18,
+                              ),
+                              TextFieldStockProductCategory(),
+                              TextFieldStockProductSupplier(),
+                              TextFieldStockProductManufacturer(),
+                              TextFieldStockProductCutoff(),
+                              TextFieldStockProductPrice(),
+                              TextFieldStockProductDescription(),
+                              // AddProductPhotosTitleView(),
+                              // AddProductPhotosList(),
+                              // Padding(
+                              //   padding:
+                              //       const EdgeInsets.only(left: 14, bottom: 18),
+                              //   child: Row(
+                              //     children: [
+                              //       Text(
+                              //         'status'.tr,
+                              //         style: const TextStyle(
+                              //             fontSize: 16, color: primaryTextColor),
+                              //       ),
+                              //       const SizedBox(
+                              //         width: 4,
+                              //       ),
+                              //       Switch(
+                              //           value: addStockProductController
+                              //               .isStatus.value,
+                              //           activeColor: defaultAccentColor,
+                              //           onChanged: (isVisible) {
+                              //             addStockProductController
+                              //                 .isStatus.value = isVisible;
+                              //           })
+                              //     ],
+                              //   ),
+                              // )
+                            ]),
+                      ),
                     ),
                   ),
-                ),
-                AddStockProductButton()
-              ]),
-            ),
-          );
-        }),
+                  AddStockProductButton()
+                ]),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

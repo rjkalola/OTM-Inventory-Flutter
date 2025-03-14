@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_internet_speed_test/flutter_internet_speed_test.dart';
+
+// import 'package:flutter_internet_speed_test/flutter_internet_speed_test.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/model/stock_quantity_response.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/model/store_stock_request.dart';
@@ -62,7 +63,8 @@ class StockEditQuantityController extends GetxController
   DateTime selectedDate = DateTime.now();
   late Timer timer;
   final start = 10.obs;
-  final speedTest = FlutterInternetSpeedTest();
+
+  // final speedTest = FlutterInternetSpeedTest();
   late double transferRate = 0;
 
   @override
@@ -553,7 +555,8 @@ class StockEditQuantityController extends GetxController
 
       bool isInternet = await AppUtils.interNetCheck();
       // if (!isApiRunning.value) {
-      if (isInternet && transferRate > 1) {
+      // if (isInternet && transferRate > 1) {
+      if (isInternet) {
         storeStockQuantityApi(true, productId.toString(), finalQty, note, price,
             date, isDeduct ? "remove" : "add");
       } else {
@@ -717,7 +720,7 @@ class StockEditQuantityController extends GetxController
   }
 
   void checkInternetSpeed() {
-    speedTest.startTesting(
+    /*  speedTest.startTesting(
       useFastApi: true,
       //true(default)
       onStarted: () {},
@@ -751,13 +754,12 @@ class StockEditQuantityController extends GetxController
       onCancel: () {
         // TODO Request cancelled callback
       },
-    );
+    );*/
   }
 
   @override
   void onClose() {
-    speedTest.cancelTest();
-    // timer.cancel();
+    // speedTest.cancelTest();
     super.onClose();
   }
 

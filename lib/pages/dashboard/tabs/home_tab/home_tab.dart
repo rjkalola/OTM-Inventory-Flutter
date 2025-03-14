@@ -95,7 +95,8 @@ class _HomeTabState extends State<HomeTab> {
                                     : Container(),
                                 DashboardStockCountItem(
                                   title: 'all'.tr,
-                                  value: "${dashboardController.mAllStockCount} (${dashboardController.allTotalAmount.value})",
+                                  value:
+                                      "${dashboardController.mAllStockCount} (${dashboardController.allTotalAmount.value})",
                                   // value:
                                   //     (dashboardController.mInStockCount.value +
                                   //             dashboardController
@@ -108,7 +109,8 @@ class _HomeTabState extends State<HomeTab> {
                                 ),
                                 DashboardStockCountItem(
                                   title: 'in_stock'.tr,
-                                  value: "${dashboardController.mInStockCount} (${dashboardController.inStockAmount.value})",
+                                  value:
+                                      "${dashboardController.mInStockCount} (${dashboardController.inStockAmount.value})",
                                   // value:
                                   //     (dashboardController.mInStockCount.value +
                                   //             dashboardController
@@ -124,7 +126,8 @@ class _HomeTabState extends State<HomeTab> {
 
                                 DashboardStockCountItem(
                                   title: 'low_stock'.tr,
-                                  value: "${dashboardController.mLowStockCount} (${dashboardController.lowStockAmount.value})",
+                                  value:
+                                      "${dashboardController.mLowStockCount} (${dashboardController.lowStockAmount.value})",
                                   valueColor: Colors.orange,
                                   onPressed: () {
                                     dashboardController.onClickStockItem(
@@ -134,7 +137,8 @@ class _HomeTabState extends State<HomeTab> {
 
                                 DashboardStockCountItem(
                                   title: 'out_of_stock'.tr,
-                                  value: "${dashboardController.mOutOfStockCount} (${dashboardController.outOfStockAmount.value})",
+                                  value:
+                                      "${dashboardController.mOutOfStockCount} (${dashboardController.outOfStockAmount.value})",
                                   valueColor: Colors.red,
                                   onPressed: () {
                                     dashboardController.onClickStockItem(
@@ -147,7 +151,8 @@ class _HomeTabState extends State<HomeTab> {
                                       dashboardController.mMinusStockCount > 0,
                                   child: DashboardStockCountItem(
                                     title: 'minus_stock'.tr,
-                                    value: "${dashboardController.mMinusStockCount} (${dashboardController.minusStockAmount.value})",
+                                    value:
+                                        "${dashboardController.mMinusStockCount} (${dashboardController.minusStockAmount.value})",
                                     valueColor: Colors.red,
                                     onPressed: () {
                                       dashboardController.onClickStockItem(
@@ -158,7 +163,8 @@ class _HomeTabState extends State<HomeTab> {
                                 ),
                                 DashboardStockCountItem(
                                   title: 'finishing_products'.tr,
-                                  value: "${dashboardController.mFinishingProductsCount} (${dashboardController.finishingAmount.value})",
+                                  value:
+                                      "${dashboardController.mFinishingProductsCount} (${dashboardController.finishingAmount.value})",
                                   valueColor: darkYellowColor,
                                   onPressed: () {
                                     dashboardController.onClickStockItem(

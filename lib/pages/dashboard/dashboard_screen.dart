@@ -20,6 +20,9 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarIconBrightness: Brightness.dark));
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) async {
@@ -32,29 +35,32 @@ class DashboardScreen extends StatelessWidget {
           }
         }
       },
-      child: SafeArea(
-          child: Obx(() => Scaffold(
-                backgroundColor: backgroundColor,
-                appBar: BaseAppBar(
-                  appBar: AppBar(),
-                  title: dashboardController.title.value,
-                  isCenterTitle: false,
-                  isBack: true,
-                  widgets: actionButtons(),
-                ),
-                drawer: MainDrawer(),
-                body: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: PageView(
-                    controller: dashboardController.pageController,
-                    onPageChanged: dashboardController.onPageChanged,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: dashboardController.tabs,
+      child: Container(
+        color: backgroundColor,
+        child: SafeArea(
+            child: Obx(() => Scaffold(
+                  backgroundColor: backgroundColor,
+                  appBar: BaseAppBar(
+                    appBar: AppBar(),
+                    title: dashboardController.title.value,
+                    isCenterTitle: false,
+                    isBack: true,
+                    widgets: actionButtons(),
                   ),
-                ),
-                bottomNavigationBar: BottomNavigationBarWidget(),
-              ))),
+                  drawer: MainDrawer(),
+                  body: SizedBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: PageView(
+                      controller: dashboardController.pageController,
+                      onPageChanged: dashboardController.onPageChanged,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: dashboardController.tabs,
+                    ),
+                  ),
+                  bottomNavigationBar: BottomNavigationBarWidget(),
+                ))),
+      ),
     );
   }
 
