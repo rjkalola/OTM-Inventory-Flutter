@@ -46,41 +46,44 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
           }
         }
       },
-      child: SafeArea(
-          child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-            appBar: AppBar(),
-            title: 'categories'.tr,
-            isCenterTitle: false,
-            isBack: true,
-            widgets: actionButtons()),
-        drawer: MainDrawer(),
-        bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-        body: Obx(
-          () => ModalProgressHUD(
-            inAsyncCall: categoryListController.isLoading.value,
-            opacity: 0,
-            progressIndicator: const CustomProgressbar(),
-            child: Column(children: [
-              const Divider(
-                thickness: 1,
-                height: 1,
-                color: dividerColor,
-              ),
-              Visibility(
-                  visible: categoryListController.categoryList.isNotEmpty,
-                  child: const SearchCategory()),
-              categoryListController.categoryList.isNotEmpty
-                  ? CategoryListView()
-                  : CategoryListEmptyView(),
-              const SizedBox(
-                height: 12,
-              ),
-            ]),
+      child: Container(
+        color: backgroundColor,
+        child: SafeArea(
+            child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+              appBar: AppBar(),
+              title: 'categories'.tr,
+              isCenterTitle: false,
+              isBack: true,
+              widgets: actionButtons()),
+          drawer: MainDrawer(),
+          bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+          body: Obx(
+            () => ModalProgressHUD(
+              inAsyncCall: categoryListController.isLoading.value,
+              opacity: 0,
+              progressIndicator: const CustomProgressbar(),
+              child: Column(children: [
+                const Divider(
+                  thickness: 1,
+                  height: 1,
+                  color: dividerColor,
+                ),
+                Visibility(
+                    visible: categoryListController.categoryList.isNotEmpty,
+                    child: const SearchCategory()),
+                categoryListController.categoryList.isNotEmpty
+                    ? CategoryListView()
+                    : CategoryListEmptyView(),
+                const SizedBox(
+                  height: 12,
+                ),
+              ]),
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

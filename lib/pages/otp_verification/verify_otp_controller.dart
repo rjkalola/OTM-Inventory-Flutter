@@ -32,13 +32,17 @@ class VerifyOtpController extends GetxController {
   final otpController = TextEditingController().obs;
 
   listenSmsCode() async {
-    print("regiestered");
     await SmsAutoFill().listenForCode();
   }
 
   @override
   void onInit() {
     super.onInit();
+    var arguments = Get.arguments;
+    if (arguments != null) {
+      mPhoneNumber.value = arguments[AppConstants.intentKey.phoneNumber]!;
+      mExtension.value = arguments[AppConstants.intentKey.phoneExtension]!;
+    }
     listenSmsCode();
   }
 
@@ -93,7 +97,7 @@ class VerifyOtpController extends GetxController {
         onSuccess: (ResponseModel responseModel) {
           if (responseModel.statusCode == 200) {
             UserResponse response =
-            UserResponse.fromJson(jsonDecode(responseModel.result!));
+                UserResponse.fromJson(jsonDecode(responseModel.result!));
             if (response.isSuccess!) {
               Get.find<AppStorage>().setUserInfo(response.info!);
               Get.find<AppStorage>().setAccessToken(response.info!.apiToken!);
@@ -167,11 +171,7 @@ class VerifyOtpController extends GetxController {
       list.add(user);
       Get.find<AppStorage>().setLoginUsers(list);
       print("after length:" +
-          Get
-              .find<AppStorage>()
-              .getLoginUsers()
-              .length
-              .toString());
+          Get.find<AppStorage>().getLoginUsers().length.toString());
     }
   }
 }

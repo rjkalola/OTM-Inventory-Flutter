@@ -29,98 +29,101 @@ class AddSupplierScreen extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: addSupplierController.title.value,
-          isCenterTitle: false,
-          isBack: true,
-        ),
-        body: Obx(() {
-          return ModalProgressHUD(
-            inAsyncCall: addSupplierController.isLoading.value,
-            opacity: 0,
-            progressIndicator: const CustomProgressbar(),
-            child: Visibility(
-              visible: addSupplierController.isMainViewVisible.value,
-              child: Column(children: [
-                Form(
-                  key: addSupplierController.formKey,
-                  child: Expanded(
-                    flex: 1,
-                    child: SingleChildScrollView(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Divider(),
-                            TextFieldSupplierContactName(),
-                            TextFieldSupplierAccountNumber(),
-                            TextFieldSupplierEmail(),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  flex: 3,
-                                  child: TextFieldSupplierPhoneExtension(),
-                                ),
-                                Flexible(
-                                    flex: 4,
-                                    child: TextFieldSupplierPhoneNumber()),
-                              ],
-                            ),
-                            TextFieldSupplierCompanyName(),
-                            TextFieldSupplierStreet(),
-                            TextFieldSupplierAddress(),
-                            TextFieldSupplierTown(),
-                            TextFieldSupplierPostCode(),
-                            // Row(
-                            //   children: [
-                            //     Flexible(
-                            //       flex: 1,
-                            //       child: TextFieldSupplierWeight(),
-                            //     ),
-                            //     Flexible(
-                            //       flex: 1,
-                            //       child: TextFieldSupplierWeightUnit(),
-                            //     ),
-                            //   ],
-                            // ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 14, bottom: 18),
-                              child: Row(
+    return Container(
+      color: backgroundColor,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: addSupplierController.title.value,
+            isCenterTitle: false,
+            isBack: true,
+          ),
+          body: Obx(() {
+            return ModalProgressHUD(
+              inAsyncCall: addSupplierController.isLoading.value,
+              opacity: 0,
+              progressIndicator: const CustomProgressbar(),
+              child: Visibility(
+                visible: addSupplierController.isMainViewVisible.value,
+                child: Column(children: [
+                  Form(
+                    key: addSupplierController.formKey,
+                    child: Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Divider(),
+                              TextFieldSupplierContactName(),
+                              TextFieldSupplierAccountNumber(),
+                              TextFieldSupplierEmail(),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'status'.tr,
-                                    style: const TextStyle(
-                                        fontSize: 16, color: primaryTextColor),
+                                  Flexible(
+                                    flex: 3,
+                                    child: TextFieldSupplierPhoneExtension(),
                                   ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  Switch(
-                                      value:
-                                          addSupplierController.isStatus.value,
-                                      activeColor: defaultAccentColor,
-                                      onChanged: (isVisible) {
-                                        addSupplierController.isStatus.value =
-                                            isVisible;
-                                      })
+                                  Flexible(
+                                      flex: 4,
+                                      child: TextFieldSupplierPhoneNumber()),
                                 ],
                               ),
-                            )
-                          ]),
+                              TextFieldSupplierCompanyName(),
+                              TextFieldSupplierStreet(),
+                              TextFieldSupplierAddress(),
+                              TextFieldSupplierTown(),
+                              TextFieldSupplierPostCode(),
+                              // Row(
+                              //   children: [
+                              //     Flexible(
+                              //       flex: 1,
+                              //       child: TextFieldSupplierWeight(),
+                              //     ),
+                              //     Flexible(
+                              //       flex: 1,
+                              //       child: TextFieldSupplierWeightUnit(),
+                              //     ),
+                              //   ],
+                              // ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 14, bottom: 18),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'status'.tr,
+                                      style: const TextStyle(
+                                          fontSize: 16, color: primaryTextColor),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Switch(
+                                        value:
+                                            addSupplierController.isStatus.value,
+                                        activeColor: defaultAccentColor,
+                                        onChanged: (isVisible) {
+                                          addSupplierController.isStatus.value =
+                                              isVisible;
+                                        })
+                                  ],
+                                ),
+                              )
+                            ]),
+                      ),
                     ),
                   ),
-                ),
-                AddSupplierButton()
-              ]),
-            ),
-          );
-        }),
+                  AddSupplierButton()
+                ]),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

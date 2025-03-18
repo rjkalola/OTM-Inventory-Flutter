@@ -38,36 +38,39 @@ class _ViewPdfScreenState extends State<ViewPdfScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: 'A4 Size Pdf',
-          isCenterTitle: false,
-          isBack: true,
-          widgets: actionButtons(),
-        ),
-        body: PDFView(
-          filePath: pdfUrl,
-          autoSpacing: true,
-          enableSwipe: true,
-          pageSnap: true,
-          swipeHorizontal: true,
-          fitEachPage: true,
-          fitPolicy: FitPolicy.BOTH,
-          onError: (error) {
-            print(error);
-          },
-          onPageError: (page, error) {
-            print('$page: ${error.toString()}');
-          },
-          onViewCreated: (PDFViewController vc) {
-            pdfViewController = vc;
-          },
-          onPageChanged: (int? page, int? total) {
-            print('page change: $page/$total');
-          },
+    return Container(
+      color: backgroundColor,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: 'A4 Size Pdf',
+            isCenterTitle: false,
+            isBack: true,
+            widgets: actionButtons(),
+          ),
+          body: PDFView(
+            filePath: pdfUrl,
+            autoSpacing: true,
+            enableSwipe: true,
+            pageSnap: true,
+            swipeHorizontal: true,
+            fitEachPage: true,
+            fitPolicy: FitPolicy.BOTH,
+            onError: (error) {
+              print(error);
+            },
+            onPageError: (page, error) {
+              print('$page: ${error.toString()}');
+            },
+            onViewCreated: (PDFViewController vc) {
+              pdfViewController = vc;
+            },
+            onPageChanged: (int? page, int? total) {
+              print('page change: $page/$total');
+            },
+          ),
         ),
       ),
     );

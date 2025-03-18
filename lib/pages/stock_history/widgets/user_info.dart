@@ -18,6 +18,7 @@ class QtyHistoryUserInfo extends StatelessWidget {
           //     user!.image ??
           //         "",
           //     36,
+          //     36,
           //     45),
           // const SizedBox(
           //   width: 9,

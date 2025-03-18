@@ -28,76 +28,79 @@ class AddStoreScreen extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: addStoreController.title.value,
-          isCenterTitle: false,
-          isBack: true,
-        ),
-        body: Obx(() {
-          return ModalProgressHUD(
-            inAsyncCall: addStoreController.isLoading.value,
-            opacity: 0,
-            progressIndicator: const CustomProgressbar(),
-            child: Visibility(
-              visible: addStoreController.isMainViewVisible.value,
-              child: Column(children: [
-                Form(
-                  key: addStoreController.formKey,
-                  child: Expanded(
-                    flex: 1,
-                    child: SingleChildScrollView(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Divider(),
-                            TextFieldStoreName(),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  flex: 3,
-                                  child: TextFieldStorePhoneExtension(),
-                                ),
-                                Flexible(
-                                    flex: 4, child: TextFieldPhoneNumber()),
-                              ],
-                            ),
-                            TextFieldStoreEmail(),
-                            TextFieldStoreStreet(),
-                            TextFieldStoreAddress(),
-                            TextFieldStoreTown(),
-                            TextFieldStorePostCode(),
-                            TextFieldStoreManager(),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(left: 14,bottom: 18),
-                            //   child: Row(
-                            //     children: [
-                            //       Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
-                            //       const SizedBox(width: 4,),
-                            //       Switch(
-                            //           value: addStoreController.isStatus.value,
-                            //           activeColor: defaultAccentColor,
-                            //           onChanged: (isVisible) {
-                            //             addStoreController.isStatus.value =
-                            //                 isVisible;
-                            //           })
-                            //     ],
-                            //   ),
-                            // )
-                          ]),
+    return Container(
+      color: backgroundColor,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: addStoreController.title.value,
+            isCenterTitle: false,
+            isBack: true,
+          ),
+          body: Obx(() {
+            return ModalProgressHUD(
+              inAsyncCall: addStoreController.isLoading.value,
+              opacity: 0,
+              progressIndicator: const CustomProgressbar(),
+              child: Visibility(
+                visible: addStoreController.isMainViewVisible.value,
+                child: Column(children: [
+                  Form(
+                    key: addStoreController.formKey,
+                    child: Expanded(
+                      flex: 1,
+                      child: SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Divider(),
+                              TextFieldStoreName(),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: TextFieldStorePhoneExtension(),
+                                  ),
+                                  Flexible(
+                                      flex: 4, child: TextFieldPhoneNumber()),
+                                ],
+                              ),
+                              TextFieldStoreEmail(),
+                              TextFieldStoreStreet(),
+                              TextFieldStoreAddress(),
+                              TextFieldStoreTown(),
+                              TextFieldStorePostCode(),
+                              TextFieldStoreManager(),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 14,bottom: 18),
+                              //   child: Row(
+                              //     children: [
+                              //       Text('status'.tr,style: const TextStyle(fontSize: 16,color: primaryTextColor),),
+                              //       const SizedBox(width: 4,),
+                              //       Switch(
+                              //           value: addStoreController.isStatus.value,
+                              //           activeColor: defaultAccentColor,
+                              //           onChanged: (isVisible) {
+                              //             addStoreController.isStatus.value =
+                              //                 isVisible;
+                              //           })
+                              //     ],
+                              //   ),
+                              // )
+                            ]),
+                      ),
                     ),
                   ),
-                ),
-                AddStoreButton()
-              ]),
-            ),
-          );
-        }),
+                  AddStoreButton()
+                ]),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

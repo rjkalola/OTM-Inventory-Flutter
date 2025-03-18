@@ -31,38 +31,41 @@ class _StockQuantityHistoryScreenState
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return Obx(() => SafeArea(
-          child: Scaffold(
-            backgroundColor: backgroundColor,
-            appBar: BaseAppBar(
-              appBar: AppBar(),
-              title: 'stock_movement'.tr,
-              isCenterTitle: false,
-              isBack: true,
-              widgets: actionButtons(),
-            ),
-            body: ModalProgressHUD(
-              inAsyncCall: stockQuantityHistoryController.isLoading.value,
-              opacity: 0,
-              progressIndicator: const CustomProgressbar(),
-              child: Visibility(
-                visible: stockQuantityHistoryController.isMainViewVisible.value,
-                child: Column(children: [
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: dividerColor,
-                  ),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  StockHistoryFilterWidget(),
-                  QtyHistoryListView()
-                ]),
+    return Obx(() => Container(
+      color: backgroundColor,
+      child: SafeArea(
+            child: Scaffold(
+              backgroundColor: backgroundColor,
+              appBar: BaseAppBar(
+                appBar: AppBar(),
+                title: 'stock_movement'.tr,
+                isCenterTitle: false,
+                isBack: true,
+                widgets: actionButtons(),
+              ),
+              body: ModalProgressHUD(
+                inAsyncCall: stockQuantityHistoryController.isLoading.value,
+                opacity: 0,
+                progressIndicator: const CustomProgressbar(),
+                child: Visibility(
+                  visible: stockQuantityHistoryController.isMainViewVisible.value,
+                  child: Column(children: [
+                    const Divider(
+                      thickness: 1,
+                      height: 1,
+                      color: dividerColor,
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    StockHistoryFilterWidget(),
+                    QtyHistoryListView()
+                  ]),
+                ),
               ),
             ),
           ),
-        ));
+    ));
   }
 
   Widget customTextView(String? text, double fontSize, FontWeight? fontWeight,

@@ -104,7 +104,10 @@ class ProductListController extends GetxController
 
   Future<void> importProductClick() async {
     var result = await Get.toNamed(AppRoutes.importProductsScreen);
-    if (result != null && result) {}
+    if (result != null && result)
+    {
+      setOfflineData();
+    }
   }
 
   // Future<void> searchItem(String value) async {
@@ -345,7 +348,6 @@ class ProductListController extends GetxController
         productPdfController.writeFileToDownloadFolder(
             mPrintFile!, mPrintFileName);
     } else if (action == AppConstants.action.importProducts) {
-      print("action == AppConstants.action.importProducts");
       importProductClick();
     } else if (action == AppConstants.action.addProductManually) {
       addProductClick(null);

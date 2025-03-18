@@ -175,6 +175,7 @@ class Strings extends Translations {
           'data_is_up_to_date': "Data is up to date",
           'id_': "ID",
           'purchase_order': "Purchase Order",
+          'orders': "Orders",
           'scan_items': "Scan Items",
           'receive': "Receive",
           'issued': "Issued",
@@ -192,6 +193,10 @@ class Strings extends Translations {
           'add_manually': "Add Manually",
           'upload_file': "Upload File",
           'csv_xl_xls': "(csv,xl,xls)",
+          'add_new_products': "Add New Products",
+          'edit_existing_products': "Edit Existing Products",
+          'add_and_edit_products': "Add and Edit Products",
+          'exit': "Exit",
         },
         'hi_IN': {'login': 'Login'}
       };

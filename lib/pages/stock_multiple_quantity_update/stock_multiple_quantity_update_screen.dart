@@ -29,55 +29,58 @@ class _StockListScreenState extends State<StockMultipleQuantityUpdateScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-        child: Obx(() => Scaffold(
-              backgroundColor: backgroundColor,
-              appBar: BaseAppBar(
-                appBar: AppBar(),
-                title: 'add_stock'.tr,
-                isCenterTitle: false,
-                isBack: true,
-              ),
-              body: ModalProgressHUD(
-                inAsyncCall: stockListController.isLoading.value,
-                opacity: 0,
-                progressIndicator: const CustomProgressbar(),
-                child: Column(children: [
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: dividerColor,
-                  ),
-                  // const SizedBox(height:20,),
-                  // TextFieldSelectStore(),
-                  const SearchStockMultipleQuantityUpdateWidget(),
-                  stockListController.productList.isNotEmpty
-                      ? StockMultipleQuantityUpdateListView()
-                      : StockMultipleQuantityUpdateEmptyView(),
-                  Visibility(
-                    visible: stockListController.isLoadMore.value,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator()),
-                          const SizedBox(
-                            width: 14,
-                          ),
-                          Text(
-                            'loading_more_'.tr,
-                            style: const TextStyle(fontSize: 17),
-                          )
-                        ],
+    return Container(
+      color: backgroundColor,
+      child: SafeArea(
+          child: Obx(() => Scaffold(
+                backgroundColor: backgroundColor,
+                appBar: BaseAppBar(
+                  appBar: AppBar(),
+                  title: 'add_stock'.tr,
+                  isCenterTitle: false,
+                  isBack: true,
+                ),
+                body: ModalProgressHUD(
+                  inAsyncCall: stockListController.isLoading.value,
+                  opacity: 0,
+                  progressIndicator: const CustomProgressbar(),
+                  child: Column(children: [
+                    const Divider(
+                      thickness: 1,
+                      height: 1,
+                      color: dividerColor,
+                    ),
+                    // const SizedBox(height:20,),
+                    // TextFieldSelectStore(),
+                    const SearchStockMultipleQuantityUpdateWidget(),
+                    stockListController.productList.isNotEmpty
+                        ? StockMultipleQuantityUpdateListView()
+                        : StockMultipleQuantityUpdateEmptyView(),
+                    Visibility(
+                      visible: stockListController.isLoadMore.value,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator()),
+                            const SizedBox(
+                              width: 14,
+                            ),
+                            Text(
+                              'loading_more_'.tr,
+                              style: const TextStyle(fontSize: 17),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  StockQtyStoreButtons()
-                ]),
-              ),
-            )));
+                    StockQtyStoreButtons()
+                  ]),
+                ),
+              ))),
+    );
   }
 }

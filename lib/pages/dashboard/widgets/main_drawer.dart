@@ -56,6 +56,15 @@ class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
             },
           ),
           drawerItem(
+            text: 'orders'.tr,
+            iconPath: Drawable.homeDrawerIcon,
+            textIconColor: getItemColor(AppRoutes.orderListScreen),
+            tileColor: getItemBgColor(AppRoutes.orderListScreen),
+            onTap: () {
+              navigate(AppRoutes.orderListScreen);
+            },
+          ),
+          drawerItem(
             text: 'purchase_order'.tr,
             iconPath: Drawable.homeDrawerIcon,
             textIconColor: getItemColor(AppRoutes.purchaseOrderListScreen),
@@ -162,7 +171,7 @@ class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
                 fontSize: 14,
               )),
       currentAccountPicture:
-          ImageUtils.setUserImage(userInfo.image ?? "", 66, 45),
+          ImageUtils.setUserImage(userInfo.image ?? "", 66,66, 45),
       currentAccountPictureSize: const Size.square(66),
     );
   }
@@ -225,7 +234,7 @@ class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
     } else {
       if (Get.currentRoute == AppRoutes.stockListScreen &&
           routPath == AppRoutes.stockListScreen) {
-        Get.put(StockListController()).initialDataSet(0,false, true);
+        Get.put(StockListController()).initialDataSet(0, false, true);
         Get.back();
         // StockListController().getStockListApi(true, false, "", true, true);
       } else {

@@ -5,7 +5,9 @@ import '../../../res/colors.dart';
 
 class HomeTabHeaderView extends StatelessWidget {
   final String userName, userImage;
-  const HomeTabHeaderView({super.key, required this.userName, required this.userImage});
+
+  const HomeTabHeaderView(
+      {super.key, required this.userName, required this.userImage});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,11 @@ class HomeTabHeaderView extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 9, 16, 0),
       child: Row(
         children: [
-          UserImage(url: userImage, size: 48),
+          UserImage(
+            url: userImage,
+            width: 48,
+            height: 48,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 4),
             child: Text("Welcome, $userName",

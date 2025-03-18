@@ -10,7 +10,6 @@ import 'package:otm_inventory/widgets/appbar/base_appbar.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
-import '../../dashboard/widgets/main_drawer.dart';
 
 class BarcodeListScreen extends StatefulWidget {
   const BarcodeListScreen({super.key});
@@ -27,42 +26,45 @@ class _BarcodeListScreenState extends State<BarcodeListScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-        child: Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: 'manage_barcode'.tr,
-          isCenterTitle: false,
-          isBack: true,
-          widgets: actionButtons()),
-      // drawer: MainDrawer(),
-      // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-      body: Obx(
-        () => ModalProgressHUD(
-          inAsyncCall: controller.isLoading.value,
-          opacity: 0,
-          progressIndicator: const CustomProgressbar(),
-          child: Column(children: [
-            const Divider(
-              thickness: 1,
-              height: 1,
-              color: dividerColor,
-            ),
-            const SizedBox(
-              height: 9,
-            ),
-            controller.barcodeList.isNotEmpty
-                ? BarcodeListView()
-                : BarcodeListEmptyView(),
-            const SizedBox(
-              height: 12,
-            ),
-            SaveBarcodeButton()
-          ]),
+    return Container(
+      color: backgroundColor,
+      child: SafeArea(
+          child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: 'manage_barcode'.tr,
+            isCenterTitle: false,
+            isBack: true,
+            widgets: actionButtons()),
+        // drawer: MainDrawer(),
+        // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+        body: Obx(
+          () => ModalProgressHUD(
+            inAsyncCall: controller.isLoading.value,
+            opacity: 0,
+            progressIndicator: const CustomProgressbar(),
+            child: Column(children: [
+              const Divider(
+                thickness: 1,
+                height: 1,
+                color: dividerColor,
+              ),
+              const SizedBox(
+                height: 9,
+              ),
+              controller.barcodeList.isNotEmpty
+                  ? BarcodeListView()
+                  : BarcodeListEmptyView(),
+              const SizedBox(
+                height: 12,
+              ),
+              SaveBarcodeButton()
+            ]),
+          ),
         ),
-      ),
-    ));
+      )),
+    );
   }
 
   List<Widget>? actionButtons() {

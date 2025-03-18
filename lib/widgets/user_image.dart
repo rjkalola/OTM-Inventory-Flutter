@@ -6,17 +6,21 @@ import '../utils/string_helper.dart';
 
 class UserImage extends StatelessWidget {
   final String url;
-  final double size;
+  final double width, height;
   final String defaultUrl =
       "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-Picture.png";
 
-  const UserImage({super.key, required this.url, required this.size});
+  const UserImage(
+      {super.key,
+      required this.url,
+      required this.width,
+      required this.height});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 10, 10),
-      child: ImageUtils.setUserImage(url, size, 45),
+      child: ImageUtils.setUserImage(url, width, height, 45),
     );
   }
 }

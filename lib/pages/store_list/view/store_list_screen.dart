@@ -46,39 +46,42 @@ class _StoreListScreenState extends State<StoreListScreen> {
           }
         }
       },
-      child: SafeArea(
-          child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-            appBar: AppBar(),
-            title: 'stores'.tr,
-            isCenterTitle: false,
-            isBack: true,
-            widgets: actionButtons()),
-        drawer: MainDrawer(),
-        bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-        body: Obx(
-          () => ModalProgressHUD(
-            inAsyncCall: storeListController.isLoading.value,
-            opacity: 0,
-            progressIndicator: const CustomProgressbar(),
-            child: Column(children: [
-              const Divider(
-                thickness: 1,
-                height: 1,
-                color: dividerColor,
-              ),
-              const SearchStoreWidget(),
-              storeListController.storeList.isNotEmpty
-                  ? StoreListView()
-                  : StoreListEmptyView(),
-              const SizedBox(
-                height: 12,
-              ),
-            ]),
+      child: Container(
+        color: backgroundColor,
+        child: SafeArea(
+            child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+              appBar: AppBar(),
+              title: 'stores'.tr,
+              isCenterTitle: false,
+              isBack: true,
+              widgets: actionButtons()),
+          drawer: MainDrawer(),
+          bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+          body: Obx(
+            () => ModalProgressHUD(
+              inAsyncCall: storeListController.isLoading.value,
+              opacity: 0,
+              progressIndicator: const CustomProgressbar(),
+              child: Column(children: [
+                const Divider(
+                  thickness: 1,
+                  height: 1,
+                  color: dividerColor,
+                ),
+                const SearchStoreWidget(),
+                storeListController.storeList.isNotEmpty
+                    ? StoreListView()
+                    : StoreListEmptyView(),
+                const SizedBox(
+                  height: 12,
+                ),
+              ]),
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

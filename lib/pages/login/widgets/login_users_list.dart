@@ -44,6 +44,7 @@ class LoginUsersList extends StatelessWidget {
                       ImageUtils.setUserImage(
                           loginController.loginUsers[position].imageThumb ?? "",
                           50,
+                          50,
                           45),
                       Expanded(
                           child: Padding(

@@ -173,8 +173,11 @@ class StoreListController extends GetxController {
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
             if (productCount > 0) {
+              AppStorage().clearStoredStock();
               storeLocalProducts(getLocalStoredProduct());
             } else {
+              AppStorage().clearStoredStock();
+              AppStorage().clearStoredProduct();
               updateStoreData();
             }
           } else {
@@ -232,6 +235,8 @@ class StoreListController extends GetxController {
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
+            AppStorage().clearStoredStock();
+            AppStorage().clearStoredProduct();
             updateStoreData();
           } else {
             // AppUtils.showSnackBarMessage(response.Message!);

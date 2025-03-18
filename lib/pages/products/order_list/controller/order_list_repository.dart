@@ -5,15 +5,15 @@ import '../../../../web_services/api_constants.dart';
 import '../../../../web_services/network/api_request.dart';
 import '../../../../web_services/response/response_model.dart';
 
-class ImportProductsRepository {
-  void importProducts({
+class OrderListRepository {
+  void inventoryOrderList({
     multi.FormData? formData,
     Function(ResponseModel responseModel)? onSuccess,
     Function(ResponseModel error)? onError,
   }) {
     if (kDebugMode) print("formData:$formData");
     ApiRequest(
-            url: ApiConstants.importProductUrl,
+            url: ApiConstants.inventoryOrderListUrl,
             formData: formData,
             isFormData: true)
         .postRequest(

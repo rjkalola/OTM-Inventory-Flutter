@@ -8,28 +8,25 @@ import 'package:otm_inventory/widgets/footer_primary_button.dart';
 
 import '../../../../../widgets/PrimaryBorderButton.dart';
 
-class UploadButton extends StatelessWidget {
-  UploadButton({super.key});
+class ExitButton extends StatelessWidget {
+  ExitButton({super.key});
 
   final controller = Get.put(ImportProductsController());
 
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => controller.isFileDetailsVisible.value
+      () => controller.isResultVisible.value
           ? Padding(
               padding: const EdgeInsets.all(16.0),
               child: SizedBox(
                 width: double.infinity,
                 child: PrimaryBorderButton(
-                  buttonText: 'upload'.tr,
+                  buttonText: 'exit'.tr,
                   textColor: defaultAccentColor,
                   borderColor: defaultAccentColor,
                   onPressed: () {
-                    // Get.back();
-                    if (!controller.isLoading.value) {
-                      controller.onCLickImportProduct();
-                    }
+                    Get.back(result: true);
                   },
                 ),
               ),

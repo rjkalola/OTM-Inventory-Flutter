@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/res/colors.dart';
+import 'package:otm_inventory/res/drawable.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../pages/common/widgets/image_preview_dialog.dart';
@@ -8,41 +11,55 @@ class ImageUtils {
   static String defaultUserAvtarUrl =
       "https://www.pngmart.com/files/22/User-Avatar-Profile-PNG-Isolated-Transparent-Picture.png";
 
-  static Widget setUserImage(String url, double size, double radius) {
+  static Widget setUserImage(String url, double width, double height,
+      double radius) {
     return !StringHelper.isEmptyString(url)
         ? ClipRRect(
-            borderRadius: BorderRadius.circular(radius),
-            child: Image.network(
-              url,
-              fit: BoxFit.cover,
-              width: size,
-              height: size,
-              errorBuilder: (context, url, error) => Image.network(
-                defaultUserAvtarUrl,
-                fit: BoxFit.scaleDown,
-                height: size,
-                width: size,
-              ),
-            ),
-          )
-        : Image.network(
-            defaultUserAvtarUrl,
-            fit: BoxFit.scaleDown,
-            height: size,
-            width: size,
-          );
+      borderRadius: BorderRadius.circular(radius),
+      child: Image.network(
+        url,
+        fit: BoxFit.cover,
+        width: width,
+        height: height,
+        // errorBuilder: (context, url, error) => Image.network(
+        //   defaultUserAvtarUrl,
+        //   fit: BoxFit.scaleDown,
+        //   height: size,
+        //   width: size,
+        // ),
+        errorBuilder: (context, url, error) =>
+            defaultUserImage(width, height),
+      ),
+    )
+    // : Image.network(
+    //     defaultUserAvtarUrl,
+    //     fit: BoxFit.scaleDown,
+    //     height: size,
+    //     width: size,
+    //   );
+        : defaultUserImage(width, height);
+  }
+
+  static Widget defaultUserImage(double width, double height) {
+    return SvgPicture.asset(
+      width: width,
+      height: height,
+      Drawable.accountCircleIcon,
+      colorFilter:
+      const ColorFilter.mode(primaryTextColor, BlendMode.srcIn),
+    );
   }
 
   static Widget setImage(String url, double size) {
     return !StringHelper.isEmptyString(url)
         ? Image.network(
-            url,
-            fit: BoxFit.cover,
-            width: size,
-            height: size,
-            errorBuilder: (context, url, error) =>
-                Icon(Icons.photo_outlined, size: size),
-          )
+      url,
+      fit: BoxFit.cover,
+      width: size,
+      height: size,
+      errorBuilder: (context, url, error) =>
+          Icon(Icons.photo_outlined, size: size),
+    )
         : Icon(Icons.photo_outlined, size: size);
   }
 
@@ -53,7 +70,7 @@ class ImageUtils {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return ImagePreviewDialog(
-            imageUrl: url??"",
+            imageUrl: url ?? "",
           );
         },
       );

@@ -46,41 +46,44 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
           }
         }
       },
-      child: SafeArea(
-          child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: BaseAppBar(
-            appBar: AppBar(),
-            title: 'suppliers'.tr,
-            isCenterTitle: false,
-            isBack: true,
-            widgets: actionButtons()),
-        drawer: MainDrawer(),
-        bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-        body: Obx(
-          () => ModalProgressHUD(
-            inAsyncCall: supplierListController.isLoading.value,
-            opacity: 0,
-            progressIndicator: const CustomProgressbar(),
-            child: Column(children: [
-              const Divider(
-                thickness: 1,
-                height: 1,
-                color: dividerColor,
-              ),
-              Visibility(
-                  visible: supplierListController.itemList.isNotEmpty,
-                  child: const SearchSupplierWidget()),
-              supplierListController.itemList.isNotEmpty
-                  ? SupplierListView()
-                  : SupplierListEmptyView(),
-              const SizedBox(
-                height: 12,
-              ),
-            ]),
+      child: Container(
+        color: backgroundColor,
+        child: SafeArea(
+            child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: BaseAppBar(
+              appBar: AppBar(),
+              title: 'suppliers'.tr,
+              isCenterTitle: false,
+              isBack: true,
+              widgets: actionButtons()),
+          drawer: MainDrawer(),
+          bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+          body: Obx(
+            () => ModalProgressHUD(
+              inAsyncCall: supplierListController.isLoading.value,
+              opacity: 0,
+              progressIndicator: const CustomProgressbar(),
+              child: Column(children: [
+                const Divider(
+                  thickness: 1,
+                  height: 1,
+                  color: dividerColor,
+                ),
+                Visibility(
+                    visible: supplierListController.itemList.isNotEmpty,
+                    child: const SearchSupplierWidget()),
+                supplierListController.itemList.isNotEmpty
+                    ? SupplierListView()
+                    : SupplierListEmptyView(),
+                const SizedBox(
+                  height: 12,
+                ),
+              ]),
+            ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

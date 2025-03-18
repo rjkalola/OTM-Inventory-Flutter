@@ -26,4 +26,5 @@ class AppRoutes {
       '/purchase_order_details_screen';
   static const String barcodeListScreen = '/barcode_list_screen';
   static const String importProductsScreen = '/import_products_screen';
+  static const String orderListScreen = '/order_list_screen';
 }

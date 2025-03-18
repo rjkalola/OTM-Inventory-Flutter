@@ -39,54 +39,57 @@ class _PurchaseOrderDetailsScreenState
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
-    return SafeArea(
-        child: Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: BaseAppBar(
-          appBar: AppBar(),
-          title: 'purchase_order'.tr,
-          isCenterTitle: false,
-          isBack: true,
-          widgets: actionButtons()),
-      // drawer: MainDrawer(),
-      bottomNavigationBar: const CommonBottomNavigationBarWidget(),
-      body: Obx(
-        () => ModalProgressHUD(
-          inAsyncCall: controller.isLoading.value,
-          opacity: 0,
-          progressIndicator: const CustomProgressbar(),
-          child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              CustomDivider(thickness: 1, height: 1),
-              HeaderView(),
-              SupplierName(),
-              Reference(),
-              OrderDate(),
-              CustomDivider(thickness: 9, height: 9),
-              const SizedBox(
-                height: 9,
-              ),
-              BarcodeScanSwitchView(),
-              Visibility(
-                visible: controller.switchScanItem.value,
-                child: ProductItem(
-                  onValueChange: (value) {},
-                  controller: controller.searchController.value,
+    return Container(
+      color: backgroundColor,
+      child: SafeArea(
+          child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: BaseAppBar(
+            appBar: AppBar(),
+            title: 'purchase_order'.tr,
+            isCenterTitle: false,
+            isBack: true,
+            widgets: actionButtons()),
+        // drawer: MainDrawer(),
+        bottomNavigationBar: const CommonBottomNavigationBarWidget(),
+        body: Obx(
+          () => ModalProgressHUD(
+            inAsyncCall: controller.isLoading.value,
+            opacity: 0,
+            progressIndicator: const CustomProgressbar(),
+            child: SingleChildScrollView(
+              child:
+                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                CustomDivider(thickness: 1, height: 1),
+                HeaderView(),
+                SupplierName(),
+                Reference(),
+                OrderDate(),
+                CustomDivider(thickness: 9, height: 9),
+                const SizedBox(
+                  height: 9,
                 ),
-              ),
-              ProductItemsList(),
-              const SizedBox(
-                height: 9,
-              ),
-              CustomDivider(thickness: 9, height: 9),
-              TextFieldNote(),
-              ActionButtons()
-            ]),
+                BarcodeScanSwitchView(),
+                Visibility(
+                  visible: controller.switchScanItem.value,
+                  child: ProductItem(
+                    onValueChange: (value) {},
+                    controller: controller.searchController.value,
+                  ),
+                ),
+                ProductItemsList(),
+                const SizedBox(
+                  height: 9,
+                ),
+                CustomDivider(thickness: 9, height: 9),
+                TextFieldNote(),
+                ActionButtons()
+              ]),
+            ),
           ),
         ),
-      ),
-    ));
+      )),
+    );
   }
 
   List<Widget>? actionButtons() {
