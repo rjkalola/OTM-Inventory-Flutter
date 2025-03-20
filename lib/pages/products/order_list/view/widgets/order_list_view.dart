@@ -25,7 +25,9 @@ class OrderListView extends StatelessWidget {
               children: List.generate(
                 controller.itemList.length,
                 (position) => InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    controller.orderDetailsClick(controller.itemList[position]);
+                  },
                   child: CardView(
                       child: Padding(
                     padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),

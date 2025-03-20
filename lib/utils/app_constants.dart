@@ -22,6 +22,8 @@ class IntentKey {
   final String phoneExtension = 'PHONE_EXTENSION';
   final String phoneNumber = 'PHONE_NUMBER';
   final String productInfo = 'PRODUCT_INFO';
+  final String orderInfo = 'ORDER_INFO';
+  final String mId = 'ID';
   final String storeInfo = 'STORE_INFO';
   final String supplierInfo = 'SUPPLIER_INFO';
   final String categoryInfo = 'CATEGORY_INFO';

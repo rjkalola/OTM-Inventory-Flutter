@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:otm_inventory/pages/products/add_product/controller/add_product_repository.dart';
 import 'package:otm_inventory/pages/products/import_products/controller/import_products_repository.dart';
+import 'package:otm_inventory/pages/products/order_details/controller/order_details_repository.dart';
+import 'package:otm_inventory/pages/products/order_details/model/order_details_response.dart';
 import 'package:otm_inventory/pages/products/order_list/controller/order_list_repository.dart';
 import 'package:otm_inventory/pages/products/order_list/model/order_info.dart';
 import 'package:otm_inventory/pages/products/order_list/model/order_list_response.dart';
@@ -13,7 +15,6 @@ import 'package:otm_inventory/pages/products/product_list/models/product_info.da
 import 'package:otm_inventory/pages/products/product_list/models/product_list_response.dart';
 import 'package:otm_inventory/pages/stock_edit_quantiry/model/store_stock_request.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_repository.dart';
-import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
@@ -24,55 +25,58 @@ import 'package:otm_inventory/web_services/response/base_response.dart';
 import 'package:otm_inventory/web_services/response/response_model.dart';
 import '../../../common/model/file_info.dart';
 
-class OrderListController extends GetxController {
+class OrderDetailsController extends GetxController {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isClearVisible = false.obs;
-  final search = ''.obs, fromDate = ''.obs, toDate = ''.obs;
-  final offset = 0.obs;
-  final _api = OrderListRepository();
-  final searchController = TextEditingController().obs;
-  late ScrollController scrollController;
-  var itemList = <OrderInfo>[].obs;
-  List<OrderInfo> tempList = [];
+      isUpdated = false.obs;
+  final _api = OrderDetailsRepository();
+  final orderInfo = OrderInfo().obs;
+  final orderProductList = <ProductInfo>[].obs;
+  final productItemsQty = <TextEditingController>[].obs;
+  final userController = TextEditingController().obs;
+  final orderId = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    scrollController = ScrollController();
-    getInventoryOrderList(true);
     var arguments = Get.arguments;
     if (arguments != null) {
-      // title.value = 'edit_product'.tr;
-      // productId = arguments[AppConstants.intentKey.productId];
-      // getProductDetails(productId);
+      orderId.value = arguments[AppConstants.intentKey.mId];
+      getInventoryOrderDetails(true);
     }
   }
 
-  void getInventoryOrderList(bool isProgress) async {
+  void getInventoryOrderDetails(bool isProgress) async {
     if (isProgress) isLoading.value = true;
 
     Map<String, dynamic> map = {};
-    map["store_id"] = AppStorage.storeId.toString();
+    map["order_id"] = orderId.value.toString();
 
     var formData = multi.FormData.fromMap(map);
 
     print("Request Data:" + map.toString());
-    _api.inventoryOrderList(
+    _api.inventoryOrderDetails(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
         isLoading.value = false;
         if (responseModel.statusCode == 200) {
-          OrderListResponse response =
-              OrderListResponse.fromJson(jsonDecode(responseModel.result!));
+          OrderDetailsResponse response =
+              OrderDetailsResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.isSuccess!) {
-            tempList.clear();
-            tempList.addAll(response.info!);
-            itemList.value = tempList;
-            isMainViewVisible.value = true;
-            fromDate.value = response.fromDate ?? "";
-            toDate.value = response.toDate ?? "";
+            if (response.info != null) {
+              orderInfo.value = response.info!;
+              if (!StringHelper.isEmptyList(response.info?.orderProducts)) {
+                for (int i = 0; i < response.info!.orderProducts!.length; i++) {
+                  ProductInfo info = response.info!.orderProducts![i];
+                  var textEditController = TextEditingController();
+                  textEditController.text = info.qty.toString();
+                  productItemsQty.add(textEditController);
+                  orderProductList.add(info);
+                }
+              }
+              isMainViewVisible.value = true;
+            }
           } else {
             AppUtils.showSnackBarMessage(response.message!);
           }
@@ -89,30 +93,5 @@ class OrderListController extends GetxController {
         }
       },
     );
-  }
-
-  Future<void> searchItem(String value) async {
-    print("Search item:" + value);
-    List<OrderInfo> results = [];
-    if (value.isEmpty) {
-      results = tempList;
-    } else {
-      results = tempList
-          .where((element) => (element.orderedUserName ?? "")
-              .toLowerCase()
-              .contains(value.toLowerCase()))
-          .toList();
-    }
-    itemList.value = results;
-  }
-
-  Future<void> orderDetailsClick(OrderInfo? info) async {
-    var arguments = {
-      AppConstants.intentKey.mId: info?.id??0,
-    };
-    var result =
-        await Get.toNamed(AppRoutes.orderDetailsScreen, arguments: arguments);
-
-    if (result != null && result) {}
   }
 }

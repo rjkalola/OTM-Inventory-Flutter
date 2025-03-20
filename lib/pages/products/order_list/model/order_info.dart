@@ -1,3 +1,6 @@
+import 'package:otm_inventory/pages/otp_verification/model/user_info.dart';
+import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
+
 class OrderInfo {
   int? id;
   String? orderId;
@@ -25,6 +28,8 @@ class OrderInfo {
   String? currency;
   int? totalQty;
   String? orderStatus;
+  List<ProductInfo>? orderProducts;
+  UserInfo? user;
 
   OrderInfo(
       {this.id,
@@ -52,7 +57,9 @@ class OrderInfo {
       this.formattedCreatedAt,
       this.currency,
       this.totalQty,
-      this.orderStatus});
+      this.orderStatus,
+      this.orderProducts,
+      this.user});
 
   OrderInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -81,6 +88,13 @@ class OrderInfo {
     currency = json['currency'];
     totalQty = json['total_qty'];
     orderStatus = json['order_status'];
+    if (json['order_products'] != null) {
+      orderProducts = <ProductInfo>[];
+      json['order_products'].forEach((v) {
+        orderProducts!.add(ProductInfo.fromJson(v));
+      });
+    }
+    user = json['user'] != null ? UserInfo.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -111,6 +125,12 @@ class OrderInfo {
     data['currency'] = this.currency;
     data['total_qty'] = this.totalQty;
     data['order_status'] = this.orderStatus;
+    if (orderProducts != null) {
+      data['order_products'] = orderProducts!.map((v) => v.toJson()).toList();
+    }
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
     return data;
   }
 }

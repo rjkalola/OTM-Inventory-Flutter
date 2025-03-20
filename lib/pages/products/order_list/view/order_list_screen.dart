@@ -35,7 +35,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
         statusBarIconBrightness: Brightness.dark));
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async {
         final backNavigationAllowed = await onBackPress();
         if (backNavigationAllowed) {
           if (Platform.isIOS) {

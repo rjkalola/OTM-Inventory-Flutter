@@ -14,7 +14,7 @@ class OrderDateRangeView extends StatelessWidget {
     return Visibility(
       visible: controller.isMainViewVisible.value,
       child: Container(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         color: titleBgColor,
         width: double.infinity,
         child: Center(
