@@ -38,7 +38,7 @@ class OrderInfoView extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 6,
+              height: 9,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,15 +63,15 @@ class OrderInfoView extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Icon(
-                      color: defaultAccentColor,
-                      Icons.location_on_outlined,
-                      weight: 300,
-                      size: 26,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
+                    // const Icon(
+                    //   color: defaultAccentColor,
+                    //   Icons.location_on_outlined,
+                    //   weight: 300,
+                    //   size: 26,
+                    // ),
+                    // const SizedBox(
+                    //   width: 8,
+                    // ),
                     PrimaryTextView(
                       text:
                           "QTY: ${(controller.orderInfo.value.totalQty ?? 0).toString()}",
@@ -83,15 +83,15 @@ class OrderInfoView extends StatelessWidget {
                 )
               ],
             ),
-            const SizedBox(
-              height: 6,
-            ),
-            PrimaryTextView(
-              text: controller.orderInfo.value.orderStatus ?? "",
-              color: Colors.green,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            )
+            // const SizedBox(
+            //   height: 6,
+            // ),
+            // PrimaryTextView(
+            //   text: controller.orderInfo.value.orderStatus ?? "",
+            //   color: Colors.green,
+            //   fontSize: 16,
+            //   fontWeight: FontWeight.w500,
+            // )
           ],
         ),
       ),

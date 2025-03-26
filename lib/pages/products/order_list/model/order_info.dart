@@ -28,6 +28,8 @@ class OrderInfo {
   String? currency;
   int? totalQty;
   String? orderStatus;
+  int? orderStatusInt;
+  String? statusMessage;
   List<ProductInfo>? orderProducts;
   UserInfo? user;
 
@@ -58,6 +60,8 @@ class OrderInfo {
       this.currency,
       this.totalQty,
       this.orderStatus,
+      this.orderStatusInt,
+      this.statusMessage,
       this.orderProducts,
       this.user});
 
@@ -88,6 +92,8 @@ class OrderInfo {
     currency = json['currency'];
     totalQty = json['total_qty'];
     orderStatus = json['order_status'];
+    orderStatusInt = json['order_status_int'];
+    statusMessage = json['status_message'];
     if (json['order_products'] != null) {
       orderProducts = <ProductInfo>[];
       json['order_products'].forEach((v) {
@@ -125,6 +131,8 @@ class OrderInfo {
     data['currency'] = this.currency;
     data['total_qty'] = this.totalQty;
     data['order_status'] = this.orderStatus;
+    data['order_status_int'] = this.orderStatusInt;
+    data['status_message'] = this.statusMessage;
     if (orderProducts != null) {
       data['order_products'] = orderProducts!.map((v) => v.toJson()).toList();
     }

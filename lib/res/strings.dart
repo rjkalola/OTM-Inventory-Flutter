@@ -198,6 +198,9 @@ class Strings extends Translations {
           'add_and_edit_products': "Add and Edit Products",
           'exit': "Exit",
           'accept': "Accept",
+          'ready_to_deliver': "Ready to deliver",
+          'deliver': "Deliver",
+          'reject': "Reject",
         },
         'hi_IN': {'login': 'Login'}
       };

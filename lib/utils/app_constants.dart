@@ -7,6 +7,7 @@ class AppConstants {
   static const StockFilterType stockFilterType = StockFilterType();
   static const StockCountType stockCountType = StockCountType();
   static const PurchaseOrderStatus purchaseOrderStatus = PurchaseOrderStatus();
+  static const OrderStatus orderStatus = OrderStatus();
 
   static const String deviceType = "1";
   static const int productListLimit = 20;
@@ -63,6 +64,7 @@ class DialogIdentifier {
   final String quantityNote = 'QUANTITY_NOTE';
   final String deleteBarcode = 'DELETE_BARCODE';
   final String addProductOptionsDialog = 'addProductOptionsDialog';
+  final String orderStatusChangeDialog = 'ORDER_STATUS_CHANGE_DIALOG';
 }
 
 class SharedPreferenceKey {
@@ -139,4 +141,17 @@ class PurchaseOrderStatus {
   final int RECEIVED = 2;
   final int UNLOCKED = 3;
   final int CANCELLED = 4;
+}
+
+class OrderStatus {
+  const OrderStatus(); //
+  final int PLACED = 1;
+  final int ACCEPTED = 2;
+  final int REJECTED = 3;
+  final int IN_PROGRESS = 4;
+  final int READY_TO_DELIVERED = 5;
+  final int RECEIVED = 6;
+  final int DELIVERED = 7;
+  final int CANCELLED = 8;
+  final int RETURNED = 9;
 }

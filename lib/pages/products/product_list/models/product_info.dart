@@ -7,6 +7,7 @@ import '../../../common/model/file_info.dart';
 class ProductInfo {
   int? id,
       local_id,
+      product_id,
       supplierId,
       manufacturer_id,
       weight_unit_id,
@@ -18,7 +19,8 @@ class ProductInfo {
       mode_type,
       stock_status_id,
       temp_store_id,
-      sort_id;
+      sort_id,
+      order_status_int;
 
   String? shortName,
       name,
@@ -47,7 +49,10 @@ class ProductInfo {
       dimension,
       barcode_text,
       stock_status,
-      uuid,cutoff;
+      uuid,
+      cutoff,
+      order_status,
+      status_message;
   List<ModuleInfo>? categories;
   bool? status, localStored, checkPrint;
   List<StockQtyHistoryInfo>? stock_histories;
@@ -57,6 +62,7 @@ class ProductInfo {
 
   ProductInfo(
       {this.id,
+      this.product_id,
       this.local_id,
       this.supplierId,
       this.shortName,
@@ -106,10 +112,14 @@ class ProductInfo {
       this.temp_store_id,
       this.uuid,
       this.sort_id,
-      this.cutoff});
+      this.cutoff,
+      this.order_status,
+      this.order_status_int,
+      this.status_message});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    product_id = json['product_id'];
     uuid = json['uuid'];
     local_id = json['local_id'];
     supplierId = json['supplier_id'];
@@ -184,11 +194,15 @@ class ProductInfo {
     temp_store_id = json['temp_store_id'];
     sort_id = json['sort_id'];
     cutoff = json['cutoff'];
+    order_status = json['order_status'];
+    order_status_int = json['order_status_int'];
+    status_message = json['status_message'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['product_id'] = product_id;
     data['uuid'] = uuid;
     data['local_id'] = local_id;
     data['supplier_id'] = supplierId;
@@ -249,7 +263,9 @@ class ProductInfo {
     data['temp_store_id'] = temp_store_id;
     data['sort_id'] = sort_id;
     data['cutoff'] = cutoff;
-
+    data['order_status'] = order_status;
+    data['order_status_int'] = order_status_int;
+    data['status_message'] = status_message;
     return data;
   }
 }

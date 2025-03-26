@@ -5,6 +5,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:otm_inventory/pages/products/order_details/controller/order_details_controller.dart';
+import 'package:otm_inventory/pages/products/order_details/view/widgets/order_details_action_buttons.dart';
 import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
@@ -64,88 +65,95 @@ class OrderProductItem extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  String text =
-                                      controller.text.toString().trim();
-                                  if (!StringHelper.isEmptyString(text) &&
-                                      int.parse(text) > 0) {
-                                    controller.text =
-                                        (int.parse(text) - 1).toString();
-                                  }
-                                },
-                                child: Icon(
-                                  Icons.remove,
-                                  weight: 300,
-                                  size: 22,
-                                  color: secondaryTextColor,
-                                ),
-                              ),
-                              Container(
-                                width: 50,
-                                // Custom width
-                                height: 30,
-                                child: TextFormField(
-                                    textAlign: TextAlign.center,
-                                    controller: controller,
-                                    maxLines: 1,
-                                    cursorHeight: 18,
-                                    // Custom cursor height
-                                    cursorWidth: 1,
-                                    //
-                                    keyboardType: TextInputType.number,
-                                    textInputAction: TextInputAction.done,
-                                    validator: MultiValidator([]),
-                                    onChanged: onValueChange,
-                                    decoration: const InputDecoration(
-                                      isDense: true,
-                                      border: InputBorder.none,
-                                    ),
-                                    inputFormatters: <TextInputFormatter>[
-                                      // for below version 2 use this
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp(r'[0-9]')),
-                                    ]),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  String text =
-                                      controller.text.toString().trim();
-                                  if (!StringHelper.isEmptyString(text)) {
-                                    controller.text =
-                                        (int.parse(text) + 1).toString();
-                                  } else {
-                                    controller.text = "1";
-                                  }
-                                },
-                                child: Icon(
-                                  Icons.add,
-                                  weight: 300,
-                                  size: 22,
-                                  color: secondaryTextColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 4),
+                        //   decoration: BoxDecoration(
+                        //     border: Border.all(color: Colors.grey),
+                        //     borderRadius: BorderRadius.circular(4),
+                        //   ),
+                        //   child: Row(
+                        //     children: [
+                        //       InkWell(
+                        //         onTap: () {
+                        //           String text =
+                        //               controller.text.toString().trim();
+                        //           if (!StringHelper.isEmptyString(text) &&
+                        //               int.parse(text) > 0) {
+                        //             controller.text =
+                        //                 (int.parse(text) - 1).toString();
+                        //           }
+                        //         },
+                        //         child: Icon(
+                        //           Icons.remove,
+                        //           weight: 300,
+                        //           size: 22,
+                        //           color: secondaryTextColor,
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         width: 50,
+                        //         // Custom width
+                        //         height: 30,
+                        //         child: TextFormField(
+                        //             textAlign: TextAlign.center,
+                        //             controller: controller,
+                        //             maxLines: 1,
+                        //             cursorHeight: 18,
+                        //             // Custom cursor height
+                        //             cursorWidth: 1,
+                        //             //
+                        //             keyboardType: TextInputType.number,
+                        //             textInputAction: TextInputAction.done,
+                        //             validator: MultiValidator([]),
+                        //             onChanged: onValueChange,
+                        //             decoration: const InputDecoration(
+                        //               isDense: true,
+                        //               border: InputBorder.none,
+                        //             ),
+                        //             inputFormatters: <TextInputFormatter>[
+                        //               // for below version 2 use this
+                        //               FilteringTextInputFormatter.allow(
+                        //                   RegExp(r'[0-9]')),
+                        //             ]),
+                        //       ),
+                        //       InkWell(
+                        //         onTap: () {
+                        //           String text =
+                        //               controller.text.toString().trim();
+                        //           if (!StringHelper.isEmptyString(text)) {
+                        //             controller.text =
+                        //                 (int.parse(text) + 1).toString();
+                        //           } else {
+                        //             controller.text = "1";
+                        //           }
+                        //         },
+                        //         child: Icon(
+                        //           Icons.add,
+                        //           weight: 300,
+                        //           size: 22,
+                        //           color: secondaryTextColor,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        PrimaryTextView(
+                          text: (info?.qty ?? 0).toString(),
+                          color: primaryTextColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          softWrap: true,
+                        )
                       ],
                     ),
-                    SizedBox(
-                      height: 10,
+                    const SizedBox(
+                      height: 8,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         PrimaryTextView(
-                          text: "DCK 123",
+                          text: info?.uuid ?? "",
                           color: secondaryLightTextColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -160,6 +168,21 @@ class OrderProductItem extends StatelessWidget {
                           softWrap: true,
                         )
                       ],
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    PrimaryTextView(
+                      text: info?.status_message ?? "",
+                      color: orderDetailsController
+                          .getStatusTextColor(info?.order_status_int ?? 0),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      softWrap: true,
+                    ),
+                    OrderDetailsActionButtons(
+                      status: info?.order_status_int ?? 0,
+                      productId: info?.product_id ?? 0,
                     )
                   ],
                 ),

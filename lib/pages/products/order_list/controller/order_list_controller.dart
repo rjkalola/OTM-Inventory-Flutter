@@ -108,11 +108,13 @@ class OrderListController extends GetxController {
 
   Future<void> orderDetailsClick(OrderInfo? info) async {
     var arguments = {
-      AppConstants.intentKey.mId: info?.id??0,
+      AppConstants.intentKey.mId: info?.id ?? 0,
     };
     var result =
         await Get.toNamed(AppRoutes.orderDetailsScreen, arguments: arguments);
 
-    if (result != null && result) {}
+    if (result != null && result) {
+      getInventoryOrderList(true);
+    }
   }
 }

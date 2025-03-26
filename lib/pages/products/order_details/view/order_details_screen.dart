@@ -13,6 +13,7 @@ import 'package:otm_inventory/pages/products/order_details/view/widgets/order_de
 import 'package:otm_inventory/pages/products/order_details/view/widgets/order_details_total_item_count_price_view.dart';
 import 'package:otm_inventory/pages/products/order_details/view/widgets/order_info_view.dart';
 import 'package:otm_inventory/pages/products/order_details/view/widgets/order_product_item_list.dart';
+import 'package:otm_inventory/pages/products/order_details/view/widgets/textfield_note_order_details.dart';
 import 'package:otm_inventory/pages/products/order_list/controller/order_list_controller.dart';
 import 'package:otm_inventory/pages/products/order_list/view/widgets/date_range_view.dart';
 import 'package:otm_inventory/pages/products/order_list/view/widgets/order_list_empty_view.dart';
@@ -95,9 +96,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     visible: controller.isMainViewVisible.value,
                     child: Column(
                       children: [
-                        OrderDetailsTextFieldSelectUser(),
+                        // OrderDetailsTextFieldSelectUser(),
+                        // TextFieldNoteOrderDetails(),
                         OrderDetailsTotalItemCountPriceView(),
-                        OrderDetailsActionButtons()
+                        // OrderDetailsActionButtons()
                       ],
                     ),
                   )
