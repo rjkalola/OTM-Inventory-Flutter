@@ -286,18 +286,6 @@ class AddProductController extends GetxController
     }
   }
 
-  // Future showOptions(String dialogType, String title,
-  //     List<ModuleInfo> list, SelectItemListener listener) async {
-  //   showCupertinoModalPopup(
-  //     context: Get.context!,
-  //     builder: (context) => SelectItemListDialog(
-  //         title: title,
-  //         dialogType: dialogType,
-  //         list: list,
-  //         listener: listener),
-  //   );
-  // }
-
   void showAttachmentOptionsDialog(String dialogType, String title,
       List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(

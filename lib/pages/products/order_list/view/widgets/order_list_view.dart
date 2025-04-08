@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/products/order_list/controller/order_list_controller.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
@@ -110,7 +111,9 @@ class OrderListView extends StatelessWidget {
                         ),
                         PrimaryTextView(
                           text: controller.itemList[position].orderStatus ?? "",
-                          color: Colors.green,
+                          color: AppUtils.getStatusTextColor(
+                              controller.itemList[position].orderStatusInt ??
+                                  0),
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         )

@@ -68,15 +68,13 @@ class _OrderListScreenState extends State<OrderListScreen> {
                   height: 1,
                   color: dividerColor,
                 ),
-                OrderDateRangeView(),
+                // OrderDateRangeView(),
                 const Divider(
                   thickness: 1,
                   height: 1,
                   color: dividerColor,
                 ),
-                Visibility(
-                    visible: controller.itemList.isNotEmpty,
-                    child: const SearchOrderWidget()),
+                Visibility(visible: true, child: const SearchOrderWidget()),
                 controller.itemList.isNotEmpty
                     ? OrderListView()
                     : OrderListEmptyView(),

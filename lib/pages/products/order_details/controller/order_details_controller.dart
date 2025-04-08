@@ -145,30 +145,30 @@ class OrderDetailsController extends GetxController
     );
   }
 
-  Color getStatusTextColor(int status) {
-    print("status:" + status.toString());
-    Color? color = primaryTextColor;
-    if (status == AppConstants.orderStatus.PLACED) {
-      color = const Color(0xff1d7b3e);
-    } else if (status == AppConstants.orderStatus.ACCEPTED) {
-      color = const Color(0xff019ea4);
-    } else if (status == AppConstants.orderStatus.REJECTED) {
-      color = const Color(0xfff24726);
-    } else if (status == AppConstants.orderStatus.IN_PROGRESS) {
-      color = defaultAccentColor;
-    } else if (status == AppConstants.orderStatus.READY_TO_DELIVERED) {
-      color = const Color(0xff414bb2);
-    } else if (status == AppConstants.orderStatus.RECEIVED) {
-      color = const Color(0xff1d7b3e);
-    } else if (status == AppConstants.orderStatus.DELIVERED) {
-      color = const Color(0xff025393);
-    } else if (status == AppConstants.orderStatus.CANCELLED) {
-      color = const Color(0xfff24726);
-    } else if (status == AppConstants.orderStatus.RETURNED) {
-      color = const Color(0xff1d7b3e);
-    }
-    return color;
-  }
+  // Color getStatusTextColor(int status) {
+  //   print("status:" + status.toString());
+  //   Color? color = primaryTextColor;
+  //   if (status == AppConstants.orderStatus.PLACED) {
+  //     color = const Color(0xff1d7b3e);
+  //   } else if (status == AppConstants.orderStatus.ACCEPTED) {
+  //     color = const Color(0xff019ea4);
+  //   } else if (status == AppConstants.orderStatus.REJECTED) {
+  //     color = const Color(0xfff24726);
+  //   } else if (status == AppConstants.orderStatus.IN_PROGRESS) {
+  //     color = defaultAccentColor;
+  //   } else if (status == AppConstants.orderStatus.READY_TO_DELIVERED) {
+  //     color = const Color(0xff414bb2);
+  //   } else if (status == AppConstants.orderStatus.RECEIVED) {
+  //     color = const Color(0xff1d7b3e);
+  //   } else if (status == AppConstants.orderStatus.DELIVERED) {
+  //     color = const Color(0xff025393);
+  //   } else if (status == AppConstants.orderStatus.CANCELLED) {
+  //     color = const Color(0xfff24726);
+  //   } else if (status == AppConstants.orderStatus.RETURNED) {
+  //     color = const Color(0xff1d7b3e);
+  //   }
+  //   return color;
+  // }
 
   void showStatusUpdateDialog(int productId, int status, String message) {
     selectedProductId = productId;

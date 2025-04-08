@@ -7,6 +7,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:otm_inventory/pages/products/order_details/controller/order_details_controller.dart';
 import 'package:otm_inventory/pages/products/order_details/view/widgets/order_details_action_buttons.dart';
 import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../../../../res/colors.dart';
@@ -15,13 +16,12 @@ import '../../../../../widgets/text/PrimaryTextView.dart';
 import '../../../../../widgets/text_field_border.dart';
 
 class OrderProductItem extends StatelessWidget {
-  OrderProductItem(
-      {super.key,
-      this.info,
-      this.position,
-      this.totalLength,
-      this.onValueChange,
-      required this.controller});
+  OrderProductItem({super.key,
+    this.info,
+    this.position,
+    this.totalLength,
+    this.onValueChange,
+    required this.controller});
 
   final ValueChanged<String>? onValueChange;
   final TextEditingController controller;
@@ -160,8 +160,10 @@ class OrderProductItem extends StatelessWidget {
                           softWrap: true,
                         ),
                         PrimaryTextView(
-                          text:
-                              "${orderDetailsController.orderInfo.value.currency ?? ""}${info?.price ?? ""}",
+                          // text:
+                          //     "${orderDetailsController.orderInfo.value.currency ?? ""}${info?.price ?? ""}",
+                          text: totalPrice(info?.price, info?.qty,
+                              orderDetailsController.orderInfo.value.currency),
                           color: secondaryLightTextColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -174,8 +176,8 @@ class OrderProductItem extends StatelessWidget {
                     ),
                     PrimaryTextView(
                       text: info?.status_message ?? "",
-                      color: orderDetailsController
-                          .getStatusTextColor(info?.order_status_int ?? 0),
+                      color: AppUtils.getStatusTextColor(
+                          info?.order_status_int ?? 0),
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                       softWrap: true,
@@ -200,5 +202,12 @@ class OrderProductItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String totalPrice(String? price, int? qty, String? currency) {
+    String totalPrice = "${currency}0";
+    double priceDouble = double.parse(price!);
+    totalPrice = (currency??"" )+ (priceDouble * (qty ?? 0)).toString();
+    return totalPrice;
   }
 }
