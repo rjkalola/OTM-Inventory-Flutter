@@ -37,4 +37,8 @@ class Drawable {
   static const String csvFileIcon = 'assets/images/ic_csv_file.svg';
   static const String uploadIcon = 'assets/images/ic_upload.svg';
   static const String accountCircleIcon = 'assets/images/ic_account_circle.svg';
+  static const String warningIcon = 'assets/images/ic_warning.svg';
+  static const String cubeIcon = 'assets/images/ic_cube.svg';
+  static const String banIcon = 'assets/images/ic_ban.svg';
+// static const String accountCircleIcon = 'assets/images/';
 }

@@ -76,4 +76,32 @@ class ImageUtils {
       );
     }
   }
+
+  static Widget setAssetsImage(
+      {required String path,
+        required double width,
+        required double height,
+        BoxFit? fit,
+        Color? color}) {
+    return !StringHelper.isEmptyString(path)
+        ? SvgPicture.asset(
+      path,
+      fit: fit ?? BoxFit.cover,
+      width: width,
+      height: height,
+      colorFilter:
+      color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
+    )
+        : Icon(Icons.photo_outlined, size: getEmptyIconSize(width, height));
+  }
+
+  static double getEmptyIconSize(double width, double height) {
+    if (width > height) {
+      return height;
+    } else if (width < height) {
+      return width;
+    } else {
+      return width;
+    }
+  }
 }

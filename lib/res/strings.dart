@@ -201,6 +201,7 @@ class Strings extends Translations {
           'ready_to_deliver': "Ready to deliver",
           'deliver': "Deliver",
           'reject': "Reject",
+          'all_products': "All Products",
         },
         'hi_IN': {'login': 'Login'}
       };

@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/dashboard_stock_count_item.dart';
+import 'package:otm_inventory/pages/dashboard/widgets/dashboard_stock_count_item2.dart';
 import 'package:otm_inventory/pages/otp_verification/model/user_info.dart';
 import 'package:otm_inventory/res/drawable.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 
@@ -93,59 +95,94 @@ class _HomeTabState extends State<HomeTab> {
                                         ),
                                       )
                                     : Container(),
-                                DashboardStockCountItem(
-                                  title: 'all'.tr,
-                                  value:
-                                      "${dashboardController.mAllStockCount} (${dashboardController.allTotalAmount.value})",
-                                  // value:
-                                  //     (dashboardController.mInStockCount.value +
-                                  //             dashboardController
-                                  //                 .mLowStockCount.value)
-                                  //         .toString(),
-                                  valueColor: Colors.green,
+                                DashboardStockCountItem2(
+                                  title: 'all_products'.tr,
+                                  itemCount: dashboardController.mAllStockCount
+                                      .toString(),
+                                  totalAmount:
+                                      dashboardController.allTotalAmount.value,
+                                  iconPath: Drawable.cubeIcon,
+                                  iconColor: Colors.white,
+                                  isFullSizeIcon: false,
+                                  bgColor: Color(AppUtils.haxColor("#f7f5f6")),
+                                  borderColor:
+                                      Color(AppUtils.haxColor("#f7f5f6")),
+                                  circleColor:
+                                      Color(AppUtils.haxColor("#d7d8db")),
                                   onPressed: () {
                                     dashboardController.onClickAllStockItem();
                                   },
                                 ),
-                                DashboardStockCountItem(
+                                DashboardStockCountItem2(
                                   title: 'in_stock'.tr,
-                                  value:
-                                      "${dashboardController.mInStockCount} (${dashboardController.inStockAmount.value})",
-                                  // value:
-                                  //     (dashboardController.mInStockCount.value +
-                                  //             dashboardController
-                                  //                 .mLowStockCount.value)
-                                  //         .toString(),
-                                  valueColor: Colors.green,
+                                  itemCount: dashboardController.mInStockCount
+                                      .toString(),
+                                  totalAmount:
+                                      dashboardController.inStockAmount.value,
+                                  iconPath: Drawable.warningIcon,
+                                  iconColor: Colors.white,
+                                  isFullSizeIcon: false,
+                                  bgColor: Color(AppUtils.haxColor("#effcf5")),
+                                  borderColor:
+                                      Color(AppUtils.haxColor("#2bb352")),
+                                  circleColor:
+                                      Color(AppUtils.haxColor("#2bb352")),
                                   onPressed: () {
-                                    // dashboardController.onClickInStockItem();
                                     dashboardController.onClickStockItem(
                                         AppConstants.stockCountType.inStock);
                                   },
                                 ),
-
-                                DashboardStockCountItem(
+                                // DashboardStockCountItem(
+                                //   title: 'in_stock'.tr,
+                                //   value:
+                                //       "${dashboardController.mInStockCount} (${dashboardController.inStockAmount.value})",
+                                //   valueColor: Colors.green,
+                                //   onPressed: () {
+                                //     // dashboardController.onClickInStockItem();
+                                //     dashboardController.onClickStockItem(
+                                //         AppConstants.stockCountType.inStock);
+                                //   },
+                                // ),
+                                DashboardStockCountItem2(
                                   title: 'low_stock'.tr,
-                                  value:
-                                      "${dashboardController.mLowStockCount} (${dashboardController.lowStockAmount.value})",
-                                  valueColor: Colors.orange,
+                                  itemCount: dashboardController.mLowStockCount
+                                      .toString(),
+                                  totalAmount:
+                                      dashboardController.lowStockAmount.value,
+                                  iconPath: Drawable.warningIcon,
+                                  iconColor: Colors.white,
+                                  isFullSizeIcon: false,
+                                  bgColor: Color(AppUtils.haxColor("#fffaee")),
+                                  borderColor:
+                                      Color(AppUtils.haxColor("#fcb51b")),
+                                  circleColor:
+                                      Color(AppUtils.haxColor("#fcb51b")),
                                   onPressed: () {
                                     dashboardController.onClickStockItem(
                                         AppConstants.stockCountType.lowStock);
                                   },
                                 ),
-
-                                DashboardStockCountItem(
+                                DashboardStockCountItem2(
                                   title: 'out_of_stock'.tr,
-                                  value:
-                                      "${dashboardController.mOutOfStockCount} (${dashboardController.outOfStockAmount.value})",
-                                  valueColor: Colors.red,
+                                  itemCount: dashboardController
+                                      .mOutOfStockCount
+                                      .toString(),
+                                  totalAmount: dashboardController
+                                      .outOfStockAmount.value,
+                                  iconPath: Drawable.banIcon,
+                                  iconColor: Colors.white,
+                                  iconPadding: 10,
+                                  isFullSizeIcon: false,
+                                  bgColor: Color(AppUtils.haxColor("#fff0ed")),
+                                  borderColor:
+                                      Color(AppUtils.haxColor("#ff5045")),
+                                  circleColor:
+                                      Color(AppUtils.haxColor("#ff5045")),
                                   onPressed: () {
                                     dashboardController.onClickStockItem(
                                         AppConstants.stockCountType.outOfStock);
                                   },
                                 ),
-
                                 Visibility(
                                   visible:
                                       dashboardController.mMinusStockCount > 0,
@@ -161,11 +198,23 @@ class _HomeTabState extends State<HomeTab> {
                                     },
                                   ),
                                 ),
-                                DashboardStockCountItem(
+                                DashboardStockCountItem2(
                                   title: 'finishing_products'.tr,
-                                  value:
-                                      "${dashboardController.mFinishingProductsCount} (${dashboardController.finishingAmount.value})",
-                                  valueColor: darkYellowColor,
+                                  itemCount: dashboardController
+                                      .mFinishingProductsCount
+                                      .toString(),
+                                  totalAmount:
+                                      dashboardController.finishingAmount.value,
+                                  iconPath: Drawable.warningIcon,
+                                  iconColor:
+                                      Color(AppUtils.haxColor("#ffb115")),
+                                  iconPadding: 10,
+                                  isFullSizeIcon: true,
+                                  bgColor: Color(AppUtils.haxColor("#f7f5f6")),
+                                  borderColor:
+                                      Color(AppUtils.haxColor("#f7f5f6")),
+                                  circleColor:
+                                      Color(AppUtils.haxColor("#d7d8db")),
                                   onPressed: () {
                                     dashboardController.onClickStockItem(
                                         AppConstants
