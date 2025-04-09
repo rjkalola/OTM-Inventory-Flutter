@@ -437,12 +437,18 @@ class DashboardController extends GetxController
       mCancelledCount.value = response.cancelledCount ?? 0;
 
       currencySymbol.value = response.currency_symbol ?? "";
-      allTotalAmount.value = "${currencySymbol.value}${response.all_total_amount ?? ""}";
-      inStockAmount.value = "${currencySymbol.value}${response.in_stock_count_total_amount ?? ""}";
-      lowStockAmount.value = "${currencySymbol.value}${response.low_stock_count_total_amount ?? ""}";
-      outOfStockAmount.value = "${currencySymbol.value}${response.out_of_stock_count_total_amount ?? ""}";
-      minusStockAmount.value = "${currencySymbol.value}${response.minus_stock_count_total_amount ?? ""}";
-      finishingAmount.value = "${currencySymbol.value}${response.finishing_products_total_amount ?? ""}";
+      allTotalAmount.value =
+          "${currencySymbol.value}${response.all_total_amount ?? ""}";
+      inStockAmount.value =
+          "${currencySymbol.value}${response.in_stock_count_total_amount ?? ""}";
+      lowStockAmount.value =
+          "${currencySymbol.value}${response.low_stock_count_total_amount ?? ""}";
+      outOfStockAmount.value =
+          "${currencySymbol.value}${response.out_of_stock_count_total_amount ?? ""}";
+      minusStockAmount.value =
+          "${currencySymbol.value}${response.minus_stock_count_total_amount ?? ""}";
+      finishingAmount.value =
+          "${currencySymbol.value}${response.finishing_products_total_amount ?? ""}";
 
       if (AppStorage().getStockData() != null &&
           !StringHelper.isEmptyList(AppStorage().getStockData()!.info)) {
@@ -976,5 +982,20 @@ class DashboardController extends GetxController
       }
     }
     return listProducts;
+  }
+
+  BoxDecoration getBorderDecoration(
+      {Color? color,
+      double? radius,
+      double? borderWidth,
+      Color? borderColor,
+      List<BoxShadow>? boxShadow}) {
+    return BoxDecoration(
+      color: color ?? Colors.transparent,
+      boxShadow: boxShadow ?? null,
+      border: Border.all(
+          width: borderWidth ?? 0.6, color: borderColor ?? Colors.transparent),
+      borderRadius: BorderRadius.circular(radius ?? 12),
+    );
   }
 }
