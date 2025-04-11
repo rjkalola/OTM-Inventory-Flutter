@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_photo_view.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_button.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_list.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_title_view.dart';
@@ -16,7 +15,6 @@ import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/text
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_supplier.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_title.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_uuid.dart';
-import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/title_text_view.dart';
 
 import '../../../../res/colors.dart';
 import '../../../../widgets/CustomProgressbar.dart';
@@ -61,71 +59,10 @@ class AddStockProductScreen extends StatelessWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
-                                height: 14,
-                              ),
-                              TitleTextView(title: 'product_info'.tr),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(14, 14, 14, 8),
-                                child: Row(
-                                  children: [
-                                    AddPhotoView(),
-                                    const SizedBox(
-                                      width: 14,
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          TextFieldStockProductName(),
-                                          const SizedBox(
-                                            height: 12,
-                                          ),
-                                          TextFieldStockProductTitle(),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              AddStockProductPhotosTitleView(),
                               AddStockProductPhotosList(),
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(14, 14, 14, 18),
-                                child: Divider(
-                                  height: 0,
-                                  color: dividerColor,
-                                ),
-                              ),
-                              TitleTextView(title: 'classification'.tr),
-                              const SizedBox(
-                                height: 14,
-                              ),
-                              TextFieldStockProductCategory(),
-                              TextFieldStockProductSupplier(),
-                              TextFieldStockProductManufacturer(),
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(14, 8, 14, 18),
-                                child: Divider(
-                                  height: 0,
-                                  color: dividerColor,
-                                ),
-                              ),
-                              TitleTextView(title: 'inventory'.tr),
-                              const SizedBox(
-                                height: 14,
-                              ),
-                              TextFieldStockProductCutoff(),
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(14, 8, 14, 18),
-                                child: Divider(
-                                  height: 0,
-                                  color: dividerColor,
-                                ),
-                              ),
-                              TitleTextView(title: 'other_info'.tr),
-                              const SizedBox(
-                                height: 14,
-                              ),
+                              TextFieldStockProductName(),
+                              TextFieldStockProductTitle(),
                               TextFieldStockProductUuid(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -139,6 +76,10 @@ class AddStockProductScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 18,
                               ),
+                              TextFieldStockProductCategory(),
+                              TextFieldStockProductSupplier(),
+                              TextFieldStockProductManufacturer(),
+                              TextFieldStockProductCutoff(),
                               TextFieldStockProductPrice(),
                               TextFieldStockProductDescription(),
                               // AddProductPhotosTitleView(),

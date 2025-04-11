@@ -33,6 +33,9 @@ class _StockListScreenState extends State<StockListScreen> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    var appBarHeight =
+        kToolbarHeight; //this value comes from constants.dart and equals to 56.0
     return Obx(() => Container(
           color: backgroundColor,
           child: SafeArea(
@@ -88,6 +91,7 @@ class _StockListScreenState extends State<StockListScreen> {
                           color: Colors.white, size: 24),
                     ),
                   ),
+            drawerScrimColor: Colors.transparent,
             drawer: MainDrawer(),
             // bottomNavigationBar: const CommonBottomNavigationBarWidget(),
             body: Column(

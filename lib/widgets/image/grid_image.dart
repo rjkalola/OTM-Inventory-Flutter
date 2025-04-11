@@ -1,24 +1,30 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
+import 'package:otm_inventory/utils/image_utils.dart';
 
 import '../../res/colors.dart';
 import '../../utils/string_helper.dart';
 
 class GridImage extends StatelessWidget {
-  const GridImage({super.key, this.file, required this.onRemoveClick});
+  const GridImage(
+      {super.key, this.file, required this.onRemoveClick, this.fileRadius});
 
   final String? file;
   final VoidCallback onRemoveClick;
+  final double? fileRadius;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       // color of
       decoration: BoxDecoration(
-        border: Border.all(
-          color: rectangleBorderColor,
-        ),
+        borderRadius: BorderRadius.circular(fileRadius ?? 0),
+        // border: Border.all(
+        //   color: rectangleBorderColor,
+        // ),
+        color: Color(AppUtils.haxColor("#E6EAEE")),
       ), // grid items
       child: Stack(
         fit: StackFit.expand,
@@ -36,15 +42,22 @@ class GridImage extends StatelessWidget {
 
   Widget setImage() {
     return file!.startsWith("http")
-        ? Image.network(file ?? "", fit: BoxFit.cover)
-        : Image.file(File(file ?? ""), fit: BoxFit.cover);
+        ? ImageUtils.setRectangleCornerCachedNetworkImage(
+            url: file ?? "",
+            width: 0,
+            height: 0,
+            borderRadius: fileRadius ?? 0,
+          )
+        : ImageUtils.setRectangleCornerFileImage(
+            file ?? "", 0, 0, fileRadius ?? 0, BoxFit.cover);
   }
 
   Widget setAddButton() {
     return const Center(
         child: Icon(
       Icons.add,
-      size: 30,
+      size: 34,
+      color: Colors.white,
     ));
   }
 
@@ -52,7 +65,7 @@ class GridImage extends StatelessWidget {
     return Visibility(
       visible: !StringHelper.isEmptyString(file),
       child: Padding(
-        padding: const EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(5.0),
         child: Align(
           alignment: Alignment.topRight,
           child: InkWell(
@@ -64,11 +77,11 @@ class GridImage extends StatelessWidget {
               width: 18,
               height: 18,
               decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.white),
+                  shape: BoxShape.circle, color: Colors.black87),
               child: const Icon(
                 Icons.close,
                 size: 12,
-                color: Colors.black54,
+                color: Colors.white,
               ),
             ),
           ),

@@ -11,20 +11,16 @@ class TextFieldStockProductTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
-      child: TextFieldBorder(
-        textEditingController:
-            addProductController.productTitleController.value,
-        hintText: 'product_short_name'.tr,
-        labelText: 'product_short_name'.tr,
-        keyboardType: TextInputType.name,
-        textInputAction: TextInputAction.next,
-        validator: MultiValidator([]),
-        onValueChange: (value) {
-          addProductController.onValueChange();
-        },
-      ),
+    return TextFieldBorder(
+      textEditingController: addProductController.productTitleController.value,
+      hintText: 'product_short_name'.tr,
+      labelText: 'product_short_name'.tr,
+      keyboardType: TextInputType.name,
+      textInputAction: TextInputAction.next,
+      validator: MultiValidator([]),
+      onValueChange: (value) {
+        addProductController.onValueChange();
+      },
     );
   }
 }

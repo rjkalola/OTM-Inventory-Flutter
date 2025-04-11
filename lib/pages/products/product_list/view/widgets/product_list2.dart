@@ -20,13 +20,14 @@ class ProductListView extends StatelessWidget {
     return Obx(() => Visibility(
           visible: productListController.isMainViewVisible.value,
           child: Expanded(
-            child: ListView.separated(
+            child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               controller: productListController.controller,
-              itemBuilder: (context, position) {
-                return InkWell(
+              children: List.generate(
+                productListController.productList.length,
+                (position) => InkWell(
                   onTap: () {
                     if (!productListController.isPrintEnable.value) {
                       if (AppUtils.isPermission(
@@ -43,10 +44,11 @@ class ProductListView extends StatelessWidget {
                       productListController.productList.refresh();
                     }
                   },
-                  child: Stack(
+                  child: CardView(
+                      child: Stack(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                        padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                         child: Row(children: [
                           InkWell(
                             onTap: () {
@@ -54,15 +56,13 @@ class ProductListView extends StatelessWidget {
                                   productListController
                                       .productList[position].imageUrl);
                             },
-                            child:
-                                ImageUtils.setRectangleCornerCachedNetworkImage(
-                                    url: productListController
-                                            .productList[position]
-                                            .imageThumbUrl ??
-                                        "",
-                                    width: 80,
-                                    height: 80,
-                                    borderRadius: 12),
+                            child: CachedImage(
+                              url: productListController
+                                  .productList[position].imageThumbUrl,
+                              width: 60,
+                              height: 60,
+                              placeHolderSize: 60,
+                            ),
                           ),
                           Expanded(
                               child: Padding(
@@ -192,16 +192,7 @@ class ProductListView extends StatelessWidget {
                         ),
                       )
                     ],
-                  ),
-                );
-              },
-              itemCount: productListController.productList.length,
-              separatorBuilder: (context, position) => const Padding(
-                padding: EdgeInsets.only(left: 100),
-                child: Divider(
-                  height: 0,
-                  color: dividerColor,
-                  thickness: 0.8,
+                  )),
                 ),
               ),
             ),

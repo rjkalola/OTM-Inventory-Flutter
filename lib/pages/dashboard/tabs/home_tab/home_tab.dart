@@ -6,6 +6,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_controller.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/dashboard_stock_count_item.dart';
 import 'package:otm_inventory/pages/dashboard/widgets/dashboard_stock_count_item2.dart';
+import 'package:otm_inventory/pages/dashboard/widgets/purchase_order_count_item2.dart';
+import 'package:otm_inventory/pages/dashboard/widgets/purchase_order_view.dart';
+import 'package:otm_inventory/pages/dashboard/widgets/store_name_dropdown.dart';
 import 'package:otm_inventory/pages/otp_verification/model/user_info.dart';
 import 'package:otm_inventory/res/drawable.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
@@ -81,20 +84,7 @@ class _HomeTabState extends State<HomeTab> {
                                 // HomeTabActionButtonsList(),
                                 // HomeTabActionButtonsDotsList(),
                                 // HomeTabHeaderButtonsList()
-                                !StringHelper.isEmptyString(dashboardController
-                                        .storeNameController.value.text)
-                                    ? Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            16, 6, 16, 12),
-                                        child: PrimaryTextView(
-                                          text: dashboardController
-                                              .storeNameController.value.text,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w600,
-                                          color: primaryTextColor,
-                                        ),
-                                      )
-                                    : Container(),
+                                StoreNameDropdown(),
                                 DashboardStockCountItem2(
                                   title: 'all_products'.tr,
                                   itemCount: dashboardController.mAllStockCount
@@ -183,21 +173,21 @@ class _HomeTabState extends State<HomeTab> {
                                         AppConstants.stockCountType.outOfStock);
                                   },
                                 ),
-                                Visibility(
-                                  visible:
-                                      dashboardController.mMinusStockCount > 0,
-                                  child: DashboardStockCountItem(
-                                    title: 'minus_stock'.tr,
-                                    value:
-                                        "${dashboardController.mMinusStockCount} (${dashboardController.minusStockAmount.value})",
-                                    valueColor: Colors.red,
-                                    onPressed: () {
-                                      dashboardController.onClickStockItem(
-                                          AppConstants
-                                              .stockCountType.minusStock);
-                                    },
-                                  ),
-                                ),
+                                // Visibility(
+                                //   visible:
+                                //       dashboardController.mMinusStockCount > 0,
+                                //   child: DashboardStockCountItem(
+                                //     title: 'minus_stock'.tr,
+                                //     value:
+                                //         "${dashboardController.mMinusStockCount} (${dashboardController.minusStockAmount.value})",
+                                //     valueColor: Colors.red,
+                                //     onPressed: () {
+                                //       dashboardController.onClickStockItem(
+                                //           AppConstants
+                                //               .stockCountType.minusStock);
+                                //     },
+                                //   ),
+                                // ),
                                 DashboardStockCountItem2(
                                   title: 'finishing_products'.tr,
                                   itemCount: dashboardController
@@ -224,83 +214,94 @@ class _HomeTabState extends State<HomeTab> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                CardView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        16, 15, 16, 15),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        PrimaryTextView(
-                                          text: 'purchase_order'.tr,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500,
-                                          color: primaryTextColor,
-                                        ),
-                                        const SizedBox(
-                                          height: 12,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            PurchaseOrderCountItem(
-                                              title: 'issued'.tr,
-                                              count: dashboardController
-                                                  .mIssuedCount.value,
-                                              color: const Color(0xffe0eaf9),
-                                              iconPath:
-                                                  Drawable.dashboardIssuedIcon,
-                                              iconColor:
-                                                  const Color(0xff0052cc),
-                                            ),
-                                            PurchaseOrderCountItem(
-                                              title: 'partially_received'.tr,
-                                              count: dashboardController
-                                                  .mPartiallyReceivedCount
-                                                  .value,
-                                              color: const Color(0xffe0f9fc),
-                                              iconPath: Drawable
-                                                  .dashboardPartiallyReceivedIcon,
-                                              iconColor:
-                                                  const Color(0xff09d0e8),
-                                            )
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 14,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            PurchaseOrderCountItem(
-                                              title: 'received'.tr,
-                                              count: dashboardController
-                                                  .mReceivedCount.value,
-                                              color: const Color(0xffe5f8ed),
-                                              iconPath: Drawable
-                                                  .dashboardReceivedIcon,
-                                              iconColor:
-                                                  const Color(0xff3ecc7d),
-                                            ),
-                                            PurchaseOrderCountItem(
-                                              title: 'cancelled'.tr,
-                                              count: dashboardController
-                                                  .mCancelledCount.value,
-                                              color: const Color(0xfffceaea),
-                                              iconPath: Drawable
-                                                  .dashboardCancelledIcon,
-                                              iconColor:
-                                                  const Color(0xffea5455),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 9, 16, 0),
+                                  child: PrimaryTextView(
+                                    text: 'purchase_orders'.tr,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: primaryTextColor,
                                   ),
-                                )
+                                ),
+                                PurchaseOrderView(),
+                                // CardView(
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.fromLTRB(
+                                //         16, 15, 16, 15),
+                                //     child: Column(
+                                //       crossAxisAlignment:
+                                //           CrossAxisAlignment.start,
+                                //       children: [
+                                //         PrimaryTextView(
+                                //           text: 'purchase_order'.tr,
+                                //           fontSize: 17,
+                                //           fontWeight: FontWeight.w500,
+                                //           color: primaryTextColor,
+                                //         ),
+                                //         const SizedBox(
+                                //           height: 12,
+                                //         ),
+                                //         Row(
+                                //           mainAxisAlignment:
+                                //               MainAxisAlignment.spaceAround,
+                                //           children: [
+                                //             PurchaseOrderCountItem(
+                                //               title: 'issued'.tr,
+                                //               count: dashboardController
+                                //                   .mIssuedCount.value,
+                                //               color: const Color(0xffe0eaf9),
+                                //               iconPath:
+                                //                   Drawable.dashboardIssuedIcon,
+                                //               iconColor:
+                                //                   const Color(0xff0052cc),
+                                //             ),
+                                //             PurchaseOrderCountItem(
+                                //               title: 'partially_received'.tr,
+                                //               count: dashboardController
+                                //                   .mPartiallyReceivedCount
+                                //                   .value,
+                                //               color: const Color(0xffe0f9fc),
+                                //               iconPath: Drawable
+                                //                   .dashboardPartiallyReceivedIcon,
+                                //               iconColor:
+                                //                   const Color(0xff09d0e8),
+                                //             )
+                                //           ],
+                                //         ),
+                                //         const SizedBox(
+                                //           height: 14,
+                                //         ),
+                                //         Row(
+                                //           mainAxisAlignment:
+                                //               MainAxisAlignment.spaceAround,
+                                //           children: [
+                                //             PurchaseOrderCountItem(
+                                //               title: 'received'.tr,
+                                //               count: dashboardController
+                                //                   .mReceivedCount.value,
+                                //               color: const Color(0xffe5f8ed),
+                                //               iconPath: Drawable
+                                //                   .dashboardReceivedIcon,
+                                //               iconColor:
+                                //                   const Color(0xff3ecc7d),
+                                //             ),
+                                //             PurchaseOrderCountItem(
+                                //               title: 'cancelled'.tr,
+                                //               count: dashboardController
+                                //                   .mCancelledCount.value,
+                                //               color: const Color(0xfffceaea),
+                                //               iconPath: Drawable
+                                //                   .dashboardCancelledIcon,
+                                //               iconColor:
+                                //                   const Color(0xffea5455),
+                                //             )
+                                //           ],
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // )
                               ]),
                         ),
                       ),

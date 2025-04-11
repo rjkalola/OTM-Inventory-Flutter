@@ -32,8 +32,8 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
     return Obx(() => Container(
-      color: backgroundColor,
-      child: SafeArea(
+          color: backgroundColor,
+          child: SafeArea(
               child: Scaffold(
             backgroundColor: backgroundColor,
             appBar: BaseAppBar(
@@ -42,6 +42,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
                 isCenterTitle: false,
                 isBack: true,
                 widgets: actionButtons()),
+            drawerScrimColor: Colors.transparent,
             drawer: MainDrawer(),
             floatingActionButton: (controller.totalPendingCount.value == 0)
                 ? FloatingActionButton(
@@ -53,7 +54,8 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
                     onPressed: () {
                       AppUtils.showSnackBarMessage('data_is_up_to_date'.tr);
                     },
-                    child: const Icon(Icons.check, color: Colors.white, size: 25),
+                    child:
+                        const Icon(Icons.check, color: Colors.white, size: 25),
                   )
                 : SizedBox(
                     height: 40,
@@ -66,7 +68,8 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
                           borderRadius: BorderRadius.circular(6)),
                       label: Text(
                         controller.totalPendingCount.value.toString(),
-                        style: const TextStyle(fontSize: 18, color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.white),
                       ),
                       icon: const Icon(Icons.autorenew_outlined,
                           color: Colors.white, size: 24),
@@ -93,7 +96,7 @@ class _PurchaseOrderListScreenState extends State<PurchaseOrderListScreen> {
               ]),
             ),
           )),
-    ));
+        ));
   }
 
   List<Widget>? actionButtons() {

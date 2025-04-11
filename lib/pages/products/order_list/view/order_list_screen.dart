@@ -55,6 +55,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
               title: 'orders'.tr,
               isCenterTitle: false,
               isBack: true),
+          drawerScrimColor: Colors.transparent,
           drawer: MainDrawer(),
           bottomNavigationBar: const CommonBottomNavigationBarWidget(),
           body: Obx(

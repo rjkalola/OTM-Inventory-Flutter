@@ -15,138 +15,157 @@ import '../../stock_list/stock_list_controller.dart';
 import '../dashboard_controller.dart';
 
 class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
-  MainDrawer({super.key});
+  MainDrawer({super.key, this.paddingHeight});
 
   var userInfo = Get.find<AppStorage>().getUserInfo();
+  final double? paddingHeight;
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: backgroundColor,
-      surfaceTintColor: backgroundColor,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          // drawerHeader(),
-          drawerItem(
-            text: 'dashboard'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.dashboardScreen),
-            tileColor: getItemBgColor(AppRoutes.dashboardScreen),
-            onTap: () {
-              navigate(AppRoutes.dashboardScreen);
-            },
+    return Container(
+      padding: const EdgeInsets.only(top: (kToolbarHeight ?? 0) + 1),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Drawer(
+          backgroundColor: backgroundColor,
+          surfaceTintColor: backgroundColor,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              // drawerHeader(),
+              drawerItem(
+                text: 'dashboard'.tr,
+                iconPath: Drawable.homeDrawerIcon,
+                iconPadding: 1,
+                textIconColor: getItemColor(AppRoutes.dashboardScreen),
+                tileColor: getItemBgColor(AppRoutes.dashboardScreen),
+                rout: AppRoutes.dashboardScreen,
+                onTap: () {
+                  navigate(AppRoutes.dashboardScreen);
+                },
+              ),
+              drawerItem(
+                text: 'stocks'.tr,
+                iconPath: Drawable.stockDrawerIcon,
+                iconPadding: 1,
+                textIconColor: getItemColor(AppRoutes.stockListScreen),
+                tileColor: getItemBgColor(AppRoutes.stockListScreen),
+                rout: AppRoutes.stockListScreen,
+                onTap: () {
+                  navigate(AppRoutes.stockListScreen);
+                },
+              ),
+              drawerItem(
+                text: 'products'.tr,
+                iconPath: Drawable.productsDrawerIcon,
+                textIconColor: getItemColor(AppRoutes.productListScreen),
+                tileColor: getItemBgColor(AppRoutes.productListScreen),
+                rout: AppRoutes.productListScreen,
+                onTap: () {
+                  navigate(AppRoutes.productListScreen);
+                },
+              ),
+              drawerItem(
+                text: 'orders'.tr,
+                iconPath: Drawable.purchaseOrderDrawerIcon,
+                textIconColor: getItemColor(AppRoutes.orderListScreen),
+                tileColor: getItemBgColor(AppRoutes.orderListScreen),
+                rout: AppRoutes.orderListScreen,
+                onTap: () {
+                  navigate(AppRoutes.orderListScreen);
+                },
+              ),
+              drawerItem(
+                text: 'purchase_order'.tr,
+                iconPath: Drawable.purchaseOrderDrawerIcon,
+                textIconColor: getItemColor(AppRoutes.purchaseOrderListScreen),
+                tileColor: getItemBgColor(AppRoutes.purchaseOrderListScreen),
+                rout: AppRoutes.purchaseOrderListScreen,
+                onTap: () {
+                  navigate(AppRoutes.purchaseOrderListScreen);
+                },
+              ),
+              drawerItem(
+                text: 'stores'.tr,
+                iconPath: Drawable.storeDrawerIcon,
+                iconPadding: 2,
+                textIconColor: getItemColor(AppRoutes.storeListScreen),
+                tileColor: getItemBgColor(AppRoutes.storeListScreen),
+                rout: AppRoutes.storeListScreen,
+                onTap: () {
+                  navigate(AppRoutes.storeListScreen);
+                },
+              ),
+              // Visibility(
+              //   visible: AppStorage.storeId != 0,
+              //   child: drawerItem(
+              //     text: 'stocks'.tr,
+              //     iconPath: Drawable.homeDrawerIcon,
+              //     textIconColor: getItemColor(AppRoutes.stockListScreen),
+              //     tileColor: getItemBgColor(AppRoutes.stockListScreen),
+              //     onTap: () {
+              //       navigate(AppRoutes.stockListScreen);
+              //     },
+              //   ),
+              // ),
+              // drawerItem(
+              //   text: 'vendors'.tr,
+              //   iconPath: Drawable.homeDrawerIcon,
+              //   textIconColor: getItemColor(AppRoutes.storeListScreen),
+              //   tileColor: getItemBgColor(AppRoutes.storeListScreen),
+              //   onTap: () {
+              //     navigate(AppRoutes.storeListScreen);
+              //   },
+              // ),
+              // drawerItem(
+              //   text: 'manufacturer'.tr,
+              //   iconPath: Drawable.homeDrawerIcon,
+              //   textIconColor: getItemColor(AppRoutes.storeListScreen),
+              //   tileColor: getItemBgColor(AppRoutes.storeListScreen),
+              //   onTap: () {
+              //     navigate(AppRoutes.storeListScreen);
+              //   },
+              // ),
+              drawerItem(
+                text: 'categories'.tr,
+                iconPath: Drawable.categoryDrawerIcon,
+                iconPadding: 2,
+                textIconColor: getItemColor(AppRoutes.categoryListScreen),
+                tileColor: getItemBgColor(AppRoutes.categoryListScreen),
+                rout: AppRoutes.categoryListScreen,
+                onTap: () {
+                  navigate(AppRoutes.categoryListScreen);
+                },
+              ),
+              drawerItem(
+                text: 'suppliers'.tr,
+                iconPath: Drawable.supplierDrawerIcon,
+                textIconColor: getItemColor(AppRoutes.supplierListScreen),
+                tileColor: getItemBgColor(AppRoutes.supplierListScreen),
+                rout: AppRoutes.supplierListScreen,
+                onTap: () {
+                  navigate(AppRoutes.supplierListScreen);
+                },
+              ),
+              drawerLogoutItem(
+                text: 'logout'.tr,
+                textIconColor: Colors.red,
+                tileColor: Colors.white,
+                onTap: () {
+                  AlertDialogHelper.showAlertDialog(
+                      "",
+                      'logout_msg'.tr,
+                      'yes'.tr,
+                      'no'.tr,
+                      "",
+                      true,
+                      this,
+                      AppConstants.dialogIdentifier.logout);
+                },
+              ),
+            ],
           ),
-          drawerItem(
-            text: 'stocks'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.stockListScreen),
-            tileColor: getItemBgColor(AppRoutes.stockListScreen),
-            onTap: () {
-              navigate(AppRoutes.stockListScreen);
-            },
-          ),
-          drawerItem(
-            text: 'products'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.productListScreen),
-            tileColor: getItemBgColor(AppRoutes.productListScreen),
-            onTap: () {
-              navigate(AppRoutes.productListScreen);
-            },
-          ),
-          drawerItem(
-            text: 'orders'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.orderListScreen),
-            tileColor: getItemBgColor(AppRoutes.orderListScreen),
-            onTap: () {
-              navigate(AppRoutes.orderListScreen);
-            },
-          ),
-          drawerItem(
-            text: 'purchase_order'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.purchaseOrderListScreen),
-            tileColor: getItemBgColor(AppRoutes.purchaseOrderListScreen),
-            onTap: () {
-              navigate(AppRoutes.purchaseOrderListScreen);
-            },
-          ),
-          drawerItem(
-            text: 'stores'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.storeListScreen),
-            tileColor: getItemBgColor(AppRoutes.storeListScreen),
-            onTap: () {
-              navigate(AppRoutes.storeListScreen);
-            },
-          ),
-          // Visibility(
-          //   visible: AppStorage.storeId != 0,
-          //   child: drawerItem(
-          //     text: 'stocks'.tr,
-          //     iconPath: Drawable.homeDrawerIcon,
-          //     textIconColor: getItemColor(AppRoutes.stockListScreen),
-          //     tileColor: getItemBgColor(AppRoutes.stockListScreen),
-          //     onTap: () {
-          //       navigate(AppRoutes.stockListScreen);
-          //     },
-          //   ),
-          // ),
-          // drawerItem(
-          //   text: 'vendors'.tr,
-          //   iconPath: Drawable.homeDrawerIcon,
-          //   textIconColor: getItemColor(AppRoutes.storeListScreen),
-          //   tileColor: getItemBgColor(AppRoutes.storeListScreen),
-          //   onTap: () {
-          //     navigate(AppRoutes.storeListScreen);
-          //   },
-          // ),
-          // drawerItem(
-          //   text: 'manufacturer'.tr,
-          //   iconPath: Drawable.homeDrawerIcon,
-          //   textIconColor: getItemColor(AppRoutes.storeListScreen),
-          //   tileColor: getItemBgColor(AppRoutes.storeListScreen),
-          //   onTap: () {
-          //     navigate(AppRoutes.storeListScreen);
-          //   },
-          // ),
-          drawerItem(
-            text: 'categories'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.categoryListScreen),
-            tileColor: getItemBgColor(AppRoutes.categoryListScreen),
-            onTap: () {
-              navigate(AppRoutes.categoryListScreen);
-            },
-          ),
-          drawerItem(
-            text: 'suppliers'.tr,
-            iconPath: Drawable.homeDrawerIcon,
-            textIconColor: getItemColor(AppRoutes.supplierListScreen),
-            tileColor: getItemBgColor(AppRoutes.supplierListScreen),
-            onTap: () {
-              navigate(AppRoutes.supplierListScreen);
-            },
-          ),
-          drawerLogoutItem(
-            text: 'logout'.tr,
-            textIconColor: Colors.red,
-            tileColor: Colors.white,
-            onTap: () {
-              AlertDialogHelper.showAlertDialog(
-                  "",
-                  'logout_msg'.tr,
-                  'yes'.tr,
-                  'no'.tr,
-                  "",
-                  true,
-                  this,
-                  AppConstants.dialogIdentifier.logout);
-            },
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -171,7 +190,7 @@ class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
                 fontSize: 14,
               )),
       currentAccountPicture:
-          ImageUtils.setUserImage(userInfo.image ?? "", 66,66, 45),
+          ImageUtils.setUserImage(userInfo.image ?? "", 66, 66, 45),
       currentAccountPictureSize: const Size.square(66),
     );
   }
@@ -181,23 +200,50 @@ class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
       required String iconPath,
       required Color textIconColor,
       required Color tileColor,
+      required String rout,
+      double? iconPadding,
       required VoidCallback onTap}) {
-    return ListTile(
-      leading: SvgPicture.asset(
-        width: 28,
-        height: 28,
-        iconPath,
-        // color: primaryTextColor,
-        colorFilter: ColorFilter.mode(textIconColor, BlendMode.srcIn),
+    return Visibility(
+      visible: Get.currentRoute != rout,
+      child: Column(
+        children: [
+          ListTile(
+            leading: Container(
+              padding: EdgeInsets.all(iconPadding ?? 0),
+              width: 28,
+              height: 28,
+              child: SvgPicture.asset(
+                width: 28,
+                height: 28,
+                iconPath,
+                // color: primaryTextColor,
+                colorFilter: ColorFilter.mode(textIconColor, BlendMode.srcIn),
+              ),
+            ),
+            trailing: const Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16,
+              weight: 300,
+            ),
+            title: Text(
+              text,
+              style: TextStyle(
+                  color: textIconColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17),
+            ),
+            tileColor: tileColor,
+            onTap: onTap,
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 18),
+            child: Divider(
+              height: 0,
+              color: dividerColor,
+            ),
+          )
+        ],
       ),
-      title: Text(
-        text,
-        style: TextStyle(
-          color: textIconColor,
-        ),
-      ),
-      tileColor: tileColor,
-      onTap: onTap,
     );
   }
 
@@ -210,8 +256,7 @@ class MainDrawer extends StatelessWidget implements DialogButtonClickListener {
       title: Text(
         text,
         style: TextStyle(
-          color: textIconColor,
-        ),
+            color: textIconColor, fontWeight: FontWeight.w500, fontSize: 17),
       ),
       tileColor: tileColor,
       onTap: onTap,

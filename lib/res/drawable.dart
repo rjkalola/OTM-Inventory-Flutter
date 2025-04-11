@@ -16,7 +16,8 @@ class Drawable {
   static const String filterIcon = 'assets/images/ic_filter.svg';
   static const String sortIcon = 'assets/images/ic_sort.svg';
   static const String settingsIcon = 'assets/images/ic_settings.svg';
-  static const String homeDrawerIcon = 'assets/images/ic_home_drawer.svg';
+
+  // static const String homeDrawerIcon = 'assets/images/ic_home_drawer.svg';
   static const String qrCodeIcon = 'assets/images/ic_qr_code.svg';
   static const String barCodeIcon = 'assets/images/ic_barcode.svg';
   static const String deleteIcon = 'assets/images/ic_delete.svg';
@@ -40,5 +41,15 @@ class Drawable {
   static const String warningIcon = 'assets/images/ic_warning.svg';
   static const String cubeIcon = 'assets/images/ic_cube.svg';
   static const String banIcon = 'assets/images/ic_ban.svg';
+  static const String productsDrawerIcon = 'assets/images/ic_menu_products.svg';
+  static const String stockDrawerIcon = 'assets/images/ic_menu_stock.svg';
+  static const String supplierDrawerIcon = 'assets/images/ic_menu_supplier.svg';
+  static const String storeDrawerIcon = 'assets/images/ic_menu_store.svg';
+  static const String reserveDrawerIcon = 'assets/images/ic_menu_reserve.svg';
+  static const String categoryDrawerIcon = 'assets/images/ic_menu_category.svg';
+  static const String homeDrawerIcon = 'assets/images/ic_menu_home.svg';
+  static const String purchaseOrderDrawerIcon =
+      'assets/images/ic_menu_purchase_order.svg';
+
 // static const String accountCircleIcon = 'assets/images/';
 }

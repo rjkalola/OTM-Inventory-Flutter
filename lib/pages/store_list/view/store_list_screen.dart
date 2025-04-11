@@ -57,6 +57,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
               isCenterTitle: false,
               isBack: true,
               widgets: actionButtons()),
+          drawerScrimColor: Colors.transparent,
           drawer: MainDrawer(),
           bottomNavigationBar: const CommonBottomNavigationBarWidget(),
           body: Obx(

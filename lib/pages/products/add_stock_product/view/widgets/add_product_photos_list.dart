@@ -11,16 +11,23 @@ class AddStockProductPhotosList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(7.0),
-        child: ImageGridview(
-            physics: const NeverScrollableScrollPhysics(),
-            filesList: addProductController.filesList,
-            onViewClick: (int index) {
-              addProductController.onSelectPhoto(index);
-            },
-            onRemoveClick: (int index) {
-              addProductController.removePhotoFromList(index);
-            }));
+    return Obx(
+      () => Visibility(
+        visible: addProductController.filesList.isNotEmpty,
+        child: Padding(
+            padding: const EdgeInsets.fromLTRB(7, 7, 7, 0),
+            child: ImageGridview(
+                physics: const NeverScrollableScrollPhysics(),
+                filesList: addProductController.filesList,
+                fileRadius: 12,
+                onViewClick: (int index) {
+                  addProductController.onSelectPhoto(
+                      addProductController.filesList[index].file ?? "");
+                },
+                onRemoveClick: (int index) {
+                  addProductController.removePhotoFromList(index);
+                })),
+      ),
+    );
   }
 }

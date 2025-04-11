@@ -11,21 +11,19 @@ class TextFieldStockProductName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 18),
-      child: TextFieldBorder(
-        textEditingController: addProductController.productNameController.value,
-        hintText: 'product_name'.tr,
-        labelText: 'product_name'.tr,
-        keyboardType: TextInputType.name,
-        textInputAction: TextInputAction.next,
-        validator: MultiValidator([
-          RequiredValidator(errorText: 'required_field'.tr),
-        ]),
-        onValueChange: (value) {
-          addProductController.onValueChange();
-        },
-      ),
+    return TextFieldBorder(
+      textEditingController: addProductController.productNameController.value,
+      hintText: 'product_name'.tr,
+      labelText: 'product_name'.tr,
+      keyboardType: TextInputType.name,
+      textInputAction: TextInputAction.next,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: MultiValidator([
+        RequiredValidator(errorText: 'required_field'.tr),
+      ]),
+      onValueChange: (value) {
+        addProductController.onValueChange();
+      },
     );
   }
 }

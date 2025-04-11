@@ -12,7 +12,7 @@ class TextFieldStockProductManufacturer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 0, 14, 18),
+      padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
       child: TextFieldBorder(
           textEditingController:
               addProductController.productManufacturerController.value,

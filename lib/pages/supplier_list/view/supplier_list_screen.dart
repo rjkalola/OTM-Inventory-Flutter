@@ -57,6 +57,7 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
               isCenterTitle: false,
               isBack: true,
               widgets: actionButtons()),
+          drawerScrimColor: Colors.transparent,
           drawer: MainDrawer(),
           bottomNavigationBar: const CommonBottomNavigationBarWidget(),
           body: Obx(

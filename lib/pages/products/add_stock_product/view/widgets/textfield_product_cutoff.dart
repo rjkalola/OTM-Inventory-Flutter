@@ -18,8 +18,8 @@ class TextFieldStockProductCutoff extends StatelessWidget {
       child: TextFieldBorder(
         textEditingController:
             addProductController.productCutoffController.value,
-        hintText: 'cutoff'.tr,
-        labelText: 'cutoff'.tr,
+        hintText: 'low_stock_indicator'.tr,
+        labelText: 'low_stock_indicator'.tr,
         keyboardType: const TextInputType.numberWithOptions(decimal: false),
         textInputAction: TextInputAction.next,
         validator: MultiValidator([]),

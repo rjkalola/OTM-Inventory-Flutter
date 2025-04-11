@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
-import 'package:otm_inventory/utils/app_utils.dart';
-import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 import 'package:otm_inventory/widgets/image/cached_image.dart';
@@ -22,13 +20,14 @@ class StockListView extends StatelessWidget {
     return Obx(() => Visibility(
           visible: stockListController.isMainViewVisible.value,
           child: Expanded(
-            child: ListView.separated(
+            child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               shrinkWrap: true,
               controller: stockListController.controller,
               scrollDirection: Axis.vertical,
-              itemBuilder: (context, position) {
-                return Visibility(
+              children: List.generate(
+                stockListController.productList.length,
+                (position) => Visibility(
                   visible: isStoreMatch(
                       stockListController.productList[position].product_stocks,
                       stockListController.productList[position].temp_store_id ??
@@ -41,23 +40,17 @@ class StockListView extends StatelessWidget {
                               .toString(),
                           stockListController.productList[position]);
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                    child: CardView(
+                        child: Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
                       child: Row(children: [
-                        ImageUtils.setRectangleCornerCachedNetworkImage(
-                            url: stockListController
-                                    .productList[position].imageThumbUrl ??
-                                "",
-                            width: 80,
-                            height: 80,
-                            borderRadius: 12),
-                        // CachedImage(
-                        //   width: 70,
-                        //   height: 70,
-                        //   placeHolderSize: 60,
-                        //   url: stockListController
-                        //       .productList[position].imageThumbUrl,
-                        // ),
+                        CachedImage(
+                          width: 60,
+                          height: 60,
+                          placeHolderSize: 60,
+                          url: stockListController
+                              .productList[position].imageThumbUrl,
+                        ),
                         Expanded(
                             child: Padding(
                           padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
@@ -163,17 +156,8 @@ class StockListView extends StatelessWidget {
                         //   ],
                         // ),
                       ]),
-                    ),
+                    )),
                   ),
-                );
-              },
-              itemCount: stockListController.productList.length,
-              separatorBuilder: (context, position) => const Padding(
-                padding: EdgeInsets.only(left: 100),
-                child: Divider(
-                  height: 0,
-                  color: dividerColor,
-                  thickness: 0.8,
                 ),
               ),
             ),

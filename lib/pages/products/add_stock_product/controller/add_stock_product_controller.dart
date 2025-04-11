@@ -71,9 +71,8 @@ class AddStockProductController extends GetxController
       mBarCode = arguments[AppConstants.intentKey.barCode] ?? "";
       addProductRequest = arguments[AppConstants.intentKey.productInfo];
       if (addProductRequest != null) {
-        FilesInfo info = FilesInfo();
-        filesList.add(info);
-        // print("localId-----:${addProductRequest?.local_id!}");
+        // FilesInfo info = FilesInfo();
+        // filesList.add(info);
         title.value = 'edit_product'.tr;
         setProductDetails(addProductRequest!);
       } else {
@@ -86,8 +85,8 @@ class AddStockProductController extends GetxController
           productBarcodeController.value.text = mBarCode;
         addProductRequest?.categories = [];
 
-        FilesInfo info = FilesInfo();
-        filesList.add(info);
+        // FilesInfo info = FilesInfo();
+        // filesList.add(info);
       }
     } else {
       addProductRequest = ProductInfo();
@@ -97,8 +96,8 @@ class AddStockProductController extends GetxController
       addProductRequest?.qty = 0;
       addProductRequest?.categories = [];
 
-      FilesInfo info = FilesInfo();
-      filesList.add(info);
+      // FilesInfo info = FilesInfo();
+      // filesList.add(info);
     }
 
     // FileInfo info1 = FileInfo();
@@ -459,9 +458,9 @@ class AddStockProductController extends GetxController
         isScrollControlled: false);
   }
 
-  onSelectPhoto(int index) async {
+  onSelectPhoto(String fileUrl) async {
     print("pickImage");
-    if (index == 0) {
+    if (StringHelper.isEmptyString(fileUrl)) {
       var listOptions = <ModuleInfo>[].obs;
       ModuleInfo? info;
 
@@ -475,19 +474,13 @@ class AddStockProductController extends GetxController
       info.action = AppConstants.action.selectImageFromGallery;
       listOptions.add(info);
 
-      // showAttachmentOptionsDialog(
-      //     AppConstants.dialogIdentifier.attachmentOptionsList,
-      //     'select_photo'.tr,
-      //     listOptions,
-      //     this);
-
       showAttachmentOptionsDialog(
           AppConstants.dialogIdentifier.attachmentOptionsList,
           'select_photo_from_'.tr,
           listOptions,
           this);
     } else {
-      ImageUtils.showImagePreviewDialog(filesList[index].file ?? "");
+      ImageUtils.showImagePreviewDialog(fileUrl);
     }
   }
 

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:otm_inventory/pages/dashboard/dashboard_repository.dart';
 import 'package:otm_inventory/pages/dashboard/models/dashboard_stock_count_response.dart';
 import 'package:otm_inventory/pages/dashboard/models/permission_response.dart';
+import 'package:otm_inventory/pages/dashboard/tabs/feed_tab/view/feed_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/home_tab/home_tab.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/more_tab/more_tab.dart';
 import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
@@ -86,6 +87,7 @@ class DashboardController extends GetxController
   final tabs = <Widget>[
     // StockListScreen(),
     HomeTab(),
+    FeedTab(),
     // ProfileTab(),
     MoreTab(),
   ];
@@ -154,6 +156,8 @@ class DashboardController extends GetxController
     //   title.value = 'profile'.tr;
     // }
     else if (index == 1) {
+      title.value = 'feed'.tr;
+    } else if (index == 2) {
       title.value = 'more'.tr;
     }
   }

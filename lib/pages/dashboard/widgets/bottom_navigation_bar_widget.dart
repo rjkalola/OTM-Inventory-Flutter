@@ -18,15 +18,31 @@ class BottomNavigationBarWidget extends StatelessWidget {
         elevation: 0,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              activeIcon: SvgPicture.asset(Drawable.activeHomeTabIcon, width: 30),
+              activeIcon:
+                  SvgPicture.asset(Drawable.activeHomeTabIcon, width: 30),
               icon: SvgPicture.asset(Drawable.inactiveHomeTabIcon, width: 30),
               label: ''),
           // BottomNavigationBarItem(
           //     activeIcon: Image.asset(Drawable.activeProfileTabIcon, width: 26),
           //     icon: Image.asset(Drawable.inactiveProfileTabIcon, width: 26),
           //     label: ''),
+          const BottomNavigationBarItem(
+              activeIcon: Icon(
+                Icons.notifications_rounded,
+                color: Color(0xff0065ff),
+                size: 30,
+                weight: 100,
+              ),
+              icon: Icon(
+                Icons.notifications_none_rounded,
+                size: 30,
+                weight: 100,
+                color: Color(0xff5b5d64),
+              ),
+              label: ''),
           BottomNavigationBarItem(
-              activeIcon: SvgPicture.asset(Drawable.activeMoreTabIcon, width: 30),
+              activeIcon:
+                  SvgPicture.asset(Drawable.activeMoreTabIcon, width: 30),
               icon: SvgPicture.asset(Drawable.inactiveMoreTabIcon, width: 30),
               label: ''),
         ],
@@ -37,6 +53,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
         backgroundColor: bottomTabBackgroundColor,
         onTap: dashboardController.onItemTapped,
       );
-    }) ;
+    });
   }
 }

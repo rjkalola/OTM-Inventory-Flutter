@@ -130,4 +130,19 @@ class AppUtils {
     }
     return color;
   }
+
+  static BoxDecoration getGrayBorderDecoration(
+      {Color? color,
+        double? radius,
+        double? borderWidth,
+        Color? borderColor,
+        List<BoxShadow>? boxShadow}) {
+    return BoxDecoration(
+      color: color ?? Colors.transparent,
+      boxShadow: boxShadow ?? null,
+      border: Border.all(
+          width: borderWidth ?? 0.6, color: borderColor ?? Colors.transparent),
+      borderRadius: BorderRadius.circular(radius ?? 12),
+    );
+  }
 }

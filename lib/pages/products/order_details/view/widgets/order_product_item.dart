@@ -16,12 +16,13 @@ import '../../../../../widgets/text/PrimaryTextView.dart';
 import '../../../../../widgets/text_field_border.dart';
 
 class OrderProductItem extends StatelessWidget {
-  OrderProductItem({super.key,
-    this.info,
-    this.position,
-    this.totalLength,
-    this.onValueChange,
-    required this.controller});
+  OrderProductItem(
+      {super.key,
+      this.info,
+      this.position,
+      this.totalLength,
+      this.onValueChange,
+      required this.controller});
 
   final ValueChanged<String>? onValueChange;
   final TextEditingController controller;
@@ -207,7 +208,7 @@ class OrderProductItem extends StatelessWidget {
   String totalPrice(String? price, int? qty, String? currency) {
     String totalPrice = "${currency}0";
     double priceDouble = double.parse(price!);
-    totalPrice = (currency??"" )+ (priceDouble * (qty ?? 0)).toString();
+    totalPrice = (currency ?? "") + (priceDouble * (qty ?? 0)).toString();
     return totalPrice;
   }
 }

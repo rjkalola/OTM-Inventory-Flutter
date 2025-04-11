@@ -20,6 +20,9 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    var appBarHeight =
+        kToolbarHeight; //this value comes from constants.dart and equals to 56.0
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
@@ -44,10 +47,13 @@ class DashboardScreen extends StatelessWidget {
                     appBar: AppBar(),
                     title: dashboardController.title.value,
                     isCenterTitle: false,
-                    isBack: true,
+                    isBack: dashboardController.selectedIndex.value == 0,
                     widgets: actionButtons(),
                   ),
-                  drawer: MainDrawer(),
+                  drawerScrimColor: Colors.transparent,
+                  drawer: dashboardController.selectedIndex.value == 0
+                      ? MainDrawer()
+                      : Container(),
                   body: SizedBox(
                     width: double.infinity,
                     height: double.infinity,
@@ -66,23 +72,11 @@ class DashboardScreen extends StatelessWidget {
 
   List<Widget>? actionButtons() {
     return [
-      // Visibility(
-      //   visible: (dashboardController.selectedIndex.value == 0 &&
-      //       !Get.put(StockListController()).isScanQrCode.value),
-      //   child: InkWell(
-      //       onTap: () {
-      //         dashboardController.addMultipleStockQuantity();
-      //       },
-      //       child: Padding(
-      //         padding: const EdgeInsets.only(right: 14),
-      //         child: Text(
-      //           "+${'add_stock'.tr}",
-      //           style: const TextStyle(
-      //               fontSize: 16,
-      //               color: defaultAccentColor,
-      //               fontWeight: FontWeight.w500),
-      //         ),
-      //       )),
+      // IconButton(
+      //   icon: const Icon(Icons.notifications_none),
+      //   onPressed: () {
+      //
+      //   },
       // ),
       // Visibility(
       //   visible: (dashboardController.selectedIndex.value == 0 &&
