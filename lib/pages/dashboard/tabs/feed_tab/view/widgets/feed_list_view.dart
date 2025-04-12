@@ -23,6 +23,7 @@ class FeedListView extends StatelessWidget {
               //
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
+              controller: controller.controller,
               itemBuilder: (context, position) {
                 return InkWell(
                   onTap: () {

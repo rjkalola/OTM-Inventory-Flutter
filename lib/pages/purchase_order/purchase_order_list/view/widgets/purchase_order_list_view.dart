@@ -16,73 +16,80 @@ class PurchaseOrderListView extends StatelessWidget {
     return Obx(() => Visibility(
           visible: controller.isMainViewVisible.value,
           child: Expanded(
-            child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(), //
+            child: ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              //
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              children: List.generate(
-                controller.orderList.length,
-                (position) => InkWell(
+              itemBuilder: (context, position) {
+                return InkWell(
                   onTap: () {
                     controller.viewOrderDetails(controller.orderList[position]);
                   },
-                  child: CardView(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                  flex: 3,
-                                  child: PrimaryTextView(
-                                    text: controller
-                                            .orderList[position].orderId ??
-                                        "",
-                                    color: primaryTextColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                  )),
-                              Expanded(
-                                  flex: 4,
-                                  child: PrimaryTextView(
-                                    text: controller
-                                            .orderList[position].supplierName ??
-                                        "",
-                                    textAlign: TextAlign.center,
-                                    color: primaryTextColor,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                  )),
-                              Expanded(
-                                  flex: 3,
-                                  child: PrimaryTextView(
-                                    softWrap: true,
-                                    textAlign: TextAlign.end,
-                                    text: controller
-                                            .orderList[position].statusText ??
-                                        "",
-                                    color: AppUtils.getPurchaseOrderStatusColor(
-                                        controller.orderList[position].status ??
-                                            0),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                  )),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          PrimaryTextView(
-                            text: controller.orderList[position].date ?? "",
-                            color: secondaryLightTextColor,
-                            fontSize: 15,
-                          )
-                        ],
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 3,
+                                child: PrimaryTextView(
+                                  text:
+                                      controller.orderList[position].orderId ??
+                                          "",
+                                  color: primaryTextColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                )),
+                            Expanded(
+                                flex: 4,
+                                child: PrimaryTextView(
+                                  text: controller
+                                          .orderList[position].supplierName ??
+                                      "",
+                                  textAlign: TextAlign.center,
+                                  color: primaryTextColor,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                )),
+                            Expanded(
+                                flex: 3,
+                                child: PrimaryTextView(
+                                  softWrap: true,
+                                  textAlign: TextAlign.end,
+                                  text: controller
+                                          .orderList[position].statusText ??
+                                      "",
+                                  color: AppUtils.getPurchaseOrderStatusColor(
+                                      controller.orderList[position].status ??
+                                          0),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                )),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        PrimaryTextView(
+                          text: controller.orderList[position].date ?? "",
+                          color: secondaryLightTextColor,
+                          fontSize: 15,
+                        )
+                      ],
                     ),
                   ),
+                );
+              },
+              itemCount: controller.orderList.length,
+              separatorBuilder: (context, position) => const Padding(
+                padding: EdgeInsets.only(left: 16, right: 16),
+                child: Divider(
+                  height: 0,
+                  color: dividerColor,
+                  thickness: 0.8,
                 ),
               ),
             ),

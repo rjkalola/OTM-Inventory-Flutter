@@ -21,42 +21,86 @@ class FeedController extends GetxController {
 
   RxBool isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isClearVisible = false.obs;
+      isClearVisible = false.obs,
+      isLoadMore = false.obs,
+      isLoading = false.obs;
+
   final dashboardController = Get.put(DashboardController());
 
   final filters = ''.obs, search = ''.obs;
-  final offset = 0.obs;
+  var offset = 0;
+
+  var mIsLastPage = false;
+  late ScrollController controller;
 
   @override
   void onInit() {
     super.onInit();
-    getFeedList(true);
+    controller = ScrollController();
+    controller.addListener(_scrollListener);
+    getFeedList(true, false);
   }
 
-  void getFeedList(bool isProgress) async {
+  _scrollListener() {
+    if (controller.offset >= controller.position.maxScrollExtent &&
+        !controller.position.outOfRange &&
+        !mIsLastPage) {
+      getFeedList(false, false);
+    }
+    if (controller.offset <= controller.position.minScrollExtent &&
+        !controller.position.outOfRange) {}
+  }
+
+  Future<void> getFeedList(bool isProgress, bool clearOffset) async {
+    if (clearOffset) {
+      offset = 0;
+      mIsLastPage = false;
+    }
+    isLoadMore.value = offset > 0;
     Map<String, dynamic> map = {};
     map["store_id"] = AppStorage.storeId.toString();
-    map["limit"] = 20;
-    map["offset"] = 0;
+    map["limit"] = 10;
+    map["offset"] = offset;
     map["feed_type"] = 2;
     map["is_inventory"] = 1;
     multi.FormData formData = multi.FormData.fromMap(map);
 
-    if (isProgress) dashboardController.isLoading.value = true;
+    if (isProgress) isLoading.value = true;
 
     _api.getFeedList(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {
-        dashboardController.isLoading.value = false;
+        isLoading.value = false;
+        isLoadMore.value = false;
         if (responseModel.statusCode == 200) {
           FeedListResponse response =
               FeedListResponse.fromJson(jsonDecode(responseModel.result!));
-          if (response.isSuccess!) {
+          /* if (response.isSuccess!) {
             tempList.clear();
             tempList.addAll(response.info!);
             itemList.value = tempList;
             print("itemList.value length:" + itemList.value.toString());
             isMainViewVisible.value = true;
+          }*/
+          if (response.isSuccess!) {
+            isMainViewVisible.value = true;
+            if (offset == 0) {
+              tempList.clear();
+              tempList.addAll(response.info!);
+              itemList.value = tempList;
+              itemList.refresh();
+            } else if (response.info != null && response.info!.isNotEmpty) {
+              tempList.addAll(response.info!);
+              itemList.value = tempList;
+              itemList.refresh();
+            }
+
+            offset = response.offset!;
+            if (offset == 0) {
+              mIsLastPage = true;
+            } else {
+              mIsLastPage = false;
+            }
           } else {
             AppUtils.showSnackBarMessage(response.message!);
           }
@@ -65,8 +109,9 @@ class FeedController extends GetxController {
         }
       },
       onError: (ResponseModel error) {
-        dashboardController.isLoading.value = false;
-        isMainViewVisible.value = true;
+        isLoading.value = false;
+        isLoadMore.value = false;
+        isMainViewVisible.value = false;
         if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
           AppUtils.showSnackBarMessage('no_internet'.tr);
         } else if (error.statusMessage!.isNotEmpty) {
