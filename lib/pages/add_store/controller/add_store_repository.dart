@@ -16,7 +16,7 @@ class AddStoreRepository {
     ApiRequest(
             url: ApiConstants.getStoreResourcesUrl,
             formData: formData,
-            isFormData: true)
+            isFormData: false)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);

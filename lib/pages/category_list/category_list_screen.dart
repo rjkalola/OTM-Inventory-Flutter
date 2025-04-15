@@ -72,7 +72,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
                   color: dividerColor,
                 ),
                 Visibility(
-                    visible: categoryListController.categoryList.isNotEmpty,
+                    visible: categoryListController.isMainViewVisible.value,
                     child: const SearchCategory()),
                 categoryListController.categoryList.isNotEmpty
                     ? CategoryListView()

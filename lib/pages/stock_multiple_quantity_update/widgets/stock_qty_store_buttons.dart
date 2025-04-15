@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/widgets/PrimaryButton.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/PrimaryBorderButton.dart';
@@ -20,10 +21,11 @@ class StockQtyStoreButtons extends StatelessWidget {
                 Flexible(
                   fit: FlexFit.tight,
                   flex: 1,
-                  child: PrimaryBorderButton(
+                  child: PrimaryButton(
                     buttonText: 'save'.tr,
-                    textColor: defaultAccentColor,
-                    borderColor: defaultAccentColor,
+                    buttonTextColor: Colors.white,
+                    fontSize: 17,
+                    borderRadius: 10,
                     onPressed: () {
                       stockListController.onClickAddQuantityButton();
                     },
@@ -35,10 +37,12 @@ class StockQtyStoreButtons extends StatelessWidget {
                 Flexible(
                   fit: FlexFit.tight,
                   flex: 1,
-                  child: PrimaryBorderButton(
+                  child: PrimaryButton(
                     buttonText: 'cancel'.tr,
-                    textColor: Colors.red,
-                    borderColor: Colors.red,
+                    buttonTextColor: primaryTextColor,
+                    buttonColor: Color(0xffedecec),
+                    fontSize: 17,
+                    borderRadius: 10,
                     onPressed: () {
                       Get.back();
                     },

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/res/drawable.dart';
+import 'package:otm_inventory/utils/image_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 
@@ -41,26 +43,37 @@ class SupplierListView extends StatelessWidget {
                           titleTextView(supplierListController
                               .itemList[position].contactName),
                           const SizedBox(
-                            height: 2,
+                            height: 4,
                           ),
-                          itemTextView('email'.tr,
-                              supplierListController.itemList[position].email),
+                          itemTextView(
+                              'email'.tr,
+                              supplierListController.itemList[position].email,
+                              Drawable.emailIcon,
+                              true),
                           itemTextView(
                               'phone'.tr,
                               supplierListController
-                                  .itemList[position].phoneWithExtension),
+                                  .itemList[position].phoneWithExtension,
+                              Drawable.phoneCallIcon,
+                              true),
                           itemTextView(
                               'company_name'.tr,
                               supplierListController
-                                  .itemList[position].companyName),
+                                  .itemList[position].companyName,
+                              "",
+                              false),
                           itemTextView(
                               'address'.tr,
                               supplierListController
-                                  .itemList[position].location),
+                                  .itemList[position].location,
+                              "",
+                              false),
                           itemTextView(
                               'weight'.tr,
                               supplierListController
-                                  .itemList[position].supplierWeight),
+                                  .itemList[position].supplierWeight,
+                              "",
+                              false),
                         ],
                       ),
                     ),
@@ -79,20 +92,48 @@ class SupplierListView extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: primaryTextColor,
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
             )),
       );
 
-  Widget itemTextView(String title, String? text) => Visibility(
+  Widget itemTextView(
+          String title, String? text, String iconPath, bool isIconVisible) =>
+      Visibility(
         visible: !StringHelper.isEmptyString(text),
-        child: Text("$title: ${text ?? "-"}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: secondaryLightTextColor,
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
-            )),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+          child: Row(
+            children: [
+              isIconVisible
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: ImageUtils.setAssetsImage(
+                          path: iconPath,
+                          width: 18,
+                          height: 18,
+                          color: defaultAccentColor),
+                    )
+                  : Container(),
+              Text("$title: ",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: primaryTextColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                  )),
+              Text(text ?? "-",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color:
+                        isIconVisible ? defaultAccentColor : primaryTextColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                  ))
+            ],
+          ),
+        ),
       );
 }

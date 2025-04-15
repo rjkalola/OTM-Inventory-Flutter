@@ -5,9 +5,22 @@ import '../res/colors.dart';
 class PrimaryButton extends StatelessWidget {
   final String buttonText;
   final VoidCallback onPressed;
+  final double? borderRadius;
+  final double? fontSize, buttonHeight;
+  final FontWeight? fontWeight;
+  final Color? buttonColor;
+  final Color? buttonTextColor;
 
   const PrimaryButton(
-      {super.key, required this.buttonText, required this.onPressed});
+      {super.key,
+      required this.buttonText,
+      required this.onPressed,
+      this.borderRadius,
+      this.buttonHeight,
+      this.fontSize,
+      this.fontWeight,
+      this.buttonColor,
+      this.buttonTextColor});
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +28,18 @@ class PrimaryButton extends StatelessWidget {
       onPressed: () {
         onPressed();
       },
-      color: defaultAccentColor,
+      color: buttonColor ?? defaultAccentColor,
       elevation: 0,
-      height: 48,
+      height: buttonHeight ?? 48,
       splashColor: Colors.white.withAlpha(30),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(borderRadius ?? 4),
       ),
       child: Text(buttonText,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 15,
+          style: TextStyle(
+            color: buttonTextColor ?? Colors.white,
+            fontWeight: fontWeight ?? FontWeight.w600,
+            fontSize: fontSize ?? 16,
           )),
     );
   }

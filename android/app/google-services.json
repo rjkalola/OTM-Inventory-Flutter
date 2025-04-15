@@ -1,0 +1,155 @@
+{
+  "project_info": {
+    "project_number": "239302542606",
+    "firebase_url": "https://owl-management-systems.firebaseio.com",
+    "project_id": "owl-management-systems",
+    "storage_bucket": "owl-management-systems.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239302542606:android:2e5adc1e5cb9fb7821035f",
+        "android_client_info": {
+          "package_name": "com.app.fcmchatappdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239302542606-ggmqk6qba3d0trn3pfmfpjb1tm0dgs30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhRxA5681BaJvFX9lG7RN9P2sgMPWgcDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239302542606-ggmqk6qba3d0trn3pfmfpjb1tm0dgs30.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "239302542606-5lk88ab6fdsud70ak54c3hgdqn8f6n20.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.otms.OwlTimeManagementSystems"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239302542606:android:1d523fac632c5acb21035f",
+        "android_client_info": {
+          "package_name": "com.app.otminventory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239302542606-ggmqk6qba3d0trn3pfmfpjb1tm0dgs30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhRxA5681BaJvFX9lG7RN9P2sgMPWgcDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239302542606-ggmqk6qba3d0trn3pfmfpjb1tm0dgs30.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "239302542606-5lk88ab6fdsud70ak54c3hgdqn8f6n20.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.otms.OwlTimeManagementSystems"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239302542606:android:15937a6732e226e021035f",
+        "android_client_info": {
+          "package_name": "com.app.owlacademic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239302542606-ggmqk6qba3d0trn3pfmfpjb1tm0dgs30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhRxA5681BaJvFX9lG7RN9P2sgMPWgcDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239302542606-ggmqk6qba3d0trn3pfmfpjb1tm0dgs30.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "239302542606-5lk88ab6fdsud70ak54c3hgdqn8f6n20.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.otms.OwlTimeManagementSystems"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239302542606:android:5c9b08b09f7802da",
+        "android_client_info": {
+          "package_name": "com.app.owlmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239302542606-ggmqk6qba3d0trn3pfmfpjb1tm0dgs30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhRxA5681BaJvFX9lG7RN9P2sgMPWgcDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239302542606-ggmqk6qba3d0trn3pfmfpjb1tm0dgs30.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "239302542606-5lk88ab6fdsud70ak54c3hgdqn8f6n20.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.otms.OwlTimeManagementSystems"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

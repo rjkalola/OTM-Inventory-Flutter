@@ -5,7 +5,10 @@ import 'package:get/get.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
+import 'package:otm_inventory/widgets/PrimaryBorderButton.dart';
+import 'package:otm_inventory/widgets/PrimaryButton.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
+import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
 
 import '../../../../res/colors.dart';
 import '../../controller/store_list_controller.dart';
@@ -89,11 +92,33 @@ class StoreListView extends StatelessWidget {
                               child: Text('active'.tr,
                                   style: const TextStyle(
                                     color: Colors.green,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
                                   )),
                             )
                           ]),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              PrimaryButton(
+                                  buttonText: 'view'.tr,
+                                  borderRadius: 10,
+                                  fontSize: 16,
+                                  buttonHeight: 40,
+                                  onPressed: () {
+                                    if (AppUtils.isPermission(AppStorage()
+                                        .getPermissions()
+                                        .updateStore)) {
+                                      storeListController.addStoreClick(
+                                          storeListController
+                                              .storeList[position]);
+                                    }
+                                  })
+                            ],
+                          ),
                         ],
                       ),
                     ),

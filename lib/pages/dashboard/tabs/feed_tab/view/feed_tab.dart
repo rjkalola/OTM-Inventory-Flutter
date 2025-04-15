@@ -7,6 +7,7 @@ import 'package:otm_inventory/pages/common/widgets/load_more_view.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/feed_tab/controller/feed_controller.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/feed_tab/view/widgets/feed_list_empty_view.dart';
 import 'package:otm_inventory/pages/dashboard/tabs/feed_tab/view/widgets/feed_list_view.dart';
+import 'package:otm_inventory/pages/dashboard/tabs/feed_tab/view/widgets/search_feed_widget.dart';
 import 'package:otm_inventory/res/colors.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/widgets/CustomProgressbar.dart';
@@ -53,9 +54,9 @@ class FeedTabState extends State<FeedTab>
                 height: 1,
                 color: dividerColor,
               ),
-              // Visibility(
-              //     visible: controller.itemList.isNotEmpty,
-              //     child: const SearchFeedWidget()),
+              Visibility(
+                  visible: controller.isMainViewVisible.value,
+                  child: const SearchFeedWidget()),
               controller.itemList.isNotEmpty
                   ? FeedListView()
                   : FeedListEmptyView(),

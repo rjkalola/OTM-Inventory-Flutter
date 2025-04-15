@@ -111,6 +111,26 @@ class ImageUtils {
     return Icon(Icons.photo_outlined, weight: 300, size: size);
   }
 
+  static Widget setCachedNetworkImage(
+      {required String url,
+      required double width,
+      required double height,
+      double? borderRadius,
+      BoxFit? fit}) {
+    return !StringHelper.isEmptyString(url)
+        ? CachedNetworkImage(
+            height: height,
+            width: width,
+            fit: fit,
+            imageUrl: url ?? "",
+            placeholder: (context, url) =>
+                getPlaceHolderGalleryIcon(getEmptyIconSize(width, height)),
+            errorWidget: (context, url, error) =>
+                getPlaceHolderGalleryIcon(getEmptyIconSize(width, height)),
+          )
+        : getPlaceHolderGalleryIcon(getEmptyIconSize(width, height));
+  }
+
   static Widget setRectangleCornerCachedNetworkImage(
       {required String url,
       required double width,
@@ -124,7 +144,7 @@ class ImageUtils {
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(borderRadius??0)),
+                borderRadius: BorderRadius.circular(borderRadius ?? 0)),
             child: CachedNetworkImage(
               height: height,
               width: width,
@@ -143,19 +163,19 @@ class ImageUtils {
       double height, double borderRadius, BoxFit fit) {
     return !StringHelper.isEmptyString(url)
         ? Container(
-      width: width,
-      height: height,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(borderRadius)),
-      child: Image.file(
-        File(url ?? ""),
-        width: width,
-        height: height,
-        fit: fit,
-      ),
-    )
+            width: width,
+            height: height,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(borderRadius)),
+            child: Image.file(
+              File(url ?? ""),
+              width: width,
+              height: height,
+              fit: fit,
+            ),
+          )
         : getPlaceHolderGalleryIcon(getEmptyIconSize(width, height));
   }
 }

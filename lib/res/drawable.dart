@@ -50,6 +50,12 @@ class Drawable {
   static const String homeDrawerIcon = 'assets/images/ic_menu_home.svg';
   static const String purchaseOrderDrawerIcon =
       'assets/images/ic_menu_purchase_order.svg';
+  static const String phoneCallIcon = 'assets/images/ic_phone_call.svg';
+  static const String emailIcon = 'assets/images/ic_email.svg';
 
 // static const String accountCircleIcon = 'assets/images/';
+
+
+
+
 }

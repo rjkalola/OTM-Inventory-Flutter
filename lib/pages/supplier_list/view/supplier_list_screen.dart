@@ -72,7 +72,7 @@ class _SupplierListScreenState extends State<SupplierListScreen> {
                   color: dividerColor,
                 ),
                 Visibility(
-                    visible: supplierListController.itemList.isNotEmpty,
+                    visible: supplierListController.isMainViewVisible.value,
                     child: const SearchSupplierWidget()),
                 supplierListController.itemList.isNotEmpty
                     ? SupplierListView()

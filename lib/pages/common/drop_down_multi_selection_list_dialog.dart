@@ -135,7 +135,7 @@ class DropDownMultiSelectionListDialogState
                         Flexible(
                             fit: FlexFit.tight,
                             flex: 1,
-                            child:PrimaryBorderButton(
+                            child: PrimaryBorderButton(
                               buttonText: 'select'.tr,
                               textColor: defaultAccentColor,
                               borderColor: defaultAccentColor,
@@ -144,10 +144,12 @@ class DropDownMultiSelectionListDialogState
                                     tempList, dialogType);
                                 Navigator.pop(context);
                               },
-                            )
-                        ),
+                            )),
                       ],
                     ),
+                  ),
+                  const SizedBox(
+                    height: 48,
                   )
                 ]),
               ),
@@ -165,9 +167,9 @@ class DropDownMultiSelectionListDialogState
             return ListTile(
               onTap: () {
                 setState(() {
-                  if(tempList[i].check != null){
+                  if (tempList[i].check != null) {
                     tempList[i].check = !tempList[i].check!;
-                  }else{
+                  } else {
                     tempList[i].check = true;
                   }
                 });
@@ -180,11 +182,14 @@ class DropDownMultiSelectionListDialogState
               title: Padding(
                 padding: const EdgeInsets.fromLTRB(6, 0, 18, 0),
                 child: Row(children: [
-                  Checkbox(activeColor: defaultAccentColor,value: tempList[i].check??false, onChanged: (isCheck) {
-                    setState(() {
-                      tempList[i].check = isCheck;
-                    });
-                  }),
+                  Checkbox(
+                      activeColor: defaultAccentColor,
+                      value: tempList[i].check ?? false,
+                      onChanged: (isCheck) {
+                        setState(() {
+                          tempList[i].check = isCheck;
+                        });
+                      }),
                   Text(
                     tempList[i].name ?? "",
                     textAlign: TextAlign.start,

@@ -54,6 +54,7 @@ class DialogIdentifier {
   final String modelList = 'MODEL_LIST';
   final String usersList = 'USERS_LIST';
   final String storeList = 'STORE_LIST';
+  final String changeStore = 'CHANGE_STORE';
   final String stockOptionsDialog = 'stockOptionsDialog';
   final String attachBarcodeDialog = 'attachBarcodeDialog';
   final String updateBarcodeDialog = 'updateBarcodeDialog';

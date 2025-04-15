@@ -2,7 +2,7 @@
 
 class CategoryInfo {
   int? id;
-  String? name,createdAt,updatedAt;
+  String? name,createdAt,updatedAt,imageUrl,imageThumbUrl;
   bool? status;
 
   CategoryInfo(
@@ -10,7 +10,9 @@ class CategoryInfo {
         this.name,
         this.status,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.imageUrl,
+        this.imageThumbUrl});
 
   CategoryInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -18,6 +20,8 @@ class CategoryInfo {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    imageUrl = json['image_url'];
+    imageThumbUrl = json['image_thumb_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +31,8 @@ class CategoryInfo {
     data['status'] = status;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['image_url'] = imageUrl;
+    data['image_thumb_url'] = imageThumbUrl;
     return data;
   }
 }
