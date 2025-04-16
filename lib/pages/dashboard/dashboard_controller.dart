@@ -1065,8 +1065,10 @@ class DashboardController extends GetxController
     map["token"] = token;
     map["firebase_db_key"] = "";
     map["device_type"] = AppConstants.deviceType;
+    map["is_inventory"] = 1;
     multi.FormData formData = multi.FormData.fromMap(map);
     print("Request Data:" + map.toString());
+
     _api.registerFcm(
       formData: formData,
       onSuccess: (ResponseModel responseModel) {

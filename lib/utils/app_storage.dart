@@ -322,7 +322,7 @@ class AppStorage extends GetxController {
     }
   }
 
-  void clearStoredStock(){
+  void clearStoredStock() {
     removeData(AppConstants.sharedPreferenceKey.localStoredStockList);
   }
 

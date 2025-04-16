@@ -5,38 +5,32 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:otm_inventory/pages/common/controller/common_repository.dart';
 import 'package:otm_inventory/res/colors.dart';
 import 'package:otm_inventory/res/strings.dart';
 import 'package:otm_inventory/routes/app_pages.dart';
-import 'package:otm_inventory/utils/app_constants.dart';
+import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
-import 'package:otm_inventory/utils/app_utils.dart';
-import 'package:otm_inventory/utils/string_helper.dart';
+import 'package:otm_inventory/utils/notification_service.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
-import 'package:dio/dio.dart' as multi;
-import 'package:otm_inventory/web_services/response/base_response.dart';
-import 'package:otm_inventory/web_services/response/response_model.dart';
 
 // Local notifications plugin instance
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-// Background message handler
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print('🔕 BG Message: ${message.messageId}');
-}
+RemoteMessage? _initialMessage;
 
 void main() async {
   await Get.put(AppStorage()).initStorage();
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await NotificationService.init();
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // await requestNotificationPermission();
 
-  await initializeLocalNotifications();
+  _initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+  // await initializeLocalNotifications();
 
   runApp(MyApp());
 }
@@ -50,29 +44,17 @@ Future<void> initializeLocalNotifications() async {
 
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
-    // onDidReceiveNotificationResponse: (NotificationResponse response) {
-    //   print("onDidReceiveNotificationResponse:");
-    //   final String? payload = response.payload;
-    //   if (payload != null) {
-    //     final Map<String, dynamic> data = jsonDecode(payload);
-    //     final feedType = data['feed_type'] ?? ""; //
-    //     print("payload feedType:" + feedType ?? "");
-    //     final title = data['title'] ?? ""; //
-    //     print("payload title:" + title ?? "");
-    //     final body = data['body'] ?? ""; //// e.g., 'feed'
-    //     print("payload body:" + body ?? "");
-    //
-    //     // final route = data['route'];
-    //     // final bundle =
-    //     //     data['bundle'] != null ? jsonDecode(data['bundle']) : null;
-    //     //
-    //     // Get.toNamed(route, arguments: {
-    //     //   'orderId': data['orderId'],
-    //     //   'status': data['status'],
-    //     //   'bundle': bundle,
-    //     // });
-    //   }
-    // },
+    onDidReceiveNotificationResponse: (NotificationResponse response) {
+      if (response.payload != null) {
+        final Map<String, dynamic> data = jsonDecode(response.payload!);
+        String rout = AppRoutes.splashScreen;
+        final feedType = data['feed_type'] ?? ""; //
+        if (feedType == "111") {
+          rout = AppRoutes.orderListScreen;
+          Get.offNamed(rout);
+        }
+      }
+    },
   );
 }
 
@@ -82,7 +64,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _token = '';
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
@@ -91,14 +72,21 @@ class _MyAppState extends State<MyApp> {
     ApiConstants.accessToken = Get.find<AppStorage>().getAccessToken();
     AppStorage.storeId = Get.find<AppStorage>().getStoreId();
     AppStorage.storeName = Get.find<AppStorage>().getStoreName();
-    _setupFCM();
   }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    String initialRoute = AppRoutes.splashScreen;
+    if (_initialMessage != null) {
+      initialRoute = NotificationService.getInitialRout(_initialMessage!.data);
+      print("initialRoute:" + initialRoute);
+    }
+    _setupFCM();
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      initialRoute: initialRoute,
       title: 'app_title'.tr,
       translations: Strings(),
       locale: const Locale('en', 'us'),
@@ -113,81 +101,80 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _setupFCM() async {
-    await requestNotificationPermission();
-
-    // Foreground messages
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (message.data != null) {
-        print('📥 Foreground message data: ${message.data}');
-      }
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-
-      // _handleMessageNavigation(message);
-
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              'high_importance_channel',
-              'High Importance Notifications',
-              icon: 'ic_stat_notification', // <-- no file extension
-              importance: Importance.max,
-              priority: Priority.high,
-              showWhen: true,
-            ),
-          ),
-        );
-      }
-    });
-
-    // Tapping notification (terminated)
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      if (message != null) {
-        _handleMessageNavigation(message);
-        print('🔔 App launched from terminated due to notification');
-      }
-    });
+    // await requestNotificationPermission();
 
     // Tapping notification (background)
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      _handleMessageNavigation(message);
-      print('🔔 App opened from background by tapping notification');
+      NotificationService.handleMessageNavigation(message);
+      // _handleMessageNavigation(message);
+    });
+
+    // Foreground messages
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      NotificationService.showForegroundNotification(message);
+      // RemoteNotification? notification = message.notification;
+      // AndroidNotification? android = message.notification?.android;
+      //
+      // if (notification != null && android != null) {
+      //   flutterLocalNotificationsPlugin.show(
+      //       notification.hashCode,
+      //       notification.title,
+      //       notification.body,
+      //       const NotificationDetails(
+      //         android: AndroidNotificationDetails(
+      //           'high_importance_channel',
+      //           'High Importance Notifications',
+      //           icon: 'ic_stat_notification', // <-- no file extension
+      //           importance: Importance.max,
+      //           priority: Priority.high,
+      //           showWhen: true,
+      //         ),
+      //       ),
+      //       payload: jsonEncode(message.data));
+      // }
     });
   }
 
   void _handleMessageNavigation(RemoteMessage message) {
     final data = message.data;
     final feedType = data['feed_type'] ?? ""; //
-    print("feedType:" + feedType ?? "");
-    final title = data['title'] ?? ""; //
-    print("title:" + title ?? "");
-    final body = data['body'] ?? ""; //// e.g., 'feed'
-    print("body:" + body ?? "");
 
     if (feedType == "111") {
       print("feedType == 111");
-      Get.toNamed('/order_list_screen');
-    } else {
-      print("feedType != 111");
+      Get.offNamed(AppRoutes.orderListScreen);
     }
 
     // You can add conditions for other screens too
   }
 
-  Future<void> requestNotificationPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
+// String getInitialRout(Map<String, dynamic> data) {
+//   String rout = AppRoutes.splashScreen;
+//   final feedType = data['feed_type'] ?? ""; //
+//   print("feedType:" + feedType);
+//   if (feedType == "111") {
+//     rout = AppRoutes.orderListScreen;
+//   }
+//   return rout;
+// }
+}
 
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-      criticalAlert: true,
-    );
+Future<void> requestNotificationPermission() async {
+  NotificationSettings settings =
+      await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
 
-    print('🔒 Permission granted: ${settings.authorizationStatus}');
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('🔔 Notification permission granted.');
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    print('🕒 Provisional notification permission granted.');
+  } else {
+    print('❌ Notification permission denied.');
   }
 }

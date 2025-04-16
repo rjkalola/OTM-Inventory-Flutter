@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/res/colors.dart';
 import 'package:otm_inventory/res/drawable.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../pages/common/widgets/image_preview_dialog.dart';
@@ -131,6 +132,14 @@ class ImageUtils {
         : getPlaceHolderGalleryIcon(getEmptyIconSize(width, height));
   }
 
+  static Widget getEmptyViewContainer(
+      {required double width, required double height, double? borderRadius}) {
+    return Container(
+      decoration: AppUtils.getGrayBorderDecoration(
+          color: Colors.grey.shade50, radius: borderRadius ?? 0),
+    );
+  }
+
   static Widget setRectangleCornerCachedNetworkImage(
       {required String url,
       required double width,
@@ -150,13 +159,14 @@ class ImageUtils {
               width: width,
               fit: fit,
               imageUrl: url ?? "",
-              placeholder: (context, url) =>
-                  getPlaceHolderGalleryIcon(getEmptyIconSize(width, height)),
-              errorWidget: (context, url, error) =>
-                  getPlaceHolderGalleryIcon(getEmptyIconSize(width, height)),
+              placeholder: (context, url) => getEmptyViewContainer(
+                  width: width, height: height, borderRadius: borderRadius),
+              errorWidget: (context, url, error) => getEmptyViewContainer(
+                  width: width, height: height, borderRadius: borderRadius),
             ),
           )
-        : getPlaceHolderGalleryIcon(getEmptyIconSize(width, height));
+        : getEmptyViewContainer(
+            width: width, height: height, borderRadius: borderRadius);
   }
 
   static Widget setRectangleCornerFileImage(String url, double width,

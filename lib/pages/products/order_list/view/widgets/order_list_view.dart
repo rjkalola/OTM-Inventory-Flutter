@@ -84,38 +84,31 @@ class OrderListView extends StatelessWidget {
                                 )
                               ],
                             ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  color: defaultAccentColor,
-                                  Icons.location_on_outlined,
-                                  weight: 300,
-                                  size: 26,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                PrimaryTextView(
-                                  text:
-                                      "QTY: ${(controller.itemList[position].totalQty ?? 0).toString()}",
-                                  color: primaryTextColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                )
-                              ],
-                            )
                           ],
                         ),
                         const SizedBox(
                           height: 6,
                         ),
-                        PrimaryTextView(
-                          text: controller.itemList[position].orderStatus ?? "",
-                          color: AppUtils.getStatusTextColor(
-                              controller.itemList[position].orderStatusInt ??
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            PrimaryTextView(
+                              text: controller.itemList[position].orderStatus ??
+                                  "",
+                              color: AppUtils.getStatusTextColor(controller
+                                      .itemList[position].orderStatusInt ??
                                   0),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            PrimaryTextView(
+                              text:
+                                  "QTY: ${(controller.itemList[position].totalQty ?? 0).toString()}",
+                              color: primaryTextColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            )
+                          ],
                         )
                       ],
                     ),
