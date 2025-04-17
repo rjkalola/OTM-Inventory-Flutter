@@ -23,6 +23,20 @@ class CommonBottomNavigationBarWidget extends StatelessWidget {
         //     // activeIcon: Image.asset(Drawable.activeProfileTabIcon, width: 26),
         //     icon: Image.asset(Drawable.inactiveProfileTabIcon, width: 26),
         //     label: ''),
+        const BottomNavigationBarItem(
+            activeIcon: Icon(
+              Icons.notifications_rounded,
+              color: Color(0xff0065ff),
+              size: 30,
+              weight: 100,
+            ),
+            icon: Icon(
+              Icons.notifications_none_rounded,
+              size: 30,
+              weight: 100,
+              color: Color(0xff5b5d64),
+            ),
+            label: ''),
         BottomNavigationBarItem(
             // activeIcon: SvgPicture.asset(Drawable.activeMoreTabIcon, width: 30),
             icon: SvgPicture.asset(Drawable.inactiveMoreTabIcon, width: 30),
@@ -34,7 +48,7 @@ class CommonBottomNavigationBarWidget extends StatelessWidget {
       showSelectedLabels: false,
       backgroundColor: bottomTabBackgroundColor,
       onTap: onItemTapped,
-    ) ;
+    );
   }
 
   void onItemTapped(int index) {
@@ -42,8 +56,6 @@ class CommonBottomNavigationBarWidget extends StatelessWidget {
     var arguments = {
       AppConstants.intentKey.dashboardTabIndex: index,
     };
-    Get.offNamed(AppRoutes.dashboardScreen,arguments: arguments);
+    Get.offNamed(AppRoutes.dashboardScreen, arguments: arguments);
   }
-
-
 }

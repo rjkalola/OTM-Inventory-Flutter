@@ -14,7 +14,7 @@ class NotificationService {
     final granted = await _requestPermissions();
 
     if (granted) {
-     /* const androidSettings =
+      /* const androidSettings =
           AndroidInitializationSettings('@drawable/ic_stat_notification');
       const initSettings = InitializationSettings(android: androidSettings);
 
@@ -35,14 +35,12 @@ class NotificationService {
         },
       );*/
 
-
-
       ///////
       const AndroidInitializationSettings androidInitSettings =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+          AndroidInitializationSettings('@mipmap/ic_launcher');
 
       final DarwinInitializationSettings iosInitSettings =
-      DarwinInitializationSettings(
+          DarwinInitializationSettings(
         requestSoundPermission: true,
         requestBadgePermission: true,
         requestAlertPermission: true,
