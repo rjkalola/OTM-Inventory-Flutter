@@ -163,6 +163,7 @@ class NotificationService {
               priority: Priority.high,
               showWhen: true,
             ),
+            iOS: DarwinNotificationDetails(),
           ),
           payload: jsonEncode(message.data));
     }
