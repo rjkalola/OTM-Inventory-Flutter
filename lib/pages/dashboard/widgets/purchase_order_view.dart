@@ -28,7 +28,7 @@ class PurchaseOrderView extends StatelessWidget {
               PurchaseOrderCountItem2(
                 count: dashboardController.mPartiallyReceivedCount.value,
                 title: 'partially_received'.tr,
-                flex: 12,
+                flex: 13,
               ),
               const SizedBox(
                 width: 8,

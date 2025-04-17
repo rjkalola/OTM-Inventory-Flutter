@@ -32,7 +32,7 @@ class PurchaseOrderCountItem2 extends StatelessWidget {
           children: [
             PrimaryTextView(
               text: count.toString(),
-              fontSize: 17,
+              fontSize: 16,
               fontWeight: FontWeight.w500,
               color: primaryTextColor,
             ),
@@ -43,7 +43,7 @@ class PurchaseOrderCountItem2 extends StatelessWidget {
               child: PrimaryTextView(
                 softWrap: true,
                 text: title,
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: primaryTextColor,
               ),

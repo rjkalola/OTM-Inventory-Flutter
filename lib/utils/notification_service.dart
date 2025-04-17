@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
@@ -10,32 +11,73 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
-    await _requestPermissions();
+    final granted = await _requestPermissions();
 
-    const androidSettings =
-        AndroidInitializationSettings('@drawable/ic_stat_notification');
-    const initSettings = InitializationSettings(android: androidSettings);
+    if (granted) {
+     /* const androidSettings =
+          AndroidInitializationSettings('@drawable/ic_stat_notification');
+      const initSettings = InitializationSettings(android: androidSettings);
 
-    await _localNotifications.initialize(
-      initSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse response) {
-        if (response.payload != null) {
-          final Map<String, dynamic> data = jsonDecode(response.payload!);
-          String rout = AppRoutes.splashScreen;
-          final notificationType = data['notification_type'] ?? "";
-          print("notificationType:" + notificationType);
+      await _localNotifications.initialize(
+        initSettings,
+        onDidReceiveNotificationResponse: (NotificationResponse response) {
+          if (response.payload != null) {
+            final Map<String, dynamic> data = jsonDecode(response.payload!);
+            String rout = AppRoutes.splashScreen;
+            final notificationType = data['notification_type'] ?? "";
+            print("notificationType:" + notificationType);
 
-          if (notificationType == "9251" || notificationType == "9251") {
-            rout = AppRoutes.orderListScreen;
-            Get.offNamed(rout);
+            if (notificationType == "9251" || notificationType == "9251") {
+              rout = AppRoutes.orderListScreen;
+              Get.offNamed(rout);
+            }
           }
-        }
-      },
-    );
+        },
+      );*/
+
+
+
+      ///////
+      const AndroidInitializationSettings androidInitSettings =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+
+      final DarwinInitializationSettings iosInitSettings =
+      DarwinInitializationSettings(
+        requestSoundPermission: true,
+        requestBadgePermission: true,
+        requestAlertPermission: true,
+        // onDidReceiveLocalNotification: (id, title, body, payload) {
+        //   // Optional: handle older iOS versions
+        // },
+      );
+
+      final InitializationSettings initSettings = InitializationSettings(
+        android: androidInitSettings,
+        iOS: iosInitSettings,
+      );
+
+      await _localNotifications.initialize(
+        initSettings,
+        onDidReceiveNotificationResponse: (NotificationResponse response) {
+          if (response.payload != null) {
+            final Map<String, dynamic> data = jsonDecode(response.payload!);
+            String rout = AppRoutes.splashScreen;
+            final notificationType = data['notification_type'] ?? "";
+            print("notificationType:" + notificationType);
+
+            if (notificationType == "9251" || notificationType == "9251") {
+              rout = AppRoutes.orderListScreen;
+              Get.offNamed(rout);
+            }
+          }
+        },
+      );
+      //////
+    }
   }
 
-  static Future<void> _requestPermissions() async {
-    // Android 13+
+  static Future<bool> _requestPermissions() async {
+    /* // Android 13+
     if (await Permission.notification.isDenied) {
       final status = await Permission.notification.request();
       if (!status.isGranted) {
@@ -58,7 +100,49 @@ class NotificationService {
       print('🕒 iOS notification permission not determined');
     } else {
       print('✅ Notification permission granted');
+    }*/
+
+    final messaging = FirebaseMessaging.instance;
+
+    // iOS: request Firebase notification permission
+    if (Platform.isIOS) {
+      final settings = await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        print('✅ iOS: Notification permission granted');
+        return true;
+      } else {
+        print('❌ iOS: Notification permission denied');
+        return false;
+      }
     }
+
+    // Android: manually request POST_NOTIFICATIONS (required on Android 13+)
+    if (Platform.isAndroid) {
+      final status = await Permission.notification.status;
+      if (status.isDenied || status.isPermanentlyDenied) {
+        final result = await Permission.notification.request();
+        if (result.isGranted) {
+          print('✅ Android: Notification permission granted');
+          return true;
+        } else {
+          print('❌ Android: Notification permission denied');
+          return false;
+        }
+      }
+
+      print('✅ Android: Notification permission already granted');
+      return true;
+    }
+
+    // Other platforms (Web, macOS, etc.)
+    print(
+        'ℹ️ Notification permission not required or unsupported on this platform');
+    return false;
   }
 
   static void showForegroundNotification(RemoteMessage message) {
