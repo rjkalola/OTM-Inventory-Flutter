@@ -23,4 +23,22 @@ class OrderListRepository {
       onError: (error) => {if (onError != null) onError(error)},
     );
   }
+
+  void multipleOrderStatusUpdate({
+    multi.FormData? formData,
+    Function(ResponseModel responseModel)? onSuccess,
+    Function(ResponseModel error)? onError,
+  }) {
+    if (kDebugMode) print("formData:$formData");
+    ApiRequest(
+        url: ApiConstants.multipleOrderStatusUpdateUrl,
+        formData: formData,
+        isFormData: true)
+        .postRequest(
+      onSuccess: (data) {
+        onSuccess!(data);
+      },
+      onError: (error) => {if (onError != null) onError(error)},
+    );
+  }
 }

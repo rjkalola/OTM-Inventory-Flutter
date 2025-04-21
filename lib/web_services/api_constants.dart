@@ -55,6 +55,9 @@ class ApiConstants {
   static String inventoryOrderListUrl = '$appUrl/inventory-order-list';
   static String inventoryOrderDetailsUrl = '$appUrl/inventory-order-details';
   static String inventoryStatusUpdate = '$appUrl/inventory-update-status';
+  static String multipleOrderStatusUpdateUrl = '$appUrl/inventory-order-status-update';
   static String getFeedUrl = '$appUrl/get-inventory-feed';
   static String registerFcmUrl = '$appUrl/register-token';
+
+
 }

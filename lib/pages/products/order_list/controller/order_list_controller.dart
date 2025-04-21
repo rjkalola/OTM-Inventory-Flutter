@@ -91,6 +91,45 @@ class OrderListController extends GetxController {
     );
   }
 
+  void multipleOrderStatusUpdate(
+      bool isProgress, String ids, int status) async {
+    if (isProgress) isLoading.value = true;
+
+    Map<String, dynamic> map = {};
+    map["store_id"] = AppStorage.storeId.toString();
+    map["goodsRequestOrderIds"] = ids;
+    map["status"] = status;
+
+    var formData = multi.FormData.fromMap(map);
+
+    print("Request Data:" + map.toString());
+    _api.multipleOrderStatusUpdate(
+      formData: formData,
+      onSuccess: (ResponseModel responseModel) {
+        isLoading.value = false;
+        if (responseModel.statusCode == 200) {
+          BaseResponse response =
+              BaseResponse.fromJson(jsonDecode(responseModel.result!));
+          if (response.IsSuccess!) {
+            getInventoryOrderList(true);
+          } else {
+            AppUtils.showSnackBarMessage(response.Message!);
+          }
+        } else {
+          AppUtils.showSnackBarMessage(responseModel.statusMessage!);
+        }
+      },
+      onError: (ResponseModel error) {
+        isLoading.value = false;
+        if (error.statusCode == ApiConstants.CODE_NO_INTERNET_CONNECTION) {
+          AppUtils.showSnackBarMessage('no_internet'.tr);
+        } else if (error.statusMessage!.isNotEmpty) {
+          AppUtils.showSnackBarMessage(error.statusMessage!);
+        }
+      },
+    );
+  }
+
   Future<void> searchItem(String value) async {
     print("Search item:" + value);
     List<OrderInfo> results = [];
