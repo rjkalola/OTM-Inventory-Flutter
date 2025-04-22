@@ -110,7 +110,7 @@ class AppUtils {
     print("status:" + status.toString());
     Color? color = primaryTextColor;
     if (status == AppConstants.orderStatus.PLACED) {
-      color = const Color(0xff1d7b3e);
+      color = defaultAccentColor;
     } else if (status == AppConstants.orderStatus.ACCEPTED) {
       color = const Color(0xff019ea4);
     } else if (status == AppConstants.orderStatus.REJECTED) {

@@ -445,19 +445,6 @@ class AddStockProductController extends GetxController
     }
   }
 
-  void showAttachmentOptionsDialog(String dialogType, String title,
-      List<ModuleInfo> list, SelectItemListener listener) {
-    Get.bottomSheet(
-        SelectItemListDialog(
-            title: title,
-            dialogType: dialogType,
-            list: list,
-            listener: listener),
-        backgroundColor: Colors.transparent,
-        enableDrag: false,
-        isScrollControlled: false);
-  }
-
   onSelectPhoto(String fileUrl) async {
     print("pickImage");
     if (StringHelper.isEmptyString(fileUrl)) {
@@ -482,6 +469,19 @@ class AddStockProductController extends GetxController
     } else {
       ImageUtils.showImagePreviewDialog(fileUrl);
     }
+  }
+
+  void showAttachmentOptionsDialog(String dialogType, String title,
+      List<ModuleInfo> list, SelectItemListener listener) {
+    Get.bottomSheet(
+        SelectItemListDialog(
+            title: title,
+            dialogType: dialogType,
+            list: list,
+            listener: listener),
+        backgroundColor: Colors.transparent,
+        enableDrag: false,
+        isScrollControlled: false);
   }
 
   addPhotoToList(String? path) {

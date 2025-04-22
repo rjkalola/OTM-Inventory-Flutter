@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/add_category/widgets/add_category_button.dart';
+import 'package:otm_inventory/pages/add_category/widgets/image_select_icon.dart';
+import 'package:otm_inventory/pages/add_category/widgets/text_select_icon_title.dart';
 import 'package:otm_inventory/pages/add_category/widgets/textfield_category_name.dart';
+import 'package:otm_inventory/pages/add_category/widgets/textfield_parent_category.dart';
+import 'package:otm_inventory/res/drawable.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
@@ -30,6 +35,7 @@ class AddCategoryScreen extends StatelessWidget {
             title: addCategoryController.title.value,
             isCenterTitle: false,
             isBack: true,
+            widgets: actionButtons(),
           ),
           body: Obx(() {
             return ModalProgressHUD(
@@ -49,6 +55,9 @@ class AddCategoryScreen extends StatelessWidget {
                             children: [
                               const Divider(),
                               TextFieldCategoryName(),
+                              TextFieldParentCategory(),
+                              SelectIconTitle(),
+                              ImageSelectIcon()
                               // Padding(
                               //   padding: const EdgeInsets.only(left: 14,bottom: 18),
                               //   child: Row(
@@ -77,5 +86,23 @@ class AddCategoryScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Widget>? actionButtons() {
+    return [
+      Visibility(
+        visible: addCategoryController.isDeleteVisible.value,
+        child: IconButton(
+          icon: SvgPicture.asset(
+            width: 28,
+            Drawable.deleteIcon,
+            colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
+          ),
+          onPressed: () {
+            addCategoryController.onClickRemoveCategory();
+          },
+        ),
+      ),
+    ];
   }
 }

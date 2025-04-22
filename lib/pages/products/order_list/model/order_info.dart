@@ -32,6 +32,7 @@ class OrderInfo {
   String? statusMessage;
   List<ProductInfo>? orderProducts;
   UserInfo? user;
+  bool? isCheckOrder;
 
   OrderInfo(
       {this.id,
@@ -63,7 +64,8 @@ class OrderInfo {
       this.orderStatusInt,
       this.statusMessage,
       this.orderProducts,
-      this.user});
+      this.user,
+      this.isCheckOrder});
 
   OrderInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -101,6 +103,7 @@ class OrderInfo {
       });
     }
     user = json['user'] != null ? UserInfo.fromJson(json['user']) : null;
+    isCheckOrder = json['isCheckOrder'];
   }
 
   Map<String, dynamic> toJson() {
@@ -139,6 +142,7 @@ class OrderInfo {
     if (user != null) {
       data['user'] = user!.toJson();
     }
+    data['isCheckOrder'] = this.isCheckOrder;
     return data;
   }
 }

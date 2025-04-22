@@ -6,15 +6,16 @@ import '../../../web_services/network/api_request.dart';
 import '../../../web_services/response/response_model.dart';
 
 class AddCategoryRepository {
-
   void storeCategory({
     multi.FormData? formData,
     Function(ResponseModel responseModel)? onSuccess,
     Function(ResponseModel error)? onError,
   }) {
-    if (kDebugMode)print("formData:$formData");
+    if (kDebugMode) print("formData:$formData");
     ApiRequest(
-        url: ApiConstants.storeCategoryUrl, formData: formData, isFormData: true)
+            url: ApiConstants.storeCategoryUrl,
+            formData: formData,
+            isFormData: true)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);
@@ -23,4 +24,21 @@ class AddCategoryRepository {
     );
   }
 
+  void deleteCategory({
+    multi.FormData? formData,
+    Function(ResponseModel responseModel)? onSuccess,
+    Function(ResponseModel error)? onError,
+  }) {
+    if (kDebugMode) print("formData:$formData");
+    ApiRequest(
+            url: ApiConstants.deleteCategoryUrl,
+            formData: formData,
+            isFormData: true)
+        .postRequest(
+      onSuccess: (data) {
+        onSuccess!(data);
+      },
+      onError: (error) => {if (onError != null) onError(error)},
+    );
+  }
 }

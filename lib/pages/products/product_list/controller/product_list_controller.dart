@@ -104,8 +104,7 @@ class ProductListController extends GetxController
 
   Future<void> importProductClick() async {
     var result = await Get.toNamed(AppRoutes.importProductsScreen);
-    if (result != null && result)
-    {
+    if (result != null && result) {
       setOfflineData();
     }
   }

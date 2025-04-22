@@ -1054,6 +1054,7 @@ class DashboardController extends GetxController
     // Get token
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     String? token = await messaging.getToken();
+    // AppUtils.showSnackBarMessage(token ?? "token null");
     if (!StringHelper.isEmptyString(token)) {
       registerFcmAPI(token ?? "");
     }

@@ -66,6 +66,8 @@ class DialogIdentifier {
   final String deleteBarcode = 'DELETE_BARCODE';
   final String addProductOptionsDialog = 'addProductOptionsDialog';
   final String orderStatusChangeDialog = 'ORDER_STATUS_CHANGE_DIALOG';
+  final String parentCategoryList = 'PARENT_CATEGORY_LIST';
+  final String deleteCategory = 'DELETE_CATEGORY';
 }
 
 class SharedPreferenceKey {
@@ -112,6 +114,11 @@ class Action {
   final String downloadPdf = "DOWNLOAD_PDF";
   final String importProducts = "IMPORT_PRODUCTS";
   final String addProductManually = "ADD_PRODUCT_MANUALLY";
+  final String accept = "ACCEPT";
+  final String reject = "REJECT";
+  final String cancel = "CANCEL";
+  final String readyToDeliver = "READY_TO_DELIVER";
+  final String deliver = "DELIVER";
 }
 
 class FromScreens {

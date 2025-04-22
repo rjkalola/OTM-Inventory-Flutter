@@ -63,15 +63,16 @@ class CategoryListView extends StatelessWidget {
                                   fontSize: 17,
                                   fontWeight: FontWeight.w500,
                                 ),
-                                // const SizedBox(
-                                //   height: 2,
-                                // ),
-                                // PrimaryTextView(
-                                //   text: "16 Items",
-                                //   color: secondaryLightTextColor,
-                                //   fontSize: 14,
-                                //   fontWeight: FontWeight.w400,
-                                // )
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                PrimaryTextView(
+                                  text:
+                                      "${categoryListController.categoryList[position].products_count ?? 0} Items",
+                                  color: secondaryLightTextColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                )
                               ],
                             ),
                           ),

@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:otm_inventory/pages/common/listener/select_item_listener.dart';
+import 'package:otm_inventory/pages/common/select_Item_list_dialog.dart';
 import 'package:otm_inventory/pages/products/add_product/controller/add_product_repository.dart';
 import 'package:otm_inventory/pages/products/import_products/controller/import_products_repository.dart';
 import 'package:otm_inventory/pages/products/order_list/controller/order_list_repository.dart';
@@ -21,14 +24,17 @@ import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:dio/dio.dart' as multi;
 import 'package:otm_inventory/web_services/api_constants.dart';
 import 'package:otm_inventory/web_services/response/base_response.dart';
+import 'package:otm_inventory/web_services/response/module_info.dart';
 import 'package:otm_inventory/web_services/response/response_model.dart';
 import '../../../common/model/file_info.dart';
 
-class OrderListController extends GetxController {
+class OrderListController extends GetxController implements SelectItemListener {
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isClearVisible = false.obs;
+      isClearVisible = false.obs,
+      isOrderCheckVisible = false.obs,
+      isCheckAll = false.obs;
   final search = ''.obs, fromDate = ''.obs, toDate = ''.obs;
   final offset = 0.obs;
   final _api = OrderListRepository();
@@ -111,6 +117,9 @@ class OrderListController extends GetxController {
           BaseResponse response =
               BaseResponse.fromJson(jsonDecode(responseModel.result!));
           if (response.IsSuccess!) {
+            isOrderCheckVisible.value = false;
+            unCheckAllItems();
+            isCheckAll.value = false;
             getInventoryOrderList(true);
           } else {
             AppUtils.showSnackBarMessage(response.Message!);
@@ -155,5 +164,100 @@ class OrderListController extends GetxController {
     if (result != null && result) {
       getInventoryOrderList(true);
     }
+  }
+
+  void checkAllItems() {
+    for (var info in itemList) {
+      info.isCheckOrder = true;
+    }
+  }
+
+  void unCheckAllItems() {
+    for (var info in itemList) {
+      info.isCheckOrder = false;
+    }
+  }
+
+  showChangeOrderStatusDialog() async {
+    var listOptions = <ModuleInfo>[].obs;
+    ModuleInfo? info;
+
+    info = ModuleInfo();
+    info.name = 'accept'.tr;
+    info.action = AppConstants.action.accept;
+    listOptions.add(info);
+
+    info = ModuleInfo();
+    info.name = 'reject'.tr;
+    info.action = AppConstants.action.reject;
+    listOptions.add(info);
+
+    info = ModuleInfo();
+    info.name = 'cancel'.tr;
+    info.action = AppConstants.action.cancel;
+    listOptions.add(info);
+
+    info = ModuleInfo();
+    info.name = 'ready_to_deliver'.tr;
+    info.action = AppConstants.action.readyToDeliver;
+    listOptions.add(info);
+
+    info = ModuleInfo();
+    info.name = 'deliver'.tr;
+    info.action = AppConstants.action.deliver;
+    listOptions.add(info);
+
+    showAttachmentOptionsDialog(
+        AppConstants.dialogIdentifier.attachmentOptionsList,
+        'select_status'.tr,
+        listOptions,
+        this);
+  }
+
+  void showAttachmentOptionsDialog(String dialogType, String title,
+      List<ModuleInfo> list, SelectItemListener listener) {
+    Get.bottomSheet(
+        SelectItemListDialog(
+            title: title,
+            dialogType: dialogType,
+            list: list,
+            listener: listener),
+        backgroundColor: Colors.transparent,
+        enableDrag: false,
+        isScrollControlled: false);
+  }
+
+  @override
+  void onSelectItem(int position, int id, String name, String action) {
+    if (action == AppConstants.action.accept) {
+      changeStatus(AppConstants.orderStatus.ACCEPTED);
+    } else if (action == AppConstants.action.reject) {
+      changeStatus(AppConstants.orderStatus.REJECTED);
+    } else if (action == AppConstants.action.cancel) {
+      changeStatus(AppConstants.orderStatus.CANCELLED);
+    } else if (action == AppConstants.action.readyToDeliver) {
+      changeStatus(AppConstants.orderStatus.READY_TO_DELIVERED);
+    } else if (action == AppConstants.action.deliver) {
+      changeStatus(AppConstants.orderStatus.DELIVERED);
+    }
+  }
+
+  void changeStatus(int status) {
+    String commaSeparateIds = getCommaSeparateIds();
+    multipleOrderStatusUpdate(true, commaSeparateIds, status);
+  }
+
+  String getCommaSeparateIds() {
+    String commaSeparateIds = "";
+    if (itemList.isNotEmpty) {
+      List<String> itemIds = [];
+      for (int i = 0; i < itemList.length; i++) {
+        if (itemList[i].isCheckOrder ?? false) {
+          itemIds.add(itemList[i].id.toString());
+        }
+      }
+      commaSeparateIds = itemIds.join(',');
+    }
+    return commaSeparateIds;
   }
 }

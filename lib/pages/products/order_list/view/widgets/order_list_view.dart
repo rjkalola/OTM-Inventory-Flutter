@@ -31,60 +31,61 @@ class OrderListView extends StatelessWidget {
                   },
                   child: CardView(
                       child: Padding(
-                    padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
+                    padding: const EdgeInsets.fromLTRB(14, 12, 0, 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            PrimaryTextView(
-                              text:
-                                  "Order Id: ${controller.itemList[position].orderId ?? ""}",
-                              color: secondaryLightTextColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            PrimaryTextView(
-                              text: controller
-                                      .itemList[position].formattedCreatedAt ??
-                                  "",
-                              color: secondaryLightTextColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            )
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              PrimaryTextView(
+                                text:
+                                    "Order Id: ${controller.itemList[position].orderId ?? ""}",
+                                color: secondaryLightTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                              PrimaryTextView(
+                                text: controller.itemList[position]
+                                        .formattedCreatedAt ??
+                                    "",
+                                color: secondaryLightTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           height: 6,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                ImageUtils.setUserImage(
-                                    controller.itemList[position]
-                                            .orderedUserImage ??
-                                        "",
-                                    36,
-                                    36,
-                                    45),
-                                const SizedBox(
-                                  width: 6,
-                                ),
-                                PrimaryTextView(
-                                  text: controller
-                                          .itemList[position].orderedUserName ??
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Row(
+                            children: [
+                              ImageUtils.setUserImage(
+                                  controller.itemList[position]
+                                          .orderedUserImage ??
                                       "",
-                                  color: primaryTextColor,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                )
-                              ],
-                            ),
-                          ],
+                                  36,
+                                  36,
+                                  45),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              PrimaryTextView(
+                                text: controller
+                                        .itemList[position].orderedUserName ??
+                                    "",
+                                color: primaryTextColor,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           height: 6,
@@ -101,12 +102,37 @@ class OrderListView extends StatelessWidget {
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),
-                            PrimaryTextView(
-                              text:
-                                  "QTY: ${(controller.itemList[position].totalQty ?? 0).toString()}",
-                              color: primaryTextColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                            Row(
+                              children: [
+                                PrimaryTextView(
+                                  text:
+                                      "QTY: ${(controller.itemList[position].totalQty ?? 0).toString()}",
+                                  color: primaryTextColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                Visibility(
+                                  visible:
+                                      !controller.isOrderCheckVisible.value,
+                                  child: const SizedBox(
+                                    width: 16,
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: controller.isOrderCheckVisible.value,
+                                  child: Checkbox(
+                                      activeColor: defaultAccentColor,
+                                      value: controller.itemList[position]
+                                              .isCheckOrder ??
+                                          false,
+                                      onChanged: (isCheck) {
+                                        print("Check:" + isCheck.toString());
+                                        controller.itemList[position]
+                                            .isCheckOrder = isCheck;
+                                        controller.itemList.refresh();
+                                      }),
+                                )
+                              ],
                             )
                           ],
                         )

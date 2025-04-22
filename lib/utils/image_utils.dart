@@ -135,8 +135,15 @@ class ImageUtils {
   static Widget getEmptyViewContainer(
       {required double width, required double height, double? borderRadius}) {
     return Container(
+      width: width,
+      height: height,
       decoration: AppUtils.getGrayBorderDecoration(
           color: Colors.grey.shade50, radius: borderRadius ?? 0),
+      child: Icon(
+        Icons.photo_outlined,
+        size: getEmptyIconSize(width, height) / 2,
+        color: Colors.grey.shade300,
+      ),
     );
   }
 
