@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
+import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class NotificationService {
@@ -142,7 +143,16 @@ class NotificationService {
     // final android = notification?.android;
 
     if (notification != null) {
-      AppUtils.showSnackBarMessage("notification not null");
+      String title = notification.title ?? "null";
+      String body = notification.body ?? "null";
+      if (message.data != null) {
+        AppUtils.showSnackBarMessage(
+            "data not null & title:${title} & body:${body}");
+      } else {
+        AppUtils.showSnackBarMessage(
+            "data null & title:${title} & body:${body}");
+      }
+
       _localNotifications.show(
           notification.hashCode,
           notification.title,
