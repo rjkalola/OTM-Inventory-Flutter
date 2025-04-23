@@ -36,28 +36,28 @@ void main() async {
   runApp(MyApp());
 }
 
-Future<void> initializeLocalNotifications() async {
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-
-  const InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
-
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    onDidReceiveNotificationResponse: (NotificationResponse response) {
-      if (response.payload != null) {
-        final Map<String, dynamic> data = jsonDecode(response.payload!);
-        String rout = AppRoutes.splashScreen;
-        final feedType = data['feed_type'] ?? ""; //
-        if (feedType == "111") {
-          rout = AppRoutes.orderListScreen;
-          Get.offNamed(rout);
-        }
-      }
-    },
-  );
-}
+// Future<void> initializeLocalNotifications() async {
+//   const AndroidInitializationSettings initializationSettingsAndroid =
+//       AndroidInitializationSettings('@mipmap/ic_launcher');
+//
+//   const InitializationSettings initializationSettings =
+//       InitializationSettings(android: initializationSettingsAndroid);
+//
+//   await flutterLocalNotificationsPlugin.initialize(
+//     initializationSettings,
+//     onDidReceiveNotificationResponse: (NotificationResponse response) {
+//       if (response.payload != null) {
+//         final Map<String, dynamic> data = jsonDecode(response.payload!);
+//         String rout = AppRoutes.splashScreen;
+//         final feedType = data['feed_type'] ?? ""; //
+//         if (feedType == "111") {
+//           rout = AppRoutes.orderListScreen;
+//           Get.offNamed(rout);
+//         }
+//       }
+//     },
+//   );
+// }
 
 class MyApp extends StatefulWidget {
   @override
