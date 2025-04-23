@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class NotificationService {
@@ -141,6 +142,7 @@ class NotificationService {
     // final android = notification?.android;
 
     if (notification != null) {
+      AppUtils.showSnackBarMessage("notification not null");
       _localNotifications.show(
           notification.hashCode,
           notification.title,
@@ -157,6 +159,8 @@ class NotificationService {
             iOS: DarwinNotificationDetails(),
           ),
           payload: jsonEncode(message.data));
+    } else {
+      AppUtils.showSnackBarMessage("notification null");
     }
   }
 

@@ -112,7 +112,6 @@ class _MyAppState extends State<MyApp> {
 
     // Foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      AppUtils.showSnackBarMessage("Received Foreground Message");
       NotificationService.showForegroundNotification(message);
       // RemoteNotification? notification = message.notification;
       // AndroidNotification? android = message.notification?.android;
