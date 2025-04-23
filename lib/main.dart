@@ -10,6 +10,7 @@ import 'package:otm_inventory/res/strings.dart';
 import 'package:otm_inventory/routes/app_pages.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
+import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/notification_service.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
 
@@ -111,6 +112,7 @@ class _MyAppState extends State<MyApp> {
 
     // Foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      AppUtils.showSnackBarMessage("Received Foreground Message");
       NotificationService.showForegroundNotification(message);
       // RemoteNotification? notification = message.notification;
       // AndroidNotification? android = message.notification?.android;
