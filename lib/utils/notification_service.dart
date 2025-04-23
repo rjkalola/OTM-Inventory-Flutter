@@ -43,9 +43,6 @@ class NotificationService {
           requestSoundPermission: true,
           requestBadgePermission: true,
           requestAlertPermission: true,
-          // onDidReceiveLocalNotification: (id, title, body, payload) {
-          //   // Optional: handle older iOS versions
-          // },
         ),
       );
 
@@ -143,16 +140,15 @@ class NotificationService {
     // final android = notification?.android;
 
     if (notification != null) {
-      String title = notification.title ?? "null";
-      String body = notification.body ?? "null";
-      if (message.data != null) {
-        AppUtils.showSnackBarMessage(
-            "data not null & title:${title} & body:${body}");
-      } else {
-        AppUtils.showSnackBarMessage(
-            "data null & title:${title} & body:${body}");
-      }
-
+      // String title = notification.title ?? "null";
+      // String body = notification.body ?? "null";
+      // if (message.data != null) {
+      //   AppUtils.showSnackBarMessage(
+      //       "data not null & title:${title} & body:${body}");
+      // } else {
+      //   AppUtils.showSnackBarMessage(
+      //       "data null & title:${title} & body:${body}");
+      // }
       _localNotifications.show(
           notification.hashCode,
           notification.title,
@@ -166,7 +162,11 @@ class NotificationService {
               priority: Priority.high,
               showWhen: true,
             ),
-            iOS: DarwinNotificationDetails(),
+            iOS: DarwinNotificationDetails(
+              presentAlert: true,
+              presentBadge: true,
+              presentSound: true,
+            ),
           ),
           payload: jsonEncode(message.data));
     } else {
