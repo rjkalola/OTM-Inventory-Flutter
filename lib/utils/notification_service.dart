@@ -35,23 +35,16 @@ class NotificationService {
         },
       );*/
 
-      ///////
-      const AndroidInitializationSettings androidInitSettings =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
-
-      final DarwinInitializationSettings iosInitSettings =
-          DarwinInitializationSettings(
-        requestSoundPermission: true,
-        requestBadgePermission: true,
-        requestAlertPermission: true,
-        // onDidReceiveLocalNotification: (id, title, body, payload) {
-        //   // Optional: handle older iOS versions
-        // },
-      );
-
-      final InitializationSettings initSettings = InitializationSettings(
-        android: androidInitSettings,
-        iOS: iosInitSettings,
+      const InitializationSettings initSettings = InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        iOS: DarwinInitializationSettings(
+          requestSoundPermission: true,
+          requestBadgePermission: true,
+          requestAlertPermission: true,
+          // onDidReceiveLocalNotification: (id, title, body, payload) {
+          //   // Optional: handle older iOS versions
+          // },
+        ),
       );
 
       await _localNotifications.initialize(
@@ -145,9 +138,9 @@ class NotificationService {
 
   static void showForegroundNotification(RemoteMessage message) {
     final notification = message.notification;
-    final android = notification?.android;
+    // final android = notification?.android;
 
-    if (notification != null && android != null) {
+    if (notification != null) {
       _localNotifications.show(
           notification.hashCode,
           notification.title,
