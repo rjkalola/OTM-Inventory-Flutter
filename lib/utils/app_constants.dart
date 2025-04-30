@@ -40,6 +40,8 @@ class IntentKey {
   final String purchaseOrderInfo = 'PURCHASE_ORDER_INFO';
   final String title = 'TITLE';
   final String count = 'COUNT';
+  final String index = 'INDEX';
+  final String itemList = 'ITEM_LIST';
 }
 
 class DialogIdentifier {
@@ -50,6 +52,7 @@ class DialogIdentifier {
   final String lengthUnitList = 'LENGTH_UNIT_LIST';
   final String weightUnitList = 'WEIGHT_UNIT_LIST';
   final String manufacturerList = 'MANUFACTURER_LIST';
+  final String packOffList = 'PACK_OFF_LIST';
   final String attachmentOptionsList = 'ATTACHMENT_OPTIONS_LIST';
   final String modelList = 'MODEL_LIST';
   final String usersList = 'USERS_LIST';

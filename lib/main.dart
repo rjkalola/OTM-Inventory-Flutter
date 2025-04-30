@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/image_preview/view/image_preview_screen.dart';
 import 'package:otm_inventory/res/colors.dart';
 import 'package:otm_inventory/res/strings.dart';
 import 'package:otm_inventory/routes/app_pages.dart';
@@ -80,14 +81,16 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     String initialRoute = AppRoutes.splashScreen;
     if (_initialMessage != null) {
-      initialRoute = NotificationService.getInitialRout(_initialMessage!.data);
-      print("initialRoute:" + initialRoute);
+      // initialRoute = NotificationService.getInitialRout(_initialMessage!.data);
+      NotificationService.setInitialRout(_initialMessage!.data);
     }
     _setupFCM();
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: initialRoute,
+      // initialRoute: initialRoute,
+      initialRoute: AppRoutes.splashScreen,
+      // initialRoute: AppRoutes.imagePreviewScreen,
       title: 'app_title'.tr,
       translations: Strings(),
       locale: const Locale('en', 'us'),
@@ -97,7 +100,7 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
           dialogBackgroundColor: Colors.white),
       // home: const SplashScreen(),
-      navigatorKey: navigatorKey,
+      // navigatorKey: navigatorKey,
     );
   }
 

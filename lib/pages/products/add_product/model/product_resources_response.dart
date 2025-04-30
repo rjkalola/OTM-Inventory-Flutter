@@ -7,7 +7,8 @@ class ProductResourcesResponse extends BaseResponse {
       model,
       manufacturer,
       lengthUnit,
-      weightUnit;
+      weightUnit,
+      packOffUnit;
 
   ProductResourcesResponse(
       {this.categories,
@@ -15,7 +16,8 @@ class ProductResourcesResponse extends BaseResponse {
       this.model,
       this.manufacturer,
       this.lengthUnit,
-      this.weightUnit});
+      this.weightUnit,
+      this.packOffUnit});
 
   ProductResourcesResponse.fromJson(Map<String, dynamic> json) {
     IsSuccess = json['IsSuccess'];
@@ -56,6 +58,12 @@ class ProductResourcesResponse extends BaseResponse {
         weightUnit!.add(ModuleInfo.fromJson(v));
       });
     }
+    if (json['packOffUnit'] != null) {
+      packOffUnit = <ModuleInfo>[];
+      json['packOffUnit'].forEach((v) {
+        packOffUnit!.add(ModuleInfo.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +87,9 @@ class ProductResourcesResponse extends BaseResponse {
     }
     if (weightUnit != null) {
       data['weightUnit'] = weightUnit!.map((v) => v.toJson()).toList();
+    }
+    if (packOffUnit != null) {
+      data['packOffUnit'] = packOffUnit!.map((v) => v.toJson()).toList();
     }
     return data;
   }

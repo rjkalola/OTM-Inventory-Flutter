@@ -1,5 +1,7 @@
 class AppRoutes {
   static const String splashScreen = '/';
+
+  // static const String splashScreen = '/splash_screen';
   static const String loginScreen = '/login_screen';
   static const String verifyOtpScreen = '/verify_otp_screen';
   static const String dashboardScreen = '/dashboard_screen';
@@ -28,4 +30,5 @@ class AppRoutes {
   static const String importProductsScreen = '/import_products_screen';
   static const String orderListScreen = '/order_list_screen';
   static const String orderDetailsScreen = '/order_details_screen';
+  static const String imagePreviewScreen = '/image_preview_screen';
 }

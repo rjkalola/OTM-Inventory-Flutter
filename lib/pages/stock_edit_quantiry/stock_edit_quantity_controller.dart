@@ -56,7 +56,8 @@ class StockEditQuantityController extends GetxController
       isReferenceVisible = true.obs,
       isClearReferenceVisible = false.obs,
       isClearUserVisible = false.obs,
-      isApiRunning = false.obs;
+      isApiRunning = false.obs,
+      isPackOffEnable = false.obs;
   int initialQuantity = 0, finalQuantity = 0, userId = 0;
   bool isUpdated = false;
   List<ModuleInfo> listUsers = [];
@@ -295,6 +296,8 @@ class StockEditQuantityController extends GetxController
       productInfo.value = info;
       initialQuantity = productInfo.value.qty ?? 0;
       finalQuantity = productInfo.value.qty ?? 0;
+      isPackOffEnable.value = (productInfo.value.is_sub_qty ?? false) &&
+          !StringHelper.isEmptyString(productInfo.value.pack_off_qty);
       isMainViewVisible.value = true;
     }
   }

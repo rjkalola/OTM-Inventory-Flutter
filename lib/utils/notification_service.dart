@@ -190,11 +190,29 @@ class NotificationService {
     // final feedType = data['feed_type'] ?? ""; //
     // print("feedType:" + feedType);
     final notificationType = data['notification_type'] ?? "";
+    final orderId = data['notification_type'] ?? "";
     print("notificationType:" + notificationType);
 
     if (notificationType == "9251" || notificationType == "9251") {
       rout = AppRoutes.orderListScreen;
     }
     return rout;
+  }
+
+  static void setInitialRout(Map<String, dynamic>? data) {
+    if (data != null) {
+      final notificationType = data['notification_type'] ?? "";
+      print("notificationType:" + notificationType);
+      // final orderId = data['order_id'] ?? "";
+      // print("orderId:" + orderId);
+
+      if (notificationType == "9251" || notificationType == "9251") {
+        Get.offNamed(AppRoutes.orderListScreen);
+      } else {
+        Get.offNamed(AppRoutes.splashScreen);
+      }
+    } else {
+      Get.offNamed(AppRoutes.splashScreen);
+    }
   }
 }

@@ -931,6 +931,9 @@ class StockListController extends GetxController
 
       productList.value = list;
       productList.refresh();
+      if (!StringHelper.isEmptyString(searchController.value.text.toString())) {
+        searchItem(searchController.value.text.toString());
+      }
       print("tempList size:" + tempList.length.toString());
       print("productList size:" + productList.length.toString());
     }

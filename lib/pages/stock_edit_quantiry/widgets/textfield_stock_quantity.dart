@@ -13,57 +13,55 @@ class TextFieldQuantity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: CustomTextFieldStockQuantity(
-        textEditingController:
-            stockEditQuantityController.quantityController.value,
-        hintText: 'quantity'.tr,
-        labelText: "",
-        keyboardType: TextInputType.number,
-        textInputAction: TextInputAction.done,
-        textAlign: TextAlign.center,
-        autofocus: true,
-        validator: MultiValidator([
-          RequiredValidator(errorText: ''.tr),
-        ]),
-        inputFormatters: <TextInputFormatter>[
-          // for below version 2 use this
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-          // FilteringTextInputFormatter.allow(RegExp(r'^[\d\-+]+$')),
-        ],
-        onValueChange: (value) {
-          if (value.contains(",") || value.contains(".")) {
-            String newText = value.replaceAll(",", "").replaceAll(".", "");
-            stockEditQuantityController.quantityController.value.text = newText;
-          }
+    return CustomTextFieldStockQuantity(
+      textEditingController:
+          stockEditQuantityController.quantityController.value,
+      hintText: 'quantity'.tr,
+      labelText: "",
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.done,
+      textAlign: TextAlign.center,
+      autofocus: true,
+      validator: MultiValidator([
+        RequiredValidator(errorText: ''.tr),
+      ]),
+      inputFormatters: <TextInputFormatter>[
+        // for below version 2 use this
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+        // FilteringTextInputFormatter.allow(RegExp(r'^[\d\-+]+$')),
+      ],
+      onValueChange: (value) {
+        if (value.contains(",") || value.contains(".")) {
+          String newText = value.replaceAll(",", "").replaceAll(".", "");
+          stockEditQuantityController.quantityController.value.text = newText;
+        }
 
-          String text =
-              stockEditQuantityController.quantityController.value.text;
-          if (stockEditQuantityController.isAddQtyVisible.value) {
-            if (text.length > 1 && value.endsWith("-")) {
-              String newText = text.substring(0, text.length - 1);
-              text = newText;
+        String text =
+            stockEditQuantityController.quantityController.value.text;
+        if (stockEditQuantityController.isAddQtyVisible.value) {
+          if (text.length > 1 && value.endsWith("-")) {
+            String newText = text.substring(0, text.length - 1);
+            text = newText;
+            stockEditQuantityController.quantityController.value.text =
+                newText;
+          }
+          // if(!text.startsWith("+")){
+          //   String newText = "+$text";
+          //   print("new text:"+newText);
+          //   stockEditQuantityController.quantityController.value.text =
+          //       newText;
+          // }
+        } else {
+            if(!text.startsWith("-")){
+              String newText = "-$text";
+              print("new text:"+newText);
               stockEditQuantityController.quantityController.value.text =
                   newText;
             }
-            // if(!text.startsWith("+")){
-            //   String newText = "+$text";
-            //   print("new text:"+newText);
-            //   stockEditQuantityController.quantityController.value.text =
-            //       newText;
-            // }
-          } else {
-              if(!text.startsWith("-")){
-                String newText = "-$text";
-                print("new text:"+newText);
-                stockEditQuantityController.quantityController.value.text =
-                    newText;
-              }
-          }
+        }
 
-          stockEditQuantityController.onQuantityUpdate(value.toString().trim());
-        },
-      ),
+        stockEditQuantityController.onQuantityUpdate(value.toString().trim());
+      },
     );
   }
 }

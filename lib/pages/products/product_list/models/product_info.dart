@@ -20,7 +20,8 @@ class ProductInfo {
       stock_status_id,
       temp_store_id,
       sort_id,
-      order_status_int;
+      order_status_int,
+      pack_off_unit_id;
 
   String? shortName,
       name,
@@ -52,70 +53,77 @@ class ProductInfo {
       uuid,
       cutoff,
       order_status,
-      status_message;
+      status_message,
+      pack_off_qty,
+      pack_off_unit_name;
   List<ModuleInfo>? categories;
-  bool? status, localStored, checkPrint;
+  bool? status, localStored, checkPrint, is_sub_qty;
   List<StockQtyHistoryInfo>? stock_histories;
   List<ProductImageInfo>? product_images;
   List<FilesInfo>? temp_images;
   List<ProductStockInfo>? product_stocks;
 
-  ProductInfo(
-      {this.id,
-      this.product_id,
-      this.local_id,
-      this.supplierId,
-      this.shortName,
-      this.name,
-      this.description,
-      this.price,
-      this.image,
-      this.extension,
-      this.qrCode,
-      this.status,
-      this.categoryName,
-      this.currency,
-      this.sku,
-      this.model_name,
-      this.manufacturer_name,
-      this.qrCodeThumb,
-      this.imageThumbUrl,
-      this.imageUrl,
-      this.weight,
-      this.length,
-      this.width,
-      this.height,
-      this.tax,
-      this.manufacturer_id,
-      this.weight_unit_id,
-      this.length_unit_id,
-      this.model_id,
-      this.categories,
-      this.length_unit_name,
-      this.weight_unit_name,
-      this.supplier_name,
-      this.supplier_code,
-      this.qty,
-      this.product_receive_qty,
-      this.dimension,
-      this.barcode_text,
-      this.stock_histories,
-      this.newQty,
-      this.product_images,
-      this.mode_type,
-      this.temp_images,
-      this.localStored,
-      this.stock_status_id,
-      this.stock_status,
-      this.checkPrint,
-      this.product_stocks,
-      this.temp_store_id,
-      this.uuid,
-      this.sort_id,
-      this.cutoff,
-      this.order_status,
-      this.order_status_int,
-      this.status_message});
+  ProductInfo({
+    this.id,
+    this.product_id,
+    this.local_id,
+    this.supplierId,
+    this.shortName,
+    this.name,
+    this.description,
+    this.price,
+    this.image,
+    this.extension,
+    this.qrCode,
+    this.status,
+    this.categoryName,
+    this.currency,
+    this.sku,
+    this.model_name,
+    this.manufacturer_name,
+    this.qrCodeThumb,
+    this.imageThumbUrl,
+    this.imageUrl,
+    this.weight,
+    this.length,
+    this.width,
+    this.height,
+    this.tax,
+    this.manufacturer_id,
+    this.weight_unit_id,
+    this.length_unit_id,
+    this.model_id,
+    this.categories,
+    this.length_unit_name,
+    this.weight_unit_name,
+    this.supplier_name,
+    this.supplier_code,
+    this.qty,
+    this.product_receive_qty,
+    this.dimension,
+    this.barcode_text,
+    this.stock_histories,
+    this.newQty,
+    this.product_images,
+    this.mode_type,
+    this.temp_images,
+    this.localStored,
+    this.stock_status_id,
+    this.stock_status,
+    this.checkPrint,
+    this.product_stocks,
+    this.temp_store_id,
+    this.uuid,
+    this.sort_id,
+    this.cutoff,
+    this.order_status,
+    this.order_status_int,
+    this.status_message,
+    this.is_sub_qty,
+    this.pack_off_qty,
+    this.pack_off_unit_id,
+    this.pack_off_unit_name,
+  });
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -197,6 +205,10 @@ class ProductInfo {
     order_status = json['order_status'];
     order_status_int = json['order_status_int'];
     status_message = json['status_message'];
+    is_sub_qty = json['is_sub_qty'];
+    pack_off_qty = json['pack_off_qty'];
+    pack_off_unit_id = json['pack_off_unit_id'];
+    pack_off_unit_name = json['pack_off_unit_name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -266,6 +278,11 @@ class ProductInfo {
     data['order_status'] = order_status;
     data['order_status_int'] = order_status_int;
     data['status_message'] = status_message;
+    data['is_sub_qty'] = is_sub_qty;
+    data['pack_off_qty'] = pack_off_qty;
+    data['pack_off_unit_id'] = pack_off_unit_id;
+    data['pack_off_unit_name'] = pack_off_unit_name;
+
     return data;
   }
 }

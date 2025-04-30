@@ -6,6 +6,7 @@ import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_button.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_list.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/add_product_photos_title_view.dart';
+import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/pack_off_view.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_barcode.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_category.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_cutoff.dart';
@@ -17,6 +18,7 @@ import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/text
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_title.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/textfield_product_uuid.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/view/widgets/title_text_view.dart';
+import 'package:otm_inventory/widgets/custom_switch.dart';
 
 import '../../../../res/colors.dart';
 import '../../../../widgets/CustomProgressbar.dart';
@@ -141,6 +143,39 @@ class AddStockProductScreen extends StatelessWidget {
                               ),
                               TextFieldStockProductPrice(),
                               TextFieldStockProductDescription(),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(14, 8, 14, 18),
+                                child: Divider(
+                                  height: 0,
+                                  color: dividerColor,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TitleTextView(title: 'pack_off'.tr),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 11),
+                                    child: Switch(
+                                      activeColor: activeSwitchThumbColor,
+                                      activeTrackColor: activeSwitchColor,
+                                      value: addStockProductController
+                                          .isPackOffEnable.value,
+                                      onChanged: (value) {
+                                        addStockProductController
+                                            .isPackOffEnable.value = value;
+                                        addStockProductController
+                                            .isSaveEnable.value = true;
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              PackOffView()
                               // AddProductPhotosTitleView(),
                               // AddProductPhotosList(),
                               // Padding(

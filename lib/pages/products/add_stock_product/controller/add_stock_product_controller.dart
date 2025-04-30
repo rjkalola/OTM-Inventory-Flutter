@@ -34,7 +34,9 @@ class AddStockProductController extends GetxController
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
       isStatus = true.obs,
-      isSaveEnable = false.obs;
+      isSaveEnable = false.obs,
+      isPackOffEnable = false.obs;
+  final packOffId = 0.obs;
   RxString title = ''.obs;
   String mBarCode = "";
   final formKey = GlobalKey<FormState>();
@@ -53,6 +55,8 @@ class AddStockProductController extends GetxController
   final productBarcodeController = TextEditingController().obs;
   final productCategoryController = TextEditingController().obs;
   final productUuidController = TextEditingController().obs;
+  final packOffController = TextEditingController().obs;
+  final packOffUnitController = TextEditingController().obs;
 
   final ImagePicker _picker = ImagePicker();
   String thumbImage = "";
@@ -136,6 +140,15 @@ class AddStockProductController extends GetxController
     mBarCode = info.barcode_text ?? "";
     productBarcodeController.value.text = info.barcode_text ?? "";
     isStatus.value = info.status ?? false;
+    isPackOffEnable.value = info.is_sub_qty ?? false;
+    packOffId.value = info.pack_off_unit_id ?? 0;
+    packOffController.value.text =
+        info.pack_off_qty != null ? info.pack_off_qty.toString() : "";
+    packOffUnitController.value.text = info.pack_off_unit_name ?? "";
+
+    // print("info.pack_off_unit_name:"+info.pack_off_unit_name!);
+    // print("packOffUnitController.value.text:"+packOffUnitController.value.text);
+
     print("UUID:" + info.uuid!);
     print("QTY:${addProductRequest?.qty!}");
 
@@ -193,68 +206,85 @@ class AddStockProductController extends GetxController
   Future<void> onSubmitClick() async {
     if (formKey.currentState!.validate()) {
       if (isSaveEnable.value) {
-        addProductRequest?.shortName =
-            productTitleController.value.text.toString().trim();
-        addProductRequest?.name =
-            productNameController.value.text.toString().trim();
-        addProductRequest?.price =
-            productPriceController.value.text.toString().trim();
-        addProductRequest?.cutoff =
-            productCutoffController.value.text.toString().trim();
-        addProductRequest?.description =
-            productDescriptionController.value.text.toString().trim();
-        addProductRequest?.barcode_text =
-            productBarcodeController.value.text.toString().trim();
-        addProductRequest?.uuid =
-            productUuidController.value.text.toString().trim();
-        if (addProductRequest?.id != null && addProductRequest?.id != 0) {
-          addProductRequest?.mode_type = 2;
-        } else {
-          addProductRequest?.mode_type = 1;
-        }
-        addProductRequest?.status = isStatus.value;
-        // filesList.removeAt(0);
-        addProductRequest?.temp_images = filesList;
+        if (isValidPackOff()) {
+          addProductRequest?.shortName =
+              productTitleController.value.text.toString().trim();
+          addProductRequest?.name =
+              productNameController.value.text.toString().trim();
+          addProductRequest?.price =
+              productPriceController.value.text.toString().trim();
+          addProductRequest?.cutoff =
+              productCutoffController.value.text.toString().trim();
+          addProductRequest?.description =
+              productDescriptionController.value.text.toString().trim();
+          addProductRequest?.barcode_text =
+              productBarcodeController.value.text.toString().trim();
+          addProductRequest?.uuid =
+              productUuidController.value.text.toString().trim();
+          if (addProductRequest?.id != null && addProductRequest?.id != 0) {
+            addProductRequest?.mode_type = 2;
+          } else {
+            addProductRequest?.mode_type = 1;
+          }
+          addProductRequest?.status = isStatus.value;
+          // filesList.removeAt(0);
+          addProductRequest?.temp_images = filesList;
 
-        bool isBarcodeAvailable = false;
-        if (AppStorage().getStockData() != null) {
-          ProductListResponse response = AppStorage().getStockData()!;
-          for (int i = 0; i < response.info!.length; i++) {
-            ProductInfo item = response.info![i];
-            int itemId = item.id ?? 0;
-            int id_ = addProductRequest?.id ?? 0;
-            int localId_ = addProductRequest?.local_id ?? 0;
-            String mBarCode = item.barcode_text ?? "";
-            bool currentProduct = itemId == id_ || itemId == localId_;
-            if (!currentProduct) {
-              String enteredBarCode = addProductRequest?.barcode_text ?? "";
-              var listBarcode =
-                  StringHelper.getListFromCommaSeparateString(enteredBarCode);
-              // if (!StringHelper.isEmptyString(enteredBarCode) &&
-              //     mBarCode == enteredBarCode) {
-              if (!StringHelper.isEmptyString(enteredBarCode) &&
-                  listBarcode.contains(mBarCode)) {
-                isBarcodeAvailable = true;
-                break;
+          bool isBarcodeAvailable = false;
+          if (AppStorage().getStockData() != null) {
+            ProductListResponse response = AppStorage().getStockData()!;
+            for (int i = 0; i < response.info!.length; i++) {
+              ProductInfo item = response.info![i];
+              int itemId = item.id ?? 0;
+              int id_ = addProductRequest?.id ?? 0;
+              int localId_ = addProductRequest?.local_id ?? 0;
+              String mBarCode = item.barcode_text ?? "";
+              bool currentProduct = itemId == id_ || itemId == localId_;
+              if (!currentProduct) {
+                String enteredBarCode = addProductRequest?.barcode_text ?? "";
+                var listBarcode =
+                    StringHelper.getListFromCommaSeparateString(enteredBarCode);
+                // if (!StringHelper.isEmptyString(enteredBarCode) &&
+                //     mBarCode == enteredBarCode) {
+                if (!StringHelper.isEmptyString(enteredBarCode) &&
+                    listBarcode.contains(mBarCode)) {
+                  isBarcodeAvailable = true;
+                  break;
+                }
               }
             }
           }
-        }
 
-        if (!isBarcodeAvailable) {
-          bool isInternet = await AppUtils.interNetCheck();
-          if (isInternet) {
-            storeProductApi();
+          if (!isBarcodeAvailable) {
+            bool isInternet = await AppUtils.interNetCheck();
+            if (isInternet) {
+              storeProductApi();
+            } else {
+              storeProductInList(true, addProductRequest);
+            }
           } else {
-            storeProductInList(true, addProductRequest);
+            AppUtils.showSnackBarMessage('msg_barcode_already_exist'.tr);
           }
         } else {
-          AppUtils.showSnackBarMessage('msg_barcode_already_exist'.tr);
+          AppUtils.showSnackBarMessage('msg_empty_pack_off_details'.tr);
         }
       } else {
         Get.back();
       }
     }
+  }
+
+  bool isValidPackOff() {
+    bool valid = true;
+    if (isPackOffEnable.value) {
+      String packOffQty = packOffController.value.text.toString().trim();
+      String packOffUnit = packOffUnitController.value.text.toString().trim();
+      if (StringHelper.isEmptyString(packOffQty) ||
+          StringHelper.isEmptyString(packOffUnit)) {
+        valid = false;
+      }
+    }
+    return valid;
   }
 
   void storeProductInList(bool isOffline, ProductInfo? addProductRequest) {
@@ -348,6 +378,15 @@ class AddStockProductController extends GetxController
     }
   }
 
+  void showPackOffUnitList() {
+    if (productResourcesResponse.value.packOffUnit != null &&
+        productResourcesResponse.value.packOffUnit!.isNotEmpty &&
+        isPackOffEnable.value) {
+      showDropDownDialog(AppConstants.dialogIdentifier.packOffList,
+          'select_unit'.tr, productResourcesResponse.value.packOffUnit!, this);
+    }
+  }
+
   void showDropDownDialog(String dialogType, String title,
       List<ModuleInfo> list, SelectItemListener listener) {
     Get.bottomSheet(
@@ -373,6 +412,12 @@ class AddStockProductController extends GetxController
     } else if (action == AppConstants.dialogIdentifier.manufacturerList) {
       productManufacturerController.value.text = name;
       addProductRequest?.manufacturer_id = id;
+      onValueChange();
+    } else if (action == AppConstants.dialogIdentifier.packOffList) {
+      print("pack of unit name:" + name);
+      packOffUnitController.value.text = name;
+      packOffId.value = id;
+      print("packOffId.value:" + packOffId.value.toString());
       onValueChange();
     } else if (action == AppConstants.action.selectImageFromCamera ||
         action == AppConstants.action.selectImageFromGallery) {
@@ -445,7 +490,7 @@ class AddStockProductController extends GetxController
     }
   }
 
-  onSelectPhoto(String fileUrl) async {
+  onSelectPhoto(String fileUrl, int index) async {
     print("pickImage");
     if (StringHelper.isEmptyString(fileUrl)) {
       var listOptions = <ModuleInfo>[].obs;
@@ -467,7 +512,8 @@ class AddStockProductController extends GetxController
           listOptions,
           this);
     } else {
-      ImageUtils.showImagePreviewDialog(fileUrl);
+      ImageUtils.moveToImagePreview(filesList, index);
+      // ImageUtils.showImagePreviewDialog(fileUrl);
     }
   }
 
@@ -564,13 +610,17 @@ class AddStockProductController extends GetxController
     map["barcodes"] = addProductRequest?.barcode_text ?? "";
     map["uuid"] = addProductRequest?.uuid ?? "";
     map["sort_id"] = addProductRequest?.sort_id ?? "";
-
     if (!StringHelper.isEmptyList(addProductRequest?.categories)) {
       for (int i = 0; i < addProductRequest!.categories!.length; i++) {
         map['categories[${i.toString()}]'] =
             addProductRequest!.categories![i].id;
       }
     }
+    map["is_sub_qty"] = isPackOffEnable.value.toString();
+    map["pack_off_qty"] = packOffController.value.text.toString().trim();
+    map["pack_off_unit"] = packOffId.value != 0
+        ? packOffId.toString()
+        : packOffUnitController.value.text.toString().trim();
 
     multi.FormData formData = multi.FormData.fromMap(map);
 
@@ -617,6 +667,9 @@ class AddStockProductController extends GetxController
             if (addProductRequest?.qty != null)
               response.info!.qty = addProductRequest?.qty;
             response.info!.local_id = localId_;
+            response.info!.pack_off_unit_name =
+                packOffUnitController.value.text.toString().trim();
+
             storeProductInList(false, response.info);
             // moveStockEditQuantityScreen(response.info!.id!.toString());
           } else {
@@ -710,5 +763,12 @@ class AddStockProductController extends GetxController
 
   void onValueChange() {
     isSaveEnable.value = true;
+  }
+
+  void onPackOfUnitValueChange() {
+    print("onPackOfUnitValueChange start");
+    isSaveEnable.value = true;
+    packOffId.value = 0;
+    print("onPackOfUnitValueChange end");
   }
 }

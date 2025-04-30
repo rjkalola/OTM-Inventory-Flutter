@@ -1,7 +1,7 @@
 class ApiConstants {
-  static String appUrl = "https://api.otmsystem.com/v1";
+  // static String appUrl = "https://api.otmsystem.com/v1";
 
-  // static String appUrl = "https://apidev.otmsystem.com/v1";
+  static String appUrl = "https://apidev.otmsystem.com/v1";
 
   // static String appUrl = "https://dev.otmsystem.com/api/v1";
   // static String appUrl = "https://otmsystem.com/api/v1";
@@ -56,9 +56,8 @@ class ApiConstants {
   static String inventoryOrderListUrl = '$appUrl/inventory-order-list';
   static String inventoryOrderDetailsUrl = '$appUrl/inventory-order-details';
   static String inventoryStatusUpdate = '$appUrl/inventory-update-status';
-  static String multipleOrderStatusUpdateUrl = '$appUrl/inventory-order-status-update';
+  static String multipleOrderStatusUpdateUrl =
+      '$appUrl/inventory-order-status-update';
   static String getFeedUrl = '$appUrl/get-inventory-feed';
   static String registerFcmUrl = '$appUrl/register-token';
-
-
 }

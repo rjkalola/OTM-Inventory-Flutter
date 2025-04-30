@@ -4,10 +4,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/common/model/file_info.dart';
 import 'package:otm_inventory/res/colors.dart';
 import 'package:otm_inventory/res/drawable.dart';
+import 'package:otm_inventory/routes/app_routes.dart';
+import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
+import 'package:photo_view/photo_view.dart';
 
 import '../pages/common/widgets/image_preview_dialog.dart';
 
@@ -51,6 +55,38 @@ class ImageUtils {
       Drawable.accountCircleIcon,
       colorFilter: const ColorFilter.mode(primaryTextColor, BlendMode.srcIn),
     );
+  }
+
+  static Widget setNetworkImage(
+      {required String url,
+      required double width,
+      required double height,
+      BoxFit? fit}) {
+    return !StringHelper.isEmptyString(url)
+        ? Image.network(
+            url,
+            fit: fit ?? BoxFit.cover,
+            width: width,
+            height: height,
+            errorBuilder: (context, url, error) => getEmptyViewContainer(
+                width: width, height: height, borderRadius: 0),
+          )
+        : getEmptyViewContainer(width: width, height: height, borderRadius: 0);
+  }
+
+  static Widget setFileImage(
+      {required String url,
+      required double width,
+      required double height,
+      BoxFit? fit}) {
+    return !StringHelper.isEmptyString(url)
+        ? Image.file(
+            File(url ?? ""),
+            width: width,
+            height: height,
+            fit: fit,
+          )
+        : getEmptyViewContainer(width: width, height: height, borderRadius: 0);
   }
 
   static Widget setImage(String url, double size) {
@@ -124,12 +160,13 @@ class ImageUtils {
             width: width,
             fit: fit,
             imageUrl: url ?? "",
-            placeholder: (context, url) =>
-                getPlaceHolderGalleryIcon(getEmptyIconSize(width, height)),
-            errorWidget: (context, url, error) =>
-                getPlaceHolderGalleryIcon(getEmptyIconSize(width, height)),
+            placeholder: (context, url) => getEmptyViewContainer(
+                width: width, height: height, borderRadius: borderRadius),
+            errorWidget: (context, url, error) => getEmptyViewContainer(
+                width: width, height: height, borderRadius: borderRadius),
           )
-        : getPlaceHolderGalleryIcon(getEmptyIconSize(width, height));
+        : getEmptyViewContainer(
+            width: width, height: height, borderRadius: borderRadius);
   }
 
   static Widget getEmptyViewContainer(
@@ -194,5 +231,28 @@ class ImageUtils {
             ),
           )
         : getPlaceHolderGalleryIcon(getEmptyIconSize(width, height));
+  }
+
+  static ImageProvider? imageProvider(String imageUrl) {
+    if (imageUrl.startsWith("http")) {
+      return NetworkImage(imageUrl);
+    } else {
+      return FileImage(File(imageUrl));
+    }
+  }
+
+  static Widget setZoomPhotoView({required String imageUrl}) {
+    return PhotoView(
+      backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+      imageProvider: imageProvider(imageUrl),
+    );
+  }
+
+  static void moveToImagePreview(List<FilesInfo> filesList, int index) {
+    var arguments = {
+      AppConstants.intentKey.itemList: filesList,
+      AppConstants.intentKey.index: index,
+    };
+    Get.toNamed(AppRoutes.imagePreviewScreen, arguments: arguments);
   }
 }

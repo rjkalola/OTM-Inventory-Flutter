@@ -22,7 +22,7 @@ class AddStockProductPhotosList extends StatelessWidget {
                 fileRadius: 12,
                 onViewClick: (int index) {
                   addProductController.onSelectPhoto(
-                      addProductController.filesList[index].file ?? "");
+                      addProductController.filesList[index].file ?? "", index);
                 },
                 onRemoveClick: (int index) {
                   addProductController.removePhotoFromList(index);

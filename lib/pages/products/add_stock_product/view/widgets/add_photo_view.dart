@@ -13,7 +13,7 @@ class AddPhotoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        addProductController.onSelectPhoto("");
+        addProductController.onSelectPhoto("", 0);
       },
       child: Container(
         width: 116,
