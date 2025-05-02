@@ -150,7 +150,7 @@ class NotificationService {
     // final android = notification?.android;
 
     if (notification != null) {
-      AppUtils.showSnackBarMessage("notification not null");
+      // AppUtils.showSnackBarMessage("notification not null");
       // String title = notification.title ?? "null";
       // String body = notification.body ?? "null";
       // if (message.data != null) {
@@ -185,7 +185,7 @@ class NotificationService {
           ),
           payload: jsonEncode(message.data));
     } else {
-      AppUtils.showSnackBarMessage("notification null");
+      // AppUtils.showSnackBarMessage("notification null");
     }
   }
 
