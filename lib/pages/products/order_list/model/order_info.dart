@@ -26,7 +26,7 @@ class OrderInfo {
   String? formattedWeekEndDate;
   String? formattedCreatedAt;
   String? currency;
-  int? totalQty;
+  double? totalQty;
   String? orderStatus;
   int? orderStatusInt;
   String? statusMessage;
@@ -92,7 +92,10 @@ class OrderInfo {
     formattedWeekEndDate = json['formatted_week_end_date'];
     formattedCreatedAt = json['formatted_created_at'];
     currency = json['currency'];
-    totalQty = json['total_qty'];
+    // totalQty = (json['total_qty'] as num).toDouble();
+    totalQty = (json['total_qty'] is String)
+        ? double.tryParse(json['total_qty']) ?? 0.0
+        : (json['total_qty'] as num?)?.toDouble() ?? 0.0;
     orderStatus = json['order_status'];
     orderStatusInt = json['order_status_int'];
     statusMessage = json['status_message'];

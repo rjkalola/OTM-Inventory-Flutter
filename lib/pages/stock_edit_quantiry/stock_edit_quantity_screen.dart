@@ -11,6 +11,7 @@ import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/save_stock_quant
 import 'package:otm_inventory/pages/stock_edit_quantiry/widgets/textfield_stock_quantity.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
+import 'package:otm_inventory/utils/number_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
 
@@ -377,17 +378,64 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                           //     () => {}),
                           RowReferenceUsers(),
                           stockEditQuantityController.isPackOffEnable.value
-                              ? SizedBox(
+                              ? Container(
+                                  margin: EdgeInsets.only(top: 6, bottom: 3),
                                   width: double.infinity,
                                   child: PrimaryTextView(
                                     textAlign: TextAlign.center,
-                                    text: 'deduct_from_pack'.tr,
-                                    color: defaultAccentColor,
+                                    text: getQtyDeductNote(),
+                                    color: secondaryLightTextColor,
                                     fontSize: 12,
                                   ),
                                 )
                               : Container(),
-                          BottomButtonQtyView()
+                          BottomButtonQtyView(),
+                          stockEditQuantityController.isPackOffEnable.value &&
+                                  !stockEditQuantityController
+                                      .isPackOffQuantityAddEnable.value
+                              ? Container(
+                                  margin: const EdgeInsets.only(
+                                      right: 18, bottom: 16),
+                                  width: double.infinity,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      stockEditQuantityController
+                                          .isPackOffQuantityAddEnable
+                                          .value = true;
+                                    },
+                                    child: PrimaryTextView(
+                                      textAlign: TextAlign.right,
+                                      text: "${'add_a_pack'.tr}",
+                                      color: defaultAccentColor,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                          stockEditQuantityController.isPackOffEnable.value &&
+                                  stockEditQuantityController
+                                      .isPackOffQuantityAddEnable.value
+                              ? Container(
+                                  margin: const EdgeInsets.only(
+                                      right: 18, bottom: 16),
+                                  width: double.infinity,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      stockEditQuantityController
+                                          .isPackOffQuantityAddEnable
+                                          .value = false;
+                                    },
+                                    child: PrimaryTextView(
+                                      textAlign: TextAlign.right,
+                                      text: "${'deduct_quantity_from_pack'.tr}",
+                                      color: Colors.red,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                )
+                              : Container(),
                           /* Padding(
                             padding: const EdgeInsets.fromLTRB(18, 6, 18, 18),
                             child: Row(
@@ -594,28 +642,58 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
     //     : "0";
 
     String output = "";
-    int qty = stockEditQuantityController.productInfo.value.qty ?? 0;
+    double qty = stockEditQuantityController.productInfo.value.qty ?? 0;
     if (stockEditQuantityController.isPackOffEnable.value) {
+      double packQty =
+          stockEditQuantityController.productInfo.value.pack_off_qty != null
+              ? double.parse(
+                  stockEditQuantityController.productInfo.value.pack_off_qty!)
+              : 0;
+      double currentQty =
+          stockEditQuantityController.productInfo.value.qty ?? 0;
+      double subQty = packQty * currentQty;
+
+      /*  String packQty = (double.parse(packAndQty) /
+          double.parse(
+              (stockEditQuantityController.productInfo.value.pack_off_qty ??
+                  "0")))
+          .toStringAsFixed(2);
+
+
       String packAndQty = (qty +
-              int.parse(
+              double.parse(
                   (stockEditQuantityController.productInfo.value.pack_off_qty ??
                       "0")))
           .toString();
-      String packQty = (int.parse(packAndQty) /
-              int.parse(
+      print("packAndQty::::" + packAndQty);
+      String packQty = (double.parse(packAndQty) /
+              double.parse(
                   (stockEditQuantityController.productInfo.value.pack_off_qty ??
                       "0")))
           .toStringAsFixed(2);
 
       print("packAndQty:" + packAndQty.toString());
       print("packQty:" + packQty.toString());
-
+*/
       output =
-          "$packQty ($packAndQty ${stockEditQuantityController.productInfo.value.pack_off_unit_name ?? "0"})";
+          "${NumberUtils.decimalFormattedValue(currentQty, 2)} (${NumberUtils.decimalFormattedValue(subQty, 2)} ${stockEditQuantityController.productInfo.value.pack_off_unit_name ?? "0"})";
     } else {
-      output = qty.toString();
-    }
+      output = NumberUtils.decimalFormattedValue(qty, 2);    }
     return output;
+  }
+
+  String getQtyDeductNote() {
+    String note = "";
+    if (stockEditQuantityController.isPackOffEnable.value) {
+      if (stockEditQuantityController.isPackOffQuantityAddEnable.value) {
+        note = 'adjust_qty'.tr;
+      } else {
+        note = 'enter_number_below_to_deduct_from_pack'.tr;
+      }
+    } else {
+      note = 'adjust_qty'.tr;
+    }
+    return note;
   }
 
   void onBackPress() {

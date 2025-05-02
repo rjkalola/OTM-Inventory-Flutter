@@ -42,7 +42,9 @@ class BottomButtonQtyView extends StatelessWidget {
                   SizedBox(
                     child: TextFieldQuantity(),
                   ),
-                  stockEditQuantityController.isPackOffEnable.value
+                  stockEditQuantityController.isPackOffEnable.value &&
+                          !stockEditQuantityController
+                              .isPackOffQuantityAddEnable.value
                       ? Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
@@ -59,19 +61,27 @@ class BottomButtonQtyView extends StatelessWidget {
                       : Container()
                 ],
               )),
-          const SizedBox(
-            width: 12,
+          Visibility(
+            visible: !(stockEditQuantityController.isPackOffEnable.value &&
+                !stockEditQuantityController.isPackOffQuantityAddEnable.value),
+            child: const SizedBox(
+              width: 12,
+            ),
           ),
-          Flexible(
-            flex: 1,
-            fit: FlexFit.tight,
-            child: PrimaryBorderButton(
-              buttonText: 'add'.tr,
-              textColor: Colors.green,
-              borderColor: Colors.green,
-              onPressed: () {
-                stockEditQuantityController.onUpdateQuantityClick(false);
-              },
+          Visibility(
+            visible: !(stockEditQuantityController.isPackOffEnable.value &&
+                !stockEditQuantityController.isPackOffQuantityAddEnable.value),
+            child: Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: PrimaryBorderButton(
+                buttonText: 'add'.tr,
+                textColor: Colors.green,
+                borderColor: Colors.green,
+                onPressed: () {
+                  stockEditQuantityController.onUpdateQuantityClick(false);
+                },
+              ),
             ),
           )
         ],

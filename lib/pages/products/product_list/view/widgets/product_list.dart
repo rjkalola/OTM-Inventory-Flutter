@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/products/product_list/models/product_info.dart';
+import 'package:otm_inventory/utils/number_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 
@@ -75,7 +77,7 @@ class ProductListView extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Flexible(
+                                    Expanded(
                                       child: Text(
                                           softWrap: true,
                                           productListController
@@ -94,21 +96,17 @@ class ProductListView extends StatelessWidget {
                                           productListController
                                               .productList[position].qty
                                               .toString()),
-                                      child: SizedBox(
-                                        width: 70,
-                                        child: Text(
-                                            productListController
-                                                .productList[position].qty
-                                                .toString(),
-                                            maxLines: 1,
-                                            textAlign: TextAlign.end,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              color: defaultAccentColor,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18,
-                                            )),
-                                      ),
+                                      child: Text(
+                                          getQtyText(productListController
+                                              .productList[position]),
+                                          maxLines: 1,
+                                          textAlign: TextAlign.end,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            color: defaultAccentColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                          )),
                                     )
                                   ],
                                 ),
@@ -207,5 +205,21 @@ class ProductListView extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  String getQtyText(ProductInfo info) {
+    String output = "";
+    double qty = info.qty ?? 0;
+    if (info.is_sub_qty ?? false) {
+      double packQty =
+          info.pack_off_qty != null ? double.parse(info.pack_off_qty!) : 0;
+      double currentQty = info.qty ?? 0;
+      double subQty = packQty * currentQty;
+      output =
+          "${NumberUtils.decimalFormattedValue(currentQty, 2)} (${NumberUtils.decimalFormattedValue(subQty, 2)} ${info.pack_off_unit_name ?? "0"})";
+    } else {
+      output = NumberUtils.decimalFormattedValue(qty, 2);
+    }
+    return output;
   }
 }

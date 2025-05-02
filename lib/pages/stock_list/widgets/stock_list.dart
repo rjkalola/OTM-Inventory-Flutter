@@ -4,6 +4,7 @@ import 'package:otm_inventory/pages/stock_list/stock_list_controller.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/image_utils.dart';
+import 'package:otm_inventory/utils/number_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 import 'package:otm_inventory/widgets/image/cached_image.dart';
@@ -69,9 +70,8 @@ class StockListView extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Flexible(
+                                  Expanded(
                                     child: Text(
-                                        softWrap: true,
                                         stockListController
                                                 .productList[position]
                                                 .shortName ??
@@ -200,18 +200,14 @@ class StockListView extends StatelessWidget {
     return Visibility(
       visible: !StringHelper.isEmptyString(
           stockListController.productList[position].qty.toString()),
-      child: SizedBox(
-        width: 70,
-        child: Text(stockListController.productList[position].qty.toString(),
-            maxLines: 1,
-            textAlign: TextAlign.end,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: defaultAccentColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 18,
-            )),
-      ),
+      child: Text(getQtyText(stockListController.productList[position]),
+          maxLines: 1,
+          textAlign: TextAlign.end,
+          style: const TextStyle(
+            color: defaultAccentColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 17,
+          )),
     );
   }
 
@@ -232,7 +228,7 @@ class StockListView extends StatelessWidget {
     );
   }
 
-  bool isStoreMatch(List<ProductStockInfo>? list, int tempStoreId, int qty) {
+  bool isStoreMatch(List<ProductStockInfo>? list, int tempStoreId, double qty) {
     bool match = false;
 
     if (tempStoreId == AppStorage.storeId) {
@@ -247,5 +243,21 @@ class StockListView extends StatelessWidget {
       }
     }
     return match;
+  }
+
+  String getQtyText(ProductInfo info) {
+    String output = "";
+    double qty = info.qty ?? 0;
+    if (info.is_sub_qty ?? false) {
+      double packQty =
+          info.pack_off_qty != null ? double.parse(info.pack_off_qty!) : 0;
+      double currentQty = info.qty ?? 0;
+      double subQty = packQty * currentQty;
+      output =
+          "${NumberUtils.decimalFormattedValue(currentQty, 2)} (${NumberUtils.decimalFormattedValue(subQty, 2)} ${info.pack_off_unit_name ?? "0"})";
+    } else {
+      output = NumberUtils.decimalFormattedValue(qty, 2);
+    }
+    return output;
   }
 }

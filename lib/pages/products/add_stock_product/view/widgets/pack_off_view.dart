@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/products/add_stock_product/controller/add_stock_product_controller.dart';
@@ -28,7 +29,15 @@ class PackOffView extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d*\.?\d{0,2}')),
+                  ],
                   onValueChange: (value) {
+                    // if (value.contains(",") || value.contains(" ") || value.contains("-")) {
+                    //   String newText = value.replaceAll(",", "").replaceAll("-", "").replaceAll(" ", "");
+                    //   addProductController.packOffController.value.text = newText;
+                    // }
                     addProductController.onValueChange();
                   },
                   validator: MultiValidator([

@@ -29,10 +29,9 @@ void main() async {
   await NotificationService.init();
 
   // await requestNotificationPermission();
-
-  _initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-
   // await initializeLocalNotifications();
+
+  /* _initialMessage = await FirebaseMessaging.instance.getInitialMessage();*/
 
   runApp(MyApp());
 }
@@ -79,12 +78,11 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    String initialRoute = AppRoutes.splashScreen;
+    /*String initialRoute = AppRoutes.splashScreen;
     if (_initialMessage != null) {
-      // initialRoute = NotificationService.getInitialRout(_initialMessage!.data);
-      NotificationService.setInitialRout(_initialMessage!.data);
+      initialRoute = NotificationService.getInitialRout(_initialMessage!.data);
     }
-    _setupFCM();
+    _setupFCM();*/
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,

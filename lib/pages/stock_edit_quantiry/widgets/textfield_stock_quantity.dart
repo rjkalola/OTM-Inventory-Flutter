@@ -27,12 +27,19 @@ class TextFieldQuantity extends StatelessWidget {
       ]),
       inputFormatters: <TextInputFormatter>[
         // for below version 2 use this
-        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+        // FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
         // FilteringTextInputFormatter.allow(RegExp(r'^[\d\-+]+$')),
+        FilteringTextInputFormatter.allow(
+            RegExp(r'^\d*\.?\d{0,2}')),
       ],
       onValueChange: (value) {
-        if (value.contains(",") || value.contains(".")) {
+        /*if (value.contains(",") || value.contains(".")) {
           String newText = value.replaceAll(",", "").replaceAll(".", "");
+          stockEditQuantityController.quantityController.value.text = newText;
+        }*/
+
+        if (value.contains(",") || value.contains(" ") || value.contains("-")) {
+          String newText = value.replaceAll(",", "").replaceAll("-", "").replaceAll(" ", "");
           stockEditQuantityController.quantityController.value.text = newText;
         }
 

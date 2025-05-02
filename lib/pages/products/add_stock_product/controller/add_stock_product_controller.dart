@@ -230,6 +230,13 @@ class AddStockProductController extends GetxController
           // filesList.removeAt(0);
           addProductRequest?.temp_images = filesList;
 
+          addProductRequest?.is_sub_qty = isPackOffEnable.value;
+          addProductRequest?.pack_off_unit_id = packOffId.value;
+          addProductRequest?.pack_off_qty =
+              packOffController.value.text.toString().trim();
+          addProductRequest?.pack_off_unit_name =
+              packOffUnitController.value.text.toString().trim();
+
           bool isBarcodeAvailable = false;
           if (AppStorage().getStockData() != null) {
             ProductListResponse response = AppStorage().getStockData()!;
@@ -667,8 +674,8 @@ class AddStockProductController extends GetxController
             if (addProductRequest?.qty != null)
               response.info!.qty = addProductRequest?.qty;
             response.info!.local_id = localId_;
-            response.info!.pack_off_unit_name =
-                packOffUnitController.value.text.toString().trim();
+            // response.info!.pack_off_unit_name =
+            //     packOffUnitController.value.text.toString().trim();
 
             storeProductInList(false, response.info);
             // moveStockEditQuantityScreen(response.info!.id!.toString());

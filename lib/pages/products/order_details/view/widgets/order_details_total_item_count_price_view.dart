@@ -31,7 +31,7 @@ class OrderDetailsTotalItemCountPriceView extends StatelessWidget {
             ),
             PrimaryTextView(
               text:
-                  "${controller.orderInfo.value.currency ?? ""}${controller.orderInfo.value.totalPrice ?? ""}",
+                  "${'total_price'.tr}: ${controller.orderInfo.value.currency ?? ""}${controller.orderInfo.value.totalPrice ?? ""}",
               color: primaryTextColor,
               fontSize: 17,
               fontWeight: FontWeight.w600,

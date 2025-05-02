@@ -42,6 +42,7 @@ class IntentKey {
   final String count = 'COUNT';
   final String index = 'INDEX';
   final String itemList = 'ITEM_LIST';
+  final String fromNotification = 'FROM_NOTIFICATION';
 }
 
 class DialogIdentifier {

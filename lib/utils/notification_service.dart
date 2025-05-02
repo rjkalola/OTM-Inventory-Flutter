@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/routes/app_routes.dart';
+import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -51,14 +52,23 @@ class NotificationService {
         onDidReceiveNotificationResponse: (NotificationResponse response) {
           if (response.payload != null) {
             final Map<String, dynamic> data = jsonDecode(response.payload!);
-            String rout = AppRoutes.splashScreen;
+            notificationClick(data);
+
+            /*   String rout = AppRoutes.splashScreen;
+            print('Data:::: ${response.payload!}');
             final notificationType = data['notification_type'] ?? "";
             print("notificationType:" + notificationType);
+            final orderId = data['order_id'] ?? "";
+            print("orderId:" + orderId);
 
-            if (notificationType == "9251" || notificationType == "9251") {
-              rout = AppRoutes.orderListScreen;
-              Get.offNamed(rout);
-            }
+            if ((notificationType == "9251" || notificationType == "9252") &&
+                !StringHelper.isEmptyString(orderId)) {
+              rout = AppRoutes.orderDetailsScreen;
+              var arguments = {
+                AppConstants.intentKey.mId: int.parse(orderId),
+              };
+              Get.offNamed(rout, arguments: arguments);
+            }*/
           }
         },
       );
@@ -140,6 +150,7 @@ class NotificationService {
     // final android = notification?.android;
 
     if (notification != null) {
+      AppUtils.showSnackBarMessage("notification not null");
       // String title = notification.title ?? "null";
       // String body = notification.body ?? "null";
       // if (message.data != null) {
@@ -153,16 +164,20 @@ class NotificationService {
           notification.hashCode,
           notification.title,
           notification.body,
-          const NotificationDetails(
+          NotificationDetails(
             android: AndroidNotificationDetails(
               'high_importance_channel',
               'High Importance Notifications',
-              icon: 'ic_stat_notification', // <-- no file extension
+              icon: 'ic_stat_notification',
+              // <-- no file extension
               importance: Importance.max,
               priority: Priority.high,
+              styleInformation: BigTextStyleInformation(
+                notification.body ?? "",
+              ),
               showWhen: true,
             ),
-            iOS: DarwinNotificationDetails(
+            iOS: const DarwinNotificationDetails(
               presentAlert: true,
               presentBadge: true,
               presentSound: true,
@@ -199,15 +214,21 @@ class NotificationService {
     return rout;
   }
 
-  static void setInitialRout(Map<String, dynamic>? data) {
+  static void notificationClick(Map<String, dynamic>? data) {
     if (data != null) {
       final notificationType = data['notification_type'] ?? "";
       print("notificationType:" + notificationType);
-      // final orderId = data['order_id'] ?? "";
-      // print("orderId:" + orderId);
+      final orderId = data['order_id'] ?? "";
+      print("orderId:::" + orderId);
 
-      if (notificationType == "9251" || notificationType == "9251") {
-        Get.offNamed(AppRoutes.orderListScreen);
+      if ((notificationType == "9251" || notificationType == "9252") &&
+          !StringHelper.isEmptyString(orderId)) {
+        String rout = AppRoutes.orderDetailsScreen;
+        var arguments = {
+          AppConstants.intentKey.mId: int.parse(orderId),
+          AppConstants.intentKey.fromNotification: true,
+        };
+        Get.offNamed(rout, arguments: arguments);
       } else {
         Get.offNamed(AppRoutes.splashScreen);
       }

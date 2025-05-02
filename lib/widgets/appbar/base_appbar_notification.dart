@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:otm_inventory/routes/app_routes.dart';
 
-class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
+class BaseAppbarNotification extends StatelessWidget
+    implements PreferredSizeWidget {
   final AppBar appBar;
   final title;
   final isBack;
   final isCenterTitle;
   final List<Widget>? widgets;
 
-  BaseAppBar(
+  BaseAppbarNotification(
       {super.key,
       required this.appBar,
       this.title,
@@ -28,17 +31,17 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         centerTitle: isCenterTitle,
         titleSpacing: isBack ? 0 : 20,
         automaticallyImplyLeading: isBack,
-        // leading: isBack
-        //     ? IconButton(
-        //         icon: const Icon(Icons.arrow_back),
-        //         onPressed: () {
-        //           Get.back();
-        //         },
-        //       )
-        //     : Container(),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.offNamed(AppRoutes.dashboardScreen);
+          },
+        ),
         scrolledUnderElevation: 0);
   }
 
   @override
   Size get preferredSize => Size.fromHeight(appBar.preferredSize.height);
+
+
 }

@@ -46,7 +46,7 @@ class PurchaseOrderDetailsController extends GetxController {
       productItemsQty.clear();
       for (int i = 0; i < orderProductList.length; i++) {
         var textEditController = TextEditingController();
-        int newQty = (orderProductList[i].qty ?? 0) -
+        int newQty = (orderProductList[i].qty ?? 0).toInt() -
             (orderProductList[i].product_receive_qty ?? 0);
         textEditController.text = newQty.toString();
         productItemsQty.add(textEditController);
@@ -81,7 +81,7 @@ class PurchaseOrderDetailsController extends GetxController {
         var info = PurchaseOrderQtyInfo();
         int newQty = 0;
         int receivedQty = orderProductList[i].product_receive_qty ?? 0;
-        int totalQty = orderProductList[i].qty ?? 0;
+        int totalQty = (orderProductList[i].qty ?? 0).toInt();
         if (!StringHelper.isEmptyString(productItemsQty[i].text)) {
           newQty = int.parse(productItemsQty[i].text);
         }
@@ -148,7 +148,7 @@ class PurchaseOrderDetailsController extends GetxController {
         ProductInfo productInfo = products[i];
         int newQty = 0;
         int receivedQty = orderProductList[i].product_receive_qty ?? 0;
-        int totalQty = orderProductList[i].qty ?? 0;
+        int totalQty = (orderProductList[i].qty ?? 0).toInt();
         if (!StringHelper.isEmptyString(productItemsQty[i].text)) {
           newQty = int.parse(productItemsQty[i].text);
         }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:otm_inventory/pages/products/order_list/controller/order_list_controller.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/image_utils.dart';
+import 'package:otm_inventory/utils/number_utils.dart';
 import 'package:otm_inventory/widgets/card_view.dart';
 import 'package:otm_inventory/widgets/text/PrimaryTextView.dart';
 
@@ -106,7 +107,7 @@ class OrderListView extends StatelessWidget {
                               children: [
                                 PrimaryTextView(
                                   text:
-                                      "QTY: ${(controller.itemList[position].totalQty ?? 0).toString()}",
+                                      "QTY: ${NumberUtils.decimalFormattedValue(controller.itemList[position].totalQty ?? 0, 2)}",
                                   color: primaryTextColor,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,

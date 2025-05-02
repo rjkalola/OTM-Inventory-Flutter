@@ -13,7 +13,6 @@ class ProductInfo {
       weight_unit_id,
       length_unit_id,
       model_id,
-      qty,
       product_receive_qty,
       newQty = 0,
       mode_type,
@@ -55,7 +54,14 @@ class ProductInfo {
       order_status,
       status_message,
       pack_off_qty,
-      pack_off_unit_name;
+      pack_off_unit_name,
+      sub_qty_ordered,
+      qty_returned,
+      sub_qty_return,
+      return_type_name,
+      sub_total;
+
+  double? qty, sub_qty;
   List<ModuleInfo>? categories;
   bool? status, localStored, checkPrint, is_sub_qty;
   List<StockQtyHistoryInfo>? stock_histories;
@@ -63,67 +69,72 @@ class ProductInfo {
   List<FilesInfo>? temp_images;
   List<ProductStockInfo>? product_stocks;
 
-  ProductInfo({
-    this.id,
-    this.product_id,
-    this.local_id,
-    this.supplierId,
-    this.shortName,
-    this.name,
-    this.description,
-    this.price,
-    this.image,
-    this.extension,
-    this.qrCode,
-    this.status,
-    this.categoryName,
-    this.currency,
-    this.sku,
-    this.model_name,
-    this.manufacturer_name,
-    this.qrCodeThumb,
-    this.imageThumbUrl,
-    this.imageUrl,
-    this.weight,
-    this.length,
-    this.width,
-    this.height,
-    this.tax,
-    this.manufacturer_id,
-    this.weight_unit_id,
-    this.length_unit_id,
-    this.model_id,
-    this.categories,
-    this.length_unit_name,
-    this.weight_unit_name,
-    this.supplier_name,
-    this.supplier_code,
-    this.qty,
-    this.product_receive_qty,
-    this.dimension,
-    this.barcode_text,
-    this.stock_histories,
-    this.newQty,
-    this.product_images,
-    this.mode_type,
-    this.temp_images,
-    this.localStored,
-    this.stock_status_id,
-    this.stock_status,
-    this.checkPrint,
-    this.product_stocks,
-    this.temp_store_id,
-    this.uuid,
-    this.sort_id,
-    this.cutoff,
-    this.order_status,
-    this.order_status_int,
-    this.status_message,
-    this.is_sub_qty,
-    this.pack_off_qty,
-    this.pack_off_unit_id,
-    this.pack_off_unit_name,
-  });
+  ProductInfo(
+      {this.id,
+      this.product_id,
+      this.local_id,
+      this.supplierId,
+      this.shortName,
+      this.name,
+      this.description,
+      this.price,
+      this.image,
+      this.extension,
+      this.qrCode,
+      this.status,
+      this.categoryName,
+      this.currency,
+      this.sku,
+      this.model_name,
+      this.manufacturer_name,
+      this.qrCodeThumb,
+      this.imageThumbUrl,
+      this.imageUrl,
+      this.weight,
+      this.length,
+      this.width,
+      this.height,
+      this.tax,
+      this.manufacturer_id,
+      this.weight_unit_id,
+      this.length_unit_id,
+      this.model_id,
+      this.categories,
+      this.length_unit_name,
+      this.weight_unit_name,
+      this.supplier_name,
+      this.supplier_code,
+      this.qty,
+      this.product_receive_qty,
+      this.dimension,
+      this.barcode_text,
+      this.stock_histories,
+      this.newQty,
+      this.product_images,
+      this.mode_type,
+      this.temp_images,
+      this.localStored,
+      this.stock_status_id,
+      this.stock_status,
+      this.checkPrint,
+      this.product_stocks,
+      this.temp_store_id,
+      this.uuid,
+      this.sort_id,
+      this.cutoff,
+      this.order_status,
+      this.order_status_int,
+      this.status_message,
+      this.is_sub_qty,
+      this.pack_off_qty,
+      this.pack_off_unit_id,
+      this.pack_off_unit_name,
+      this.sub_qty,
+      this.sub_qty_ordered,
+      this.qty_returned,
+      this.sub_qty_return,
+      this.return_type_name,
+      this.sub_total});
 
   ProductInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -160,7 +171,12 @@ class ProductInfo {
     weight_unit_name = json['weight_unit_name'];
     supplier_name = json['supplier_name'];
     supplier_code = json['supplier_code'];
-    qty = json['qty'];
+    // qty = json['qty'];
+    // qty = (json['qty'] as num?)?.toDouble() ?? 0.0;
+    qty = (json['qty'] is String)
+        ? double.tryParse(json['qty']) ?? 0.0
+        : (json['qty'] as num?)?.toDouble() ?? 0.0;
+
     product_receive_qty = json['product_receive_qty'];
     mode_type = json['mode_type'];
     dimension = json['dimension'];
@@ -209,6 +225,16 @@ class ProductInfo {
     pack_off_qty = json['pack_off_qty'];
     pack_off_unit_id = json['pack_off_unit_id'];
     pack_off_unit_name = json['pack_off_unit_name'];
+    // sub_qty = json['sub_qty'];
+    // sub_qty = (json['sub_qty'] as num?)?.toDouble() ?? 0.0;
+    sub_qty = (json['sub_qty'] is String)
+        ? double.tryParse(json['sub_qty']) ?? 0.0
+        : (json['sub_qty'] as num?)?.toDouble() ?? 0.0;
+    sub_qty_ordered = json['sub_qty_ordered'];
+    qty_returned = json['qty_returned'];
+    sub_qty_return = json['sub_qty_return'];
+    return_type_name = json['return_type_name'];
+    sub_total = json['sub_total'];
   }
 
   Map<String, dynamic> toJson() {
@@ -282,7 +308,12 @@ class ProductInfo {
     data['pack_off_qty'] = pack_off_qty;
     data['pack_off_unit_id'] = pack_off_unit_id;
     data['pack_off_unit_name'] = pack_off_unit_name;
-
+    data['sub_qty'] = sub_qty;
+    data['sub_qty_ordered'] = sub_qty_ordered;
+    data['qty_returned'] = qty_returned;
+    data['sub_qty_return'] = sub_qty_return;
+    data['return_type_name'] = return_type_name;
+    data['sub_total'] = sub_total;
     return data;
   }
 }

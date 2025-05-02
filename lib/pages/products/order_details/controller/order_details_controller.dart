@@ -33,7 +33,8 @@ class OrderDetailsController extends GetxController
   RxBool isLoading = false.obs,
       isInternetNotAvailable = false.obs,
       isMainViewVisible = false.obs,
-      isUpdated = false.obs;
+      isUpdated = false.obs,
+      fromNotification = false.obs;
   final _api = OrderDetailsRepository();
   final orderInfo = OrderInfo().obs;
   final orderProductList = <ProductInfo>[].obs;
@@ -49,6 +50,8 @@ class OrderDetailsController extends GetxController
     var arguments = Get.arguments;
     if (arguments != null) {
       orderId.value = arguments[AppConstants.intentKey.mId];
+      fromNotification.value =
+          arguments[AppConstants.intentKey.fromNotification] ?? false;
       getInventoryOrderDetails(true);
     }
   }

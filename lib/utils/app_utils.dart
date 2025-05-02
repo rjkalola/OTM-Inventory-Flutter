@@ -126,17 +126,17 @@ class AppUtils {
     } else if (status == AppConstants.orderStatus.CANCELLED) {
       color = const Color(0xfff24726);
     } else if (status == AppConstants.orderStatus.RETURNED) {
-      color = const Color(0xff1d7b3e);
+      color = const Color(0xfff24726);
     }
     return color;
   }
 
   static BoxDecoration getGrayBorderDecoration(
       {Color? color,
-        double? radius,
-        double? borderWidth,
-        Color? borderColor,
-        List<BoxShadow>? boxShadow}) {
+      double? radius,
+      double? borderWidth,
+      Color? borderColor,
+      List<BoxShadow>? boxShadow}) {
     return BoxDecoration(
       color: color ?? Colors.transparent,
       boxShadow: boxShadow ?? null,
@@ -144,5 +144,13 @@ class AppUtils {
           width: borderWidth ?? 0.6, color: borderColor ?? Colors.transparent),
       borderRadius: BorderRadius.circular(radius ?? 12),
     );
+  }
+
+  static void printLongLog(String text, String title) {
+    const int chunkSize = 800;
+    for (var i = 0; i < text.length; i += chunkSize) {
+      print(
+          "${text.substring(i, i + chunkSize > text.length ? text.length : i + chunkSize)}");
+    }
   }
 }

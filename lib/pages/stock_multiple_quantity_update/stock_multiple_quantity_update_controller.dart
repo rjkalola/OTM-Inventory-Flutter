@@ -116,13 +116,13 @@ class StockMultipleQuantityUpdateController extends GetxController {
     List<AddQuantityRequest> listQty = [];
     for (int i = 0; i < productList.length; i++) {
       int qty = 0, newQty = 0;
-      if (productList[i].qty != null) qty = productList[i].qty!;
+      if (productList[i].qty != null) qty = productList[i].qty!.toInt();
       if (productList[i].newQty != null) newQty = productList[i].newQty!;
-      int beforeQty = productList[i].qty ?? 0;
+      int beforeQty = (productList[i].qty ?? 0).toInt();
       if (beforeQty != (qty + newQty)) {
         productList[i].temp_store_id = AppStorage.storeId;
       }
-      productList[i].qty = qty + newQty;
+      productList[i].qty = (qty + newQty).toDouble();
       if (newQty != 0) {
         if (isInternet) {
           AddQuantityRequest info = AddQuantityRequest();

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/stock_edit_quantiry/model/stock_qty_history_info.dart';
+import 'package:otm_inventory/utils/number_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../../../res/colors.dart';
@@ -37,24 +39,23 @@ class QtyHistoryListView extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                customTextView(
-                                    stockQuantityHistoryController
-                                        .stockHistoryList[position].qty,
+                                customTextView(getQtyText(stockQuantityHistoryController
+                                    .stockHistoryList[position]),
                                     20,
                                     FontWeight.w500,
                                     (!StringHelper.isEmptyString(
-                                        stockQuantityHistoryController
-                                            .stockHistoryList[
-                                        position]
-                                            .qty ??
-                                            "") &&
-                                        int.parse(
-                                            stockQuantityHistoryController
-                                                .stockHistoryList[
-                                            position]
-                                                .qty ??
-                                                "0") >
-                                            0)
+                                                stockQuantityHistoryController
+                                                        .stockHistoryList[
+                                                            position]
+                                                        .qty ??
+                                                    "") &&
+                                            double.parse(
+                                                    stockQuantityHistoryController
+                                                            .stockHistoryList[
+                                                                position]
+                                                            .qty ??
+                                                        "0") >
+                                                0)
                                         ? Colors.green
                                         : Colors.red,
                                     const EdgeInsets.all(0)),
@@ -136,10 +137,12 @@ class QtyHistoryListView extends StatelessWidget {
                                               child: InkWell(
                                                 onTap: () {
                                                   stockQuantityHistoryController
-                                                      .showNote(stockQuantityHistoryController
-                                                      .stockHistoryList[position]
-                                                      .reference ??
-                                                      "");
+                                                      .showNote(
+                                                          stockQuantityHistoryController
+                                                                  .stockHistoryList[
+                                                                      position]
+                                                                  .reference ??
+                                                              "");
                                                 },
                                                 child: Padding(
                                                   padding:
@@ -173,8 +176,8 @@ class QtyHistoryListView extends StatelessWidget {
                             ),
                             PrimaryTextView(
                               text: stockQuantityHistoryController
-                                  .stockHistoryList[position]
-                                  .created_at_formatted ??
+                                      .stockHistoryList[position]
+                                      .created_at_formatted ??
                                   "",
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -223,10 +226,10 @@ class QtyHistoryListView extends StatelessWidget {
             stockQuantityHistoryController.stockHistoryList[position].qty) &&
         !StringHelper.isEmptyString(stockQuantityHistoryController
             .stockHistoryList[position].old_qty)) {
-      int oldQty = int.parse(
+      double oldQty = double.parse(
           stockQuantityHistoryController.stockHistoryList[position].old_qty ??
               "0");
-      int qty = int.parse(
+      double qty = double.parse(
           stockQuantityHistoryController.stockHistoryList[position].qty ?? "0");
       // if (oldQty > 0) {
       //   result += "(${oldQty + qty})";
@@ -239,5 +242,25 @@ class QtyHistoryListView extends StatelessWidget {
       result += "${oldQty + qty}";
     }
     return result;
+  }
+
+  String getQtyText(StockQtyHistoryInfo info) {
+    String output = "";
+    double qty = info.qty != null ? double.parse(info.qty!) : 0;
+    double subQty = info.sub_qty != null ? double.parse(info.sub_qty!) : 0;
+    String packOffUnit = info.pack_off_unit_name ?? "";
+
+    if (subQty != 0) {
+      if(!StringHelper.isEmptyString(packOffUnit)){
+        output =
+        "${qty >0?"+":""}${NumberUtils.decimalFormattedValue(qty, 2)} (${NumberUtils.decimalFormattedValue(subQty, 2)} $packOffUnit)";
+      }else{
+        output =
+        "${qty >0?"+":""}${NumberUtils.decimalFormattedValue(qty, 2)} (${NumberUtils.decimalFormattedValue(subQty, 2)})";
+      }
+    } else {
+      output = "${qty >0?"+":""}${NumberUtils.decimalFormattedValue(qty, 2)}";
+    }
+    return output;
   }
 }

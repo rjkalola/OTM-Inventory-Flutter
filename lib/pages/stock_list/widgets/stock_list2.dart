@@ -216,7 +216,7 @@ class StockListView extends StatelessWidget {
     );
   }
 
-  bool isStoreMatch(List<ProductStockInfo>? list, int tempStoreId, int qty) {
+  bool isStoreMatch(List<ProductStockInfo>? list, int tempStoreId, double qty) {
     bool match = false;
 
     if (tempStoreId == AppStorage.storeId) {

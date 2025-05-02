@@ -87,7 +87,7 @@ class StockQuantityHistoryController extends GetxController
       results = tempList;
     } else if (filterType == AppConstants.stockFilterType.filterIn) {
       results =
-          tempList.where((element) => int.parse(element.qty!) >= 0).toList();
+          tempList.where((element) => double.parse(element.qty!) >= 0).toList();
     } else if (filterType == AppConstants.stockFilterType.filterOut) {
       results =
           tempList.where((element) => element.qty!.startsWith("-")).toList();

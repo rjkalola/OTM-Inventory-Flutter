@@ -20,7 +20,7 @@ class OrderDetailsActionButtons extends StatelessWidget {
       children: [
         status == AppConstants.orderStatus.PLACED
             ? Padding(
-                padding: const EdgeInsets.fromLTRB(0, 14, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
                 child: Row(
                   children: [
                     Flexible(
@@ -57,7 +57,7 @@ class OrderDetailsActionButtons extends StatelessWidget {
             : Container(),
         status == AppConstants.orderStatus.ACCEPTED
             ? Padding(
-                padding: const EdgeInsets.fromLTRB(0, 14, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
                 child: Row(
                   children: [
                     Flexible(
@@ -96,7 +96,7 @@ class OrderDetailsActionButtons extends StatelessWidget {
             : Container(),
         status == AppConstants.orderStatus.READY_TO_DELIVERED
             ? Padding(
-                padding: const EdgeInsets.fromLTRB(0, 14, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
                 child: Row(
                   children: [
                     Flexible(
