@@ -43,6 +43,7 @@ class IntentKey {
   final String index = 'INDEX';
   final String itemList = 'ITEM_LIST';
   final String fromNotification = 'FROM_NOTIFICATION';
+  final String stockFilterData = 'STOCK_FILTER_DATA';
 }
 
 class DialogIdentifier {

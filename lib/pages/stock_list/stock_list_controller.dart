@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart' as multi;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otm_inventory/pages/stock_filter/model/filter_info.dart';
+import 'package:otm_inventory/pages/stock_filter/model/supplier_category_info.dart';
 import 'package:otm_inventory/pages/stock_list/stock_list_repository.dart';
 import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_storage.dart';
@@ -54,7 +56,8 @@ class StockListController extends GetxController
       isScanQrCode = false.obs,
       isLoadMore = false.obs,
       isUpdateStockButtonVisible = false.obs,
-      pullToRefreshVisible = false.obs;
+      pullToRefreshVisible = false.obs,
+      filterApplied = false.obs;
 
   final filters = ''.obs,
       search = ''.obs,
@@ -69,6 +72,7 @@ class StockListController extends GetxController
   var allStockType = false;
   var mBarCode = "", _title = "";
   late ScrollController controller;
+  StockFilterResponse? filterData;
 
   // var mTitle = 'all_stocks'.tr.obs;
 
@@ -118,6 +122,8 @@ class StockListController extends GetxController
     setDownloadTitle();
     setOfflineData();
     onCLickUploadData(false, false, localStockCount(), localProductCount());
+
+    filterData = AppStorage().getStockFiltersData();
   }
 
   setTitle() {
@@ -294,19 +300,26 @@ class StockListController extends GetxController
   }
 
   Future<void> stockFilter() async {
-    var result = await Get.toNamed(AppRoutes.stockFilterScreen);
-    // if (result != null) {
-    //   FilterRequest request = result as FilterRequest;
-    //   print("supplier:" + request.supplier.toString());
-    //   print("category:" + request.category.toString());
-    //   print("supplier key:" + request.supplier_key.toString());
-    // }
-    if (!StringHelper.isEmptyString(result)) {
+    var arguments = {
+      AppConstants.intentKey.stockFilterData: filterData,
+    };
+
+    var result =
+        await Get.toNamed(AppRoutes.stockFilterScreen, arguments: arguments);
+
+    if (result != null) {
+      filterData = result;
+      if (filterData != null) {
+        filterApplied.value = true;
+        setOfflineData();
+      }
+    }
+
+    /* if (!StringHelper.isEmptyString(result)) {
       print("result:" + result);
       mSupplierCategoryFilter.value = result;
       setOfflineData();
-      // getStockListApi(true, false, "", true, false);
-    }
+    }*/
   }
 
   int getSupplierId() {
@@ -477,6 +490,7 @@ class StockListController extends GetxController
       mIsLastPage = false;
     }
     if (clearFilter) {
+      filterApplied.value = false;
       mSupplierCategoryFilter.value = "";
       stockCountType = 0;
       allStockType = false;
@@ -879,13 +893,15 @@ class StockListController extends GetxController
       print("stockCountType:" + stockCountType.toString());
       print("allStockType:" + allStockType.toString());
       if (stockCountType == 0) {
-        if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value) &&
-            mSupplierCategoryFilter.value != "-") {
-          final jsonMap = json.decode(mSupplierCategoryFilter.value);
+        // if (!StringHelper.isEmptyString(mSupplierCategoryFilter.value) &&
+        //     mSupplierCategoryFilter.value != "-") {
+        if (filterApplied.value) {
+          /* final jsonMap = json.decode(mSupplierCategoryFilter.value);
           FilterRequest filterRequest = FilterRequest.fromJson(jsonMap);
           String categoryName = filterRequest.category_name ?? "";
           _title = categoryName;
-          setFilterList(filterRequest, response.info!);
+          // setFilterList(filterRequest, response.info!);*/
+          setFilterList(response.info!);
         } else {
           tempList.addAll(response.info!);
         }
@@ -962,7 +978,7 @@ class StockListController extends GetxController
     return match;
   }
 
-  void setFilterList(FilterRequest filterRequest, List<ProductInfo>? list) {
+  /* void setFilterList(FilterRequest filterRequest, List<ProductInfo>? list) {
     int supplierId = !StringHelper.isEmptyString(filterRequest.supplier)
         ? int.parse(filterRequest.supplier!)
         : 0;
@@ -1058,6 +1074,122 @@ class StockListController extends GetxController
       // } else {
       //   tempList.addAll(list);
       // }
+    }
+  }*/
+
+  void setFilterList(List<ProductInfo>? list) {
+    List<int> listAllSupplierIds = [];
+    List<int> listAllCategoryIds = [];
+    List<int> listNoSupplierCategoryIds = [];
+    List<int> listStatusIds = [];
+    // List<int> listInterFixIds = [];
+    // List<int> listSelcoIds = [];
+    List<SupplierCategoryInfo> listSupplierCategories = [];
+
+    for (int i = 0; i < filterData!.info!.length; i++) {
+      FilterInfo supplierInfo = filterData!.info![i];
+      for (int j = 0; j < supplierInfo.data!.length; j++) {
+        FilterInfo categoryInfo = supplierInfo.data![j];
+        if (!StringHelper.isEmptyString(supplierInfo.key)) {
+          if (supplierInfo.key == "all_suppliers" &&
+              (categoryInfo.check ?? false)) {
+            listAllSupplierIds.add(categoryInfo.id!);
+          }
+          if (supplierInfo.key == "all_category" &&
+              (categoryInfo.check ?? false)) {
+            listAllCategoryIds.add(categoryInfo.id!);
+          }
+          if (supplierInfo.key == "no_supplier_category" &&
+              (categoryInfo.check ?? false)) {
+            listNoSupplierCategoryIds.add(categoryInfo.id!);
+          }
+          if (supplierInfo.key == "status" && (categoryInfo.check ?? false)) {
+            listStatusIds.add(categoryInfo.id!);
+          }
+        } else {
+          SupplierCategoryInfo info = SupplierCategoryInfo();
+          List<int>? categoryIds = [];
+          info.supplierId = supplierInfo.id!;
+          if (categoryInfo.check ?? false) {
+            categoryIds.add(categoryInfo.id!);
+          }
+          info.categoryIds = categoryIds;
+          listSupplierCategories.add(info);
+        }
+      }
+    }
+
+    print("listAllSupplierIds length:" + listAllSupplierIds.toString());
+    print("listAllCategoryIds length:" + listAllCategoryIds.toString());
+    print("listNoSupplierCategoryIds length:" +
+        listNoSupplierCategoryIds.toString());
+    print("listStatusIds length:" + listStatusIds.toString());
+    print("listInterFixIds length:" + listSupplierCategories.toString());
+    // print("listSelcoIds length:" + listSelcoIds.toString());
+
+    for (var element in list!) {
+      print("-----------------------------");
+      List<int> categoryIds = [];
+      for (var categoryInfo in element.categories!) {
+        categoryIds.add(categoryInfo.id!);
+      }
+
+      bool hasMatch = false;
+
+      if (listAllSupplierIds.isNotEmpty && listAllCategoryIds.isNotEmpty) {
+        for (var supplierId in listAllSupplierIds) {
+          hasMatch = element.supplierId == supplierId &&
+              categoryIds
+                  .any((element) => listAllCategoryIds.contains(element));
+          if (hasMatch) {
+            break;
+          }
+        }
+      } else {
+        if (!hasMatch && listAllSupplierIds.isNotEmpty) {
+          hasMatch = (element.supplierId != null &&
+              listAllSupplierIds.contains(element.supplierId!));
+        }
+
+        if (!hasMatch && listAllCategoryIds.isNotEmpty) {
+          hasMatch = categoryIds
+              .any((element) => listAllCategoryIds.contains(element));
+        }
+      }
+
+      if (!hasMatch && listNoSupplierCategoryIds.isNotEmpty) {
+        hasMatch = (categoryIds
+                .any((element) => listAllSupplierIds.contains(element))) &&
+            (element.supplierId == null || element.supplierId! == 0);
+      }
+
+      if (!hasMatch && listStatusIds.isNotEmpty) {
+        hasMatch = listStatusIds.contains(element.stock_status_id);
+      }
+
+      if (!hasMatch && listSupplierCategories.isNotEmpty) {
+        for (var info in listSupplierCategories) {
+          hasMatch = element.supplierId == info.supplierId &&
+              categoryIds.any((element) => info.categoryIds!.contains(element));
+          if (hasMatch) {
+            break;
+          }
+        }
+      }
+
+      // if (!hasMatch && listInterFixIds.isNotEmpty) {
+      //   hasMatch = element.supplierId == 164 &&
+      //       categoryIds.any((element) => listInterFixIds.contains(element));
+      // }
+      //
+      // if (!hasMatch && listSelcoIds.isNotEmpty) {
+      //   hasMatch = element.supplierId == 165 &&
+      //       categoryIds.any((element) => listSelcoIds.contains(element));
+      // }
+
+      if (hasMatch) {
+        tempList.add(element);
+      }
     }
   }
 

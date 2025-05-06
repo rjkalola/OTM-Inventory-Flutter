@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otm_inventory/pages/stock_filter/controller/stock_filter_controller.dart';
+import 'package:otm_inventory/utils/image_utils.dart';
+import 'package:otm_inventory/utils/string_helper.dart';
 
 import '../../../../res/colors.dart';
 
@@ -21,7 +23,8 @@ class StockFilterCategoriesList extends StatelessWidget {
               (position) => InkWell(
                 onTap: () {
                   // controller.onSelectCategory(position);
-                  controller.applyFilter_(
+
+                 /* controller.applyFilter_(
                       controller.categoriesList[position].id != null
                           ? controller.categoriesList[position].id!
                           : 0,
@@ -30,7 +33,7 @@ class StockFilterCategoriesList extends StatelessWidget {
                           : "",
                       controller.categoriesList[position].key != null
                           ? controller.categoriesList[position].key!
-                          : "");
+                          : "");*/
                 },
                 child: Column(
                   children: [
@@ -38,6 +41,17 @@ class StockFilterCategoriesList extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                       child: Row(
                         children: [
+                          !StringHelper.isEmptyString(controller
+                                  .categoriesList[position].thumb_image)
+                              ? Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: ImageUtils.setCachedNetworkImage(
+                                      url: controller.categoriesList[position]
+                                          .thumb_image!,
+                                      width: 40,
+                                      height: 40),
+                                )
+                              : Container(),
                           Expanded(
                             child: Text(
                                 softWrap: true,
@@ -48,6 +62,21 @@ class StockFilterCategoriesList extends StatelessWidget {
                                   fontSize: 15,
                                 )),
                           ),
+                          Checkbox(
+                              activeColor: defaultAccentColor,
+                              value:
+                                  controller.categoriesList[position].check ??
+                                      false,
+                              onChanged: (isCheck) {
+                                controller.categoriesList[position].check =
+                                    isCheck;
+                                controller.categoriesList.refresh();
+                                controller
+                                    .filterData.value.info![
+                                        controller.selectedSupplierIndex.value]
+                                    .data![position]
+                                    .check = isCheck;
+                              })
                           // SvgPicture.asset(
                           //   width: 22,
                           //   Drawable.checkIcon,

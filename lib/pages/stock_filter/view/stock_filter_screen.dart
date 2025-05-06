@@ -5,6 +5,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:otm_inventory/pages/stock_filter/view/widgets/all_items.dart';
 import 'package:otm_inventory/pages/stock_filter/view/widgets/stock_filter_categories_list.dart';
 import 'package:otm_inventory/pages/stock_filter/view/widgets/stock_filter_supplier_list.dart';
+import 'package:otm_inventory/widgets/PrimaryBorderButton.dart';
 
 import '../../../res/colors.dart';
 import '../../../widgets/CustomProgressbar.dart';
@@ -29,8 +30,8 @@ class _StockFilterScreenState extends State<StockFilterScreen> {
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
     return Obx(() => Container(
-      color: backgroundColor,
-      child: SafeArea(
+          color: backgroundColor,
+          child: SafeArea(
             child: Scaffold(
               backgroundColor: backgroundColor,
               appBar: BaseAppBar(
@@ -55,12 +56,12 @@ class _StockFilterScreenState extends State<StockFilterScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Expanded(
-                                flex: 2,
+                                flex: 3,
                                 child: Container(
                                     color: Colors.grey,
                                     child: StockFilterSupplierList())),
                             Expanded(
-                                flex: 3,
+                                flex: 4,
                                 child: Column(
                                   children: [
                                     AllItems(),
@@ -70,48 +71,48 @@ class _StockFilterScreenState extends State<StockFilterScreen> {
                           ],
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.all(12.0),
-                      //   child: Row(
-                      //     children: [
-                      //       Flexible(
-                      //           fit: FlexFit.tight,
-                      //           flex: 1,
-                      //           child:PrimaryBorderButton(
-                      //             buttonText: 'apply'.tr,
-                      //             textColor: defaultAccentColor,
-                      //             borderColor: defaultAccentColor,
-                      //             onPressed: () {
-                      //               stockFilterController.applyFilter();
-                      //               // Get.back();
-                      //             },
-                      //           )
-                      //       ),
-                      //       const SizedBox(
-                      //         width: 12,
-                      //       ),
-                      //       Flexible(
-                      //         fit: FlexFit.tight,
-                      //         flex: 1,
-                      //         child: PrimaryBorderButton(
-                      //           buttonText: 'cancel'.tr,
-                      //           textColor: Colors.red,
-                      //           borderColor: Colors.red,
-                      //           onPressed: () {
-                      //             Get.back();
-                      //           },
-                      //         ),
-                      //       )
-                      //     ],
-                      //   ),
-                      // )
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          children: [
+                            Flexible(
+                                fit: FlexFit.tight,
+                                flex: 1,
+                                child: PrimaryBorderButton(
+                                  buttonText: 'apply'.tr,
+                                  textColor: defaultAccentColor,
+                                  borderColor: defaultAccentColor,
+                                  onPressed: () {
+                                    stockFilterController.applyFilter();
+                                    // Get.back();
+                                  },
+                                )),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Flexible(
+                              fit: FlexFit.tight,
+                              flex: 1,
+                              child: PrimaryBorderButton(
+                                buttonText: 'clear'.tr,
+                                textColor: Colors.red,
+                                borderColor: Colors.red,
+                                onPressed: () {
+                                  stockFilterController.clearFilter();
+                                  // Get.back();
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
               ),
             ),
           ),
-    ));
+        ));
   }
 
   Widget dividerItem() => const Divider(

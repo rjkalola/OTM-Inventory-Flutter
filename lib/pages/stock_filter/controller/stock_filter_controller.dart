@@ -7,6 +7,7 @@ import 'package:otm_inventory/pages/stock_filter/controller/stock_filter_reposit
 import 'package:otm_inventory/pages/stock_filter/model/filter_info.dart';
 import 'package:otm_inventory/pages/stock_filter/model/filter_request.dart';
 import 'package:otm_inventory/pages/stock_filter/model/stock_filter_response.dart';
+import 'package:otm_inventory/utils/app_constants.dart';
 import 'package:otm_inventory/utils/app_utils.dart';
 import 'package:otm_inventory/utils/string_helper.dart';
 import 'package:otm_inventory/web_services/api_constants.dart';
@@ -25,21 +26,27 @@ class StockFilterController extends GetxController {
   var supplierList = <FilterInfo>[].obs;
   var categoriesList = <FilterInfo>[].obs;
   var selectedSupplierIndex = 0.obs;
+  var filterData = StockFilterResponse().obs;
 
   @override
   void onInit() {
     super.onInit();
 
-    if (AppStorage().getStockFiltersData() != null) {
-      StockFilterResponse response = AppStorage().getStockFiltersData()!;
-      if (response.info != null && response.info!.isNotEmpty) {
-        supplierList.addAll(response.info!);
-        if (supplierList.isNotEmpty) {
-          categoriesList.value = supplierList[0].data!;
+    var arguments = Get.arguments;
+    if (arguments != null) {
+      filterData.value =
+          arguments[AppConstants.intentKey.stockFilterData] ?? "";
+      if (filterData != null) {
+        if (filterData.value.info != null &&
+            filterData.value.info!.isNotEmpty) {
+          supplierList.addAll(filterData.value.info!);
+          if (supplierList.isNotEmpty) {
+            categoriesList.value = supplierList[0].data!;
+          }
         }
+        setAllButtonVisibility();
+        isMainViewVisible.value = true;
       }
-      setAllButtonVisibility();
-      isMainViewVisible.value = true;
     }
 
     // getFiltersListApi();
@@ -65,12 +72,13 @@ class StockFilterController extends GetxController {
   }
 
   void setAllButtonVisibility() {
-    if (supplierList[selectedSupplierIndex.value].key == 'all_category') {
-      isAllVisible.value = false;
-    } else {
-      isAllVisible.value = true;
-    }
-    print("isAllVisible:" + isAllVisible.value.toString());
+    // if (supplierList[selectedSupplierIndex.value].key == 'all_category') {
+    //   isAllVisible.value = false;
+    // } else {
+    //   isAllVisible.value = true;
+    // }
+    // print("isAllVisible:" + isAllVisible.value.toString());
+    isAllVisible.value = false;
   }
 
   void onSelectCategory(index) {
@@ -98,7 +106,7 @@ class StockFilterController extends GetxController {
   }
 
   void applyFilter() {
-    var list = <FilterRequest>[];
+    /* var list = <FilterRequest>[];
     for (int i = 0; i < supplierList.length; i++) {
       FilterRequest request = FilterRequest();
       FilterInfo supplierInfo = supplierList[i];
@@ -119,8 +127,24 @@ class StockFilterController extends GetxController {
         list.add(request);
       }
     }
-    // print(jsonEncode(list));
-    Get.back(result: jsonEncode(list));
+    print(jsonEncode(list));
+    Get.back(result: jsonEncode(list));*/
+
+    Get.back(result: filterData.value);
+  }
+
+  void clearFilter() {
+    for (int i = 0; i < filterData.value.info!.length; i++) {
+      FilterInfo supplierInfo = filterData.value.info![i];
+      for (int j = 0; j < supplierInfo.data!.length; j++) {
+        FilterInfo categoryInfo = supplierInfo.data![j];
+        categoryInfo.check = false;
+      }
+    }
+    for (int i = 0; i < categoriesList.length; i++) {
+      categoriesList[i].check = false;
+      categoriesList.refresh();
+    }
   }
 
   /* List<FilterInfo> filterList() {

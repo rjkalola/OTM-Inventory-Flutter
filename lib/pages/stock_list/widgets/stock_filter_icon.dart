@@ -18,8 +18,9 @@ class StockFilterIcon extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 9, 0, 9),
       child: InkWell(
         onTap: () {
-          if (!StringHelper.isEmptyString(
-              Get.put(StockListController()).mSupplierCategoryFilter.value)) {
+          // if (!StringHelper.isEmptyString(
+          //     Get.put(StockListController()).mSupplierCategoryFilter.value)) {
+          if (stockListController.filterApplied.value) {
             stockListController.getStockListApi(true, false, "", true, true);
           } else {
             stockListController.stockFilter();
@@ -39,10 +40,11 @@ class StockFilterIcon extends StatelessWidget {
               //     ? backgroundColor
               //     : defaultAccentColor,
               border: Border.all(
-                  color: !StringHelper.isEmptyString(
-                          Get.put(StockListController())
-                              .mSupplierCategoryFilter
-                              .value)
+                  // color: !StringHelper.isEmptyString(
+                  //         Get.put(StockListController())
+                  //             .mSupplierCategoryFilter
+                  //             .value)
+                  color: stockListController.filterApplied.value
                       ? rectangleBorderColor
                       : defaultAccentColor),
               borderRadius: const BorderRadius.all(Radius.circular(6))),
@@ -51,15 +53,17 @@ class StockFilterIcon extends StatelessWidget {
             child: SvgPicture.asset(
               width: 24,
               height: 24,
-              !StringHelper.isEmptyString(Get.put(StockListController())
-                      .mSupplierCategoryFilter
-                      .value)
+              // !StringHelper.isEmptyString(Get.put(StockListController())
+              //         .mSupplierCategoryFilter
+              //         .value)
+              stockListController.filterApplied.value
                   ? Drawable.closeIcon
                   : Drawable.filterIcon,
               colorFilter: ColorFilter.mode(
-                  !StringHelper.isEmptyString(Get.put(StockListController())
-                          .mSupplierCategoryFilter
-                          .value)
+                  // !StringHelper.isEmptyString(Get.put(StockListController())
+                  //         .mSupplierCategoryFilter
+                  //         .value)
+                  stockListController.filterApplied.value
                       ? Colors.black
                       : defaultAccentColor,
                   BlendMode.srcIn),

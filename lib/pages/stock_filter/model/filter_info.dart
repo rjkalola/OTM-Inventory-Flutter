@@ -1,15 +1,17 @@
 class FilterInfo {
   int? id;
-  String? name, key;
+  String? name, key, thumb_image;
   bool? check;
   List<FilterInfo>? data;
 
-  FilterInfo({this.id, this.name, this.key, this.data, this.check});
+  FilterInfo(
+      {this.id, this.name, this.key, this.thumb_image, this.data, this.check});
 
   FilterInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     key = json['key'];
+    thumb_image = json['thumb_image'];
     if (json['data'] != null) {
       data = <FilterInfo>[];
       json['data'].forEach((v) {
@@ -23,9 +25,11 @@ class FilterInfo {
     data['id'] = id;
     data['name'] = name;
     data['key'] = key;
+    data['thumb_image'] = thumb_image;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
+
