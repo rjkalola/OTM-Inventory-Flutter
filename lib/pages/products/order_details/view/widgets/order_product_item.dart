@@ -265,6 +265,11 @@ class OrderProductItem extends StatelessWidget {
       } else {
         finalQty = "${qty ?? 0} (${subQty})";
       }
+      /*if (!StringHelper.isEmptyString(pack_off_unit_name)) {
+        finalQty = "${subQty} ${pack_off_unit_name}";
+      } else {
+        finalQty = "${subQty ?? 0}";
+      }*/
     } else {
       finalQty = (qty ?? 0).toString();
     }
@@ -275,11 +280,16 @@ class OrderProductItem extends StatelessWidget {
       String? qty, String? subQty, String? pack_off_unit_name) {
     String finalQty = "";
     if (!StringHelper.isEmptyString(subQty) && double.parse(subQty!) > 0) {
-      if (!StringHelper.isEmptyString(pack_off_unit_name)) {
+       if (!StringHelper.isEmptyString(pack_off_unit_name)) {
         finalQty = "${qty ?? "0"} (${subQty} ${pack_off_unit_name})";
       } else {
         finalQty = "${qty ?? "0"} (${subQty})";
       }
+     /* if (!StringHelper.isEmptyString(pack_off_unit_name)) {
+        finalQty = "${subQty} ${pack_off_unit_name}";
+      } else {
+        finalQty = "${subQty}";
+      }*/
     } else {
       finalQty = (qty ?? "0").toString();
     }

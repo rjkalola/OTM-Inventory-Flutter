@@ -146,9 +146,13 @@ class OrderListController extends GetxController implements SelectItemListener {
       results = tempList;
     } else {
       results = tempList
-          .where((element) => (element.orderedUserName ?? "")
-              .toLowerCase()
-              .contains(value.toLowerCase()))
+          .where((element) =>
+              (!StringHelper.isEmptyString(element.orderedUserName) &&
+                  element.orderedUserName!
+                      .toLowerCase()
+                      .contains(value.toLowerCase())) ||
+              (!StringHelper.isEmptyString(element.orderId) &&
+                  element.orderId!.toLowerCase().contains(value.toLowerCase())))
           .toList();
     }
     itemList.value = results;

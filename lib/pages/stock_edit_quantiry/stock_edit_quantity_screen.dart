@@ -205,14 +205,16 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                                   primaryTextColorLight,
                                                   const EdgeInsets.all(0),
                                                   () => {}),
-                                              customTextView(
-                                                  getQtyText(),
-                                                  20,
-                                                  FontWeight.w600,
-                                                  primaryTextColorLight,
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 0, 16, 0),
-                                                  () => {})
+                                              Padding(
+                                                padding:const EdgeInsets.fromLTRB(
+                                                    0, 0, 16, 0) ,
+                                                child: PrimaryTextView(
+                                                  text: getQtyText(),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: primaryTextColorLight,
+                                                ),
+                                              ),
                                             ],
                                           )
                                           // !StringHelper.isEmptyString(
@@ -678,7 +680,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
       output =
           "${NumberUtils.decimalFormattedValue(currentQty, 2)} (${NumberUtils.decimalFormattedValue(subQty, 2)} ${stockEditQuantityController.productInfo.value.pack_off_unit_name ?? "0"})";
     } else {
-      output = NumberUtils.decimalFormattedValue(qty, 2);    }
+      output = NumberUtils.decimalFormattedValue(qty, 2);
+    }
     return output;
   }
 

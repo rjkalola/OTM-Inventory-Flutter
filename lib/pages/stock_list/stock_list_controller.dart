@@ -177,7 +177,25 @@ class StockListController extends GetxController
                   .contains(value.toLowerCase())))
           .toList();
     }
-    productList.value = results;
+
+    List<ProductInfo> list = [];
+
+    for (int i = 0; i < results.length; i++) {
+      ProductInfo info = results[i];
+      if (isStoreMatch(
+          info.product_stocks, info.temp_store_id ?? 0, info.qty ?? 0)) {
+        list.add(info);
+      }
+    }
+
+    productList.value = list;
+    productList.refresh();
+
+    // productList.value = results;
+    mCount.value = productList.length;
+    print("productList length:" + productList.length.toString());
+    print("mCount.value length:" + mCount.value.toString());
+    setTitle();
   }
 
   List<String> listCategories(List<ModuleInfo>? list) {

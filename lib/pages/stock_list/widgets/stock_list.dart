@@ -253,8 +253,10 @@ class StockListView extends StatelessWidget {
           info.pack_off_qty != null ? double.parse(info.pack_off_qty!) : 0;
       double currentQty = info.qty ?? 0;
       double subQty = packQty * currentQty;
+      // output =
+      //     "${NumberUtils.decimalFormattedValue(currentQty, 2)} (${NumberUtils.decimalFormattedValue(subQty, 2)} ${info.pack_off_unit_name ?? "0"})";
       output =
-          "${NumberUtils.decimalFormattedValue(currentQty, 2)} (${NumberUtils.decimalFormattedValue(subQty, 2)} ${info.pack_off_unit_name ?? "0"})";
+          "${NumberUtils.decimalFormattedValue(subQty, 2)} ${info.pack_off_unit_name ?? "0"}";
     } else {
       output = NumberUtils.decimalFormattedValue(qty, 2);
     }
