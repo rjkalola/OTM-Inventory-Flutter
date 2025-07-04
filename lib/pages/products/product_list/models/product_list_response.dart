@@ -1,15 +1,12 @@
-
-
 import '../../../../web_services/response/base_response.dart';
 import 'product_info.dart';
 
-class ProductListResponse extends BaseResponse{
+class ProductListResponse extends BaseResponse {
   List<ProductInfo>? info;
   int? total;
   int? offset;
 
-  ProductListResponse(
-      {this.info, this.total, this.offset});
+  ProductListResponse({this.info, this.total, this.offset});
 
   ProductListResponse.fromJson(Map<String, dynamic> json) {
     if (json['info'] != null) {
@@ -25,7 +22,7 @@ class ProductListResponse extends BaseResponse{
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (info != null) {
       data['info'] = info!.map((v) => v.toJson()).toList();
     }

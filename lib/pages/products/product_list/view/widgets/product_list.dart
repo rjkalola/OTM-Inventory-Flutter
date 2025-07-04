@@ -218,7 +218,7 @@ class ProductListView extends StatelessWidget {
       // output =
       //     "${NumberUtils.decimalFormattedValue(currentQty, 2)} (${NumberUtils.decimalFormattedValue(subQty, 2)} ${info.pack_off_unit_name ?? "0"})";
       output =
-      "${NumberUtils.decimalFormattedValue(subQty, 2)} ${info.pack_off_unit_name ?? "0"}";
+          "${NumberUtils.decimalFormattedValue(subQty, 2)} ${info.pack_off_unit_name ?? "0"}";
     } else {
       output = NumberUtils.decimalFormattedValue(qty, 2);
     }

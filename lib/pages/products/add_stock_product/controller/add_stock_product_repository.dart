@@ -6,7 +6,6 @@ import '../../../../web_services/network/api_request.dart';
 import '../../../../web_services/response/response_model.dart';
 
 class AddStockProductRepository {
-
   void getProductResources({
     multi.FormData? formData,
     Function(ResponseModel responseModel)? onSuccess,
@@ -30,9 +29,11 @@ class AddStockProductRepository {
     Function(ResponseModel responseModel)? onSuccess,
     Function(ResponseModel error)? onError,
   }) {
-    if (kDebugMode)print("formData:$formData");
+    if (kDebugMode) print("formData:$formData");
     ApiRequest(
-        url: ApiConstants.storeProductUrl, formData: formData, isFormData: true)
+            url: ApiConstants.storeProductUrl,
+            formData: formData,
+            isFormData: true)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);
@@ -48,9 +49,9 @@ class AddStockProductRepository {
   }) {
     if (kDebugMode) print("formData:$formData");
     ApiRequest(
-        url: ApiConstants.getProductDetailsUrl,
-        formData: formData,
-        isFormData: true)
+            url: ApiConstants.getProductDetailsUrl,
+            formData: formData,
+            isFormData: true)
         .postRequest(
       onSuccess: (data) {
         onSuccess!(data);

@@ -639,15 +639,24 @@ class StockEditQuantityController extends GetxController
       double packQty = productInfo.value.pack_off_qty != null
           ? double.parse(productInfo.value.pack_off_qty!)
           : 0;
-      double subQty = currentQty * packQty;
-      double updatedQty = subQty - qty;
-      String formatted =
-          ((updatedQty * currentQty) / subQty).toStringAsFixed(2);
-
+      String formatted = "";
       print("currentQty:" + currentQty.toString());
-      print("packQty:" + packQty.toString());
-      print("subQty:" + subQty.toString());
-      print("updatedQty:" + updatedQty.toString());
+      if (currentQty == 0) {
+        double updatedQty = isDeduct ? (0 - qty) : (0 + qty);
+        print("updatedQty:" + updatedQty.toString());
+        formatted = (updatedQty / packQty).toString();
+      } else {
+        double subQty = currentQty * packQty;
+        double updatedQty = isDeduct ? (subQty - qty) : (subQty + qty);
+        // String formatted =
+        //     ((updatedQty * currentQty) / subQty).toStringAsFixed(2) ;
+        formatted = ((updatedQty * currentQty) / subQty).toString();
+      }
+
+      // print("currentQty:" + currentQty.toString());
+      // print("packQty:" + packQty.toString());
+      // print("subQty:" + subQty.toString());
+      // print("updatedQty:" + updatedQty.toString());
       print("formatted:" + formatted.toString());
 
       finalQty = double.parse(formatted);

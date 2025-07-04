@@ -62,15 +62,17 @@ class BottomButtonQtyView extends StatelessWidget {
                 ],
               )),
           Visibility(
-            visible: !(stockEditQuantityController.isPackOffEnable.value &&
-                !stockEditQuantityController.isPackOffQuantityAddEnable.value),
+            // visible: !(stockEditQuantityController.isPackOffEnable.value &&
+            //     !stockEditQuantityController.isPackOffQuantityAddEnable.value),
+            visible: true,
             child: const SizedBox(
               width: 12,
             ),
           ),
           Visibility(
-            visible: !(stockEditQuantityController.isPackOffEnable.value &&
-                !stockEditQuantityController.isPackOffQuantityAddEnable.value),
+            // visible: !(stockEditQuantityController.isPackOffEnable.value &&
+            //     !stockEditQuantityController.isPackOffQuantityAddEnable.value),
+            visible: true,
             child: Flexible(
               flex: 1,
               fit: FlexFit.tight,

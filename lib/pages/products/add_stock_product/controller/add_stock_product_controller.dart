@@ -386,6 +386,8 @@ class AddStockProductController extends GetxController
   }
 
   void showPackOffUnitList() {
+    print("length:" +
+        productResourcesResponse.value.packOffUnit!.length.toString());
     if (productResourcesResponse.value.packOffUnit != null &&
         productResourcesResponse.value.packOffUnit!.isNotEmpty &&
         isPackOffEnable.value) {

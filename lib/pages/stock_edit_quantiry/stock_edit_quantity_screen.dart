@@ -206,8 +206,9 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
                                                   const EdgeInsets.all(0),
                                                   () => {}),
                                               Padding(
-                                                padding:const EdgeInsets.fromLTRB(
-                                                    0, 0, 16, 0) ,
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 0, 16, 0),
                                                 child: PrimaryTextView(
                                                   text: getQtyText(),
                                                   fontSize: 18,
@@ -645,6 +646,8 @@ class _StockEditQuantityScreenState extends State<StockEditQuantityScreen> {
 
     String output = "";
     double qty = stockEditQuantityController.productInfo.value.qty ?? 0;
+    print("qty:" + qty.toString());
+
     if (stockEditQuantityController.isPackOffEnable.value) {
       double packQty =
           stockEditQuantityController.productInfo.value.pack_off_qty != null
