@@ -32,8 +32,8 @@ class _StockQuantityHistoryScreenState
         statusBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark));
     return Obx(() => Container(
-      color: backgroundColor,
-      child: SafeArea(
+          color: backgroundColor,
+          child: SafeArea(
             child: Scaffold(
               backgroundColor: backgroundColor,
               appBar: BaseAppBar(
@@ -48,7 +48,8 @@ class _StockQuantityHistoryScreenState
                 opacity: 0,
                 progressIndicator: const CustomProgressbar(),
                 child: Visibility(
-                  visible: stockQuantityHistoryController.isMainViewVisible.value,
+                  visible:
+                      stockQuantityHistoryController.isMainViewVisible.value,
                   child: Column(children: [
                     const Divider(
                       thickness: 1,
@@ -65,7 +66,7 @@ class _StockQuantityHistoryScreenState
               ),
             ),
           ),
-    ));
+        ));
   }
 
   Widget customTextView(String? text, double fontSize, FontWeight? fontWeight,

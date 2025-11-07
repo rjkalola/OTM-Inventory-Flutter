@@ -239,7 +239,8 @@ class QtyHistoryListView extends StatelessWidget {
 
       // result += "(${oldQty + qty})";
 
-      result += "${oldQty + qty}";
+      result += NumberUtils.decimalFormattedValue(oldQty + qty, 2);
+      print("result:::"+result);
     }
     return result;
   }
@@ -262,5 +263,6 @@ class QtyHistoryListView extends StatelessWidget {
       output = "${qty >0?"+":""}${NumberUtils.decimalFormattedValue(qty, 2)}";
     }
     return output;
+
   }
 }

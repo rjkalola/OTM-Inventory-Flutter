@@ -17,27 +17,6 @@ class NotificationService {
     final granted = await _requestPermissions();
 
     if (granted) {
-      /* const androidSettings =
-          AndroidInitializationSettings('@drawable/ic_stat_notification');
-      const initSettings = InitializationSettings(android: androidSettings);
-
-      await _localNotifications.initialize(
-        initSettings,
-        onDidReceiveNotificationResponse: (NotificationResponse response) {
-          if (response.payload != null) {
-            final Map<String, dynamic> data = jsonDecode(response.payload!);
-            String rout = AppRoutes.splashScreen;
-            final notificationType = data['notification_type'] ?? "";
-            print("notificationType:" + notificationType);
-
-            if (notificationType == "9251" || notificationType == "9251") {
-              rout = AppRoutes.orderListScreen;
-              Get.offNamed(rout);
-            }
-          }
-        },
-      );*/
-
       const InitializationSettings initSettings = InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
         iOS: DarwinInitializationSettings(
@@ -53,22 +32,6 @@ class NotificationService {
           if (response.payload != null) {
             final Map<String, dynamic> data = jsonDecode(response.payload!);
             notificationClick(data);
-
-            /*   String rout = AppRoutes.splashScreen;
-            print('Data:::: ${response.payload!}');
-            final notificationType = data['notification_type'] ?? "";
-            print("notificationType:" + notificationType);
-            final orderId = data['order_id'] ?? "";
-            print("orderId:" + orderId);
-
-            if ((notificationType == "9251" || notificationType == "9252") &&
-                !StringHelper.isEmptyString(orderId)) {
-              rout = AppRoutes.orderDetailsScreen;
-              var arguments = {
-                AppConstants.intentKey.mId: int.parse(orderId),
-              };
-              Get.offNamed(rout, arguments: arguments);
-            }*/
           }
         },
       );
@@ -77,31 +40,6 @@ class NotificationService {
   }
 
   static Future<bool> _requestPermissions() async {
-    /* // Android 13+
-    if (await Permission.notification.isDenied) {
-      final status = await Permission.notification.request();
-      if (!status.isGranted) {
-        print('🔒 Android permission denied');
-        return;
-      }
-    }
-
-    // iOS
-    final settings = await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.denied) {
-      print('🔒 iOS notification permission denied');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.notDetermined) {
-      print('🕒 iOS notification permission not determined');
-    } else {
-      print('✅ Notification permission granted');
-    }*/
-
     final messaging = FirebaseMessaging.instance;
 
     // iOS: request Firebase notification permission
@@ -147,19 +85,8 @@ class NotificationService {
 
   static void showForegroundNotification(RemoteMessage message) {
     final notification = message.notification;
-    // final android = notification?.android;
 
     if (notification != null) {
-      // AppUtils.showSnackBarMessage("notification not null");
-      // String title = notification.title ?? "null";
-      // String body = notification.body ?? "null";
-      // if (message.data != null) {
-      //   AppUtils.showSnackBarMessage(
-      //       "data not null & title:${title} & body:${body}");
-      // } else {
-      //   AppUtils.showSnackBarMessage(
-      //       "data null & title:${title} & body:${body}");
-      // }
       _localNotifications.show(
           notification.hashCode,
           notification.title,
@@ -198,20 +125,6 @@ class NotificationService {
     if (notificationType == "9251" || notificationType == "9251") {
       Get.offNamed(AppRoutes.orderListScreen);
     }
-  }
-
-  static String getInitialRout(Map<String, dynamic> data) {
-    String rout = AppRoutes.splashScreen;
-    // final feedType = data['feed_type'] ?? ""; //
-    // print("feedType:" + feedType);
-    final notificationType = data['notification_type'] ?? "";
-    final orderId = data['notification_type'] ?? "";
-    print("notificationType:" + notificationType);
-
-    if (notificationType == "9251" || notificationType == "9251") {
-      rout = AppRoutes.orderListScreen;
-    }
-    return rout;
   }
 
   static void notificationClick(Map<String, dynamic>? data) {

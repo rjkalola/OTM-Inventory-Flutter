@@ -317,6 +317,8 @@ class StockListController extends GetxController
     }
   }
 
+
+
   Future<void> stockFilter() async {
     var arguments = {
       AppConstants.intentKey.stockFilterData: filterData,
