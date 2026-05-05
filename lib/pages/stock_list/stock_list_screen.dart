@@ -39,11 +39,12 @@ class _StockListScreenState extends State<StockListScreen> {
               child: Scaffold(
             backgroundColor: backgroundColor,
             appBar: BaseAppBar(
-                appBar: AppBar(),
-                title: stockListController.mTitle.value,
-                isCenterTitle: false,
-                isBack: true,),
-                // widgets: actionButtons()),
+              appBar: AppBar(),
+              title: stockListController.mTitle.value,
+              isCenterTitle: false,
+              isBack: true,
+            ),
+            // widgets: actionButtons()),
             floatingActionButton: (stockListController
                         .totalPendingCount.value ==
                     0)

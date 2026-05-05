@@ -16,7 +16,8 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Visibility(
+    return Obx(() =>
+        Visibility(
           visible: stockListController.isMainViewVisible.value,
           child: Expanded(
             child: ListView.separated(
@@ -38,7 +39,7 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
                         },
                         child: ImageUtils.setRectangleCornerCachedNetworkImage(
                             url: stockListController
-                                    .productList[position].imageThumbUrl ??
+                                .productList[position].imageThumbUrl ??
                                 "",
                             width: 80,
                             height: 80,
@@ -46,80 +47,85 @@ class StockMultipleQuantityUpdateListView extends StatelessWidget {
                       ),
                       Expanded(
                           child: Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Flexible(
-                                  child: Text(
-                                      softWrap: true,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                          softWrap: true,
+                                          stockListController
+                                              .productList[position].shortName!,
+                                          style: const TextStyle(
+                                            color: primaryTextColor,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 15,
+                                          )),
+                                    ),
+                                    // const SizedBox(width: 8),
+                                    // quantityWidget(position)
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                // Visibility(
+                                //   visible: !StringHelper.isEmptyString(
+                                //       stockListController
+                                //           .productList[position].barcode_text),
+                                //   child: Text(
+                                //       "${'barcode'.tr}: ${stockListController.productList[position].barcode_text ?? ""}",
+                                //       maxLines: 1,
+                                //       overflow: TextOverflow.ellipsis,
+                                //       style: const TextStyle(
+                                //         color: secondaryLightTextColor,
+                                //         fontWeight: FontWeight.w400,
+                                //         fontSize: 13,
+                                //       )),
+                                // ),
+                                Visibility(
+                                  visible: !StringHelper.isEmptyString(
                                       stockListController
-                                          .productList[position].shortName!,
+                                          .productList[position].supplier_code),
+                                  child: Text(
+                                      "${'code'.tr}: ${stockListController
+                                          .productList[position]
+                                          .supplier_code ?? ""}",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
-                                        color: primaryTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15,
+                                        color: secondaryLightTextColor,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 13,
                                       )),
                                 ),
-                                // const SizedBox(width: 8),
-                                // quantityWidget(position)
+                                // const SizedBox(
+                                //   height: 8,
+                                // ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  children: [
+                                    quantityWidget(position),
+                                    quantityUpdateWidget(position)
+                                  ],
+                                ),
+                                // quantityUpdateWidget(position)
                               ],
                             ),
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            // Visibility(
-                            //   visible: !StringHelper.isEmptyString(
-                            //       stockListController
-                            //           .productList[position].barcode_text),
-                            //   child: Text(
-                            //       "${'barcode'.tr}: ${stockListController.productList[position].barcode_text ?? ""}",
-                            //       maxLines: 1,
-                            //       overflow: TextOverflow.ellipsis,
-                            //       style: const TextStyle(
-                            //         color: secondaryLightTextColor,
-                            //         fontWeight: FontWeight.w400,
-                            //         fontSize: 13,
-                            //       )),
-                            // ),
-                            Visibility(
-                              visible: !StringHelper.isEmptyString(
-                                  stockListController
-                                      .productList[position].supplier_code),
-                              child: Text(
-                                  "${'code'.tr}: ${stockListController.productList[position].supplier_code ?? ""}",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: secondaryLightTextColor,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 13,
-                                  )),
-                            ),
-                            // const SizedBox(
-                            //   height: 8,
-                            // ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                quantityWidget(position),
-                                quantityUpdateWidget(position)
-                              ],
-                            ),
-                            // quantityUpdateWidget(position)
-                          ],
-                        ),
-                      )),
+                          )),
                     ]),
                   ),
                 );
               },
               itemCount: stockListController.productList.length,
-              separatorBuilder: (context, position) => const Padding(
+              separatorBuilder: (context, position) =>
+              const Padding(
                 padding: EdgeInsets.only(left: 100),
                 child: Divider(
                   height: 0,
